@@ -1,0 +1,110 @@
+<template>
+  <q-layout view="lHh Lpr lFf">
+    <q-header elevated>
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          @click="leftDrawerOpen = !leftDrawerOpen"
+          icon="menu"
+          aria-label="Menu"
+        />
+
+        <q-toolbar-title>
+          Micado App
+        </q-toolbar-title>
+
+        <div>Micado v0.1</div>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+      content-class="bg-grey-2"
+    >
+      <auth-menu />
+      <q-list>
+        <q-item-label header>My services</q-item-label>
+        <q-item clickable tag="a" target="_blank" href="https://quasar.dev">
+          <q-item-section avatar>
+            <q-icon name="school" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Docs</q-item-label>
+            <q-item-label caption>quasar.dev</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable tag="a"  to="/documents">
+          <q-item-section avatar>
+            <q-icon name="description" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>My Documents</q-item-label>
+            <q-item-label caption>documents saved in my wallet</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable tag="a" to="/chatbot">
+          <q-item-section avatar>
+            <q-icon name="question_answer" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>My Assistant</q-item-label>
+            <q-item-label caption>Micado Assistant</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable tag="a" target="_blank" href="https://forum.quasar.dev">
+          <q-item-section avatar>
+            <q-icon name="record_voice_over" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Forum</q-item-label>
+            <q-item-label caption>forum.quasar.dev</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable tag="a" target="_blank" href="https://twitter.quasar.dev">
+          <q-item-section avatar>
+            <q-icon name="rss_feed" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Twitter</q-item-label>
+            <q-item-label caption>@quasarframework</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable tag="a" target="_blank" href="https://facebook.quasar.dev">
+          <q-item-section avatar>
+            <q-icon name="public" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Facebook</q-item-label>
+            <q-item-label caption>@QuasarFramework</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
+</template>
+
+<script>
+import AuthMenu from './auth/AuthMenu'
+
+export default {
+  name: 'MyLayout',
+
+  components: {
+    AuthMenu
+  },
+
+  data () {
+    return {
+      leftDrawerOpen: false
+    }
+  }
+}
+</script>
