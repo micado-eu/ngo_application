@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  ngo_app_dev:
+    image: micadoproject/quasar:1.0.3
+    stdin_open: true
+    tty: true
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.migrants_app_dev.rule=Host(`${NGO_HOSTNAME}`)"
+      - "traefik.http.routers.migrants_app_dev.entrypoints=web"
+      - "traefik.http.services.migrants_app_dev.loadbalancer.server.port=8080"
+    volumes:
+      - type: volume
+        source: ngo_app
+        target: /code
+    ports:
+     - "8000:8000"
+     - "8080:8080"
+    command: /bin/sh -c "npm install && quasar dev"
+    networks:
+      - micado_net
+    
+  balancer:
+    image: traefik:v2.1
+    ports:
+      - "80:80"
+      - "8081:8080"
+      - "443:443" # The HTTPS port
+    volumes:
+      - ./traefik/traefik.toml:/etc/traefik/traefik.toml
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"    
+    networks:
+      - micado_net
+
+
+volumes:
+  ngo_app:
+    driver: local
+    driver_opts:
+      type: none
+      # device is the path in the host that has to be absolute
+      device: $PWD/app
+      o: bind
+
+networks:
+  micado_net:
+    driver: bridge
