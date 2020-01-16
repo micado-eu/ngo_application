@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 import VuexORM from '@vuex-orm/core'
+import VuexORMAxios from '@vuex-orm/plugin-axios'
 import Organization from '../models/Organization'
 import Course from '../models/Course'
 
 // import example from './module-example'
 //import chatbot from './chatbot'
 import documents from './documents'
+
+VuexORM.use(VuexORMAxios, { axios })
 
 Vue.use(Vuex)
 
