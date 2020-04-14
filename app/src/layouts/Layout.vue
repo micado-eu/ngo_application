@@ -87,6 +87,9 @@ export default {
     .q-footer {
       display: none;
     }
+    body {
+    font-family: 'Nunito', sans-serif;
+  }
   }
 
 </style>
