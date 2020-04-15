@@ -47,6 +47,20 @@ module.exports = function (ctx) {
       components: [
         'QChatMessage'],
       directives: [],
+      config: {
+        brand: {
+          primary: '#efefef',
+          secondary: '#0b91ce',
+          accent: '#0f3a5d',
+
+          dark: '#0d0d0d',
+
+          positive: '#21BA45',
+          negative: '#C10015',
+          info: '#ff7c44',
+          warning: '#F2C037'
+        }
+      },
 
       // Quasar plugins
       plugins: ['Cookies']

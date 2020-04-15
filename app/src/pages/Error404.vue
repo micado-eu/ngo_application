@@ -8,7 +8,7 @@
     </p>
     <p class="text-faded">Sorry, nothing here...<strong>(404)</strong></p>
     <q-btn
-      color="secondary"
+      color="accent"
       style="width:200px;"
       to="/"
       label="Go back"

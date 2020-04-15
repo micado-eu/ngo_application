@@ -40,7 +40,7 @@
         <q-card-actions>
           <q-btn
             :label="$t('auth.login.login')"
-            color="primary"
+            color="accent"
             :loading="loading"
             type="submit"
           />
