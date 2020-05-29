@@ -1,20 +1,26 @@
+import InformationListPage from '../pages/information_centre/InformationListPage.vue'
+import InformationNewPage from '../pages/information_centre/InformationNewPage.vue'
+import InformationEditPage from '../pages/information_centre/InformationEditPage.vue'
 
 const routes = [
   {
     path: '/',
-     component: () => import('layouts/Layout.vue'),
-     children: [
-       { path: '', component: () => import('pages/Index.vue') },
-//       { path: '/documents', component: () => import('pages/Documents.vue') },
-       { path: '/premises', component: () => import('pages/Premise.vue') },
-       { path: '/courses', component: () => import('pages/Courses.vue') }
-//       { path: '/notifications', component: () => import('components/Notifications.vue') },
-//       { path: '/speech', component: () => import('pages/Speech.vue') },
-//       { path: '/chatbot', component: () => import('pages/Chatbot.vue') },
-//       { path: '/settings', component: () => import('pages/Settings.vue') },
-//       { path: '/map', component: () => import('components/Map.vue') }
-     ]
-   }/*,
+    component: () => import('layouts/Layout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Index.vue') },
+      //       { path: '/documents', component: () => import('pages/Documents.vue') },
+      { path: '/premises', component: () => import('pages/Premise.vue') },
+      { path: '/courses', component: () => import('pages/Courses.vue') },
+      { path: '/information', component: InformationListPage },
+      { path: '/information/new', component: InformationNewPage },
+      { path: '/information/:id/edit/', component: InformationEditPage },
+      //       { path: '/notifications', component: () => import('components/Notifications.vue') },
+      //       { path: '/speech', component: () => import('pages/Speech.vue') },
+      //       { path: '/chatbot', component: () => import('pages/Chatbot.vue') },
+      //       { path: '/settings', component: () => import('pages/Settings.vue') },
+      //       { path: '/map', component: () => import('components/Map.vue') }
+    ]
+  }/*,
   {
     path: '/documents',
 //    meta: { auth: true },

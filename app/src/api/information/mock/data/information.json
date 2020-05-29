@@ -1,0 +1,64 @@
+[
+  {
+    "id": 1,
+    "title": "Residence permit available",
+    "tags": ["documents"],
+    "description": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "A residence permit (less commonly residency permit) is a document or card required in some regions, allowing a foreign national to reside in a country for a fixed or indefinite length of time. These may be permits for temporary residency, or permanent residency. The exact rules vary between regions. In some cases (e.g. the UK) a temporary residence permit is required to extend a stay past some threshold, and can be an intermediate step to applying for "
+            },
+            {
+              "type": "mention",
+              "attrs": {
+                "id": 5,
+                "label": "Permanent residency"
+              }
+            },
+            {
+              "type": "text",
+              "text": "  Residency status may be granted for a number of reasons and the criteria for acceptance as a resident may change over time."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "title": "English course available",
+    "tags": ["course", "english"],
+    "description": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "The "
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "english course"
+            },
+            {
+              "type": "text",
+              "text": " is now available. For more information check here."
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

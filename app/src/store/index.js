@@ -9,6 +9,7 @@ import Course from '../models/Course'
 // import example from './module-example'
 //import chatbot from './chatbot'
 import documents from './documents'
+import information from './information'
 
 VuexORM.use(VuexORMAxios, { axios })
 
@@ -31,8 +32,9 @@ export default function (/* { ssrContext } */) {
     plugins: [VuexORM.install(database)],
     modules: {
       // example
-  //    chatbot,
-      documents
+      //    chatbot,
+      documents,
+      information
     },
 
     // enable strict mode (adds overhead!)
