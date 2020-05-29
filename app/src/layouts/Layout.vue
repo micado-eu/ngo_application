@@ -1,9 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header
-      elevated
-      class="bg-accent"
-    >
+    <q-header elevated class="bg-accent">
       <q-toolbar>
         <q-btn
           flat
@@ -14,9 +11,7 @@
           aria-label="Menu"
         />
 
-        <q-toolbar-title>
-          Micado App
-        </q-toolbar-title>
+        <q-toolbar-title>Micado App</q-toolbar-title>
 
         <div>Micado v0.1</div>
       </q-toolbar>
@@ -71,10 +66,10 @@
 </template>
 
 <script>
-import AuthMenu from './auth/AuthMenu'
+import AuthMenu from "./auth/AuthMenu";
 
 export default {
-  name: 'Layout',
+  name: "Layout",
 
   components: {
     AuthMenu
@@ -84,7 +79,12 @@ export default {
     return {
       leftDrawerOpen: false,
       navs: [
-        { label: 'menu.courses', icon: 'school', to: '/courses', description: 'Our course offerng' },
+        // {
+        //   label: "menu.courses",
+        //   icon: "school",
+        //   to: "/courses",
+        //   description: "Our course offerng"
+        // },
         //        {label:'menu.documents', icon: 'description', to: '/documents', description: 'documents saved in my wallet'},
         //        {label:'menu.assistant', icon: 'question_answer', to: '/chatbot', description: 'Micado Assistant'},
         //        {label:'menu.processes', icon: 'timeline', to: '/flows', description: 'flow description of processes'},
@@ -92,16 +92,33 @@ export default {
         //        {label:'menu.search', icon: 'search', to: '/map', description: "PA's services around you"},
         //        {label:'menu.speech', icon: 'record_voice_over', to: '/speech', description: "I'll listen to you"},
         {
+          label: "menu.migrant",
+          icon: "face",
+          to: "/migrant",
+          description: "view migrant user information"
+        },
+        {
           label: "menu.information_centre",
           icon: "description",
           to: "/information",
           description: "Manage the information"
         },
-        { label: 'menu.settings', icon: 'settings_applications', to: '/settings', description: "configure the application" }
+        {
+          label: "menu.process",
+          icon: "linear_scale",
+          to: "/guided_process_editor",
+          description: "Edit guided processes information"
+        },
+        {
+          label: "menu.settings",
+          icon: "settings_applications",
+          to: "/settings",
+          description: "configure the application"
+        }
       ]
-    }
+    };
   }
-}
+};
 </script>
 
 <style>

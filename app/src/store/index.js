@@ -5,11 +5,13 @@ import VuexORM from '@vuex-orm/core'
 import VuexORMAxios from '@vuex-orm/plugin-axios'
 import Organization from '../models/Organization'
 import Course from '../models/Course'
+import flows from './flows'
 
 // import example from './module-example'
 //import chatbot from './chatbot'
 import documents from './documents'
 import information from './information'
+import user from './user'
 
 VuexORM.use(VuexORMAxios, { axios })
 
@@ -34,7 +36,9 @@ export default function (/* { ssrContext } */) {
       // example
       //    chatbot,
       documents,
-      information
+      information,
+      user,
+      flows
     },
 
     // enable strict mode (adds overhead!)

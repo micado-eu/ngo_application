@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "user_type":"Migrant",
+    "username": "Mariam Hassan",
+    "age": 32,
+    "nationality": "Egyptian",
+    "gender": "Female"
+  },
+  {
+    "id": 2,
+    "user_type":"Migrant",
+    "username": "Iman Al Numan",
+    "age": 43,
+    "nationality": "Syrian",
+    "gender": "Male" 
+  },
+  {
+    "id": 3,
+    "user_type":"Migrant",
+    "username": "Hakim Saidi",
+    "age": 36,
+    "nationality": "Algerian",
+    "gender": "Male"
+  },
+  {
+    "id": 4,
+    "user_type":"Migrant",
+    "username": "Gülden Karaböcek",
+    "age": 25,
+    "nationality": "Turkish",
+    "gender": "Female"
+  },
+  {
+    "id": 5,
+    "user_type":"Migrant",
+    "username": "Sahabzade Irrfan Ali Khan",
+    "age": 18,
+    "nationality": "Indian",
+    "gender": "Male"
+  },
+  {
+    "id": 6,
+    "user_type":"Migrant",
+    "username": "Maria Rossi",
+    "age": 61,
+    "nationality": "Italian",
+    "gender": "Female"
+  },
+  {
+    "id": 7,
+    "user_type":"Migrant",
+    "username": "Pavel Ustinov",
+    "age": 39,
+    "nationality": "Russian",
+    "gender": "Male"
+  },
+  {
+    "id": 8,
+    "user_type":"Migrant",
+    "username": "Mélanie Laurent",
+    "age": 21,
+    "nationality": "French",
+    "gender": "Female"
+  }
+]

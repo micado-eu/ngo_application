@@ -1,0 +1,297 @@
+[
+  {
+    "id":1,
+    "title":"How to get driver licence recognized",
+    "text":"Administratives flows",
+    "button":"consult flows",
+    "link": "#/flows",
+    "topic_tags":[
+      {"label":"Health", "value":2},
+      {"label":"Education", "value":3}
+    ], 
+    "user_tags":[],
+    "steps":[
+      {
+      "id":"a",
+      "title": "This is a step",
+      "location": "Somewhere",
+      "cost": 50,
+      "required_documents":["document_1", "document_2"], 
+      "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+      "next_step": "step X",
+     
+      "description": "This is a placeholder description"
+      },
+      {
+        "id":"b",
+        "title": "This is a step",
+        "location": "Somewhere",
+        "cost": 50,
+        "required_documents":["document_1", "document_2"], 
+        "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+        "next_step": "step X",
+        
+        "description": "This is a placeholder description"
+        },
+        {
+          "id":"c",
+          "title": "This is a step",
+          "location": "Somewhere",
+          "cost": 50,
+          "required_documents":["document_1", "document_2"], 
+          "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+          "next_step": "step X",
+          
+          "description": "This is a placeholder description"
+          }
+    ],
+    "graph":[{"data":{"id":"a","data":{"id":"n", "data": {"longitude":41, "latitude": 7, "documents":[{"id":1,"type":"adoc"}]} } }},
+             {"data":{"id": "b","data":{"id":"n", "data": {"longitude":41, "latitude": 7, "documents":[{"id":1,"type":"adoc"}]} } }},
+             {"data": { "id": "ab", "source": "a", "target": "b" }}
+           ],
+   
+    "mermaid":[
+      {
+        "id": "a1",
+        "text": "A",
+        "link": "---",
+        "next": ["a2"],
+        "editable": true,
+        "style": "fill:#f9f,stroke:#333,stroke-width:4px",
+        "data": {"longitude":41, "latitude": 7, "documents":[{"id":1,"type":"University's registration certificate", "emitter": "Municipality of Bologna","image":"https://image.slidesharecdn.com/moduloammissmaster2011-111005124802-phpapp02/95/domanda-di-ammissione-master-in-comunicazione-dimpresa-universit-di-siena-aa-20122013-5-728.jpg?cb=1348224944"
+}]}
+      },
+      { "id": "a2", "text": "B", "edgeType": "circle", "editable": true, "next": ["a3"] },
+      { "id": "a3", "text": "C", "next": ["a4", "a6"] },
+      { "id": "a4", "text": "D", "link": "-- This is the text ---", "next": ["a5"] },
+      { "id": "a5", "text": "E" },
+      { "id": "a6", "text": "F" }
+    ],
+    "icon":"house"
+  },
+  {
+    "id":2,
+    "title":"How to get access to public funded housing",
+    "text":"This could be a link to an existing eternal application",
+    "button":"Go to app",
+    "link": "#",
+    "topic_tags":[], 
+    "user_tags":[
+      {"label":"Migrant", "value":1}
+    ], 
+    "steps":[
+      {
+        "id":"d",
+        "title": "This is a step",
+        "location": "Somewhere",
+        "cost": 50,
+        "required_documents":["document_1", "document_2"], 
+        "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+        "next_step": "step X",
+      
+        "description": "This is a placeholder description"
+        },
+        {
+          "id":"e",
+          "title": "This is a step",
+          "location": "Somewhere",
+          "cost": 50,
+          "required_documents":["document_1", "document_2"], 
+          "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+          "next_step": "step X",
+          
+          "description": "This is a placeholder description"
+          }
+    ],
+    "graph":[{"data":{"id":"a" }},
+             {"data":{"id": "b" }},
+             {"data": { "id": "ab", "source": "a", "target": "b" }}
+           ],
+    
+           "mermaid":[
+             {
+               "id": "a1",
+               "text": "Municipality",
+               "link": "---",
+               "next": ["a2"],
+               "editable": true,
+               "style": "fill:#f9f,stroke:#333,stroke-width:4px",
+               "data": {"longitude":41, "latitude": 7,
+                 "documents":[
+                   {"id":1,"type":"Work contract","emitter": "Municipality of Bologna",
+                     "image":"https://image.slidesharecdn.com/moduloammissmaster2011-111005124802-phpapp02/95/domanda-di-ammissione-master-in-comunicazione-dimpresa-universit-di-siena-aa-20122013-5-728.jpg?cb=1348224944"}
+                  ]
+               }
+             },
+             { "id": "a2", "text": "Housing department", "edgeType": "circle", "editable": true,
+               "data": {"longitude":41, "latitude": 7,
+                 "documents":[
+                   {"id":1,"type":"Fiscal document","emitter": "Municipality of Bologna",
+                     "image":"https://image.slidesharecdn.com/moduloammissmaster2011-111005124802-phpapp02/95/domanda-di-ammissione-master-in-comunicazione-dimpresa-universit-di-siena-aa-20122013-5-728.jpg?cb=1348224944"}
+                  ]
+                }
+              }
+           ],
+    "icon":"house"
+  },
+  {
+    "id":3,
+    "title":"How to certify education degree",
+    "text":"This could be another link to external application",
+    "button":"go somewhere",
+    "link": "#",
+    "topic_tags":[
+      {"label":"Housing", "value":1},
+      {"label":"Health", "value":2}
+    ],  
+    "user_tags":[
+      {"label":"Asylu Seeker", "value":2}
+    ], 
+    "steps":[
+      {
+      "id":"f",
+      "title": "This is a step",
+      "location": "Somewhere",
+      "cost": 50,
+      "required_documents":["document_1", "document_2"], 
+      "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+      "next_step": "step X",
+      
+      "description": "This is a placeholder description"
+      }
+    ],
+    "graph":[{"data":{"id":"a", "data": {"longitude":41, "latitude": 7}, "data": {"longitude":41, "latitude": 7} }},
+             {"data":{"id": "b", "data": {"longitude":41, "latitude": 7} }},
+             {"data": { "id": "ab", "source": "a", "target": "b", "data": {"longitude":41, "latitude": 7}}}
+           ],
+    "icon":"health"
+  },
+  {
+    "id":4,
+    "title":"How to enroll children to school",
+    "text":"This could be an explanation of the workflow to enroll the child done by us using some flow diagram description, generic for many processes and pilots",
+    "button":"Go to flow",
+    "link": "#/eduflow",
+    "topic_tags":[
+      {"label":"Housing", "value":1},
+      {"label":"Health", "value":2}
+    ], 
+    "user_tags":[
+      {"label":"Asylum Seeker", "value":2}
+    ], 
+    "steps":[
+      {
+      "id":"g",
+      "title": "This is a step",
+      "location": "Somewhere",
+      "cost": 50,
+      "required_documents":["document_1", "document_2"], 
+      "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+      "next_step": "step X",
+     
+      "description": "This is a placeholder description"
+      },
+      {
+        "id":"h",
+        "title": "This is a step",
+        "location": "Somewhere",
+        "cost": 50,
+        "required_documents":["document_1", "document_2"], 
+        "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+        "next_step": "step X",
+        
+        "description": "This is a placeholder description"
+        },
+        {
+          "id":"i",
+          "title": "This is a step",
+          "location": "Somewhere",
+          "cost": 50,
+          "required_documents":["document_1", "document_2"], 
+          "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+          "next_step": "step X",
+          
+          "description": "This is a placeholder description"
+          }
+    ],
+    "graph":[{"data":{"id":"d" }},
+             {"data":{"id": "c" }},
+             {"data": { "id": "dc", "source": "d", "target": "c" }}
+           ],
+    "icon":"edu"
+  },
+  {
+    "id":5,
+    "title":"Renewal of residence permit for study",
+    "text":"You are studying in the city and need to renew your residence permit",
+    "button":"go somewhere",
+    "link": "#",
+    "topic_tags":[
+      {"label":"Housing", "value":1},
+      {"label":"Education", "value":3}
+    ],  
+    "user_tags":[
+      {"label":"Refugee", "value":3}
+    ],  
+    "graph":[{"data":{"id":"a" }},
+             {"data":{"id": "b" }},
+             {"data": { "id": "ab", "source": "a", "target": "b" }}
+           ],
+   
+    "icon":"work"
+  },
+  {
+    "id":6,
+    "title":"Renewal of residence permit for working reasons",
+    "text":"You found a job and need to renew your residence permit",
+    "button":"go for it2",
+    "link": "#",
+    "topic_tags":[
+      {"label":"Housing", "value":1},
+      {"label":"Health", "value":2},
+      {"label":"Education", "value":3}
+    ],  
+    "user_tags":[],
+    "steps":[
+      {
+      "id":"l",
+      "title": "This is a step",
+      "location": "Somewhere",
+      "cost": 50,
+      "required_documents":["document_1", "document_2"], 
+      "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+      "next_step": "step X",
+      
+      "description": "This is a placeholder description"
+      },
+      {
+        "id":"m",
+        "title": "This is a step",
+        "location": "Somewhere",
+        "cost": 50,
+        "required_documents":["document_1", "document_2"], 
+        "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+        "next_step": "step X",
+        
+        "description": "This is a placeholder description"
+        },
+        {
+          "id":"n",
+          "title": "This is a step",
+          "location": "Somewhere",
+          "cost": 50,
+          "required_documents":["document_1", "document_2"], 
+          "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+          "next_step": "step X",
+          
+          "description": "This is a placeholder description"
+          }
+    ],
+    "graph":[{"data":{"id":"a" }},
+             {"data":{"id": "b" }},
+             {"data": { "id": "ab", "source": "a", "target": "b" }}
+           ],
+    
+    "icon":"edu"
+  }
+]
