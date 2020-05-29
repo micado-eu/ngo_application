@@ -26,7 +26,7 @@ module.exports = function (ctx) {
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
+      //'roboto-font', // optional, you are not bound to it
       'material-icons' // optional, you are not bound to it
     ],
 
@@ -47,6 +47,20 @@ module.exports = function (ctx) {
       components: [
         'QChatMessage'],
       directives: [],
+      config: {
+        brand: {
+          primary: '#efefef',
+          secondary: '#0b91ce',
+          accent: '#0f3a5d',
+
+          dark: '#0d0d0d',
+
+          positive: '#21BA45',
+          negative: '#C10015',
+          info: '#ff7c44',
+          warning: '#F2C037'
+        }
+      },
 
       // Quasar plugins
       plugins: ['Cookies']
@@ -58,7 +72,7 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
       // showProgress: false,
       // gzip: true,
       // analyze: true,
@@ -66,11 +80,12 @@ module.exports = function (ctx) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
       },
-      chainWebpack (chain, { isServer, isClient }) {
-        chain.resolve.alias.set('api-chatbot-client', 'src/api/chatbot/mock' );
-        chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock' );
+      chainWebpack(chain, { isServer, isClient }) {
+        chain.resolve.alias.set('api-chatbot-client', 'src/api/chatbot/mock');
+        chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock');
+        chain.resolve.alias.set('api-information-client', 'src/api/information/mock');
       }
     },
 
@@ -142,7 +157,7 @@ module.exports = function (ctx) {
     electron: {
       // bundler: 'builder', // or 'packager'
 
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       },

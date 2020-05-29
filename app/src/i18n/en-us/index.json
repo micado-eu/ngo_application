@@ -1,0 +1,19 @@
+{
+  "menu": {
+    "title": "My Tools",
+    "dashboard": "Dashboard",
+    "documenttype": "Mmanage document types",
+    "configure": "Configuration",
+    "processmanager": "Manage processes",
+    "mediation": "Request a mediation",
+    "integrationcategory": "Manage integration categories",
+    "integrationtype": "Manage integration types",
+    "courses": "Courses",
+    "topic": "Manage topics",
+    "user_type": "Manage user types",
+    "settings": "Settings",
+    "glossary": "Glossary",
+    "activelanguages": "Change active languages",
+    "information_centre": "Information centre"
+  }
+}
