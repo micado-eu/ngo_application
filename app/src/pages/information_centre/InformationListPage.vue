@@ -6,8 +6,10 @@
       :elements="information"
       new_url="information/new"
       :edit_url_fn="getEditRoute"
-      :delete_fn="deleteInformationItem"
+      icon_name="document"
+      add_label="Add Event"
       title="Information centre"
+      publish_mode
     />
   </div>
 </template>
@@ -28,7 +30,7 @@ export default {
     ...mapGetters("information", ["information"]),
   },
   methods: {
-    ...mapActions("information", ["fetchInformation", "deleteInformationItem"]),
+    ...mapActions("information", ["fetchInformation"]),
     getEditRoute(id) {
       return "information/" + id + "/edit"
     }

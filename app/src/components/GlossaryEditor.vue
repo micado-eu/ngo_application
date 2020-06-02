@@ -3,141 +3,70 @@
     class="editor-component"
     padding
   >
-    <span v-if="loading">Loading glossary...</span>
-    <div
-      class="editor"
-      v-if="!loading"
-    >
-      <editor-menu-bar
-        :editor="editor"
-        v-slot="{ commands, isActive }"
+    <div class="editor-options">
+      <span v-if="loading">Loading glossary...</span>
+      <div
+        class="editor"
+        v-if="!loading"
       >
-        <div>
-          <!-- TODO: change button styles -->
-          <q-btn
-            :outline="isActive.bold()"
-            :unelevated="!isActive.bold()"
-            rounded
-            label="Bold"
-            @click="commands.bold"
-          />
-          <q-btn
-            :outline="isActive.italic()"
-            :unelevated="!isActive.italic()"
-            rounded
-            label="Italic"
-            @click="commands.italic"
-          />
-          <q-btn
-            :outline="isActive.strike()"
-            :unelevated="!isActive.strike()"
-            rounded
-            label="Strike"
-            @click="commands.strike"
-          />
-          <q-btn
-            :outline="isActive.underline()"
-            :unelevated="!isActive.underline()"
-            rounded
-            label="Underline"
-            @click="commands.underline"
-          />
-          <q-btn
-            :outline="isActive.paragraph()"
-            :unelevated="!isActive.paragraph()"
-            rounded
-            label="Paragraph"
-            @click="commands.paragraph"
-          />
-          <q-btn
-            :outline="isActive.heading({ level: 1 })"
-            :unelevated="!isActive.heading({ level: 1 })"
-            rounded
-            label="H1"
-            @click="commands.heading({ level: 1 })"
-          />
-          <q-btn
-            :outline="isActive.heading({ level: 2 })"
-            :unelevated="!isActive.heading({ level: 2 })"
-            rounded
-            label="H2"
-            @click="commands.heading({ level: 2 })"
-          />
-          <q-btn
-            :outline="isActive.heading({ level: 3 })"
-            :unelevated="!isActive.heading({ level: 3 })"
-            rounded
-            label="H3"
-            @click="commands.heading({ level: 3 })"
-          />
-          <q-btn
-            :outline="isActive.ordered_list()"
-            :unelevated="!isActive.ordered_list()"
-            rounded
-            label="Ordered list"
-            @click="commands.ordered_list"
-          />
-          <q-btn
-            :outline="isActive.blockquote()"
-            :unelevated="!isActive.blockquote()"
-            rounded
-            label="Blockquote"
-            @click="commands.blockquote"
-          />
-          <q-btn
-            unelevated
-            rounded
-            label="Horizontal rule"
-            @click="commands.horizontal_rule"
-          />
-          <q-btn
-            unelevated
-            rounded
-            label="Undo"
-            @click="commands.undo"
-          />
-          <q-btn
-            unelevated
-            rounded
-            label="Redo"
-            @click="commands.redo"
-          />
-        </div>
-      </editor-menu-bar>
-      <editor-content
-        class="editor__content"
-        :editor="editor"
-      />
+        <editor-content
+          class="editor_content"
+          :editor="editor"
+        />
+        <editor-menu-bar
+          :editor="editor"
+          v-slot="{ commands, isActive }"
+          class="row"
+        >
+          <div>
+            <q-btn
+              :outline="isActive.bold()"
+              :unelevated="!isActive.bold()"
+              icon="img:statics/icons/MICADO PA APP Icon - Bold (600x600).png"
+              @click="commands.bold"
+            />
+            <q-btn
+              :outline="isActive.italic()"
+              :unelevated="!isActive.italic()"
+              icon="img:statics/icons/MICADO PA APP Icon - Italics (600x600).png"
+              @click="commands.italic"
+            />
+            <q-btn
+              :outline="isActive.underline()"
+              :unelevated="!isActive.underline()"
+              icon="img:statics/icons/MICADO PA APP Icon - Underline (600x600).png"
+              @click="commands.underline"
+            />
+          </div>
+        </editor-menu-bar>
+      </div>
     </div>
     <div
-      class="suggestion-list"
+      class="suggestion-list q-ml-sm"
       v-if="!loading && showSuggestions"
     >
       <template v-if="hasResults">
-        <q-btn
+        <div
           v-for="glossaryItem in filteredGlossaryItems"
           :key="glossaryItem.id"
-          class="suggestion-list__item"
-          unelevated
-          :label="glossaryItem.title"
-          @click="selectGlossaryItem(glossaryItem)"
-        />
+        >
+          <q-btn
+            class="suggestion-list-item"
+            color="grey-4"
+            unelevated
+            text-color="black"
+            no-caps
+            :label="glossaryItem.title"
+            @click="selectGlossaryItem(glossaryItem)"
+          />
+        </div>
       </template>
       <div
         v-else
-        class="suggestion-list__item is-empty"
+        class="suggestion-list-item is-empty"
       >
         No glossary items found
       </div>
-    </div>
-    <div v-if="!loading">
-      <q-btn
-        unelevated
-        rounded
-        no-caps
-        label="Save"
-        @click="emitEditorContent()"
-      />
     </div>
   </div>
 </template>
@@ -147,22 +76,12 @@ import { mapGetters, mapActions } from "vuex"
 import Fuse from 'fuse.js'
 import { Editor, EditorContent, EditorMenuBar } from "tiptap"
 import {
-  Blockquote,
-  HorizontalRule,
-  OrderedList,
-  BulletList,
-  ListItem,
-  TodoItem,
-  TodoList,
   Link,
-  Strike,
   Underline,
   History,
-  HardBreak,
-  Heading,
   Bold,
   Italic,
-  Mention
+  Mention,
 } from "tiptap-extensions"
 
 
@@ -193,8 +112,8 @@ export default {
       this.editor.focus()
       this.showSuggestionsData = false
     },
-    emitEditorContent() {
-      this.$emit('editorSave', this.editor.getJSON())
+    getContent() {
+      return this.editor.getJSON();
     }
   },
   data() {
@@ -223,8 +142,6 @@ export default {
       .then(() => {
         this.editor = new Editor({
           extensions: [
-            new HardBreak(),
-            new Heading({ levels: [1, 2, 3] }),
             new Mention({
               items: () => this.glossary,
               // is called when a suggestion starts
@@ -267,15 +184,7 @@ export default {
             }),
             new Bold(),
             new Italic(),
-            new Blockquote(),
-            new BulletList(),
-            new HorizontalRule(),
-            new ListItem(),
-            new OrderedList(),
-            new TodoItem(),
-            new TodoList(),
             new Link(),
-            new Strike(),
             new Underline(),
             new History(),
           ],
@@ -286,12 +195,37 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-.ProseMirror {
-  border: 1px solid $primary;
+<style lang="scss" scoped>
+.mention {
+  text-decoration: underline;
 }
 
-.mention {
-  border: 1px solid $primary;
+.editor_content {
+  font-family: Nunito Sans;
+  font-size: 13pt;
+  background-color: lightgray;
+}
+
+.editor-options {
+  display: inline-block;
+  width: 80%;
+  vertical-align: top;
+}
+
+.suggestion-list {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.suggestion-list-item {
+  width: 100%;
+}
+
+.ProseMirror {
+  height: 190px;
+}
+
+.list-without-styles {
+  list-style-type: none;
 }
 </style>

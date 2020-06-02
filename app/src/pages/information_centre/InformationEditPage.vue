@@ -27,7 +27,7 @@ export default {
     ...mapActions("information", ["fetchInformation", "editInformationItem"]),
     editInformationItemAndReturn(data) {
       let router = this.$router
-      this.editInformationItem(Object.assign(data, { id: this.$route.params.id })).then(() => {
+      this.editInformationItem(Object.assign(data, { id: this.$route.params.id, publish: this.informationElemById(this.$route.params.id).publish })).then(() => {
         router.push({ path: "/information" })
       })
     }

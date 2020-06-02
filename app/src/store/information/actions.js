@@ -17,9 +17,3 @@ export function editInformationItem(state, data) {
     .editInformationItem(data)
     .then(informationItem => state.commit('editInformationItem', informationItem))
 }
-
-export function deleteInformationItem(state, data) {
-  return client
-    .deleteInformationItem(data)
-    .then(() => state.commit('deleteInformationItem', data))
-}

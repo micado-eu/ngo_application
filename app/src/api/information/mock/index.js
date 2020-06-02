@@ -21,8 +21,5 @@ export default {
   },
   editInformationItem(newItem) {
     return fetch(newItem, 1000)
-  },
-  deleteInformationItem(item) {
-    return fetch(item, 1000)
   }
 }

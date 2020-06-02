@@ -2,7 +2,10 @@
   {
     "id": 1,
     "title": "Residence permit available",
-    "tags": ["documents"],
+    "tags": [
+      "documents"
+    ],
+    "publish": true,
     "description": {
       "type": "doc",
       "content": [
@@ -32,7 +35,11 @@
   {
     "id": 2,
     "title": "English course available",
-    "tags": ["course", "english"],
+    "tags": [
+      "course",
+      "english"
+    ],
+    "publish": false,
     "description": {
       "type": "doc",
       "content": [

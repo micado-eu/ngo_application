@@ -11,6 +11,7 @@ export default {
   methods: {
     ...mapActions("information", ["saveNewInformationItem"]),
     saveNewInformationItemAndReturn(data) {
+      Object.assign(data, { publish: true })
       let router = this.$router
       this.saveNewInformationItem(data).then(() => {
         router.push({ path: "/information" })

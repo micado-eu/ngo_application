@@ -1,14 +1,14 @@
 <template>
-  <div padding>
-    <span>Title:</span>
+  <div class="q-pa-md edit-element-component">
+    <div class="page-title q-my-lg">{{pagetitle}}</div>
+    <span class="q-my-lg label-edit">Title:</span>
     <q-input
-      color="accent"
       outlined
       label="Title"
-      label-color="accent"
       v-model="internalTitle"
     />
-    <span>Tags:</span>
+    <!-- TODO: Enable tags when mockup is available -->
+    <!-- <span class="q-my-lg label-edit">Tags:</span>
     <div>
       <q-input
         color="accent"
@@ -39,13 +39,31 @@
         color="accent"
         no-caps
       />
-    </div>
-    <span>Description:</span>
+    </div> -->
+    <span class="q-my-lg label-edit">Description:</span>
     <glossary-editor
       class="desc-editor"
       :content="description"
-      v-on:editorSave="save_item_fn(internalTitle, $event, internalTags)"
+      ref="editor"
     />
+    <div class="row q-mx-auto">
+      <q-btn
+        outline
+        no-caps
+        color="accent"
+        label="Cancel"
+        class="q-mr-sm edit-element-button"
+        @click="goBack()"
+      />
+      <q-btn
+        unelevated
+        no-caps
+        color="accent"
+        label="Save"
+        @click="callSaveFn()"
+        class="row edit-element-button"
+      />
+    </div>
   </div>
 </template>
 
@@ -53,6 +71,10 @@
 export default {
   name: "EditElement",
   props: {
+    "pagetitle": {
+      type: String,
+      default: "",
+    },
     "title": {
       type: String,
       default: ""
@@ -87,17 +109,38 @@ export default {
         this.internalTags.push(this.tagInput)
         this.duplicateTagError = false
       }
+    },
+    goBack() {
+      this.$router.go(-1);
+    },
+    callSaveFn() {
+      this.save_item_fn(this.internalTitle, this.$refs.editor.getContent(), this.internalTags)
     }
   },
   components: {
     "glossary-editor": require('components/GlossaryEditor.vue').default,
-  },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.desc-editor {
+.edit-element-component {
   border: 1px solid $primary;
   border-radius: 10px;
+}
+.edit-element-button {
+  border-radius: 2px;
+  width: 20%;
+}
+.page-title {
+  color: $primary;
+  font-family: Nunito;
+  font-size: 20pt;
+  font-weight: bold;
+}
+
+.label-edit {
+  font-family: Nunito;
+  font-size: 15pt;
 }
 </style>

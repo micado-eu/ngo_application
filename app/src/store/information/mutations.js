@@ -11,10 +11,3 @@ export function editInformationItem(state, payload) {
   let elemIndex = state.information.indexOf(elem)
   state.information[elemIndex] = payload
 }
-
-export function deleteInformationItem(state, informationItem) {
-  let index = state.information.indexOf(informationItem)
-  if (index !== -1) {
-    state.information.splice(index, 1);
-  }
-}

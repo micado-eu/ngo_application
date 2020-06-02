@@ -6,6 +6,7 @@ import VuexORMAxios from '@vuex-orm/plugin-axios'
 import Organization from '../models/Organization'
 import Course from '../models/Course'
 import flows from './flows'
+import glossary from './glossary'
 
 // import example from './module-example'
 //import chatbot from './chatbot'
@@ -38,7 +39,8 @@ export default function (/* { ssrContext } */) {
       documents,
       information,
       user,
-      flows
+      flows,
+      glossary
     },
 
     // enable strict mode (adds overhead!)
