@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "title": "Residence permit available",
+    "title": "Working in _____",
     "tags": [
-      "documents"
+      "integration"
     ],
     "publish": true,
     "description": {
@@ -14,18 +14,7 @@
           "content": [
             {
               "type": "text",
-              "text": "A residence permit (less commonly residency permit) is a document or card required in some regions, allowing a foreign national to reside in a country for a fixed or indefinite length of time. These may be permits for temporary residency, or permanent residency. The exact rules vary between regions. In some cases (e.g. the UK) a temporary residence permit is required to extend a stay past some threshold, and can be an intermediate step to applying for "
-            },
-            {
-              "type": "mention",
-              "attrs": {
-                "id": 5,
-                "label": "Permanent residency"
-              }
-            },
-            {
-              "type": "text",
-              "text": "  Residency status may be granted for a number of reasons and the criteria for acceptance as a resident may change over time."
+              "text": "If you wish to come to _____ from a third country to work, you will find the necessary information here. \n You wish to look for a job in _____? \n If you didn’t find a job before entering _____, as a skilled worker with vocational training or a university degree, you have the opportunity to come to _____ for up to six months to look for a job. \n Want to start a new job in _____? \n Whether you are allowed to work in _____ depends on your occupation, the type of work in _____ and also your nationality. As a matter of principle, you will require an offer of employment before you come to _____. To this end, you should have already successfully applied from abroad for a job in _____ and received a binding promise of employment."
             }
           ]
         }
@@ -34,6 +23,28 @@
   },
   {
     "id": 2,
+    "title": "Family reunification",
+    "tags": [
+      "integration"
+    ],
+    "publish": true,
+    "description": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Spouses and registered partners, parents and minor, unmarried children may migrate to ______ in order to join their family members in order to protect the institution of marriage and the family. \n As a matter of principle, the conditions vary according to whether you wish to come to ______ to join \n a ______ national \n an EU citizen or \n a third-country national. \n Family members coming to ______ for the purpose of family reunification are allowed to work in ______."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
     "title": "English course available",
     "tags": [
       "course",
