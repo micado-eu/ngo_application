@@ -50,13 +50,13 @@
         @mouseleave="hovered=-1"
       >
         <q-item-section class="title_section">
-          <q-item-label :class="!publish_mode || publishState[item.id] ? 'published title-label' : 'unpublished title-label'">
+          <q-item-label :class="publishState[item.id] ? 'published title-label' : 'unpublished title-label'">
             {{ item.title }}
           </q-item-label>
         </q-item-section>
         <q-item-section class="description_section">
           <glossary-editor-viewer
-            :class="!publish_mode || publishState[item.id] ? 'published' : 'unpublished'"
+            :class="publishState[item.id] ? 'published' : 'unpublished'"
             :content="item.description"
           />
         </q-item-section>
