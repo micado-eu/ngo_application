@@ -46,33 +46,34 @@
         v-for="item in filteredElements"
         :key="item.id"
         clickable
-        :class="publishState[item.id] ? 'published' : 'unpublished'"
         @mouseover="hovered=item.id"
         @mouseleave="hovered=-1"
       >
-        <q-item-section>
-          <q-item-label class="title-label">{{ item.title }}</q-item-label>
+        <q-item-section class="title_section">
+          <q-item-label :class="!publish_mode || publishState[item.id] ? 'published title-label' : 'unpublished title-label'">
+            {{ item.title }}
+          </q-item-label>
         </q-item-section>
-        <q-item-section
-          no-wrap
-          top
-        >
-          <glossary-editor-viewer :content="item.description" />
+        <q-item-section class="description_section">
+          <glossary-editor-viewer
+            :class="!publish_mode || publishState[item.id] ? 'published' : 'unpublished'"
+            :content="item.description"
+          />
         </q-item-section>
-        <q-item-section
-          side
-          v-for="tag in item.tags"
-          :key="tag"
-        >
+        <q-item-section class="tag_btn_section">
           <q-btn
             no-caps
+            color="accent"
+            v-for="tag in item.tags"
             :key="tag"
             :label="tag"
+            class="q-mb-sm tag_btn"
           />
         </q-item-section>
         <q-item-section
           side
           :style="{visibility: hovered===item.id ? 'visible' : 'hidden'}"
+          class="icon_btn_section"
         >
           <q-btn
             round
@@ -227,5 +228,17 @@ $accent_list: #ff7c44;
 }
 .unpublished {
   opacity: 0.5;
+}
+.title_section {
+  flex: 3000;
+}
+.description_section {
+  flex: 10000;
+}
+.tag_btn_section {
+  flex: 1000;
+}
+.icon_btn_section {
+  flex: 350;
 }
 </style>

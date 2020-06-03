@@ -7,6 +7,8 @@
       :title="title"
       :description="description"
       :tags="tags"
+      class="q-ma-md"
+      pagetitle="Edit Event from the Information Centre"
     />
   </div>
 </template>

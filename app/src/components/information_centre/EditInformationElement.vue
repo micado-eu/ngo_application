@@ -5,6 +5,7 @@
       :description="description"
       :save_item_fn="saveInformationItem"
       :tags="tags"
+      :pagetitle="pagetitle"
     />
   </div>
 </template>
@@ -25,6 +26,9 @@ export default {
     },
     "tags": {
       type: Array
+    },
+    "pagetitle": {
+      type: String
     }
   },
   methods: {
