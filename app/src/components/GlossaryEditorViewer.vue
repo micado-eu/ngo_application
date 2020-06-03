@@ -53,7 +53,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('glossary', ['glossary', 'glossaryElemByTitle']),
+    ...mapGetters('glossary', ['glossary', 'glossaryElemById']),
     currentDescription() {
       return this.currentDescriptionContent
     }
@@ -85,7 +85,7 @@ export default {
       editorInterpreter.destroy()
     },
     setGlossaryClickEvents() {
-      var glossaryElemByTitleFunc = this.glossaryElemByTitle
+      var glossaryElemByIdFunc = this.glossaryElemById
       var currentDescriptionSetter = this.setCurrentDescription
       var uuid = this.uuid
       document.addEventListener("mouseover", function (e) {
@@ -98,8 +98,8 @@ export default {
         }
         var isParentOfDiv = componentDiv !== null ? componentDiv.contains(e.target) : false
         if (e.target && e.target.classList.contains("mention") && isParentOfDiv) {
-          var glossaryElemTitle = e.srcElement.innerText.substring(1)
-          var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
+          var id = e.srcElement.getAttribute("data-mention-id")
+          var glossaryElem = glossaryElemByIdFunc(id)
           currentDescriptionSetter(glossaryElem, e.target)
         }
       })
