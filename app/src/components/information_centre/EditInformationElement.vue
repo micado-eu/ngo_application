@@ -6,6 +6,7 @@
       :save_item_fn="saveInformationItem"
       :tags="tags"
       :pagetitle="pagetitle"
+      tags_enabled
     />
   </div>
 </template>

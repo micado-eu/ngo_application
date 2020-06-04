@@ -32,13 +32,13 @@
       />
     </div>
     <q-btn
-      unelevated
+      :unelevated="selectedTags.indexOf(tag) == -1"
+      :outline="selectedTags.indexOf(tag) !== -1"
       no-caps
-      :color="selectedTags.indexOf(tag) == -1 ? 'accent' : 'primary'"
       v-for="tag in tags"
       :key="tag"
       :label="tag"
-      class="q-mr-sm"
+      class="q-mr-sm tag_btn"
       @click="addOrRemoveSelectedTag(tag)"
     />
     <q-list class="q-mt-md">
@@ -63,7 +63,6 @@
         <q-item-section class="tag_btn_section">
           <q-btn
             no-caps
-            color="accent"
             v-for="tag in item.tags"
             :key="tag"
             :label="tag"
@@ -206,6 +205,7 @@ export default {
 
 <style lang="scss" scoped>
 $accent_list: #ff7c44;
+$btn_secondary: #cdd0d2;
 .add-btn {
   color: $accent_list;
   border: 1px solid $accent_list;
@@ -222,6 +222,10 @@ $accent_list: #ff7c44;
 }
 .item-btn {
   background-color: $accent_list;
+}
+.tag_btn {
+  background-color: $btn_secondary;
+  text-decoration: underline;
 }
 .published {
   opacity: 1;

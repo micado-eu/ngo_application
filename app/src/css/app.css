@@ -1,1 +1,5 @@
 /* app global css */
+
+.ProseMirror {
+  min-height: 120px;
+}

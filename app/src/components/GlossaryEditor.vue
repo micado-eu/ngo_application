@@ -221,10 +221,6 @@ export default {
   width: 100%;
 }
 
-.ProseMirror {
-  height: 190px;
-}
-
 .list-without-styles {
   list-style-type: none;
 }
