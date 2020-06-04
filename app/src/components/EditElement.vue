@@ -40,7 +40,7 @@
             <q-btn
               @click="internalTags.splice(internalTags.indexOf(tag), 1)"
               round
-              icon="img:statics/icons/MICADO PA APP Icon - Delete (600x600).png"
+              icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
               no-caps
               class="q-ml-sm del_tag_btn"
             />
