@@ -168,13 +168,13 @@ $title_font_size: 20pt;
 }
 .page-title {
   color: #0f3a5d;
-  font-family: Nunito;
+  font-family: "Nunito";
   font-size: $title_font_size;
   font-weight: bold;
 }
 
 .label-edit {
-  font-family: Nunito;
+  font-family: "Nunito";
   font-size: 15pt;
 }
 .tag_list {

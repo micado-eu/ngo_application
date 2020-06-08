@@ -217,7 +217,7 @@ $btn_secondary: #cdd0d2;
 }
 .title-label {
   font-weight: bold;
-  font-family: Nunito;
+  font-family: "Nunito";
   font-size: 15pt;
 }
 .item-btn {
