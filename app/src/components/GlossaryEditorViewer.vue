@@ -136,7 +136,7 @@ export default {
   text-decoration: underline;
 }
 .editor_content {
-  font-family: Nunito Sans;
+  font-family: "Nunito Sans";
   font-size: 13pt;
 }
 </style>

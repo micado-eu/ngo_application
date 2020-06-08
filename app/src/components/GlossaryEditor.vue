@@ -201,7 +201,7 @@ export default {
 }
 
 .editor_content {
-  font-family: Nunito Sans;
+  font-family: "Nunito Sans";
   font-size: 13pt;
   background-color: lightgray;
 }
