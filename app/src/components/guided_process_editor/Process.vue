@@ -16,7 +16,7 @@
         <q-chip v-for="tag in Tag_2" :label="tag.label" :key="tag.value"></q-chip>
       </div>
       <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
-      <q-btn size="11px" no-caps style="width:70px" rounded color="secondary" label="augment" :to="'guided_process_editor/edit/' + this.Link + '/steps'" />      
+      <q-btn size="11px" no-caps style="width:70px" rounded color="secondary" label="Comment" :id=this.Link :disable="hideAdd" @click="hide();comment($event)" />      
       </div>
     </div>
     <hr style="margin:0px">
@@ -27,9 +27,11 @@
 <script>
 export default {
   name: 'Process',
-  props: ["Title",  "Tag_1", "Tag_2", "Link", "Path"], 
+  props: ["Title",  "Tag_1", "Tag_2", "Link", "Path", "process"], 
   data() {
-    return {};
+    return {
+      hideAdd: false
+    };
   },
 
   methods: {
@@ -38,7 +40,16 @@ export default {
       console.log(this.Link)
       this.$emit('remove', this.Link)
 
-    }
+    }, 
+  comment(event){
+    this.$emit('comment', this.process)
+  },
+  hide(){
+    this.hideAdd = true;
+  },
+  restore(){
+    this.hideAdd = false
+  }
   }
 }
 </script>

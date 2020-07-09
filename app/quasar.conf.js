@@ -9,7 +9,8 @@ module.exports = function (ctx) {
     boot: [
       'i18n',
       'auth',
-      'axios'
+      'axios',
+      'loadData'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -89,6 +90,9 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-user-client', 'src/api/user/mock');
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/mock');
         chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/mock');
+        chain.resolve.alias.set('api-language-client', 'src/api/language/server');
+        chain.resolve.alias.set('api-settings-client', 'src/api/settings/server');
+        chain.resolve.alias.set('api-comments-client', 'src/api/comments/mock');
       }
     },
 

@@ -1,0 +1,26 @@
+[
+    {
+        "lang": "en",
+        "isoCode": "en-us",
+        "name": "English",
+        "active": true
+    },
+    {
+        "lang": "de",
+        "isoCode": "de",
+        "name": "Deutsch",
+        "active": true
+    },
+    {
+        "lang": "ar",
+        "isoCode": "ar",
+        "name": "عربي",
+        "active": false
+    },
+    {
+        "lang": "it",
+        "isoCode": "it-it",
+        "name": "Italiano",
+        "active": false
+    }
+]

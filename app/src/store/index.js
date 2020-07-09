@@ -7,7 +7,9 @@ import Organization from '../models/Organization'
 import Course from '../models/Course'
 import flows from './flows'
 import glossary from './glossary'
-
+import language from './language'
+import settings from './settings'
+import comments from './comments'
 // import example from './module-example'
 //import chatbot from './chatbot'
 import documents from './documents'
@@ -40,7 +42,10 @@ export default function (/* { ssrContext } */) {
       information,
       user,
       flows,
-      glossary
+      glossary,
+      language,
+      settings,
+      comments
     },
 
     // enable strict mode (adds overhead!)

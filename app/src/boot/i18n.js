@@ -4,10 +4,12 @@ import messages from 'src/i18n'
 import { Quasar } from 'quasar'
 import { axiosInstance } from 'boot/axios.js'
 
+const defaultLocale = Quasar.lang.isoName
+
 Vue.use(VueI18n)
 const i18nInstance = new VueI18n({
-  locale: 'en-us',
-  fallbackLocale: 'en-us',
+  locale: defaultLocale,
+  fallbackLocale: defaultLocale,
   messages
 })
 
