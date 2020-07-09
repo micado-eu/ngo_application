@@ -77,9 +77,6 @@
 <script>
 import Process from './guided_process_editor/Process'
 import editEntityMixin from '../mixin/editEntityMixin'
-
-
-
 export default {
   name: 'DocumentType',
   props: {
@@ -97,7 +94,6 @@ export default {
       int_comment_shell : {id:-1, idProcess: -1, translations:[]}
     }
   },
-
   computed: {
      processes () {
       return this.$store.state.flows.flows
@@ -108,6 +104,16 @@ export default {
           return this.processes
         }
         else {
+          /* THIS IS THE LOGIC FOR THE LINK TO THE BACKEND
+          return this.processes.filter((a_process) => {
+          var curlangproc = a_process.translations.filter((transl) => { return transl.lang == this.activeLanguage })[0]
+          console.log(curlangproc)
+          //Splits the search field and puts the words in an array
+          var searchArray = this.search.split(" ")
+          if (searchArray.every(string => curlangproc.process.toLowerCase().includes(string))) {
+            return true;
+          }        })*/
+
           return this.processes.filter((filt) =>{
           //Splits the search field and puts the words in an array
           var searchArray = this.search.split(" ")
@@ -157,6 +163,53 @@ export default {
       }
     },
     editComment(value){
+       /*THIS IS THE VERSION OF EDIT THAT WORKS WITH THE BACKEND
+       console.log("THIS IS THE PROCESS")
+      console.log(value)
+      var process_comments = []
+      var current_comment = null
+      if(value.comments != null){
+      value.comments.forEach((comment) =>{
+        process_comments.push(comment.idcomment)
+      })
+      }
+      for(var i = 0; i<process_comments.length; i++){
+        var the_comment = this.comments.filter((com) => {
+        console.log(com.id)
+        console.log(process_comments[i])
+       return com.id == process_comments[i]
+     })[0]
+     
+     if( the_comment != null ){
+       current_comment = the_comment
+       break;
+       
+     }
+     }
+    console.log(current_comment)
+     console.log("I AM THE CIMMMENT")
+     console.log(current_comment)
+     if(current_comment == null){
+       console.log("inside if")
+       this.is_new = true
+       this.createShell()
+       this.int_comment_shell.idProcess = value.id
+       this.hideForm= false
+     }
+     else{
+              console.log("inside else")
+
+    this.is_new = false
+     this.mergeProcess(current_comment)
+     console.log(current_comment)
+      console.log(value)
+      for(var i = 0; i< this.$refs.process.length; i++){
+        this.$refs.process[i].hide()
+      }
+      console.log(this.$refs.process)
+      //this.$refs.process.restore()
+       this.hideForm = false
+     }*/
       var the_comment =  this.comments.filter((a_comment) => {
        return a_comment.idProcess == value.id
      })[0]
@@ -171,7 +224,6 @@ export default {
      }
      else{
               console.log("inside else")
-
     this.is_new = false
      this.mergeProcess(the_comment)
      console.log(the_comment)
@@ -184,7 +236,6 @@ export default {
        this.hideForm = false
      }
     },
-
 createShell () {
       this.int_comment_shell = { id: -1, idProcess : -1, translations:[] }
       this.languages.forEach(l => {
@@ -202,7 +253,6 @@ createShell () {
       comment.translations.forEach(pr => {
         console.log(pr)
         //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
-
         for (var i = 0; i < this.int_comment_shell.translations.length; i++) {
           if (this.int_comment_shell.translations[i].lang == pr.lang) {
             this.int_comment_shell.translations.splice(i, 1);
@@ -214,9 +264,6 @@ createShell () {
       
       }
   },
-
-
-
   created () {
     this.createShell()
     this.loading = true
@@ -241,6 +288,16 @@ createShell () {
   padding-bottom: 50px;
   padding-left: 80px;
 }
-
-
 </style>
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About

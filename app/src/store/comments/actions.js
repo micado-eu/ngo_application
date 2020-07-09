@@ -10,49 +10,49 @@ export function fetchComments(state, data) {
     .then(comments => state.commit('setComments', comments))
 }
 
-export function editIntegrationTypeElement (state, integration_type_element) {
+export function editComment (state, comment) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(integration_type_element)
+  console.log(comment)
   // update translations
   return client
-    .updateIntegrationType(integration_type_element).then(function (update_return) {
+    .updateComment(comment).then(function (update_return) {
       // cycle in the translations and update each
       console.log(update_return)
       console.log("in update translation")
-      integration_type_element.translations.forEach(function (aTranslation) {
-        client.updateIntegrationTypeTranslation(aTranslation).then(function (update_translation_return) {
+      comment.translations.forEach(function (aTranslation) {
+        client.updateCommentTranslation(aTranslation).then(function (update_translation_return) {
           console.log(update_translation_return)
         })
       })
-      state.commit('editIntegrationTypeElement', integration_type_element)
+      state.commit('editComments', comment)
     })
 }
 
-export function saveIntegrationTypeElement (state, integration_type_element) {
+export function saveComment (state, comment) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log("in actions savec ategory:")
-  console.log(integration_type_element)
-  let savingCategory= JSON.parse(JSON.stringify(integration_type_element, ['published', 'publicationDate', 'categoryType']));
-  console.log(savingCategory)
+  console.log("in actions save comment:")
+  console.log(comment)
+  let savingComment= JSON.parse(JSON.stringify(comment, ['published', 'publicationDate']));
+  console.log(savingComment)
 
 
   // we need to save first the topic
-  return client.saveIntegrationType(savingCategory)
-    .then(function (type_return) {
-      console.log("returned from saving category")
-      console.log(type_return)
+  return client.saveComment(savingComment)
+    .then(function (comment_return) {
+      console.log("returned from saving comment")
+      console.log(comment_return)
       // in topic_return we have the ID that we need in the following cycle
-      integration_type_element.translations.forEach(function (transl) {
-        client.saveIntegrationTypeTranslation(transl, type_return.id)
-      }, type_return.id)
-      // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
+      comment.translations.forEach(function (transl) {
+        client.saveIntegrationTypeTranslation(transl, comment_return.id)
+      }, comment_return.id)
+      // here we need only to add the ID to the comment element since there are the tranlsations that in the comment_return are not present
       console.log("after foreach save translation")
-      integration_type_element.id = type_return.id
+      comment.id = comment_return.id
       // now we need to set the id for all translations
-      for (var i = 0; i < integration_type_element.translations.length; i++) {
-        integration_type_element.translations[i].id = type_return.id
+      for (var i = 0; i < comment.translations.length; i++) {
+        comment.translations[i].id =comment_return.id
       }
-      state.commit('saveIntegrationTypeElement', integration_type_element)
+      state.commit('saveComments', comment)
     }
       // here we cycle for all translations to save each one
 
@@ -60,14 +60,14 @@ export function saveIntegrationTypeElement (state, integration_type_element) {
 }
 
 
-export function deleteIntegrationTypeElement (state, index) {
+export function deleteComment (state, index) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(index)
-  return client.deleteIntegrationTypeTranslations(index).then(function (translations_delete_return) {
+  return client.deleteCommentTranslations(index).then(function (translations_delete_return) {
     console.log("deleted the translations")
     console.log(translations_delete_return)
-    client.deleteIntegrationType(index).then(function () {
-      state.commit('deleteIntegrationTypeElement', index)
+    client.deleteComment(index).then(function () {
+      state.commit('deleteComments', index)
     })
   })
 }

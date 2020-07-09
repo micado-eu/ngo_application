@@ -12,11 +12,11 @@
     </div>
     <div class=" row" style="width:750px">
        <div class=" q-pa-md  col" style="text-align:left; padding-top:0px;padding-bottom:0px;padding-left:0px">
-        <q-chip v-for="tag in Tag_1" :label="tag.label" :key="tag.value"></q-chip>
-        <q-chip v-for="tag in Tag_2" :label="tag.label" :key="tag.value"></q-chip>
+        <q-chip v-for="tag in Tag_1" :label="tag.user_type" :key="tag.id"></q-chip>
+        <q-chip v-for="tag in Tag_2" :label="tag.topic" :key="tag.id"></q-chip>
       </div>
       <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
-      <q-btn size="11px" no-caps style="width:70px" rounded color="secondary" label="Comment" :id=this.Link :disable="hideAdd" @click="hide();comment($event)" />      
+      <q-btn size="11px" no-caps style="width:70px:border-radius:2px"  color="info" label="Comment" :id=this.Link :disable="hideAdd" @click="hide();comment($event)" />      
       </div>
     </div>
     <hr style="margin:0px">
