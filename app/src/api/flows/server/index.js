@@ -6,7 +6,10 @@ export default {
   fetchFlows () {
     return axiosInstance
       .get('/backend/1.0.0/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers&filter[include][3][relation]=comments')
-      .then(response => { return response.data })
+      .then(response => { 
+        console.log("I am the response from flow db")
+        console.log(response.data)
+        return response.data })
       .catch(error_handler);
   },
   fetchDocuments () {

@@ -37,6 +37,7 @@
         </q-tab-panels>
         <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveComment(int_comment_shell)" />
         <q-btn class="button" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelComment()" />
+        <q-btn class="button" unelevated rounded style="width:70px;border-radius:2px" label="Delete" @click="deleteComment(int_comment_shell)" />
     </q-card-section>
     </q-card>
   <div style="text-align:center;padding-top:10px">
@@ -60,7 +61,7 @@
          ref="process"
          :process="process"
          :key="process.id"
-         :Title="process.title"
+         :Title="showProcessLabel(process)"
          :Tag_1="process.user_tags"
          :Tag_2="process.topic_tags"
          :Link="process.id"
@@ -104,7 +105,7 @@ export default {
           return this.processes
         }
         else {
-          /* THIS IS THE LOGIC FOR THE LINK TO THE BACKEND
+          /* THIS IS THE LOGIC FOR THE LINK TO THE BACKEND */
           return this.processes.filter((a_process) => {
           var curlangproc = a_process.translations.filter((transl) => { return transl.lang == this.activeLanguage })[0]
           console.log(curlangproc)
@@ -112,21 +113,25 @@ export default {
           var searchArray = this.search.split(" ")
           if (searchArray.every(string => curlangproc.process.toLowerCase().includes(string))) {
             return true;
-          }        })*/
+          }        })
 
-          return this.processes.filter((filt) =>{
+       /*    return this.processes.filter((filt) =>{
           //Splits the search field and puts the words in an array
           var searchArray = this.search.split(" ")
           if( searchArray.every(string => filt.title.toLowerCase().includes(string))){
               return true;
-            }})
-        } 
+            }}) 
+        } */
+        }
     }, 
     comments(){
       return this.$store.state.comments.comments
     }
   },
   methods: {
+    showProcessLabel (workingProcess) {
+      return workingProcess.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
+    },
      deleteProcess(value) {
       var deletedProcess = this.processes.filter((filt) => {
           console.log("in fil")
@@ -136,16 +141,26 @@ export default {
       this.$store.commit('flows/deleteProcess', deletedProcess[0])
     },
     saveComment(int_comment_shell){
+      var the_process = this.processes.filter ((a_process) => {
+      return a_process.id == int_comment_shell.idProcess
+    })[0]
+    console.log("i am the process")
+    console.log(the_process)
     if(this.is_new){
-    this.$store.commit('comments/saveComments', this.int_comment_shell)
+    
+    this.$store.dispatch('comments/saveComments', {comment : this.int_comment_shell, process: the_process})
+    
+    // console.log(new_comment)
     this.hideForm = true
     this.createShell()
     for(var i = 0; i< this.$refs.process.length; i++){
         this.$refs.process[i].restore()
       }
+     
+     
     }
     else{
-      this.$store.commit('comments/editComments', this.int_comment_shell)
+      this.$store.dispatch('comments/editComments',  {comment : this.int_comment_shell, process: the_process})
       console.log("EDITED")
       console.log(this.$store.comments)
       this.hideForm = true
@@ -162,8 +177,15 @@ export default {
         this.$refs.process[i].restore()
       }
     },
+     deleteComment(comment){
+      this.$store.dispatch('comments/deleteComments', comment.id)
+      this.hideForm = true
+      for(var i = 0; i< this.$refs.process.length; i++){
+        this.$refs.process[i].restore()
+      }
+    },
     editComment(value){
-       /*THIS IS THE VERSION OF EDIT THAT WORKS WITH THE BACKEND
+       /*THIS IS THE VERSION OF EDIT THAT WORKS WITH THE BACKEND*/
        console.log("THIS IS THE PROCESS")
       console.log(value)
       var process_comments = []
@@ -175,8 +197,8 @@ export default {
       }
       for(var i = 0; i<process_comments.length; i++){
         var the_comment = this.comments.filter((com) => {
-        console.log(com.id)
-        console.log(process_comments[i])
+        //console.log(com.id)
+        //console.log(process_comments[i])
        return com.id == process_comments[i]
      })[0]
      
@@ -194,7 +216,12 @@ export default {
        this.is_new = true
        this.createShell()
        this.int_comment_shell.idProcess = value.id
+        for(var i = 0; i< this.$refs.process.length; i++){
+        this.$refs.process[i].hide()
+      }
        this.hideForm= false
+    
+
      }
      else{
               console.log("inside else")
@@ -209,35 +236,11 @@ export default {
       console.log(this.$refs.process)
       //this.$refs.process.restore()
        this.hideForm = false
-     }*/
-      var the_comment =  this.comments.filter((a_comment) => {
-       return a_comment.idProcess == value.id
-     })[0]
-     console.log("I AM THE CIMMMENT")
-     console.log(the_comment)
-     if(the_comment == null){
-       console.log("inside if")
-       this.is_new = true
-       this.createShell()
-       this.int_comment_shell.idProcess = value.id
-       this.hideForm= false
      }
-     else{
-              console.log("inside else")
-    this.is_new = false
-     this.mergeProcess(the_comment)
-     console.log(the_comment)
-      console.log(value)
-      for(var i = 0; i< this.$refs.process.length; i++){
-        this.$refs.process[i].hide()
-      }
-      console.log(this.$refs.process)
-      //this.$refs.process.restore()
-       this.hideForm = false
-     }
+    
     },
 createShell () {
-      this.int_comment_shell = { id: -1, idProcess : -1, translations:[] }
+      this.int_comment_shell = { id: -1, idProcess : -1, translations:[], published: false, publicationdate: null }
       this.languages.forEach(l => {
         this.int_comment_shell.translations.push({ id: -1, lang: l.lang, comment: '', translationDate: null })
       });
@@ -271,6 +274,7 @@ createShell () {
     this.$store.dispatch('flows/fetchFlows')
       .then(processes => {
         this.loading = false
+        console.log(processes)
       })  
       this.$store.dispatch('comments/fetchComments')
       .then(comments => {

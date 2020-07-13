@@ -3,6 +3,8 @@ export function someMutation (state) {
 }
 */
 export function setFlows (state, flows) {
+  console.log("setting the flows")
+  console.log(flows)
   state.flows = flows
 }
 
@@ -29,3 +31,4 @@ var index = state.flows.findIndex(d => d.id == process.id);
 state.flows.splice(index, 1);
 console.log("deleted process at place " + index)
 }
+

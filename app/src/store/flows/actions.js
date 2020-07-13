@@ -6,7 +6,10 @@ export function someAction (context) {
 export function fetchFlows (state, data) {
   return client
     .fetchFlows()
-    .then(flows => state.commit('setFlows', flows))
+    .then(flows => {
+      state.commit('setFlows', flows)
+      return flows
+    })
 }
 
 export function fetchDocuments (state, data) {
