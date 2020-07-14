@@ -91,12 +91,12 @@ export default {
         //        {label:'menu.notifications', icon: 'mail_outline', to: '/notifications', description: 'messages from PA'},
         //        {label:'menu.search', icon: 'search', to: '/map', description: "PA's services around you"},
         //        {label:'menu.speech', icon: 'record_voice_over', to: '/speech', description: "I'll listen to you"},
-        {
+       /* {
           label: "menu.migrant",
           icon: "face",
           to: "/migrant",
           description: "view migrant user information"
-        },
+        },*/
         {
           label: "menu.information_centre",
           icon: "description",
