@@ -1,13 +1,10 @@
 export function setInformation(state, information) {
+  for (let i = 0; i < information.length; i++) {
+    for (let j = 0; j < information[i].translations.length; j++) {
+      information[i].translations[j].title = information[i].translations[j]['event'];
+      delete information[i].translations[j].event;
+      information[i].translations[j].description = JSON.parse(information[i].translations[j].description)
+    }
+  }
   state.information = information
-}
-
-export function addNewInformationItem(state, informationItem) {
-  state.information.push(informationItem)
-}
-
-export function editInformationItem(state, payload) {
-  let elem = state.information.filter(g => g.id == payload.id)[0]
-  let elemIndex = state.information.indexOf(elem)
-  state.information[elemIndex] = payload
 }

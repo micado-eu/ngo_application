@@ -1,8 +1,7 @@
 <template>
   <div>
     <edit-element
-      :title="title"
-      :description="description"
+      :elem="elem"
       :save_item_fn="saveInformationItem"
       :tags="tags"
       :pagetitle="pagetitle"
@@ -12,33 +11,30 @@
 </template>
 
 <script>
-import EditElement from 'components/EditElement'
+import EditElement from "components/EditElement";
 export default {
   name: "EditInformationElement",
   components: {
     "edit-element": EditElement
   },
   props: {
-    "title": {
-      type: String,
+    elem: {
+      type: Object
     },
-    "description": {
-      type: String | Object,
-    },
-    "tags": {
+    tags: {
       type: Array
     },
-    "pagetitle": {
+    pagetitle: {
       type: String
     }
   },
   methods: {
-    saveInformationItem(title, desc, tags) {
-      this.$emit('save', { title: title, description: desc, tags: tags })
+    saveInformationItem(title, desc, lang, tags) {
+      // TODO: Reenable tags
+      this.$emit("save", { title: title, description: desc, lang });
     }
   }
-}
+};
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

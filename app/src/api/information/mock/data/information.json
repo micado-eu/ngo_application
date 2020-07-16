@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "lang": "en",
     "title": "Working in _____",
     "tags": [
       "integration"
@@ -23,6 +24,7 @@
   },
   {
     "id": 2,
+    "lang": "en",
     "title": "Family reunification",
     "tags": [
       "integration"
@@ -45,6 +47,7 @@
   },
   {
     "id": 3,
+    "lang": "en",
     "title": "English course available",
     "tags": [
       "course",

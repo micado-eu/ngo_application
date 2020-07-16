@@ -1,6 +1,8 @@
 [
   {
     "id": 1,
+    "lang": "en",
+    "published": true,
     "title": "Residence permit",
     "description": {
       "type": "doc",
@@ -30,7 +32,9 @@
   },
   {
     "id": 2,
+    "lang": "en",
     "title": "Rental agreement",
+    "published": true,
     "description": {
       "type": "doc",
       "content": [
@@ -61,7 +65,9 @@
   },
   {
     "id": 3,
+    "lang": "en",
     "title": "Employment contract",
+    "published": true,
     "description": {
       "type": "doc",
       "content": [
@@ -92,7 +98,9 @@
   },
   {
     "id": 4,
+    "lang": "en",
     "title": "Emergency room",
+    "published": true,
     "description": {
       "type": "doc",
       "content": [
@@ -123,7 +131,9 @@
   },
   {
     "id": 5,
+    "lang": "en",
     "title": "Permanent residency",
+    "published": true,
     "description": {
       "type": "doc",
       "content": [

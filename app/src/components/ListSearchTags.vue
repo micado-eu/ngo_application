@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-toolbar class="text-white shadow-2 row toolbar-list">
-      <q-toolbar-title>{{title}}</q-toolbar-title>
+      <q-toolbar-title>{{ title }}</q-toolbar-title>
       <q-avatar>
         <q-icon
           :name="icon_name"
@@ -46,18 +46,32 @@
         v-for="item in filteredElements"
         :key="item.id"
         clickable
-        @mouseover="hovered=item.id"
-        @mouseleave="hovered=-1"
+        @mouseover="hovered = item.id"
+        @mouseleave="hovered = -1"
       >
         <q-item-section class="title_section">
-          <q-item-label :class="publishState[item.id] ? 'published title-label' : 'unpublished title-label'">
+          <q-item-label :class="
+              publishState[item.id]
+                ? 'published title-label'
+                : 'unpublished title-label'
+            ">
             {{ item.title }}
           </q-item-label>
         </q-item-section>
-        <q-item-section class="description_section">
+        <q-item-section
+          no-wrap
+          class="description_section"
+        >
           <glossary-editor-viewer
-            :class="publishState[item.id] ? 'published' : 'unpublished'"
+            :class="
+              publishState[item.id]
+                ? 'published'
+                : 'unpublished'
+            "
             :content="item.description"
+            v-if="!loading"
+            glossary_fetched
+            :lang="lang"
           />
         </q-item-section>
         <q-item-section class="tag_btn_section">
@@ -71,13 +85,13 @@
         </q-item-section>
         <q-item-section
           side
-          :style="{visibility: hovered===item.id ? 'visible' : 'hidden'}"
+          :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
           class="icon_btn_section"
         >
           <q-btn
             round
             class="item-btn"
-            icon="img:statics/icons/MICADO PA APP Icon - Edit (600x600).png"
+            icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
             :to="edit_url_fn(item.id)"
           />
         </q-item-section>
@@ -87,15 +101,16 @@
 </template>
 
 <script>
-import Fuse from 'fuse.js'
-import GlossaryEditorViewer from './GlossaryEditorViewer'
+import { mapActions } from "vuex";
+import Fuse from "fuse.js";
+import GlossaryEditorViewer from "./GlossaryEditorViewer";
 export default {
   name: "ListSearchTags",
   props: {
     elements: {
       type: Array,
       default: function () {
-        return []
+        return [];
       }
     },
     new_url: {
@@ -105,7 +120,7 @@ export default {
     edit_url_fn: {
       type: Function,
       default: function () {
-        return () => "/"
+        return () => "/";
       }
     },
     title: {
@@ -124,26 +139,31 @@ export default {
   data() {
     return {
       hovered: -1,
-      filteredElementsBySearch: this.elements,
-      filteredElementsByTags: this.elements,
+      // display only elements in the language selected
+      translatedElements: [],
+      filteredElementsBySearch: [],
+      filteredElementsByTags: [],
       searchText: "",
       tags: [],
       selectedTags: [],
-      publishState: {}
-    }
+      publishState: {},
+      lang: "",
+      loading: true
+    };
   },
   components: {
     "glossary-editor-viewer": GlossaryEditorViewer
   },
   methods: {
+    ...mapActions("glossary", ["fetchGlossary"]),
     addOrRemoveSelectedTag(tag) {
-      var index = this.selectedTags.indexOf(tag)
+      var index = this.selectedTags.indexOf(tag);
       if (index !== -1) {
         this.selectedTags.splice(index, 1);
       } else {
-        this.selectedTags.push(tag)
+        this.selectedTags.push(tag);
       }
-      this.filterByTags()
+      this.filterByTags();
     },
     filterByTags() {
       if (this.selectedTags.length > 0) {
@@ -151,56 +171,70 @@ export default {
         this.filteredElementsByTags = this.elements.filter(e => {
           for (let tag of selectedTags) {
             if (e.tags.indexOf(tag) == -1) {
-              return false
+              return false;
             }
           }
           return true;
         });
       } else {
-        this.filteredElementsByTags = this.elements
+        this.filteredElementsByTags = this.elements;
       }
     }
   },
   computed: {
     search: {
       get() {
-        return this.searchText
+        return this.searchText;
       },
       set(newSearch) {
         if (newSearch) {
           const fuse = new Fuse(this.elements, {
-            keys: ['title'],
-          })
-          this.filteredElementsBySearch = fuse.search(newSearch).map(i => i.item)
-          this.searchText = newSearch
+            keys: ["title"]
+          });
+          this.filteredElementsBySearch = fuse
+            .search(newSearch)
+            .map(i => i.item);
+          this.searchText = newSearch;
         } else {
-          this.filteredElementsBySearch = this.elements
-          this.searchText = ""
+          this.filteredElementsBySearch = this.elements;
+          this.searchText = "";
         }
       }
     },
     filteredElements() {
-      var filteredElementsByTags = this.filteredElementsByTags
+      var filteredElementsByTags = this.filteredElementsByTags;
       return this.filteredElementsBySearch.filter(function (n) {
         return filteredElementsByTags.indexOf(n) !== -1;
       });
     }
   },
   created() {
-    for (let elem of this.elements) {
-      // Tags
-      if (elem.tags) {
-        for (let tag of elem.tags) {
-          if (this.tags.indexOf(tag) == -1) {
-            this.tags.push(tag)
+    this.loading = true;
+    this.lang = this.$i18n.locale
+    this.fetchGlossary().then(() => {
+      this.translatedElements = this.elements.map(e => {
+        let al = this.$i18n.locale;
+        let idx = e.translations.findIndex(t => t.lang === al);
+        return e.translations[idx];
+      });
+      this.filteredElementsBySearch = this.translatedElements;
+      this.filteredElementsByTags = this.translatedElements;
+      for (let elem of this.elements) {
+        // Tags
+        if (elem.tags) {
+          for (let tag of elem.tags) {
+            if (this.tags.indexOf(tag) == -1) {
+              this.tags.push(tag);
+            }
           }
         }
+        // Publish
+        this.publishState[elem.id] = elem.published;
       }
-      // Publish
-      this.publishState[elem.id] = elem.publish
-    }
+      this.loading = false;
+    });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -221,7 +255,7 @@ $btn_secondary: #cdd0d2;
   font-size: 15pt;
 }
 .item-btn {
-  background-color: $accent_list;
+  background-color: $btn_secondary;
 }
 .tag_btn {
   background-color: $btn_secondary;

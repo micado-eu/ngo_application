@@ -9,40 +9,40 @@
       icon_name="document"
       add_label="Add Event"
       title="Information centre"
-      publish_mode
     />
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
-import ListSearchTags from 'components/ListSearchTags'
+import { mapGetters, mapActions } from "vuex";
+import ListSearchTags from "components/ListSearchTags";
 export default {
   data() {
     return {
-      loading: true,
-    }
+      loading: true
+    };
   },
   components: {
     "list-search-tags": ListSearchTags
   },
   computed: {
-    ...mapGetters("information", ["information"]),
+    ...mapGetters("information", ["information"])
   },
   methods: {
-    ...mapActions("information", ["fetchInformation"]),
+    ...mapActions("information", [
+      "fetchInformation"
+    ]),
     getEditRoute(id) {
-      return "information/" + id + "/edit"
-    }
+      return "information/" + id + "/edit";
+    },
   },
   created() {
-    this.loading = true
+    this.loading = true;
     this.fetchInformation().then(() => {
-      this.loading = false
-    })
+      this.loading = false;
+    });
   }
-}
+};
 </script>
 
-<style>
-</style>
+<style></style>

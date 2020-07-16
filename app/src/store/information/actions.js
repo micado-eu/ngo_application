@@ -2,18 +2,33 @@ import client from 'api-information-client'
 
 export function fetchInformation(state, data) {
   return client
-    .fetchInformation()
-    .then(information => state.commit('setInformation', information))
+    .fetchEvents()
+    .then(information => {
+      return state.commit('setInformation', information)
+    })
 }
 
 export function saveNewInformationItem(state, data) {
   return client
-    .saveNewInformationItem(data)
-    .then(informationItem => state.commit('addNewInformationItem', informationItem))
+    .saveNewEventItem(data)
+}
+
+export function addNewInformationItemTranslation(state, data) {
+  data.event = data['title'];
+  delete data.title;
+  return client
+    .addNewEventItemTranslation(data)
 }
 
 export function editInformationItem(state, data) {
+  data.event = data['title'];
+  delete data.title;
   return client
-    .editInformationItem(data)
-    .then(informationItem => state.commit('editInformationItem', informationItem))
+    .editEventItemTranslation(data)
+}
+
+export function unpublishItem(state, data) {
+  data.event = data['title']
+  delete data.title
+  return client.editEventItem(data)
 }

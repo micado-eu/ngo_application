@@ -14,6 +14,7 @@
       anchor="top middle"
       self="bottom middle"
       :offset="[10, 10]"
+      v-if="currentDescription"
     >
       {{currentDescription}}
     </q-tooltip>
@@ -42,6 +43,14 @@ export default {
     content: {
       type: String | Object,
       default: ""
+    },
+    glossary_fetched: {
+      type: Boolean,
+      default: false
+    },
+    lang: {
+      type: String,
+      default: "en"
     }
   },
   data() {
@@ -60,8 +69,35 @@ export default {
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
+    initialize() {
+      this.editor = new Editor({
+        editable: false,
+        extensions: [
+          new Mention({
+            items: () => this.getMentionElementsByLang(),
+          }),
+          new Bold(),
+          new Italic(),
+          new Link(),
+          new Underline(),
+        ],
+        content: ""
+      })
+      this.setContent(this.content)
+      this.setGlossaryClickEvents()
+    },
     setContent(content) {
       this.editor.setContent(content)
+    },
+    getMentionElementsByLang() {
+      let mentionElements = []
+      for (let glossaryElem of this.glossary) {
+        let idx = glossaryElem.translations.findIndex(t => t.lang === this.lang)
+        if (idx !== -1) {
+          mentionElements.push(glossaryElem.translations[idx])
+        }
+      }
+      return mentionElements
     },
     setCurrentDescription(glossaryElem, element) {
       // Gets JSON description and transforms it to plain text
@@ -70,7 +106,7 @@ export default {
         editable: false,
         extensions: [
           new Mention({
-            items: () => this.glossary,
+            items: () => this.getMentionElementsByLang(),
           }),
           new Bold(),
           new Italic(),
@@ -88,6 +124,7 @@ export default {
       var glossaryElemByIdFunc = this.glossaryElemById
       var currentDescriptionSetter = this.setCurrentDescription
       var uuid = this.uuid
+      var lang = this.lang
       document.addEventListener("mouseover", function (e) {
         var componentDiv = document.getElementById(uuid)
         var isParentOfDiv;
@@ -100,7 +137,10 @@ export default {
         if (e.target && e.target.classList.contains("mention") && isParentOfDiv) {
           var id = e.srcElement.getAttribute("data-mention-id")
           var glossaryElem = glossaryElemByIdFunc(id)
-          currentDescriptionSetter(glossaryElem, e.target)
+          let idx = glossaryElem.translations.findIndex(t => t.lang === lang)
+          if (this.idx !== -1) {
+            currentDescriptionSetter(glossaryElem.translations[idx], e.target)
+          }
         }
       })
     }
@@ -110,23 +150,13 @@ export default {
     uuid += 1;
   },
   created() {
-    this.fetchGlossary().then(() => {
-      this.editor = new Editor({
-        editable: false,
-        extensions: [
-          new Mention({
-            items: () => this.glossary,
-          }),
-          new Bold(),
-          new Italic(),
-          new Link(),
-          new Underline(),
-        ],
-        content: ""
+    if (!this.glossary_fetched) {
+      this.fetchGlossary().then(() => {
+        this.initialize()
       })
-      this.setContent(this.content)
-      this.setGlossaryClickEvents()
-    })
+    } else {
+      this.initialize()
+    }
   }
 }
 </script>

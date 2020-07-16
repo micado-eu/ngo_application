@@ -95,6 +95,10 @@ export default {
     content: {
       type: String | Object,
       default: ""
+    },
+    lang: {
+      type: String,
+      default: "en"
     }
   },
   methods: {
@@ -114,6 +118,84 @@ export default {
     },
     getContent() {
       return this.editor.getJSON();
+    },
+    setContent(content) {
+      this.internalContent = content
+      return this.editor.setContent(content)
+    },
+    getMentionElementsByLang(lang) {
+      let mentionElements = []
+      for (let glossaryElem of this.glossary) {
+        let idx = glossaryElem.translations.findIndex(t => t.lang === lang)
+        if (idx !== -1) {
+          mentionElements.push(glossaryElem.translations[idx])
+        }
+      }
+      return mentionElements
+    },
+    getMentionsByLang(lang) {
+      let mentionElements = this.getMentionElementsByLang(lang)
+      return new Mention({
+        items: () => mentionElements,
+        // is called when a suggestion starts
+        onEnter: ({
+          items, query, range, command, virtualNode,
+        }) => {
+          this.query = query
+          this.filteredGlossaryItems = items
+          this.suggestionRange = range
+          this.showSuggestionsData = true
+          this.insertMention = command
+        },
+        // is called when a suggestion has changed
+        onChange: ({
+          items, query, range, virtualNode,
+        }) => {
+          this.query = query
+          this.filteredGlossaryItems = items
+          this.suggestionRange = range
+          this.showSuggestionsData = true
+        },
+        // is called when a suggestion is cancelled
+        onExit: () => {
+          // reset all saved values
+          this.query = null
+          this.filteredGlossaryItems = []
+          this.suggestionRange = null
+          this.showSuggestionsData = false
+        },
+        // we use fuse.js with support for fuzzy search
+        onFilter: (items, query) => {
+          if (!query) {
+            return items
+          }
+          const fuse = new Fuse(items, {
+            keys: ['title', 'description'],
+          })
+          return fuse.search(query).map(i => i.item)
+        },
+      })
+    },
+    createEditor() {
+      if (this.editor) {
+        this.editor.destroy()
+      }
+      this.editor = new Editor({
+        extensions: [
+          this.getMentionsByLang(this.internalLang),
+          new Bold(),
+          new Italic(),
+          new Link(),
+          new Underline(),
+          new History(),
+        ],
+        content: this.internalContent
+      })
+    },
+    setLang(lang) {
+      // set mention list to the glossary terms in the language selected
+      this.internalLang = lang
+      this.createEditor()
     }
   },
   data() {
@@ -124,7 +206,9 @@ export default {
       filteredGlossaryItems: [],
       insertMention: () => { },
       loading: true,
-      showSuggestionsData: false
+      showSuggestionsData: false,
+      internalLang: "",
+      internalContent: "",
     };
   },
   computed: {
@@ -138,59 +222,12 @@ export default {
   },
   created() {
     this.loading = true
+    this.internalLang = this.lang
+    this.internalContent = this.content
     this.fetchGlossary()
       .then(() => {
-        this.editor = new Editor({
-          extensions: [
-            new Mention({
-              items: () => this.glossary,
-              // is called when a suggestion starts
-              onEnter: ({
-                items, query, range, command, virtualNode,
-              }) => {
-                this.query = query
-                this.filteredGlossaryItems = items
-                this.suggestionRange = range
-                this.showSuggestionsData = true
-                this.insertMention = command
-              },
-              // is called when a suggestion has changed
-              onChange: ({
-                items, query, range, virtualNode,
-              }) => {
-                this.query = query
-                this.filteredGlossaryItems = items
-                this.suggestionRange = range
-                this.showSuggestionsData = true
-              },
-              // is called when a suggestion is cancelled
-              onExit: () => {
-                // reset all saved values
-                this.query = null
-                this.filteredGlossaryItems = []
-                this.suggestionRange = null
-                this.showSuggestionsData = false
-              },
-              // we use fuse.js with support for fuzzy search
-              onFilter: (items, query) => {
-                if (!query) {
-                  return items
-                }
-                const fuse = new Fuse(items, {
-                  keys: ['title', 'description'],
-                })
-                return fuse.search(query).map(i => i.item)
-              },
-            }),
-            new Bold(),
-            new Italic(),
-            new Link(),
-            new Underline(),
-            new History(),
-          ],
-          content: this.content
-        }),
-          this.loading = false
+        this.createEditor()
+        this.loading = false
       })
   }
 }
