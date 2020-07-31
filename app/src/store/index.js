@@ -14,6 +14,8 @@ import comments from './comments'
 //import chatbot from './chatbot'
 import documents from './documents'
 import information from './information'
+import information_category from './information_category'
+import information_tags from './information_tags'
 import user from './user'
 
 VuexORM.use(VuexORMAxios, { axios })
@@ -45,7 +47,9 @@ export default function (/* { ssrContext } */) {
       glossary,
       language,
       settings,
-      comments
+      comments,
+      information_category,
+      information_tags
     },
 
     // enable strict mode (adds overhead!)

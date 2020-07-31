@@ -31,16 +31,30 @@
         :to="new_url"
       />
     </div>
-    <q-btn
-      :unelevated="selectedTags.indexOf(tag) == -1"
-      :outline="selectedTags.indexOf(tag) !== -1"
-      no-caps
-      v-for="tag in tags"
-      :key="tag"
-      :label="tag"
-      class="q-mr-sm tag_btn"
-      @click="addOrRemoveSelectedTag(tag)"
-    />
+    <div>
+      <q-btn
+        :unelevated="selectedTags.indexOf(tag) == -1"
+        :outline="selectedTags.indexOf(tag) !== -1"
+        no-caps
+        v-for="tag in tags"
+        :key="tag"
+        :label="tag"
+        class="q-mr-sm q-mb-sm tag_btn"
+        @click="addOrRemoveSelectedTag(tag)"
+      />
+    </div>
+    <div>
+      <q-btn
+        :unelevated="selectedCategory !== category"
+        :outline="selectedCategory === category"
+        no-caps
+        v-for="category in translatedCategories"
+        :key="category.id"
+        :label="category.category"
+        class="q-mr-sm category_btn"
+        @click="addOrRemoveSelectedCategory(category)"
+      />
+    </div>
     <q-list class="q-mt-md">
       <q-item
         v-for="item in filteredElements"
@@ -63,23 +77,29 @@
           class="description_section"
         >
           <glossary-editor-viewer
-            :class="
-              publishState[item.id]
-                ? 'published'
-                : 'unpublished'
-            "
+            :class="publishState[item.id] ? 'published' : 'unpublished'"
             :content="item.description"
             v-if="!loading"
             glossary_fetched
             :lang="lang"
           />
         </q-item-section>
+        <q-item-section
+          v-if="categories_enabled"
+          class="tag_btn_section"
+        >
+          <q-btn
+            no-caps
+            :label="item.category.category"
+            class="q-mb-sm category_btn"
+          />
+        </q-item-section>
         <q-item-section class="tag_btn_section">
           <q-btn
             no-caps
             v-for="tag in item.tags"
-            :key="tag"
-            :label="tag"
+            :key="tag.id"
+            :label="tag.tag"
             class="q-mb-sm tag_btn"
           />
         </q-item-section>
@@ -135,6 +155,18 @@ export default {
       type: String,
       default: "Add"
     },
+    categories_enabled: {
+      type: Boolean,
+      default: false
+    },
+    categories_url: {
+      type: String,
+      default: "/"
+    },
+    tags_enabled: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -143,9 +175,12 @@ export default {
       translatedElements: [],
       filteredElementsBySearch: [],
       filteredElementsByTags: [],
+      filteredElementsByCategory: [],
       searchText: "",
       tags: [],
+      translatedCategories: [],
       selectedTags: [],
+      selectedCategory: undefined,
       publishState: {},
       lang: "",
       loading: true
@@ -165,19 +200,45 @@ export default {
       }
       this.filterByTags();
     },
+    addOrRemoveSelectedCategory(category) {
+      if (this.selectedCategory === category) {
+        this.selectedCategory = undefined;
+      } else {
+        this.selectedCategory = category;
+      }
+      this.filterByCategory();
+    },
     filterByTags() {
       if (this.selectedTags.length > 0) {
         let selectedTags = this.selectedTags;
-        this.filteredElementsByTags = this.elements.filter(e => {
+        this.filteredElementsByTags = this.translatedElements.filter(e => {
+          let matchedTags = [];
           for (let tag of selectedTags) {
-            if (e.tags.indexOf(tag) == -1) {
-              return false;
+            for (let elemTag of e.tags) {
+              if (elemTag.tag === tag) {
+                // This check avoids duplicate matches
+                if (matchedTags.indexOf(tag) == -1) {
+                  matchedTags.push(tag);
+                }
+              }
             }
+          }
+          return matchedTags.length == selectedTags.length;
+        });
+      } else {
+        this.filteredElementsByTags = this.translatedElements;
+      }
+    },
+    filterByCategory() {
+      if (this.selectedCategory) {
+        this.filteredElementsByCategory = this.translatedElements.filter(e => {
+          if (e.category !== this.selectedCategory) {
+            return false;
           }
           return true;
         });
       } else {
-        this.filteredElementsByTags = this.elements;
+        this.filteredElementsByCategory = this.translatedElements;
       }
     }
   },
@@ -188,7 +249,7 @@ export default {
       },
       set(newSearch) {
         if (newSearch) {
-          const fuse = new Fuse(this.elements, {
+          const fuse = new Fuse(this.translatedElements, {
             keys: ["title"]
           });
           this.filteredElementsBySearch = fuse
@@ -196,41 +257,62 @@ export default {
             .map(i => i.item);
           this.searchText = newSearch;
         } else {
-          this.filteredElementsBySearch = this.elements;
+          this.filteredElementsBySearch = this.translatedElements;
           this.searchText = "";
         }
       }
     },
     filteredElements() {
       var filteredElementsByTags = this.filteredElementsByTags;
+      var filteredElementsByCategory = this.filteredElementsByCategory;
       return this.filteredElementsBySearch.filter(function (n) {
-        return filteredElementsByTags.indexOf(n) !== -1;
+        return (
+          filteredElementsByTags.indexOf(n) !== -1 &&
+          filteredElementsByCategory.indexOf(n) !== -1
+        );
       });
     }
   },
   created() {
     this.loading = true;
-    this.lang = this.$i18n.locale
+    this.lang = this.$userLang;
     this.fetchGlossary().then(() => {
       this.translatedElements = this.elements.map(e => {
-        let al = this.$i18n.locale;
-        let idx = e.translations.findIndex(t => t.lang === al);
-        return e.translations[idx];
+        let idx = e.translations.findIndex(t => t.lang === this.lang);
+        let translation = { ...e.translations[idx] };
+        if (this.categories_enabled) {
+          let idxCat = e.category.translations.findIndex(
+            t => t.lang === this.lang
+          );
+          translation.category = e.category.translations[idxCat];
+          if (this.translatedCategories.indexOf(translation.category) == -1) {
+            this.translatedCategories.push(translation.category);
+          }
+        }
+        if (this.tags_enabled) {
+          // Tags
+          if (e.tags.length > 0) {
+            let tagTranslations = [];
+            for (let tag of e.tags) {
+              let translations = tag.translations.filter(
+                tag => tag.lang === this.lang
+              );
+              if (translations.length > 0) {
+                tagTranslations.push(translations[0]);
+                if (this.tags.indexOf(translations[0].tag) == -1) {
+                  this.tags.push(translations[0].tag);
+                }
+              }
+            }
+            translation.tags = tagTranslations;
+          }
+        }
+        this.publishState[e.id] = e.published
+        return translation;
       });
       this.filteredElementsBySearch = this.translatedElements;
       this.filteredElementsByTags = this.translatedElements;
-      for (let elem of this.elements) {
-        // Tags
-        if (elem.tags) {
-          for (let tag of elem.tags) {
-            if (this.tags.indexOf(tag) == -1) {
-              this.tags.push(tag);
-            }
-          }
-        }
-        // Publish
-        this.publishState[elem.id] = elem.published;
-      }
+      this.filteredElementsByCategory = this.translatedElements;
       this.loading = false;
     });
   }
@@ -260,6 +342,11 @@ $btn_secondary: #cdd0d2;
 .tag_btn {
   background-color: $btn_secondary;
   text-decoration: underline;
+}
+.category_btn {
+  background-color: $btn_secondary;
+  text-decoration: underline;
+  border: 1px solid $accent_list;
 }
 .published {
   opacity: 1;

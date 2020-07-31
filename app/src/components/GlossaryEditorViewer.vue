@@ -1,12 +1,6 @@
 <template>
-  <div
-    padding
-    :id="uuid"
-  >
-    <editor-content
-      class="editor_content"
-      :editor="editor"
-    />
+  <div padding :id="uuid">
+    <editor-content class="editor_content" :editor="editor" />
     <q-tooltip
       class="desc_tooltip"
       v-model="showTooltip"
@@ -16,23 +10,17 @@
       :offset="[10, 10]"
       v-if="currentDescription"
     >
-      {{currentDescription}}
+      {{ currentDescription }}
     </q-tooltip>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
-import { Editor, EditorContent } from "tiptap"
-import {
-  Link,
-  Underline,
-  Bold,
-  Italic,
-  Mention
-} from "tiptap-extensions"
+import { mapGetters, mapActions } from "vuex";
+import { Editor, EditorContent } from "tiptap";
+import { Link, Underline, Bold, Italic, Mention } from "tiptap-extensions";
 
-let uuid = 0
+let uuid = 0;
 
 export default {
   name: "GlossaryEditorViewer",
@@ -58,13 +46,13 @@ export default {
       editor: null,
       currentDescriptionContent: "",
       targetElement: false,
-      showTooltip: false, // Don't show by default
-    }
+      showTooltip: false // Don't show by default
+    };
   },
   computed: {
-    ...mapGetters('glossary', ['glossary', 'glossaryElemById']),
+    ...mapGetters("glossary", ["glossary", "glossaryElemById"]),
     currentDescription() {
-      return this.currentDescriptionContent
+      return this.currentDescriptionContent;
     }
   },
   methods: {
@@ -74,30 +62,32 @@ export default {
         editable: false,
         extensions: [
           new Mention({
-            items: () => this.getMentionElementsByLang(),
+            items: () => this.getMentionElementsByLang()
           }),
           new Bold(),
           new Italic(),
           new Link(),
-          new Underline(),
+          new Underline()
         ],
         content: ""
-      })
-      this.setContent(this.content)
-      this.setGlossaryClickEvents()
+      });
+      this.setContent(this.content);
+      this.setGlossaryClickEvents();
     },
     setContent(content) {
-      this.editor.setContent(content)
+      this.editor.setContent(content);
     },
     getMentionElementsByLang() {
-      let mentionElements = []
+      let mentionElements = [];
       for (let glossaryElem of this.glossary) {
-        let idx = glossaryElem.translations.findIndex(t => t.lang === this.lang)
+        let idx = glossaryElem.translations.findIndex(
+          t => t.lang === this.lang
+        );
         if (idx !== -1) {
-          mentionElements.push(glossaryElem.translations[idx])
+          mentionElements.push(glossaryElem.translations[idx]);
         }
       }
-      return mentionElements
+      return mentionElements;
     },
     setCurrentDescription(glossaryElem, element) {
       // Gets JSON description and transforms it to plain text
@@ -106,43 +96,51 @@ export default {
         editable: false,
         extensions: [
           new Mention({
-            items: () => this.getMentionElementsByLang(),
+            items: () => this.getMentionElementsByLang()
           }),
           new Bold(),
           new Italic(),
-          new Underline(),
+          new Underline()
         ],
         content: glossaryElem.description
-      })
-      var doc = new DOMParser().parseFromString(editorInterpreter.getHTML(), 'text/html');
+      });
+      var doc = new DOMParser().parseFromString(
+        editorInterpreter.getHTML(),
+        "text/html"
+      );
       var plainDescription = doc.body.textContent || "";
-      this.targetElement = element
-      this.currentDescriptionContent = plainDescription
-      editorInterpreter.destroy()
+      this.targetElement = element;
+      this.currentDescriptionContent = plainDescription;
+      editorInterpreter.destroy();
     },
     setGlossaryClickEvents() {
-      var glossaryElemByIdFunc = this.glossaryElemById
-      var currentDescriptionSetter = this.setCurrentDescription
-      var uuid = this.uuid
-      var lang = this.lang
-      document.addEventListener("mouseover", function (e) {
-        var componentDiv = document.getElementById(uuid)
+      var glossaryElemByIdFunc = this.glossaryElemById;
+      var currentDescriptionSetter = this.setCurrentDescription;
+      var uuid = this.uuid;
+      var lang = this.lang;
+      document.addEventListener("mouseover", function(e) {
+        var componentDiv = document.getElementById(uuid);
         var isParentOfDiv;
         if (componentDiv) {
-          isParentOfDiv = componentDiv.contains(e.target)
+          isParentOfDiv = componentDiv.contains(e.target);
         } else {
-          isParentOfDiv = false
+          isParentOfDiv = false;
         }
-        var isParentOfDiv = componentDiv !== null ? componentDiv.contains(e.target) : false
-        if (e.target && e.target.classList.contains("mention") && isParentOfDiv) {
-          var id = e.srcElement.getAttribute("data-mention-id")
-          var glossaryElem = glossaryElemByIdFunc(id)
-          let idx = glossaryElem.translations.findIndex(t => t.lang === lang)
+        var isParentOfDiv =
+          componentDiv !== null ? componentDiv.contains(e.target) : false;
+        if (
+          e.target &&
+          e.target.classList.contains("mention") &&
+          isParentOfDiv
+        ) {
+          var id = e.srcElement.getAttribute("data-mention-id");
+          var glossaryElem = glossaryElemByIdFunc(id);
+          let idx = glossaryElem.translations.findIndex(t => t.lang === lang);
           if (this.idx !== -1) {
-            currentDescriptionSetter(glossaryElem.translations[idx], e.target)
+            currentDescriptionSetter(glossaryElem.translations[idx], e.target);
           }
         }
-      })
+      });
     }
   },
   beforeCreate() {
@@ -152,13 +150,13 @@ export default {
   created() {
     if (!this.glossary_fetched) {
       this.fetchGlossary().then(() => {
-        this.initialize()
-      })
+        this.initialize();
+      });
     } else {
-      this.initialize()
+      this.initialize();
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

@@ -18,7 +18,8 @@ export default {
   data() {
     return {
       loading: false,
-      elem: undefined
+      elem: undefined,
+      tags: undefined
     };
   },
   components: {
@@ -29,44 +30,79 @@ export default {
     ...mapActions("information", [
       "fetchInformation",
       "editInformationItem",
-      "addNewInformationItemTranslation",
-      "unpublishItem"
+      "editInformationItemTranslation",
+      "addNewInformationItemTranslation"
+    ]),
+    ...mapActions("information_tags", [
+      "fetchInformationTags",
+      "deleteInformationTagsFromEvent",
+      "saveInformationTags"
     ]),
     editInformationItemAndReturn(data) {
       let router = this.$router;
-      let id = parseInt(this.$route.params.id)
+      let categoryId = data.category.id;
+      let id = parseInt(this.$route.params.id);
+      let eventData = {
+        id,
+        category: categoryId
+      };
+      delete data.category;
+      let tags = data.tags.map(tag_lbl => {
+        return {
+          lang: data.lang,
+          tag: tag_lbl
+        };
+      });
+      delete data.tags;
       let dataWithId = Object.assign(data, {
         id
       });
-      let promises = []
-      let idx = this.elem.translations.findIndex(t => t.lang === data.lang);
-      if (idx !== -1) {
-        promises.push(this.editInformationItem(dataWithId))
-      } else {
-        promises.push(this.addNewInformationItemTranslation(dataWithId))
-      }
-      promises.push(this.unpublishItem({ id }))
-      Promise.all(promises).then(() => {
-        router.push({ path: "/information" });
+      this.editInformationItem(eventData).then(() => {
+        let idx = this.elem.translations.findIndex(t => t.lang === data.lang);
+        if (idx !== -1) {
+          this.editInformationItemTranslation(dataWithId).then(() => {
+            this.deleteInformationTagsFromEvent(id).then(() => {
+              if (tags.length > 0) {
+                this.saveInformationTags({
+                  eventId: id,
+                  tags
+                }).then(() => {
+                  router.push({ path: "/information" });
+                });
+              } else {
+                router.push({ path: "/information" });
+              }
+            });
+          });
+        } else {
+          this.addNewInformationItemTranslation(dataWithId).then(() => {
+            if (tags.length > 0) {
+              this.saveInformationTags({
+                eventId: id,
+                tags
+              }).then(() => {
+                router.push({ path: "/information" });
+              });
+            } else {
+              router.push({ path: "/information" });
+            }
+          });
+        }
       });
     }
   },
   computed: {
     ...mapGetters("information", ["informationElemById"]),
-    tags: function () {
-      let elem = this.informationElemById(this.$route.params.id);
-      if (elem && elem.tags) {
-        return elem.tags;
-      } else {
-        return [];
-      }
-    }
+    ...mapGetters("information_tags", ["informationTagsByEvent"])
   },
   created() {
     this.loading = true;
     this.fetchInformation().then(() => {
       this.elem = this.informationElemById(this.$route.params.id);
-      this.loading = false;
+      this.fetchInformationTags().then(() => {
+        this.tags = this.informationTagsByEvent(this.elem.id);
+        this.loading = false;
+      });
     });
   }
 };

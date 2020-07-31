@@ -1,18 +1,9 @@
 <template>
-  <div
-    class="editor-component"
-    padding
-  >
+  <div class="editor-component" padding>
     <div class="editor-options">
       <span v-if="loading">Loading glossary...</span>
-      <div
-        class="editor"
-        v-if="!loading"
-      >
-        <editor-content
-          class="editor_content"
-          :editor="editor"
-        />
+      <div class="editor" v-if="!loading">
+        <editor-content class="editor_content" :editor="editor" />
         <editor-menu-bar
           :editor="editor"
           v-slot="{ commands, isActive }"
@@ -41,10 +32,7 @@
         </editor-menu-bar>
       </div>
     </div>
-    <div
-      class="suggestion-list q-ml-sm"
-      v-if="!loading && showSuggestions"
-    >
+    <div class="suggestion-list q-ml-sm" v-if="!loading && showSuggestions">
       <template v-if="hasResults">
         <div
           v-for="glossaryItem in filteredGlossaryItems"
@@ -61,10 +49,7 @@
           />
         </div>
       </template>
-      <div
-        v-else
-        class="suggestion-list-item is-empty"
-      >
+      <div v-else class="suggestion-list-item is-empty">
         No glossary items found
       </div>
     </div>
@@ -72,18 +57,17 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
-import Fuse from 'fuse.js'
-import { Editor, EditorContent, EditorMenuBar } from "tiptap"
+import { mapGetters, mapActions } from "vuex";
+import Fuse from "fuse.js";
+import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import {
   Link,
   Underline,
   History,
   Bold,
   Italic,
-  Mention,
-} from "tiptap-extensions"
-
+  Mention
+} from "tiptap-extensions";
 
 export default {
   name: "GlossaryEditor",
@@ -92,7 +76,7 @@ export default {
     EditorMenuBar
   },
   props: {
-    content: {
+    value: {
       type: String | Object,
       default: ""
     },
@@ -110,75 +94,70 @@ export default {
         range: this.suggestionRange,
         attrs: {
           id: glossaryItem.id,
-          label: glossaryItem.title,
-        },
-      })
-      this.editor.focus()
-      this.showSuggestionsData = false
+          label: glossaryItem.title
+        }
+      });
+      this.editor.focus();
+      this.showSuggestionsData = false;
     },
     getContent() {
       return this.editor.getJSON();
     },
     setContent(content) {
-      this.internalContent = content
-      return this.editor.setContent(content)
+      return this.editor.setContent(content);
     },
     getMentionElementsByLang(lang) {
-      let mentionElements = []
+      let mentionElements = [];
       for (let glossaryElem of this.glossary) {
-        let idx = glossaryElem.translations.findIndex(t => t.lang === lang)
+        let idx = glossaryElem.translations.findIndex(t => t.lang === lang);
         if (idx !== -1) {
-          mentionElements.push(glossaryElem.translations[idx])
+          mentionElements.push(glossaryElem.translations[idx]);
         }
       }
-      return mentionElements
+      return mentionElements;
     },
     getMentionsByLang(lang) {
-      let mentionElements = this.getMentionElementsByLang(lang)
+      let mentionElements = this.getMentionElementsByLang(lang);
       return new Mention({
         items: () => mentionElements,
         // is called when a suggestion starts
-        onEnter: ({
-          items, query, range, command, virtualNode,
-        }) => {
-          this.query = query
-          this.filteredGlossaryItems = items
-          this.suggestionRange = range
-          this.showSuggestionsData = true
-          this.insertMention = command
+        onEnter: ({ items, query, range, command, virtualNode }) => {
+          this.query = query;
+          this.filteredGlossaryItems = items;
+          this.suggestionRange = range;
+          this.showSuggestionsData = true;
+          this.insertMention = command;
         },
         // is called when a suggestion has changed
-        onChange: ({
-          items, query, range, virtualNode,
-        }) => {
-          this.query = query
-          this.filteredGlossaryItems = items
-          this.suggestionRange = range
-          this.showSuggestionsData = true
+        onChange: ({ items, query, range, virtualNode }) => {
+          this.query = query;
+          this.filteredGlossaryItems = items;
+          this.suggestionRange = range;
+          this.showSuggestionsData = true;
         },
         // is called when a suggestion is cancelled
         onExit: () => {
           // reset all saved values
-          this.query = null
-          this.filteredGlossaryItems = []
-          this.suggestionRange = null
-          this.showSuggestionsData = false
+          this.query = null;
+          this.filteredGlossaryItems = [];
+          this.suggestionRange = null;
+          this.showSuggestionsData = false;
         },
         // we use fuse.js with support for fuzzy search
         onFilter: (items, query) => {
           if (!query) {
-            return items
+            return items;
           }
           const fuse = new Fuse(items, {
-            keys: ['title', 'description'],
-          })
-          return fuse.search(query).map(i => i.item)
-        },
-      })
+            keys: ["title", "description"]
+          });
+          return fuse.search(query).map(i => i.item);
+        }
+      });
     },
     createEditor() {
       if (this.editor) {
-        this.editor.destroy()
+        this.editor.destroy();
       }
       this.editor = new Editor({
         extensions: [
@@ -187,15 +166,19 @@ export default {
           new Italic(),
           new Link(),
           new Underline(),
-          new History(),
+          new History()
         ],
-        content: this.internalContent
-      })
+        onUpdate: ({ getHTML }) => {
+          this.editorChange = true;
+          this.$emit("input", getHTML());
+        },
+        content: this.value
+      });
     },
     setLang(lang) {
       // set mention list to the glossary terms in the language selected
-      this.internalLang = lang
-      this.createEditor()
+      this.internalLang = lang;
+      this.createEditor();
     }
   },
   data() {
@@ -204,33 +187,44 @@ export default {
       query: null,
       suggestionRange: null,
       filteredGlossaryItems: [],
-      insertMention: () => { },
+      insertMention: () => {},
       loading: true,
       showSuggestionsData: false,
       internalLang: "",
-      internalContent: "",
+      editorChange: false
     };
   },
   computed: {
-    ...mapGetters('glossary', ['glossary']),
+    ...mapGetters("glossary", ["glossary"]),
     hasResults() {
-      return this.filteredGlossaryItems.length
+      return this.filteredGlossaryItems.length;
     },
     showSuggestions() {
-      return this.showSuggestionsData
-    },
+      return this.showSuggestionsData;
+    }
   },
   created() {
-    this.loading = true
-    this.internalLang = this.lang
-    this.internalContent = this.content
-    this.fetchGlossary()
-      .then(() => {
-        this.createEditor()
-        this.loading = false
-      })
+    this.loading = true;
+    this.internalLang = this.lang;
+    this.fetchGlossary().then(() => {
+      this.createEditor();
+      this.loading = false;
+    });
+  },
+  watch: {
+    value(val) {
+      if (this.editor && !this.editorChange) {
+        this.editor.setContent(val, false);
+      }
+      this.editorChange = false;
+    }
+  },
+  beforeDestroy() {
+    if (this.editor) {
+      this.editor.destroy();
+    }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .mention {
