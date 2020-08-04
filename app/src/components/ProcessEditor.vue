@@ -107,7 +107,9 @@ export default {
         else {
           /* THIS IS THE LOGIC FOR THE LINK TO THE BACKEND */
           return this.processes.filter((a_process) => {
+            console.log(this.activeLanguage)
           var curlangproc = a_process.translations.filter((transl) => { return transl.lang == this.activeLanguage })[0]
+          console.log("this is curlangproc")
           console.log(curlangproc)
           //Splits the search field and puts the words in an array
           var searchArray = this.search.split(" ")

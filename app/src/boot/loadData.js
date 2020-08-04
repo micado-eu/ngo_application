@@ -9,8 +9,9 @@ export default async ({ store, Vue }) => {
             console.log("#####################################")
             console.log(settings)
             var curlang = settings.filter((setting) => { return setting.key == 'default_language' })[0]
+            setLocale(curlang.value)
             var defaultLang = store.state.language.languages.filter(function (l) { return l.lang == curlang.value })[0]
-            setLocale(defaultLang.isoCode)
+            //setLocale(defaultLang.isoCode)
             var defaultLangString = defaultLang.name
             Vue.prototype.$defaultLangString = defaultLangString
             Vue.prototype.$defaultLang = defaultLang.lang
