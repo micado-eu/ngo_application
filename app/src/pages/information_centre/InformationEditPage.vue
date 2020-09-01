@@ -7,7 +7,7 @@
       :tags="tags"
       :elem="elem"
       class="q-ma-md"
-      pagetitle="Edit Event from the Information Centre"
+      pagetitle="information_centre.edit"
     />
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
     return {
       loading: false,
       elem: undefined,
-      tags: undefined
+      tags: undefined,
     };
   },
   components: {
@@ -40,20 +40,20 @@ export default {
     ]),
     editInformationItemAndReturn(data) {
       let router = this.$router;
-      let categoryId = data.category.id;
-      let id = parseInt(this.$route.params.id);
+      let categoryId = data.category.id
+      let id = parseInt(this.$route.params.id)
       let eventData = {
         id,
         category: categoryId
-      };
-      delete data.category;
+      }
+      delete data.category
       let tags = data.tags.map(tag_lbl => {
         return {
           lang: data.lang,
           tag: tag_lbl
-        };
-      });
-      delete data.tags;
+        }
+      })
+      delete data.tags
       let dataWithId = Object.assign(data, {
         id
       });
@@ -68,41 +68,42 @@ export default {
                   tags
                 }).then(() => {
                   router.push({ path: "/information" });
-                });
+                })
               } else {
                 router.push({ path: "/information" });
               }
-            });
+            })        
           });
         } else {
           this.addNewInformationItemTranslation(dataWithId).then(() => {
             if (tags.length > 0) {
-              this.saveInformationTags({
-                eventId: id,
-                tags
-              }).then(() => {
+                this.saveInformationTags({
+                  eventId: id,
+                  tags
+                }).then(() => {
+                  router.push({ path: "/information" });
+                })
+              } else {
                 router.push({ path: "/information" });
-              });
-            } else {
-              router.push({ path: "/information" });
-            }
+              }
           });
         }
-      });
+      })
+
     }
   },
   computed: {
     ...mapGetters("information", ["informationElemById"]),
-    ...mapGetters("information_tags", ["informationTagsByEvent"])
+    ...mapGetters("information_tags", ["informationTagsByEvent"]),
   },
   created() {
     this.loading = true;
     this.fetchInformation().then(() => {
       this.elem = this.informationElemById(this.$route.params.id);
       this.fetchInformationTags().then(() => {
-        this.tags = this.informationTagsByEvent(this.elem.id);
+        this.tags = this.informationTagsByEvent(this.elem.id)
         this.loading = false;
-      });
+      })
     });
   }
 };

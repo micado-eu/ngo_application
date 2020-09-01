@@ -1,7 +1,6 @@
 <template>
   <edit-information
-    class="q-ma-md"
-    pagetitle="Add New Event to the Information Centre"
+    pagetitle="information_centre.add_new"
     v-on:save="saveNewInformationItemAndReturn($event)"
   />
 </template>
@@ -16,7 +15,8 @@ export default {
   methods: {
     ...mapActions("information", [
       "saveNewInformationItem",
-      "addNewInformationItemTranslation"
+      "addNewInformationItemTranslation",
+      "deleteInformationItem"
     ]),
     ...mapActions("information_tags", [
       "saveInformationTags",
@@ -43,7 +43,7 @@ export default {
         .then(newData => {
           id = newData.id;
           let dataWithId = Object.assign(translationData, { id });
-          let tagData = {
+          tagData = {
             eventId: newData.id,
             tags
           };
@@ -55,6 +55,12 @@ export default {
         .then(() => {
           router.push({ path: "/information" });
         })
+        .catch((e) => {
+          console.error(e);
+          if (id !== -1) {
+            this.deleteInformationItem({ id });
+          }
+        });
     }
   }
 };

@@ -17,5 +17,40 @@
     "information_centre": "Information centre",
     "process": "Guided processes"
 
+  },
+  "button":{
+    "save":"Save",
+    "cancel":"Cancel",
+    "add_tag":"Add tag",
+    "add_event": "Add Event"
+  },
+  "input_labels":{
+    "search":"Search",
+    "is_published":"Published",
+    "description":"Description",
+    "title":"Title",
+    "tags":"Tags",
+    "select_category":"Select category"
+  },
+  "information_centre": {
+    "list_title": "Information centre",
+    "add_new": "Add New Event to the Information Centre",
+    "edit": "Edit Event from the Information Centre"
+  },
+  "tags": {
+    "duplicate_error": "Duplicates are not allowed.",
+    "empty_error": "Empty tags are not allowed."
+  },
+  "filters": {
+    "title": "Filter",
+    "clear_all": "Clear all filters",
+    "tags_title": "Tags",
+    "category_title": "Category",
+    "show_more": "Show more"
+  },
+  "lists": {
+    "published": "Published",
+    "category": "Category",
+    "tags": "Tags"
   }
 }
