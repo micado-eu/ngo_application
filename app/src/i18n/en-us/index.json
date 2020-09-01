@@ -10,27 +10,27 @@
     "integrationtype": "Manage integration types",
     "courses": "Courses",
     "topic": "Manage topics",
+    "interventions": "Manage validations",
     "migrant": "Migrant users",
     "settings": "Settings",
     "glossary": "Glossary",
     "activelanguages": "Change active languages",
     "information_centre": "Information centre",
     "process": "Guided processes"
-
   },
-  "button":{
-    "save":"Save",
-    "cancel":"Cancel",
-    "add_tag":"Add tag",
+  "button": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "add_tag": "Add tag",
     "add_event": "Add Event"
   },
-  "input_labels":{
-    "search":"Search",
-    "is_published":"Published",
-    "description":"Description",
-    "title":"Title",
-    "tags":"Tags",
-    "select_category":"Select category"
+  "input_labels": {
+    "search": "Search",
+    "is_published": "Published",
+    "description": "Description",
+    "title": "Title",
+    "tags": "Tags",
+    "select_category": "Select category"
   },
   "information_centre": {
     "list_title": "Information centre",

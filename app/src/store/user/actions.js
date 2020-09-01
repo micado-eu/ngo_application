@@ -4,13 +4,17 @@ import client from 'api-user-client'
 export function someAction (context) {
 }
 */
-export function fetchUser(state, data) {
+export function fetchUser (state, data) {
+  console.log(data)
   return client
-    .fetchUser()
-    .then(user => state.commit('setUser', user))
+    .fetchUser(data)
+    .then(user => {
+      state.commit('setUser', user)
+      return user
+    })
 }
 
-export function editUser(state, user) {
+export function editUser (state, user) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(user)
   return client
@@ -18,7 +22,7 @@ export function editUser(state, user) {
     .then(user_return => state.commit('editUser', user_return))
 }
 
-export function saveUser(state, user) {
+export function saveUser (state, user) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(user)
   return client
@@ -26,7 +30,7 @@ export function saveUser(state, user) {
     .then(user_return => state.commit('saveUser', user_return))
 }
 
-export function deleteUser(state, user) {
+export function deleteUser (state, user) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(user)
   return client

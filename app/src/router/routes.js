@@ -13,6 +13,7 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') },
       //       { path: '/documents', component: () => import('pages/Documents.vue') },
       { path: '/premises', component: () => import('pages/Premise.vue') },
+      { path: '/interventions', component: () => import('pages/Interventions.vue') },
       // { path: '/courses', component: () => import('pages/Courses.vue') },
       { path: '/information', component: InformationListPage },
       { path: '/information/new', component: InformationNewPage },
