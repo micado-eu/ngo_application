@@ -442,7 +442,7 @@ $btn_secondary: #cdd0d2;
 .tag_btn {
   background-color: $primary;
   color: white;
-  width: 60px;
+  width: 110px;
   border-radius: 32px;
 }
 .category_btn {
