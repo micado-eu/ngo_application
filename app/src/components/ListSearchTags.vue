@@ -111,24 +111,29 @@
             :to="new_url"
           />
         </div>
+        <div class="flex" v-if="categories_enabled || tags_enabled">
+          <!-- column title -->
+            <span
+              style="flex:1.5"
+            />
+            <span
+              v-if="categories_enabled"
+              style="flex:0.75"
+            >
+              {{$t("lists.category")}}
+            </span>
+            <span
+              v-if="tags_enabled"
+              style="flex:1.05"
+            >
+              {{$t("lists.tags")}}
+            </span>
+          </div>
+        <div class="row">
+          <q-separator v-if="categories_enabled || tags_enabled" style="max-width: 91.7%"/>
+        </div>
         <div class="row">
           <q-list class="q-mt-md col-11 element-list">
-            <!-- column title -->
-            <q-item v-if="categories_enabled || tags_enabled">
-              <q-item-section
-                class="publish_section"
-                v-if="categories_enabled"
-              >
-                {{$t("lists.category")}}
-              </q-item-section>
-              <q-item-section
-                class="publish_section"
-                v-if="tags_enabled"
-              >
-                {{$t("lists.tags")}}
-              </q-item-section>
-            </q-item>
-            <q-separator v-if="categories_enabled || tags_enabled" />
             <!-- items -->
             <q-item
               v-for="item in filteredElements"
@@ -427,9 +432,9 @@ $btn_secondary: #cdd0d2;
   border-radius: 2px;
 }
 .title-label {
-  font-weight: bold;
-  font-family: "Nunito";
-  font-size: 15pt;
+  font-weight: 600;
+  font-family: "Nunito Sans";
+  font-size: 20px;
 }
 .item-btn {
   background-color: $btn_secondary;
@@ -437,6 +442,8 @@ $btn_secondary: #cdd0d2;
 .tag_btn {
   background-color: $primary;
   color: white;
+  width: 60px;
+  border-radius: 32px;
 }
 .category_btn {
   background-color: $btn_secondary;

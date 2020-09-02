@@ -2,26 +2,30 @@
   <div>
     <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t(pagetitle)}}</div>
     <span v-if="loading">Loading...</span>
-    <div class = "edit-element-component q-pa-md q-ma-md" v-else>
-      <span class="q-my-lg label-edit">{{$t('input_labels.title')}}:</span>
-      <q-input
-        class="title_input"
-        outlined
-        v-model="internalTitle"
-      />
-      <span class="q-my-lg label-edit">{{$t('input_labels.description')}}:</span>
-      <glossary-editor
-        class="desc-editor"
-        v-model="internalDescription"
-        :lang="$userLang"
-        ref="editor"
-      />
-      <div class="row">
+    <div class = "edit-element-component q-pa-xl q-ma-xl" v-else>
+      <div class="q-ml-xl">
+        <span class="q-my-xl label-edit">{{$t('input_labels.title')}}</span>
+        <q-input
+          class="title_input q-mb-xl"
+          outlined
+          v-model="internalTitle"
+        />
+      </div>
+      <div class="q-ml-xl">
+        <span class="q-my-xl label-edit">{{$t('input_labels.description')}}</span>
+        <glossary-editor
+          class="desc-editor q-mb-xl"
+          v-model="internalDescription"
+          :lang="$userLang"
+          ref="editor"
+        />
+      </div>
+      <div class="row tag_category_selectors q-ml-xl">
         <div
           v-if="tags_enabled"
           class="q-my-md tag_list col"
         >
-          <span class="q-my-lg label-edit">{{$t('input_labels.tags')}}:</span>
+          <span class="q-my-xl label-edit">{{$t('input_labels.tags')}}</span>
           <div class="row">
             <q-input
               color="accent"
@@ -29,7 +33,7 @@
               placeholder="New tag"
               label-color="accent"
               v-model="tagInput"
-              class="col-8"
+              class="col-10"
             />
             <q-btn
               no-caps
@@ -44,41 +48,21 @@
               {{ $t(tagErrorMessage) }}
             </span>
           </div>
-          <q-list
-            v-if="internalTags.length > 0"
-            separator
-            bordered
-            dense
-          >
-            <q-item
+          <div class="tag_list flex">
+            <div 
+              class="tag_btn q-my-sm q-mr-sm"
               v-for="tag in internalTags"
               :key="tag"
-              class="q-mb-sm"
             >
-              <q-item-section>
-                <q-btn
-                  class="tag_btn"
-                  no-caps
-                  :label="tag"
-                />
-              </q-item-section>
-              <q-item-section side>
-                <q-btn
-                  @click="internalTags.splice(internalTags.indexOf(tag), 1)"
-                  round
-                  icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
-                  no-caps
-                  class="q-ml-sm del_tag_btn"
-                />
-              </q-item-section>
-            </q-item>
-          </q-list>
+              <span>{{tag}} <span class="del_tag_btn" @click="internalTags.splice(internalTags.indexOf(tag), 1)">X</span></span>
+            </div>
+          </div>
         </div>
         <div
           v-if="categories_enabled"
           class="q-my-md q-ml-lg tag_list col"
         >
-          <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}:</span>
+          <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}</span>
           <q-select
             v-model="selectedCategory"
             :options="internalCategories"
@@ -86,32 +70,34 @@
           />
         </div>
       </div>
-      <hr style="width:85%;border: 0.999px solid #DADADA;margin-top:90px">
-      <q-tabs
-        v-model="langTab"
-        @input="changeLanguage"
-        dense
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.lang"
-          :label="language.name"
-        />
-      </q-tabs>
-      <hr style="width:85%;border: 0.999px solid #DADADA">
-      <div class="row q-mx-auto">
+      <div class="language_selector q-ml-xl">
+        <hr style="border: 0.999px solid #DADADA;" class="q-my-lg">
+        <q-tabs
+          v-model="langTab"
+          @input="changeLanguage"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.lang"
+            :label="language.name"
+          />
+        </q-tabs>
+        <hr style="border: 0.999px solid #DADADA" class="q-my-lg">
+      </div>
+      <div class="row q-my-xl q-ml-xl">
         <q-btn
           outline
           no-caps
           color="accent"
           :label="$t('button.cancel')"
-          class="q-mr-sm edit-element-button"
+          class="q-mr-lg edit-element-button"
           @click="goBack()"
         />
         <q-btn
@@ -301,35 +287,50 @@ export default {
 
 <style lang="scss" scoped>
 $btn_secondary: #cdd0d2;
-$title_font_size: 20pt;
+$title_font_size: 16px;
 .edit-element-component {
   border: 1px solid $btn_secondary;
   border-radius: 10px;
 }
 .edit-element-button {
-  border-radius: 2px;
-  width: 20%;
+  border-radius: 5px;
+  width: 135.33px;
+  height: 50.59px;
 }
 
 .label-edit {
   font-family: "Nunito";
-  font-size: 15pt;
+  font-size: 16px;
+  font-weight: 600;
 }
 .tag_list {
-  max-width: 45%;
+  flex-direction: row;
 }
 .tag_btn {
   background-color: $btn_secondary;
-  text-decoration: underline;
+  border-radius: 32px;
+  padding: 3px 12px;
+  font-family: "Nunito";
 }
 .del_tag_btn {
-  background-color: $btn_secondary;
+  color:red;
+  font-weight: bold;
+  cursor: pointer;
 }
 .title_input {
   font-size: $title_font_size;
+  max-width: 80%;
 }
 .add_tag_btn {
   background-color: #0b91ce;
   color: white;
+}
+
+.tag_category_selectors {
+  max-width: 80%;
+}
+
+.language_selector {
+  max-width: 80%
 }
 </style>
