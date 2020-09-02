@@ -22,9 +22,41 @@
           v-for="interv in interventions"
           :key="interv.id"
           :the_intervention="interv"
+          @doValidation="validate($event)"
         />
       </q-list>
     </div>
+    <q-dialog
+      v-model="ask_validation"
+      persistent
+    >
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">Validate intervention</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-file
+            v-model="validationFile"
+            label="Choose an optional file for validate"
+          />
+        </q-card-section>
+
+        <q-card-actions
+          align="right"
+          class="text-primary"
+        >
+          <q-btn
+            label="Cancel"
+            v-close-popup
+          />
+          <q-btn
+            label="Add address"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -37,6 +69,8 @@ export default {
   data () {
     return {
       loading: true,
+      ask_validation: false,
+      validationFile: null,
       search: ""
     };
   },
@@ -49,6 +83,10 @@ export default {
   methods: {
     ...mapActions("interventions", ["fetchInterventions"]),
     ...mapActions("user", ["fetchUser"]),
+    validate (event) {
+      console.log(event)
+      this.ask_validation = true
+    }
   },
   created () {
     this.fetchInterventions().then(() => {

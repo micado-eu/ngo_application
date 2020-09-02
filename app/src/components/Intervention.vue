@@ -10,7 +10,7 @@
         style="width:70px:border-radius:2px"
         color="info"
         label="Validate"
-        @click="hide()"
+        @click="doValidation()"
       />
     </div>
   </div>
@@ -24,7 +24,9 @@ export default {
   name: 'Intervention',
   props: ["the_intervention"],
   data () {
-    return {}
+    return {
+
+    }
   },
   computed: {
     ...mapGetters("user", ["userByid"]),
@@ -38,6 +40,10 @@ export default {
       }
     }
   },
-
+  methods: {
+    doValidation () {
+      this.$emit('doValidation', this.the_intervention)
+    }
+  }
 }
 </script>
