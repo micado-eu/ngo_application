@@ -98,9 +98,11 @@ export default {
     }
   },
   computed: {
-     processes () {
+     /*processes () {
       return this.$store.state.flows.flows
-    }, 
+    }, */
+    ...mapGetters("flows", ["processes"]),
+    ...mapGetters("comments", ["comments"]),
     filteredProcesses () {
         //if none of the fields is filled in it will give the full list of processes
         if( this.search == "") {
@@ -117,20 +119,13 @@ export default {
           var searchArray = this.search.split(" ")
           if (searchArray.every(string => curlangproc.process.toLowerCase().includes(string))) {
             return true;
-          }        })
-
-       /*    return this.processes.filter((filt) =>{
-          //Splits the search field and puts the words in an array
-          var searchArray = this.search.split(" ")
-          if( searchArray.every(string => filt.title.toLowerCase().includes(string))){
-              return true;
-            }}) 
-        } */
+          }
+          })
         }
     }, 
-    comments(){
+    /*comments(){
       return this.$store.state.comments.comments
-    }
+    }*/
   },
   methods: {
     ...mapActions("comments", [
@@ -159,20 +154,19 @@ export default {
     })[0]
     console.log("i am the process")
     console.log(the_process)
+    var payload = {comment : this.int_comment_shell, process: the_process}
     if(this.is_new){
-    
-    this.$store.dispatch('comments/saveComments', {comment : this.int_comment_shell, process: the_process})
-    // console.log(new_comment)
+    //this.$store.dispatch('comments/saveComments', {comment : this.int_comment_shell, process: the_process})
+    this.saveComments(payload)
     this.hideForm = true
     this.createShell()
     for(var i = 0; i< this.$refs.process.length; i++){
         this.$refs.process[i].restore()
       }
-     
-     
-    }
+     }
     else{
-      this.$store.dispatch('comments/editComments',  {comment : this.int_comment_shell, process: the_process})
+      this.editComments(payload)
+      //this.$store.dispatch('comments/editComments',  {comment : this.int_comment_shell, process: the_process})
       console.log("EDITED")
       console.log(this.$store.comments)
       this.hideForm = true
@@ -190,7 +184,8 @@ export default {
       }
     },
      deleteComment(comment){
-      this.$store.dispatch('comments/deleteComments', comment.id)
+      this.deleteComments(comment.id)
+      //this.$store.dispatch('comments/deleteComments', comment.id)
       this.hideForm = true
       for(var i = 0; i< this.$refs.process.length; i++){
         this.$refs.process[i].restore()
@@ -198,10 +193,8 @@ export default {
     },
     editComment(value){
        /*THIS IS THE VERSION OF EDIT THAT WORKS WITH THE BACKEND*/
-       console.log("THIS IS THE PROCESS")
-       console.log("these are the tenant specific comments")
-       console.log(this.comments)
-      console.log(value)
+      console.log("these are the tenant specific comments")
+      console.log(this.comments)
       var process_comments = []
       var current_comment = null
       if(value.comments != null){
@@ -215,15 +208,13 @@ export default {
         //console.log(process_comments[i])
        return com.id == process_comments[i]
      })[0]
-     
      if( the_comment != null ){
        current_comment = the_comment
        break;
-       
-     }
+       }
      }
     console.log(current_comment)
-     console.log("I AM THE CIMMMENT")
+     console.log("I AM THE COMMENT")
      console.log(current_comment)
      if(current_comment == null){
        console.log("inside if")
@@ -234,24 +225,20 @@ export default {
         this.$refs.process[i].hide()
       }
        this.hideForm= false
-    
-
-     }
+    }
      else{
-              console.log("inside else")
-
+    console.log("inside else")
     this.is_new = false
-     this.mergeProcess(current_comment)
-     console.log(current_comment)
-      console.log(value)
-      for(var i = 0; i< this.$refs.process.length; i++){
-        this.$refs.process[i].hide()
+    this.mergeProcess(current_comment)
+    console.log(current_comment)
+    console.log(value)
+    for(var i = 0; i< this.$refs.process.length; i++){
+      this.$refs.process[i].hide()
       }
       console.log(this.$refs.process)
       //this.$refs.process.restore()
        this.hideForm = false
      }
-    
     },
 createShell () {
       this.int_comment_shell = { id: -1, idProcess : -1, translations:[], published: false, publicationdate: null, tenantId: this.temp_tenant_id }
@@ -285,7 +272,8 @@ createShell () {
     this.createShell()
     this.loading = true
     console.log(this.$store);
-    this.$store.dispatch('flows/fetchFlows')
+    //this.$store.dispatch('flows/fetchFlows')
+    this.fetchFlows()
       .then(processes => {
         this.loading = false
         console.log(processes)

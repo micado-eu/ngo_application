@@ -1,4 +1,3 @@
-/*
-export function someGetter (state) {
-}
-*/
+export function processes(state) {
+    return state.flows
+  }
