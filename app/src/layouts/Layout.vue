@@ -1,6 +1,9 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-accent">
+    <q-header
+      elevated
+      class="bg-accent"
+    >
       <q-toolbar>
         <q-btn
           flat
@@ -20,7 +23,7 @@
     <q-footer>
       <q-tabs>
         <q-route-tab
-          v-for="(nav, index) in navs"
+          v-for="(nav) in navs"
           :to="nav.to"
           :key="nav.label"
           :label="nav.label"
@@ -42,7 +45,7 @@
         <q-item
           clickable
           exact
-          v-for="(nav, index) in navs"
+          v-for="(nav) in navs"
           :to="nav.to"
           :key="nav.label"
           active
@@ -75,7 +78,7 @@ export default {
     AuthMenu
   },
 
-  data() {
+  data () {
     return {
       leftDrawerOpen: false,
       navs: [
@@ -91,12 +94,12 @@ export default {
         //        {label:'menu.notifications', icon: 'mail_outline', to: '/notifications', description: 'messages from PA'},
         //        {label:'menu.search', icon: 'search', to: '/map', description: "PA's services around you"},
         //        {label:'menu.speech', icon: 'record_voice_over', to: '/speech', description: "I'll listen to you"},
-       /* {
-          label: "menu.migrant",
-          icon: "face",
-          to: "/migrant",
-          description: "view migrant user information"
-        },*/
+        /* {
+           label: "menu.migrant",
+           icon: "face",
+           to: "/migrant",
+           description: "view migrant user information"
+         },*/
         {
           label: "menu.information_centre",
           icon: "description",
@@ -108,6 +111,12 @@ export default {
           icon: "linear_scale",
           to: "/guided_process_editor",
           description: "Edit guided processes information"
+        },
+        {
+          label: "menu.interventions",
+          icon: "linear_scale",
+          to: "/interventions",
+          description: "Check validation requests"
         },
         {
           label: "menu.settings",

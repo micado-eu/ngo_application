@@ -7,8 +7,8 @@
       new_url="information/new"
       :edit_url_fn="getEditRoute"
       icon_name="document"
-      add_label="Add Event"
-      title="Information centre"
+      add_label="button.add_event"
+      title="information_centre.list_title"
       categories_enabled
       tags_enabled
     />
@@ -31,7 +31,7 @@ export default {
   computed: {
     ...mapGetters("information", ["information"]),
     ...mapGetters("information_category", ["informationCategories"]),
-    ...mapGetters("information_tags", ["informationTagsByEvent"])
+    ...mapGetters("information_tags", ["informationTagsByEvent"]),
   },
   methods: {
     ...mapActions("information", [
@@ -66,10 +66,10 @@ export default {
             );
             elem.category = informationCategoryElems[idxCategoryObject];
             // Set tag-elements relations
-            elem.tags = this.informationTagsByEvent(elem.id);
+            elem.tags = this.informationTagsByEvent(elem.id)
           }
           this.loading = false;
-        });
+        })
       });
     });
   }

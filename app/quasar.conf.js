@@ -81,19 +81,20 @@ module.exports = function (ctx) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack(cfg) {
+      extendWebpack (cfg) {
       },
-      chainWebpack(chain, { isServer, isClient }) {
+      chainWebpack (chain, { isServer, isClient }) {
         chain.resolve.alias.set('api-chatbot-client', 'src/api/chatbot/mock');
         chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock');
         chain.resolve.alias.set('api-information-client', 'src/api/information/server');
         chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/server');
         chain.resolve.alias.set('api-information_tags-client', 'src/api/information_tags/server');
-        chain.resolve.alias.set('api-user-client', 'src/api/user/mock');
+        chain.resolve.alias.set('api-user-client', 'src/api/user/server');
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/server');
         chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/server');
         chain.resolve.alias.set('api-language-client', 'src/api/language/server');
         chain.resolve.alias.set('api-settings-client', 'src/api/settings/server');
+        chain.resolve.alias.set('api-interventions-client', 'src/api/interventions/server');
         chain.resolve.alias.set('api-comments-client', 'src/api/comments/server');
       }
     },
@@ -166,7 +167,7 @@ module.exports = function (ctx) {
     electron: {
       // bundler: 'builder', // or 'packager'
 
-      extendWebpack(cfg) {
+      extendWebpack (cfg) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       },
