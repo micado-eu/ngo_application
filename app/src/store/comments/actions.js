@@ -9,6 +9,11 @@ export function fetchComments(state, data) {
     .fetchComments()
     .then(comments => state.commit('setComments', comments))
 }
+export function fetchCommentsByTenant(state, tenant_id) {
+  return client
+    .fetchCommentsByTenant(tenant_id)
+    .then(comments => state.commit('setComments', comments))
+}
 
 export function editComments (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
@@ -33,7 +38,7 @@ export function saveComments (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions save comment:")
   console.log(payload.comment)
-  let savingComment= JSON.parse(JSON.stringify(payload.comment, ['published', 'publicationdate']));
+  let savingComment= JSON.parse(JSON.stringify(payload.comment, ['published', 'publicationdate', 'tenantId']));
   console.log(savingComment)
   var the_process = payload.process
   console.log(the_process)
@@ -58,11 +63,12 @@ export function saveComments (state, payload) {
      
       state.commit('saveComments', payload.comment)
       if(the_process.comments == null){
-        the_process.comments = [{idprocess : payload.process.id, idcomment : payload.comment.id}]
+        the_process.comments = [{idprocess : payload.process.id, idcomment : comment_return.id}]
         //
       }
       else{
-        the_process.comments.push({idprocess : process.id, idcomment : comment.id})
+        the_process.comments.push({idprocess : payload.process.id, idcomment : comment_return.id})
+        console.log(the_process.comments)
       }
 
       state.commit('flows/editProcess', the_process, { root: true })

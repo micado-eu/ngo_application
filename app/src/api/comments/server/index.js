@@ -8,6 +8,12 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler);
   },
+  fetchCommentsByTenant(tenant_id) {
+    return axiosInstance
+      .get('/backend/1.0.0/comments?filter[include][0][relation]=translations&filter[where][tenantId]=' + tenant_id)
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
   saveComment (comment) {
     // create fake id here
     return axiosInstance
@@ -53,7 +59,7 @@ export default {
     const whereClause = {
       id: { eq: comment.id }
     },
-      updatingTopic = (comment.publicationDate == null) ? JSON.parse(JSON.stringify(comment, ['id', 'published'])) : comment
+      updatingTopic = (comment.publicationDate == null) ? JSON.parse(JSON.stringify(comment, ['id', 'published', 'tenantId'])) : comment
 
     return axiosInstance
       .patch('/backend/1.0.0/comments?where=' + JSON.stringify(whereClause), updatingTopic)

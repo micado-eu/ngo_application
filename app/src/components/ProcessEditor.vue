@@ -78,6 +78,7 @@
 <script>
 import Process from './guided_process_editor/Process'
 import editEntityMixin from '../mixin/editEntityMixin'
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: 'DocumentType',
   props: {
@@ -89,6 +90,7 @@ export default {
   },
   data () {
     return {
+      temp_tenant_id:2,
       is_new : true,
       search: ' ',
       hideForm: true,
@@ -131,6 +133,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions("comments", [
+      "fetchCommentsByTenant",
+      "saveComments",
+      "editComments",
+      "deleteComments",
+    ]),
+    ...mapActions("flows", [
+      "fetchFlows"
+    ]),
     showProcessLabel (workingProcess) {
       return workingProcess.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
     },
@@ -151,7 +162,6 @@ export default {
     if(this.is_new){
     
     this.$store.dispatch('comments/saveComments', {comment : this.int_comment_shell, process: the_process})
-    
     // console.log(new_comment)
     this.hideForm = true
     this.createShell()
@@ -189,6 +199,8 @@ export default {
     editComment(value){
        /*THIS IS THE VERSION OF EDIT THAT WORKS WITH THE BACKEND*/
        console.log("THIS IS THE PROCESS")
+       console.log("these are the tenant specific comments")
+       console.log(this.comments)
       console.log(value)
       var process_comments = []
       var current_comment = null
@@ -242,7 +254,7 @@ export default {
     
     },
 createShell () {
-      this.int_comment_shell = { id: -1, idProcess : -1, translations:[], published: false, publicationdate: null }
+      this.int_comment_shell = { id: -1, idProcess : -1, translations:[], published: false, publicationdate: null, tenantId: this.temp_tenant_id }
       this.languages.forEach(l => {
         this.int_comment_shell.translations.push({ id: -1, lang: l.lang, comment: '', translationDate: null })
       });
@@ -252,7 +264,7 @@ createShell () {
       console.log(process)
       this.int_comment_shell.id = comment.id
       this.int_comment_shell.idProcess = comment.idProcess
-      
+      this.int_comment_shell.tenantId = comment.tenantId
       //this.edit_process.applicableUsers = process.applicableUsers
       //    this.edit_process.processTopics = process.processTopics
       comment.translations.forEach(pr => {
@@ -278,7 +290,8 @@ createShell () {
         this.loading = false
         console.log(processes)
       })  
-      this.$store.dispatch('comments/fetchComments')
+      //this.$store.dispatch('comments/fetchCommentsByTenant', this.temp_tenant_id)
+      this.fetchCommentsByTenant(this.temp_tenant_id)
       .then(comments => {
         this.loading = false
       })  
