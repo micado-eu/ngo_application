@@ -1,11 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import createPersistedState from 'vuex-persistedstate'
 import VuexORM from '@vuex-orm/core'
 import VuexORMAxios from '@vuex-orm/plugin-axios'
 import Organization from '../models/Organization'
 import Course from '../models/Course'
 import flows from './flows'
+import auth from './auth'
 import glossary from './glossary'
 import language from './language'
 import settings from './settings'
@@ -41,6 +43,7 @@ export default function (/* { ssrContext } */) {
     modules: {
       // example
       //    chatbot,
+      auth,
       documents,
       information,
       user,
@@ -56,7 +59,8 @@ export default function (/* { ssrContext } */) {
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV
+    strict: process.env.DEV,
+    plugins: [createPersistedState()]
   })
 
   return Store
