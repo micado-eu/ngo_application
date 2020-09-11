@@ -3,7 +3,7 @@ import InformationNewPage from '../pages/information_centre/InformationNewPage.v
 import InformationEditPage from '../pages/information_centre/InformationEditPage.vue'
 import Settings from '../components/Settings.vue'
 import MigrantManager from '../components/MigrantManager'
-import ProcessEditor from '../components/ProcessEditor.vue'
+import ProcessList from '../pages/ProcessList.vue'
 
 const routes = [
   {
@@ -20,7 +20,7 @@ const routes = [
       { path: '/information/:id/edit/', component: InformationEditPage },
       { path: '/settings', component: Settings },
       { path: '/migrant', component: MigrantManager },
-      { path: '/guided_process_editor', component: ProcessEditor },
+      { path: '/guided_process_editor', component: ProcessList },
 
       //       { path: '/notifications', component: () => import('components/Notifications.vue') },
       //       { path: '/speech', component: () => import('pages/Speech.vue') },
