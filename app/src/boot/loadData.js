@@ -1,21 +1,44 @@
 import { setLocale } from './i18n'
 
 export default async ({ store, Vue }) => {
-    // await store.dispatch('statistics/fetchStatistics');
-    //await store.dispatch('features/fetchFeatures');
-    await store.dispatch("language/fetchLanguages")
+    //    await store.dispatch('statistics/fetchStatistics');
+    var curlang = ''
+    var defaultLangString = ''
+    var defaultLang = {}
+    var userLang = {}
+
+    await store.dispatch('features/fetchFeatures');
+    await store.dispatch("language/fetchActiveLanguages")
+
     await store.dispatch('settings/fetchSettings')
         .then(settings => {
             console.log("#####################################")
             console.log(settings)
-            var curlang = settings.filter((setting) => { return setting.key == 'default_language' })[0]
-            setLocale(curlang.value)
-            var defaultLang = store.state.language.languages.filter(function (l) { return l.lang == curlang.value })[0]
-            //setLocale(defaultLang.isoCode)
-            var defaultLangString = defaultLang.name
+            curlang = settings.filter((setting) => { return setting.key == 'default_language' })[0]
+            defaultLang = store.state.language.languages.filter(function (l) { return l.lang == curlang.value })[0]
+            console.log("default lang")
+            console.log(defaultLang)
+            var migrant_tenant = settings.filter((setting) => { return setting.key == 'migrant_tenant' })[0]
+
+            defaultLangString = defaultLang.name
             Vue.prototype.$defaultLangString = defaultLangString
             Vue.prototype.$defaultLang = defaultLang.lang
-            Vue.prototype.$userLang = defaultLang.lang
+            // somewhere we need to set the userLang reading it dfrom the user preferences and we will override this value
+            // TODO: Save this setting in db instead of local storage
+            /*
+                        if (localStorage.lang === null) {
+                            console.log("localstorage undefined")
+            
+                            localStorage.lang = defaultLang.lang
+                        }
+                        */
+            Vue.prototype.$userLang = localStorage.lang
+            Vue.prototype.$migrant_tenant = migrant_tenant.value
+            console.log("localstorage lang")
+            console.log(localStorage.lang)
+            userLang = store.state.language.languages.filter(function (l) { return l.lang == localStorage.lang })[0]
+            console.log(userLang)
+            setLocale(defaultLang)
 
         })
 

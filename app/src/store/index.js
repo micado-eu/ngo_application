@@ -19,6 +19,7 @@ import information from './information'
 import information_category from './information_category'
 import information_tags from './information_tags'
 import user from './user'
+import features from './features'
 import interventions from './interventions'
 
 VuexORM.use(VuexORMAxios, { axios })
@@ -46,6 +47,7 @@ export default function (/* { ssrContext } */) {
       auth,
       documents,
       information,
+      features,
       user,
       flows,
       glossary,

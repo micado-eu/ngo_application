@@ -90,6 +90,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/server');
         chain.resolve.alias.set('api-information_tags-client', 'src/api/information_tags/server');
         chain.resolve.alias.set('api-user-client', 'src/api/user/server');
+        chain.resolve.alias.set('api-features-client', 'src/api/features/server');
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/server');
         chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/server');
         chain.resolve.alias.set('api-language-client', 'src/api/language/server');

@@ -33,7 +33,7 @@ export default ({ app, router, store, Vue }) => {
   /**
    * Register auth store
    */
-  store.registerModule('auth', auth)
+  //store.registerModule('auth', auth)
 
   /**
    * Set route guard
@@ -41,14 +41,35 @@ export default ({ app, router, store, Vue }) => {
   router.beforeEach((to, from, next) => {
     const record = to.matched.find(record => record.meta.auth)
     if (record) {
-      store.dispatch('auth/fetch').then(() => {
+      console.log("nel routerguard")
+      console.log(record)
+      console.log(store)
+      store.dispatch('auth/fetch')
+      if (!store.getters['auth/loggedIn']) {
+        console.log("not logget in")
+        router.push('/reserved')
+      } else if (
+        isArrayOrString(record.meta.auth) &&
+        !store.getters['auth/check'](record.meta.auth)
+      ) {
+        console.log("nel elseif")
+        router.push('/account')
+      } else {
+        next()
+      }
+      /*
+      .then(() => {
         console.log("called fetch")
+        console.log(store)
+
         if (!store.getters['auth/loggedIn']) {
+          console.log("not logget in")
           router.push('/')
         } else if (
           isArrayOrString(record.meta.auth) &&
           !store.getters['auth/check'](record.meta.auth)
         ) {
+          console.log("nel elseif")
           router.push('/account')
         }
       }).catch(err => {
@@ -58,6 +79,7 @@ export default ({ app, router, store, Vue }) => {
       }).finally(() => {
         next()
       })
+      */
     } else {
       next()
     }
@@ -152,5 +174,20 @@ export default ({ app, router, store, Vue }) => {
   helper.passwordReset = (data) => { return store.dispatch('auth/passwordReset', data) }
   helper.fetch = () => { return store.dispatch('auth/fetch') }
   helper.user = () => { return store.getters['auth/user'] }
+  helper.token = () => { return store.getters['auth/token'] }
   Vue.prototype.$auth = helper
 }
+
+
+/*
+Authorization Endpoint URL: 	https://identity.micadoproject.eu/oauth2/authorize
+Token Endpoint URL: 	https://identity.micadoproject.eu/oauth2/token
+Token Revocation Endpoint URL: 	https://identity.micadoproject.eu/oauth2/revoke
+Token Introspection Endpoint URL: 	https://identity.micadoproject.eu/oauth2/introspect
+User Info Endpoint URL: 	https://identity.micadoproject.eu/oauth2/userinfo
+Session IFrame Endpoint URL: 	https://identity.micadoproject.eu/oidc/checksession
+Logout Endpoint URL: 	https://identity.micadoproject.eu/oidc/logout
+Web finger Endpoint URL: 	https://identity.micadoproject.eu/.well-known/webfinger
+Discovery Endpoint URL: 	https://identity.micadoproject.eu/t/migrants.micado.eu/oauth2/oidcdiscovery
+Dynamic Client Registration Endpoint URL: 	https://identity.micadoproject.eu/t/migrants.micado.eu/api/identity/oauth2/dcr/v1.1/register
+*/

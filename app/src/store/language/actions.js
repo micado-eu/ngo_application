@@ -1,9 +1,9 @@
 import client from 'api-language-client'
 
-export function fetchLanguages(state) {
+export function fetchActiveLanguages (state) {
   return client
-    .fetchLanguages()
-    .then(languages => state.commit('setLanguages', languages))
+    .fetchActiveLanguages()
+    .then(languages => state.commit('setActiveLanguages', languages))
 }
 
 export function setLanguageActive(state, payload) {

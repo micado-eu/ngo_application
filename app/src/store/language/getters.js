@@ -1,3 +1,3 @@
-export function languages (state) {
+export function activeLanguages (state) {
     return state.languages;
 }
