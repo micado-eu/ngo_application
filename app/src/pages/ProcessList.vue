@@ -35,6 +35,12 @@
             />
           </q-tab-panel>
         </q-tab-panels>
+        <div>
+          <q-btn-toggle
+            v-model="translatedState"
+            :options="selectOptions"
+          />
+        </div>
         <q-btn
           color="accent"
           unelevated
@@ -94,6 +100,7 @@
           :Tag_1="process.user_tags"
           :Tag_2="process.topic_tags"
           :Link="process.id"
+          translatedState="1"
           Path="guided_process_editor"
           @remove="deleteProcess"
           @comment="editComment"
@@ -124,7 +131,8 @@ export default {
       is_new: true,
       search: ' ',
       hideForm: true,
-      int_comment_shell: { id: -1, idProcess: -1, translations: [] }
+      int_comment_shell: { id: -1, idProcess: -1, translations: [] },
+      selectOptions: this.$translationStateOptions
     }
   },
   computed: {

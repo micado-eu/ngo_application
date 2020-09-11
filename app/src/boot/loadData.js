@@ -19,10 +19,24 @@ export default async ({ store, Vue }) => {
             console.log("default lang")
             console.log(defaultLang)
             var migrant_tenant = settings.filter((setting) => { return setting.key == 'migrant_tenant' })[0]
-
+            console.log(settings.filter((setting) => { return setting.key == 'translationState' })[0].value)
+            var translationState = JSON.parse(settings.filter((setting) => { return setting.key == 'translationState' })[0].value)
+            console.log(translationState)
+            let translationStateOptions = []
+            translationState.forEach(state => {
+                console.log(state)
+                console.log(defaultLang)
+                let label = state.translation.filter((s) => { return s.lang == defaultLang.lang })[0]
+                translationStateOptions.push({ "value": state.value, "label": label.state })
+            });
+            console.log(translationStateOptions)
+            Vue.prototype.$translationState = translationState
+            Vue.prototype.$translationStateOptions = translationStateOptions
             defaultLangString = defaultLang.name
             Vue.prototype.$defaultLangString = defaultLangString
             Vue.prototype.$defaultLang = defaultLang.lang
+            console.log("translationState")
+
             // somewhere we need to set the userLang reading it dfrom the user preferences and we will override this value
             // TODO: Save this setting in db instead of local storage
             /*
