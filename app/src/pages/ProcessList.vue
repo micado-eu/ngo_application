@@ -36,10 +36,7 @@
           </q-tab-panel>
         </q-tab-panels>
         <div>
-          <q-btn-toggle
-            v-model="translatedState"
-            :options="selectOptions"
-          />
+          <TranslateStateButton v-model="translatedState" />
         </div>
         <q-btn
           color="accent"
@@ -100,7 +97,6 @@
           :Tag_1="process.user_tags"
           :Tag_2="process.topic_tags"
           :Link="process.id"
-          translatedState="1"
           Path="guided_process_editor"
           @remove="deleteProcess"
           @comment="editComment"
@@ -114,6 +110,7 @@
 
 <script>
 import Process from '../components/guided_process_editor/Process'
+import TranslateStateButton from '../components/TranslateStateButton'
 import storeMappingMixin from '../mixin/storeMappingMixin'
 
 import editEntityMixin from '../mixin/editEntityMixin'
@@ -137,7 +134,7 @@ export default {
   }),
     editEntityMixin],
   components: {
-    Process
+    Process, TranslateStateButton
   },
   data () {
     return {
@@ -145,6 +142,7 @@ export default {
       is_new: true,
       search: ' ',
       hideForm: true,
+      translatedState: 1,
       int_comment_shell: { id: -1, idProcess: -1, translations: [] },
       selectOptions: this.$translationStateOptions
     }
