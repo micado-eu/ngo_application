@@ -114,6 +114,8 @@
 
 <script>
 import Process from '../components/guided_process_editor/Process'
+import storeMappingMixin from '../mixin/storeMappingMixin'
+
 import editEntityMixin from '../mixin/editEntityMixin'
 import { mapGetters, mapActions } from "vuex";
 export default {
@@ -121,7 +123,19 @@ export default {
   props: {
     msg: String
   },
-  mixins: [editEntityMixin],
+  mixins: [storeMappingMixin({
+    getters: {
+      processes: 'flows/processes',
+      comments: 'comments/comments'
+    }, actions: {
+      fetchCommentsByTenant: 'comments/fetchCommentsByTenant',
+      saveComments: 'comments/saveComments',
+      editComments: 'comments/editComments',
+      deleteComments: 'comments/deleteComments',
+      fetchFlows: 'flows/fetchFlows'
+    }
+  }),
+    editEntityMixin],
   components: {
     Process
   },
@@ -139,8 +153,8 @@ export default {
     /*processes () {
      return this.$store.state.flows.flows
    }, */
-    ...mapGetters("flows", ["processes"]),
-    ...mapGetters("comments", ["comments"]),
+    //   ...mapGetters("flows", ["processes"]),
+    //   ...mapGetters("comments", ["comments"]),
     filteredProcesses () {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -167,6 +181,7 @@ export default {
     }*/
   },
   methods: {
+    /*
     ...mapActions("comments", [
       "fetchCommentsByTenant",
       "saveComments",
@@ -176,6 +191,7 @@ export default {
     ...mapActions("flows", [
       "fetchFlows"
     ]),
+    */
     showProcessLabel (workingProcess) {
       return workingProcess.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
     },
