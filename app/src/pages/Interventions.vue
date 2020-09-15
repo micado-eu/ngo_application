@@ -61,11 +61,21 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+//import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../mixin/storeMappingMixin'
 import Intervention from '../components/Intervention'
+//import { mixin } from 'vue/types/umd';
 
 export default {
   // name: 'PageName',
+  mixins: [storeMappingMixin({
+    getters: {
+      interventions: 'interventions/interventions'
+    }, actions: {
+      fetchInterventions: 'interventions/fetchInterventions',
+      fetchUser: 'user/fetchUser'
+    }
+  })],
   data () {
     return {
       loading: true,
@@ -78,11 +88,11 @@ export default {
     Intervention
   },
   computed: {
-    ...mapGetters("interventions", ["interventions"]),
+    //    ...mapGetters("interventions", ["interventions"]),
   },
   methods: {
-    ...mapActions("interventions", ["fetchInterventions"]),
-    ...mapActions("user", ["fetchUser"]),
+    //    ...mapActions("interventions", ["fetchInterventions"]),
+    //    ...mapActions("user", ["fetchUser"]),
     validate (event) {
       console.log(event)
       this.ask_validation = true
