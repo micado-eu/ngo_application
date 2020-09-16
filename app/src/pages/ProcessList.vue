@@ -38,7 +38,10 @@
             <div>
               <TranslateStateButton
                 v-model="int_comment_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+                :isForDefaultLanguage="language.lang===activeLanguage"
+                :objectId="int_comment_shell.id"
                 :readonly="!(language.lang===activeLanguage)"
+                @micado-change="test"
               />
             </div>
           </q-tab-panel>
@@ -325,6 +328,18 @@ export default {
         }
       });
 
+    },
+    test (id) {
+      console.log("received also mocado-change")
+      console.log(id)
+      this.changeTranslationState(this.int_comment_shell, id.state)
+    },
+    changeTranslationState (element, state) {
+      console.log(element)
+      element.translations.forEach(el => {
+        el.translationState = state
+      })
+      console.log(element)
     }
   },
   created () {
