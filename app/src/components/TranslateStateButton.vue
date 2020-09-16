@@ -1,9 +1,19 @@
 <template>
   <q-btn-toggle
+    toggle-color="accent"
+    toggle-text-color="white"
+    size="sm"
+    :readonly="readonly"
     v-bind:value="value"
     :options="selectOptions"
-    v-on:input="val => { if(this.value!=2){$emit('input', val)}else{
-      $q.notify('Content in translation you cannot change its state')}}"
+    v-on:input="val => { 
+      if(this.value!=2){
+        if((this.value==0 && val==1)||(this.value==1 && val==0)){
+        $emit('input', val)
+        }else{$q.notify('you cannot change to that state')}
+      }else{
+      $q.notify('Content in translation you cannot change its state')
+      }}"
   />
 </template>
 
@@ -12,7 +22,7 @@
 //val => valueChanged(val)
 export default {
   name: 'TranslateStateButton',
-  props: ['value'],
+  props: ['value', 'readonly'],
 
   data () {
     return {
@@ -30,6 +40,10 @@ export default {
         $emit('input', event)
       //      $emit('input', $event.target.value)
     }
+  },
+  created () {
+    console.log("the readonly")
+    console.log(this.readonly)
   }
 
 }

@@ -6,8 +6,8 @@
           v-model="langTab"
           dense
           class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
+          active-color="accent"
+          indicator-color="accent"
           align="justify"
           narrow-indicator
         >
@@ -32,12 +32,17 @@
               filled
               type="textarea"
               label="Comment"
+              :readonly="!(int_comment_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             />
+            <div>
+              <TranslateStateButton
+                v-model="int_comment_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+                :readonly="!(language.lang===activeLanguage)"
+              />
+            </div>
           </q-tab-panel>
         </q-tab-panels>
-        <div>
-          <TranslateStateButton v-model="translatedState" />
-        </div>
+
         <q-btn
           color="accent"
           unelevated
@@ -296,7 +301,7 @@ export default {
     createShell () {
       this.int_comment_shell = { id: -1, idProcess: -1, translations: [], published: false, publicationdate: null, tenantId: this.temp_tenant_id }
       this.languages.forEach(l => {
-        this.int_comment_shell.translations.push({ id: -1, lang: l.lang, comment: '', translationDate: null })
+        this.int_comment_shell.translations.push({ id: -1, lang: l.lang, comment: '', translationDate: null, translationState: 0 })
       });
     },
     mergeProcess (comment) {
