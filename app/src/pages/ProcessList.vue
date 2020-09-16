@@ -5,7 +5,7 @@
         <q-tabs
           v-model="langTab"
           dense
-          class="text-grey"
+          class="bg-grey-2"
           active-color="accent"
           indicator-color="accent"
           align="justify"
@@ -20,6 +20,7 @@
         </q-tabs>
         <q-tab-panels
           v-model="langTab"
+          class="bg-grey-2 inset-shadow "
           animated
         >
           <q-tab-panel
