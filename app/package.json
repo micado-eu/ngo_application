@@ -11,7 +11,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.6.4",
+    "@quasar/extras": "^1.9.5",
     "@uppy/core": "^1.6.0",
     "@uppy/dashboard": "^1.5.0",
     "@uppy/tus": "^1.5.0",
@@ -21,7 +21,7 @@
     "axios-jsonp": "^1.0.4",
     "fuse.js": "^6.0.0",
     "jsonapi-vuex": "^3.1.1",
-    "quasar": "^1.9.14",
+    "quasar": "^1.14.0",
     "tiptap": "^1.27.1",
     "tiptap-extensions": "^1.29.1",
     "uppy": "^1.6.0",
@@ -33,7 +33,7 @@
     "vuex-persistedstate": "^3.1.0"
   },
   "devDependencies": {
-    "@quasar/app": "^1.7.0",
+    "@quasar/app": "^1.9.6",
     "quasar-app-extension-auth-token-based": "^0.3.1"
   },
   "engines": {
