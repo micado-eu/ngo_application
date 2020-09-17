@@ -47,7 +47,7 @@ export default {
     console.log(this.readonly)
     console.log(this.selectOptions)
     this.selectOptions[3].disable = this.isForDefaultLanguage
-    this.selectOptions[3]['v-show'] = this.isForDefaultLanguage
+    this.selectOptions[3].class = this.isForDefaultLanguage ? "hidden" : ""
     console.log(this.selectOptions)
     console.log(this.objectId)
 
