@@ -59,7 +59,7 @@ export default {
     const whereClause = {
       id: { eq: comment.id }
     },
-      updatingTopic = (comment.publicationDate == null) ? JSON.parse(JSON.stringify(comment, ['id', 'published', 'tenantId'])) : comment
+      updatingTopic = JSON.parse(JSON.stringify(comment, ['id','tenantId']))
 
     return axiosInstance
       .patch('/backend/1.0.0/comments?where=' + JSON.stringify(whereClause), updatingTopic)

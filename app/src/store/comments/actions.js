@@ -38,7 +38,7 @@ export function saveComments (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions save comment:")
   console.log(payload.comment)
-  let savingComment= JSON.parse(JSON.stringify(payload.comment, ['published', 'publicationdate', 'tenantId']));
+  let savingComment= JSON.parse(JSON.stringify(payload.comment, ['tenantId']));
   console.log(savingComment)
   var the_process = payload.process
   console.log(the_process)

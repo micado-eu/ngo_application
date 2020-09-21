@@ -303,7 +303,7 @@ export default {
       }
     },
     createShell () {
-      this.int_comment_shell = { id: -1, idProcess: -1, translations: [], published: false, publicationdate: null, tenantId: this.temp_tenant_id }
+      this.int_comment_shell = { id: -1, idProcess: -1, translations: [], tenantId: this.temp_tenant_id }
       this.languages.forEach(l => {
         this.int_comment_shell.translations.push({ id: -1, lang: l.lang, comment: '', translationDate: null, translationState: 0 })
       });
