@@ -1,5 +1,10 @@
 import axios from 'axios'
 import qs from 'qs'
+import EnvConfig from '../helper/EnvConfig'
+
+const conf = new EnvConfig()
+console.log("in axios boot")
+console.log(conf.value("apiKey"))
 
 const axiosInstance = axios.create({
   paramsSerializer: params => {
