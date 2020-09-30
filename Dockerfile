@@ -8,6 +8,7 @@ RUN quasar build
 
 # production stage
 FROM alpine
+RUN apk add --no-cache gettext
 COPY --from=build-stage /code/dist/spa /var/www/html2
 VOLUME /var/www/html2/
 COPY busyscript.sh /usr/local/bin/busyscript
