@@ -1,5 +1,18 @@
-import fileconfig from '../statics/config.json'
+//import fileconfig from '../statics/config.json'
+import axios from 'axios'
+let fileconfig = null
+const sendGetRequest = async () => {
+    try {
+        const resp = await axios.get('/statics/config.json');
+        console.log(resp.data);
+        fileconfig = resp.data
+    } catch (err) {
+        // Handle Error Here
+        console.error(err);
+    }
+};
 
+sendGetRequest();
 
 export default class EnvConfig {
     constructor() {
