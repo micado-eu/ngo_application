@@ -15,7 +15,10 @@ export default class EnvConfig {
 
     value (name) {
         console.log("asking config for : " + name)
-        return this.configVals[name]
+        if (name in this.configVals) {
+            return this.configVals[name]
+        }
+        return undefined
     }
 
 }
