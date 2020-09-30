@@ -1,4 +1,4 @@
-import fileconfig from '../config/config.json'
+import fileconfig from '../statics/config.json'
 
 
 export default class EnvConfig {
