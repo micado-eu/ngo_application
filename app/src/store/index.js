@@ -15,6 +15,7 @@ import comments from './comments'
 // import example from './module-example'
 //import chatbot from './chatbot'
 import documents from './documents'
+import document_type from './document_type'
 import information from './information'
 import information_category from './information_category'
 import information_tags from './information_tags'
@@ -46,6 +47,7 @@ export default function (/* { ssrContext } */) {
       //    chatbot,
       auth,
       documents,
+      document_type,
       information,
       features,
       user,

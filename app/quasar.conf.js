@@ -86,7 +86,8 @@ module.exports = function (ctx) {
       },
       chainWebpack (chain, { isServer, isClient }) {
         chain.resolve.alias.set('api-chatbot-client', 'src/api/chatbot/mock');
-        chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock');
+        chain.resolve.alias.set('api-documents-client', 'src/api/documents/server');
+        chain.resolve.alias.set('api-document_type-client', 'src/api/document_type/server');
         chain.resolve.alias.set('api-information-client', 'src/api/information/server');
         chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/server');
         chain.resolve.alias.set('api-information_tags-client', 'src/api/information_tags/server');
