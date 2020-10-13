@@ -1,0 +1,34 @@
+[
+  {
+    "id": {
+      "scope": "bit.envs",
+      "name": "compilers/vue"
+    },
+    "isSymlink": false,
+    "hash": "1e73cc7feb6ce40c4f4c0fe862b44248f6dd4db1"
+  },
+  {
+    "id": {
+      "scope": "bit.envs",
+      "name": "compilers/utils"
+    },
+    "isSymlink": false,
+    "hash": "cc7bb2c0111e69015e8cf907fc7b13755039e61c"
+  },
+  {
+    "id": {
+      "scope": null,
+      "name": "translatestatebutton"
+    },
+    "isSymlink": true,
+    "hash": "915fd69a4889c18fed3b510c0c76bda644310550"
+  },
+  {
+    "id": {
+      "scope": "micado.shared",
+      "name": "translatestatebutton"
+    },
+    "isSymlink": false,
+    "hash": "c8ab0fbbba908f4c66691144aca68ab20a7ebaf8"
+  }
+]
