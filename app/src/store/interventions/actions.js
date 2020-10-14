@@ -5,7 +5,7 @@ export function someAction (context) {
 */
 export function fetchInterventions (state, data) {
     return client
-        .fetchInterventions()
+        .fetchInterventions(data.lang, data.ngoTenantId)
         .then(interventions => {
             console.log(interventions)
             state.commit('setInterventions', interventions)

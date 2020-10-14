@@ -2,11 +2,11 @@ import { axiosInstance } from 'boot/axios'
 import { error_handler } from '../../../helper/utility'
 
 export default {
-    fetchInterventions (ngoTenantId) {
+    fetchInterventions (lang, ngoTenantId) {
         console.log("sono il client di fetchInterventions")
         let filter = {}
         return axiosInstance
-            .get('/backend/1.0.0/individual-intervention-plans-ngo')
+            .get('/backend/1.0.0/individual-intervention-plans-ngo?lang=' + lang + '&tenantId=' + ngoTenantId)
             .then(response => response.data)
             .catch(error_handler);
 

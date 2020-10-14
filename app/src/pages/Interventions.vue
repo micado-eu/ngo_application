@@ -200,7 +200,7 @@ export default {
     },
   },
   created () {
-    this.fetchInterventions().then(() => {
+    this.fetchInterventions({ lang: this.activeLanguage, ngoTenantId: 3 }).then(() => {
       console.log(this.interventions)
       let userList = []
       this.interventions.forEach(a_int => {
