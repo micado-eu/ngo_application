@@ -165,11 +165,14 @@ export default {
                 file: this.validationFile
               }
               this.doc_shell.userId = this.validatingUser
+              this.doc_shell.userTenant = this.$migrant_tenant
               this.doc_shell.documentTypeId = this.validatingDocType
               this.doc_shell.validated = true
               this.doc_shell.validationDate = current_data
               this.doc_shell.uploadedByMe = false
               this.doc_shell.validatedByTenant = this.validatingIntervention.validating_user_tenant
+              // TODO substitute with proper value (now using the 17 as id of tenant 3)
+              this.doc_shell.validatedByUser = 17
               this.doc_shell.pictures.push({
                 id: -1,
                 picture: fileInfo.base64,
