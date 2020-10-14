@@ -119,7 +119,7 @@
 
 <script>
 import Process from '../components/guided_process_editor/Process'
-import TranslateStateButton from '../components/TranslateStateButton'
+import TranslateStateButton from '../components/shared/translatestatebutton/TranslateStateButton'
 import storeMappingMixin from '../mixin/storeMappingMixin'
 
 import editEntityMixin from '../mixin/editEntityMixin'

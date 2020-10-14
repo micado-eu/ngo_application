@@ -22,7 +22,7 @@
           v-for="interv in interventions"
           :key="interv.id"
           :the_intervention="interv"
-          @doValidation="validate($event)"
+          @doValidation="openValidateDialog($event)"
         />
       </q-list>
     </div>
@@ -36,8 +36,19 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
+          <q-select
+            filled
+            dense
+            clearable
+            emit-value
+            map-options
+            v-model="validatingDocType"
+            :options="this.t_docs"
+            :label="$t('input_labels.doc_type')"
+          />
           <q-file
             v-model="validationFile"
+            accept=".jpg, .pdf, image/*"
             label="Choose an optional file for validate"
           />
         </q-card-section>
@@ -48,10 +59,13 @@
         >
           <q-btn
             label="Cancel"
+            color="accent"
             v-close-popup
           />
           <q-btn
-            label="Add address"
+            label="Add document"
+            color="accent"
+            @click="validateTask()"
             v-close-popup
           />
         </q-card-actions>
@@ -63,6 +77,7 @@
 <script>
 //import { mapGetters, mapActions } from "vuex";
 import storeMappingMixin from '../mixin/storeMappingMixin'
+import editEntityMixin from '../mixin/editEntityMixin'
 import Intervention from '../components/Intervention'
 //import { mixin } from 'vue/types/umd';
 
@@ -70,17 +85,40 @@ export default {
   // name: 'PageName',
   mixins: [storeMappingMixin({
     getters: {
-      interventions: 'interventions/interventions'
+      interventions: 'interventions/interventions',
+      document_types: 'document_type/document_types'
     }, actions: {
       fetchInterventions: 'interventions/fetchInterventions',
-      fetchUser: 'user/fetchUser'
+      fetchDocumentType: 'document_type/fetchDocumentType',
+      fetchUser: 'user/fetchUser',
+      saveDocument: 'documents/saveDocument',
+      editIntervention: 'interventions/editIntervention'
     }
-  })],
+  }),
+    editEntityMixin],
   data () {
     return {
       loading: true,
       ask_validation: false,
       validationFile: null,
+      validatingIntervention: null,
+      validatingUser: null,
+      validatingDocType: null,
+      doc_shell: {
+        id: -1,
+        pictures: [],
+        userId: null,
+        userTenant: null,
+        askValidateByTenant: null,
+        validated: false,
+        validationDate: null,
+        validatedByTenant: null,
+        validatedByUser: null,
+        uploadedByMe: true,
+        expirationDate: null,
+        documentTypeId: ""
+      },
+      t_docs: [],
       search: ""
     };
   },
@@ -93,10 +131,70 @@ export default {
   methods: {
     //    ...mapActions("interventions", ["fetchInterventions"]),
     //    ...mapActions("user", ["fetchUser"]),
-    validate (event) {
+    openValidateDialog (event) {
       console.log(event)
+      this.validatingIntervention = event.intervention
+      this.validatingUser = event.userId
       this.ask_validation = true
-    }
+    },
+    validateTask () {
+      console.log("user id: " + this.validatingUser)
+      let current_data = new Date().toISOString()
+
+      // before validate the intervention and in the then check the file
+      this.validatingIntervention.completed = true
+      this.validatingIntervention.validation_date = current_data
+      // TODO change with the real user ID
+      this.validatingIntervention.validating_user_id = 1
+      this.editIntervention({ intervention: this.validatingIntervention, plan: this.validatingIntervention.list_id })
+        .then(() => {
+          if (this.validationFile) {
+            console.log("we have to upload a file to the user")
+            console.log(this.validationFile)
+            let reader = new FileReader()
+            // Convert the file to base64 text
+            reader.readAsDataURL(this.validationFile)
+            // on reader load somthing...
+            reader.onload = () => {
+              // Make a fileInfo Object
+              let fileInfo = {
+                name: this.validationFile.name,
+                type: this.validationFile.type,
+                size: Math.round(this.validationFile.size / 1000) + ' kB',
+                base64: reader.result,
+                file: this.validationFile
+              }
+              this.doc_shell.userId = this.validatingUser
+              this.doc_shell.documentTypeId = this.validatingDocType
+              this.doc_shell.validated = true
+              this.doc_shell.validationDate = current_data
+              this.doc_shell.uploadedByMe = false
+              this.doc_shell.validatedByTenant = this.validatingIntervention.validating_user_tenant
+              this.doc_shell.pictures.push({
+                id: -1,
+                picture: fileInfo.base64,
+                docId: -1,
+                order: null
+              })
+              // now we can send
+              this.saveDocument(this.doc_shell)
+                .then(() => {
+                  // still have to write the completed_intervention_document table to associate the new doc with the intervention
+
+                  this.createShell()
+                  this.validationFile = null
+                  this.validatingIntervention = null
+                  this.validatingUser = null
+                  this.validatingDocType = null
+                })
+            }
+
+          }
+        })
+    },
+    createShell () {
+      this.doc_shell = { id: -1, pictures: [], userId: null, userTenant: null, askValidateByTenant: null, validated: false, validationDate: null, validatedByTenant: null, validatedByUser: null, uploadedByMe: true, expirationDate: null, documentTypeId: "" }
+    },
   },
   created () {
     this.fetchInterventions().then(() => {
@@ -109,7 +207,15 @@ export default {
       this.fetchUser(userList).then(() => {
       })
     })
+    this.fetchDocumentType()
+      .then(document_types => {
+        console.log(document_types)
+        document_types.forEach(document_type => {
+          var the_doc = { label: document_type.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document, value: document_type.id }
+          this.t_docs.push(the_doc)
+        })
 
+      })
   }
 }
 </script>

@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   ngo_app_dev:
-    image: micadoproject/quasar:1.0.3
+    image: micadoproject/quasar:1.1.2
     stdin_open: true
     tty: true
     labels:
@@ -17,6 +17,7 @@ services:
     ports:
      - "8000:8000"
      - "8080:8080"
+     - "8085:8085"
     command: /bin/sh -c "npm install && quasar dev"
     networks:
       - micado_net

@@ -10,7 +10,7 @@
         style="width:70px:border-radius:2px"
         color="info"
         label="Validate"
-        @click="doValidation()"
+        @click="doValidation(a_int, the_intervention.user_id)"
       />
     </div>
   </div>
@@ -41,8 +41,10 @@ export default {
     }
   },
   methods: {
-    doValidation () {
-      this.$emit('doValidation', this.the_intervention)
+    doValidation (intervention, userId) {
+      console.log("intervention before emit")
+      console.log(intervention)
+      this.$emit('doValidation', { intervention: intervention, userId: userId })
     }
   }
 }

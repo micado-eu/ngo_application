@@ -1,0 +1,17 @@
+import '@vue/cli-plugin-babel';
+import '@vue/cli-plugin-eslint';
+import '@vue/cli-plugin-typescript';
+import 'eslint';
+import 'eslint-loader';
+import 'eslint-plugin-prettier';
+import 'eslint-plugin-vue';
+import 'postcss-loader';
+import 'recursive-readdir';
+import 'url-loader';
+import 'vue';
+import 'vue-property-decorator';
+import 'vue-template-compiler';
+import { CompilerContext, BuildResults } from '@bit/bit.envs.compilers.utils';
+export declare function getDynamicPackageDependencies(): Record<string, any>;
+export declare function getDynamicConfig(ctx: CompilerContext): Record<string, string>;
+export declare function action(ctx: CompilerContext): Promise<BuildResults>;
