@@ -132,7 +132,7 @@ export default {
     //    ...mapActions("interventions", ["fetchInterventions"]),
     //    ...mapActions("user", ["fetchUser"]),
     openValidateDialog (event) {
-      console.log(event)
+      console.log(event.intervention)
       this.validatingIntervention = event.intervention
       this.validatingUser = event.userId
       this.ask_validation = true
@@ -143,9 +143,9 @@ export default {
 
       // before validate the intervention and in the then check the file
       this.validatingIntervention.completed = true
-      this.validatingIntervention.validation_date = current_data
+      this.validatingIntervention.validationDate = current_data
       // TODO change with the real user ID
-      this.validatingIntervention.validating_user_id = 1
+      this.validatingIntervention.validatingUserId = 1
       this.editIntervention({ intervention: this.validatingIntervention, plan: this.validatingIntervention.list_id })
         .then(() => {
           if (this.validationFile) {
@@ -180,7 +180,10 @@ export default {
                 order: null
               })
               // now we can send
-              this.saveDocument(this.doc_shell)
+              console.log("I am validating intervention and its id")
+              console.log(this.validatingIntervention)
+              console.log(this.validatingIntervention.id)
+              this.saveDocument({document:this.doc_shell, id_intervention:this.validatingIntervention.id})
                 .then(() => {
                   // still have to write the completed_intervention_document table to associate the new doc with the intervention
 

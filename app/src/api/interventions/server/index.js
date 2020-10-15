@@ -17,7 +17,7 @@ export default {
             id: { eq: intervention.id }
         },
 
-            editingIntervention = JSON.parse(JSON.stringify(intervention, ['id', 'listId', 'completed', 'validation_date', 'validating_user_id']));
+            editingIntervention = JSON.parse(JSON.stringify(intervention, ['id', 'listId', 'completed', 'validationDate', 'validatingUserId']));
 
         return axiosInstance
             .patch('/backend/1.0.0/individual-intervention-plans/' + id_plan + '/individual-intervention-plan-interventions?where=' + JSON.stringify(whereClause), editingIntervention)

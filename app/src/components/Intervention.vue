@@ -3,7 +3,7 @@
     <div
       v-for="a_int in the_intervention.interventions"
       :key="a_int.id"
-    >Intervention: {{a_int.intervention_title}}
+    >Intervention: {{a_int.title}}
       <q-btn
         size="11px"
         no-caps
