@@ -107,6 +107,12 @@ export default {
           description: "Manage the information"
         },
         {
+          label: "menu.events",
+          icon: "description",
+          to: "/events",
+          description: "Manage the events"
+        },
+        {
           label: "menu.process",
           icon: "linear_scale",
           to: "/guided_process_editor",

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "user_type": "Migrant",
+    "description": "Person that move from one country to another"
+  },
+  {
+    "id": 2,
+    "user_type": "Asylum seeker",
+    "description": ""
+  },
+  {
+    "id": 3,
+    "user_type": "Refugee",
+    "description": ""
+  }
+]

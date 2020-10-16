@@ -1,0 +1,22 @@
+[
+  {
+    "id":1,
+    "title":"First category"
+  },
+  {
+    "id":2,
+    "title":"Second Category"
+  },
+  {
+    "id":3,
+    "title":"Third category"
+  },
+  {
+    "id":4,
+    "title":"Fourth category"
+  },
+  {
+    "id":5,
+    "title":"Fifth category"
+  }
+]

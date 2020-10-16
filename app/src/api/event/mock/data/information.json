@@ -1,0 +1,85 @@
+[
+  {
+    "id": 1,
+    "lang": "en",
+    "title": "Working in _____",
+    "tags": [
+      "integration"
+    ],
+    "publish": true,
+    "description": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "If you wish to come to _____ from a third country to work, you will find the necessary information here. \n You wish to look for a job in _____? \n If you didn’t find a job before entering _____, as a skilled worker with vocational training or a university degree, you have the opportunity to come to _____ for up to six months to look for a job. \n Want to start a new job in _____? \n Whether you are allowed to work in _____ depends on your occupation, the type of work in _____ and also your nationality. As a matter of principle, you will require an offer of employment before you come to _____. To this end, you should have already successfully applied from abroad for a job in _____ and received a binding promise of employment."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "lang": "en",
+    "title": "Family reunification",
+    "tags": [
+      "integration"
+    ],
+    "publish": true,
+    "description": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Spouses and registered partners, parents and minor, unmarried children may migrate to ______ in order to join their family members in order to protect the institution of marriage and the family. \n As a matter of principle, the conditions vary according to whether you wish to come to ______ to join \n a ______ national \n an EU citizen or \n a third-country national. \n Family members coming to ______ for the purpose of family reunification are allowed to work in ______."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "lang": "en",
+    "title": "English course available",
+    "tags": [
+      "course",
+      "english"
+    ],
+    "publish": false,
+    "description": {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "The "
+            },
+            {
+              "type": "text",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ],
+              "text": "english course"
+            },
+            {
+              "type": "text",
+              "text": " is now available. For more information check here."
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

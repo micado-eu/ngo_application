@@ -1,6 +1,9 @@
 import InformationListPage from '../pages/information_centre/InformationListPage.vue'
 import InformationNewPage from '../pages/information_centre/InformationNewPage.vue'
 import InformationEditPage from '../pages/information_centre/InformationEditPage.vue'
+import EventListPage from '../pages/events/EventListPage.vue'
+import EventNewPage from '../pages/events/EventNewPage.vue'
+import EventEditPage from '../pages/events/EventEditPage.vue'
 import Settings from '../components/Settings.vue'
 import MigrantManager from '../components/MigrantManager'
 import ProcessList from '../pages/ProcessList.vue'
@@ -18,6 +21,9 @@ const routes = [
       { path: '/information', component: InformationListPage },
       { path: '/information/new', component: InformationNewPage },
       { path: '/information/:id/edit/', component: InformationEditPage },
+      { path: '/events', component: EventListPage },
+      { path: '/events/new', component: EventNewPage },
+      { path: '/events/:id/edit/', component: EventEditPage },
       { path: '/settings', component: Settings },
       { path: '/migrant', component: MigrantManager },
       { path: '/guided_process_editor', component: ProcessList },

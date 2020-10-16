@@ -6,6 +6,8 @@
       v-on:save="editInformationItemAndReturn($event)"
       :tags="tags"
       :elem="elem"
+      :topics="topics"
+      :user_types="userTypes"
       class="q-ma-md"
       pagetitle="information_centre.edit"
     />
@@ -13,100 +15,117 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
       loading: false,
       elem: undefined,
       tags: undefined,
-    };
+      topics: undefined,
+      userTypes: undefined
+    }
   },
   components: {
-    "edit-information": require("components/information_centre/EditInformationElement.vue")
+    'edit-information': require('components/information_centre/EditInformationElement.vue')
       .default
   },
   methods: {
-    ...mapActions("information", [
-      "fetchInformation",
-      "editInformationItem",
-      "editInformationItemTranslation",
-      "addNewInformationItemTranslation"
+    ...mapActions('information', [
+      'fetchInformation',
+      'editInformationItem',
+      'editInformationItemTranslation',
+      'setTopics',
+      'setUserTypes',
+      'deleteTopics',
+      'deleteUserTypes',
+      'fetchInformationTopics',
+      'fetchInformationUserTypes'
     ]),
-    ...mapActions("information_tags", [
-      "fetchInformationTags",
-      "deleteInformationTagsFromEvent",
-      "saveInformationTags"
+    ...mapActions('information_tags', [
+      'fetchInformationTags',
+      'deleteInformationTagsFromInformation',
+      'saveInformationTags',
+      'saveInformationTagsTranslation'
     ]),
     editInformationItemAndReturn(data) {
-      let router = this.$router;
-      let categoryId = data.category.id
-      let id = parseInt(this.$route.params.id)
-      let eventData = {
+      const router = this.$router
+      const categoryId = data[0].category.id
+      const id = parseInt(this.$route.params.id, 10)
+      const eventData = {
         id,
         category: categoryId
       }
-      delete data.category
-      let tags = data.tags.map(tag_lbl => {
-        return {
-          lang: data.lang,
-          tag: tag_lbl
-        }
-      })
-      delete data.tags
-      let dataWithId = Object.assign(data, {
-        id
-      });
-      this.editInformationItem(eventData).then(() => {
-        let idx = this.elem.translations.findIndex(t => t.lang === data.lang);
-        if (idx !== -1) {
-          this.editInformationItemTranslation(dataWithId).then(() => {
-            this.deleteInformationTagsFromEvent(id).then(() => {
-              if (tags.length > 0) {
-                this.saveInformationTags({
-                  eventId: id,
-                  tags
-                }).then(() => {
-                  router.push({ path: "/information" });
-                })
-              } else {
-                router.push({ path: "/information" });
-              }
-            })        
-          });
-        } else {
-          this.addNewInformationItemTranslation(dataWithId).then(() => {
-            if (tags.length > 0) {
-                this.saveInformationTags({
-                  eventId: id,
-                  tags
-                }).then(() => {
-                  router.push({ path: "/information" });
-                })
-              } else {
-                router.push({ path: "/information" });
-              }
-          });
-        }
-      })
-
+      const tagArrayLength = data[0].tags.length
+      const tagData = []
+      for (let k = 0; k < tagArrayLength; k += 1) {
+        tagData.push({
+          informationId: id
+        })
+      }
+      this.deleteInformationTagsFromInformation(id)
+        .then(() => this.saveInformationTags(tagData))
+        .then((newTags) => {
+          this.editInformationItem(eventData).then(() => {
+            const { topics } = data[0]
+            this.deleteTopics(id)
+              .then(() => this.setTopics({ id, topics }))
+              .then(() => { })
+            const { userTypes } = data[0]
+            this.deleteUserTypes(id)
+              .then(() => this.setUserTypes({ id, userTypes }))
+              .then(() => { })
+            for (let i = 0; i < data.length; i += 1) {
+              const translation = data[i]
+              const tagInfo = translation.tags
+              delete translation.tags
+              const dataWithId = Object.assign(translation, { id })
+              delete translation.category
+              delete translation.topics
+              delete translation.userTypes
+              const newTagsWithTag = newTags.map((newTag, idx) => ({
+                id: newTag.id,
+                lang: translation.lang,
+                tag: tagInfo[idx],
+                translationState: 0
+              }))
+              this.saveInformationTagsTranslation(newTagsWithTag).then()
+              this.editInformationItemTranslation(dataWithId).then(() => {
+                if (i === data.length - 1) {
+                  router.push({ path: '/information' })
+                }
+              })
+            }
+          })
+        })
     }
   },
   computed: {
-    ...mapGetters("information", ["informationElemById"]),
-    ...mapGetters("information_tags", ["informationTagsByEvent"]),
+    ...mapGetters('information', ['informationElemById']),
+    ...mapGetters('information_tags', ['informationTagsByInformation'])
   },
   created() {
-    this.loading = true;
-    this.fetchInformation().then(() => {
-      this.elem = this.informationElemById(this.$route.params.id);
-      this.fetchInformationTags().then(() => {
-        this.tags = this.informationTagsByEvent(this.elem.id)
-        this.loading = false;
+    this.loading = true
+    this.fetchInformation()
+      .then(() => {
+        this.elem = this.informationElemById(this.$route.params.id)
+        return this.fetchInformationTags()
       })
-    });
+      .then(() => {
+        this.tags = this.informationTagsByInformation(this.elem.id)
+        return this.fetchInformationTopics(this.elem.id)
+      })
+      .then((informationTopics) => {
+        this.topics = informationTopics.map((it) => it.idTopic)
+        return this.fetchInformationUserTypes(this.elem.id)
+      })
+      .then((informationUserTypes) => {
+        this.userTypes = informationUserTypes.map((iut) => iut.idUserTypes)
+        this.loading = false
+      })
   }
-};
+}
 </script>
 
 <style></style>
