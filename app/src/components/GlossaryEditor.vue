@@ -32,12 +32,6 @@
               @click="commands.italic"
             />
             <q-btn
-              :outline="isActive.underline()"
-              :unelevated="!isActive.underline()"
-              icon="img:statics/icons/MICADO PA APP Icon - Underline (600x600).png"
-              @click="commands.underline"
-            />
-            <q-btn
               unelevated
               icon="image"
               @click="showUploadModal = true"
@@ -120,52 +114,23 @@
         </editor-menu-bar>
       </div>
     </div>
-    <div
-      class="suggestion-list q-ml-sm"
-      v-if="!loading && showSuggestions"
-    >
-      <template v-if="hasResults">
-        <div
-          v-for="glossaryItem in filteredGlossaryItems"
-          :key="glossaryItem.id"
-        >
-          <q-btn
-            class="suggestion-list-item"
-            color="grey-4"
-            unelevated
-            text-color="black"
-            no-caps
-            :label="glossaryItem.title"
-            @click="selectGlossaryItem(glossaryItem)"
-          />
-        </div>
-      </template>
-      <div
-        v-else
-        class="suggestion-list-item is-empty"
-      >
-        No glossary items found
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
-import Fuse from 'fuse.js'
-import { Editor, EditorContent, EditorMenuBar } from "tiptap"
+import { mapGetters, mapActions } from 'vuex'
+import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
   Link,
-  Underline,
   History,
   Bold,
-  Italic,
-  Mention,
-} from "tiptap-extensions"
-import Image from "components/Image"
+  Italic
+} from 'tiptap-extensions'
+import Image from 'components/Image'
+import { Converter } from 'showdown'
 
 export default {
-  name: "GlossaryEditor",
+  name: 'GlossaryEditor',
   components: {
     EditorContent,
     EditorMenuBar
@@ -173,102 +138,41 @@ export default {
   props: {
     value: {
       type: String | Object,
-      default: ""
+      default: ''
     },
     lang: {
       type: String,
-      default: "en"
+      default: 'en'
     }
   },
   data() {
     return {
       editor: null,
-      query: null,
-      suggestionRange: null,
-      filteredGlossaryItems: [],
-      insertMention: () => { },
       loading: true,
-      showSuggestionsData: false,
-      internalLang: "",
+      internalLang: '',
       editorChange: false,
       showUploadModal: false,
-      uploadTab: "upload",
-      urlImage: "",
-    };
+      uploadTab: 'upload',
+      urlImage: '',
+      converter: undefined
+    }
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossary"]),
-    // we have to replace our suggestion text with a mention
-    // so it's important to pass also the position of your suggestion text
-    selectGlossaryItem(glossaryItem) {
-      this.insertMention({
-        range: this.suggestionRange,
-        attrs: {
-          id: glossaryItem.id,
-          label: glossaryItem.title,
-        },
-      })
-      this.editor.focus()
-      this.showSuggestionsData = false
+    ...mapActions('glossary', ['fetchGlossary']),
+    getJSON() {
+      return this.editor.getJSON()
+    },
+    getHTML() {
+      return this.editor.getHTML()
+    },
+    getMarkdown() {
+      return this.converter.makeMarkdown(this.getHTML())
     },
     getContent() {
-      return this.editor.getJSON();
+      return this.getJSON()
     },
     setContent(content) {
       return this.editor.setContent(content)
-    },
-    getMentionElementsByLang(lang) {
-      let mentionElements = []
-      for (let glossaryElem of this.glossary) {
-        let idx = glossaryElem.translations.findIndex(t => t.lang === lang)
-        if (idx !== -1) {
-          mentionElements.push(glossaryElem.translations[idx])
-        }
-      }
-      return mentionElements
-    },
-    getMentionsByLang(lang) {
-      let mentionElements = this.getMentionElementsByLang(lang)
-      return new Mention({
-        items: () => mentionElements,
-        // is called when a suggestion starts
-        onEnter: ({
-          items, query, range, command, virtualNode,
-        }) => {
-          this.query = query
-          this.filteredGlossaryItems = items
-          this.suggestionRange = range
-          this.showSuggestionsData = true
-          this.insertMention = command
-        },
-        // is called when a suggestion has changed
-        onChange: ({
-          items, query, range, virtualNode,
-        }) => {
-          this.query = query
-          this.filteredGlossaryItems = items
-          this.suggestionRange = range
-          this.showSuggestionsData = true
-        },
-        // is called when a suggestion is cancelled
-        onExit: () => {
-          // reset all saved values
-          this.query = null
-          this.filteredGlossaryItems = []
-          this.suggestionRange = null
-          this.showSuggestionsData = false
-        },
-        // we use fuse.js with support for fuzzy search
-        onFilter: (items, query) => {
-          if (!query) {
-            return items
-          }
-          const fuse = new Fuse(items, {
-            keys: ['title', 'description'],
-          })
-          return fuse.search(query).map(i => i.item)
-        },
-      })
     },
     createEditor() {
       if (this.editor) {
@@ -276,17 +180,15 @@ export default {
       }
       this.editor = new Editor({
         extensions: [
-          this.getMentionsByLang(this.internalLang),
           new Bold(),
           new Italic(),
           new Link(),
-          new Underline(),
           new History(),
           new Image(null, null, this.uploadImage)
         ],
         onUpdate: ({ getHTML }) => {
           this.editorChange = true
-          this.$emit("input", getHTML())
+          this.$emit('input', getHTML())
         },
         content: this.value
       })
@@ -297,17 +199,14 @@ export default {
       this.createEditor()
     },
     uploadImage(file) {
-      let formData = new FormData();
-      formData.append('file', file);
-      const headers = { 'Content-Type': 'multipart/form-data' };
+      const formData = new FormData()
+      formData.append('file', file)
+      const headers = { 'Content-Type': 'multipart/form-data' }
       // TODO: implement when decision is made
     }
   },
   computed: {
     ...mapGetters('glossary', ['glossary']),
-    hasResults() {
-      return this.filteredGlossaryItems.length
-    },
     showSuggestions() {
       return this.showSuggestionsData
     }
@@ -315,6 +214,7 @@ export default {
   created() {
     this.loading = true
     this.internalLang = this.lang
+    this.converter = new Converter()
     this.fetchGlossary()
       .then(() => {
         this.createEditor()

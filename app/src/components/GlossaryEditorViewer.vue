@@ -22,28 +22,27 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
-import { Editor, EditorContent } from "tiptap"
+import { mapGetters, mapActions } from 'vuex'
+import { Editor, EditorContent } from 'tiptap'
 import {
   Link,
-  Underline,
   Bold,
   Italic,
   Mention
-} from "tiptap-extensions"
-import Image from "components/Image"
+} from 'tiptap-extensions'
+import Image from 'components/Image'
 
 let uuid = 0
 
 export default {
-  name: "GlossaryEditorViewer",
+  name: 'GlossaryEditorViewer',
   components: {
     EditorContent
   },
   props: {
     content: {
       type: String | Object,
-      default: ""
+      default: ''
     },
     glossary_fetched: {
       type: Boolean,
@@ -51,15 +50,15 @@ export default {
     },
     lang: {
       type: String,
-      default: "en"
+      default: 'en'
     }
   },
   data() {
     return {
       editor: null,
-      currentDescriptionContent: "",
+      currentDescriptionContent: '',
       targetElement: false,
-      showTooltip: false, // Don't show by default
+      showTooltip: false // Don't show by default
     }
   },
   computed: {
@@ -69,21 +68,20 @@ export default {
     }
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossary"]),
+    ...mapActions('glossary', ['fetchGlossary']),
     initialize() {
       this.editor = new Editor({
         editable: false,
         extensions: [
           new Mention({
-            items: () => this.getMentionElementsByLang(),
+            items: () => this.getMentionElementsByLang()
           }),
           new Bold(),
           new Italic(),
           new Link(),
-          new Underline(),
           new Image()
         ],
-        content: ""
+        content: ''
       })
       this.setContent(this.content)
       this.setGlossaryClickEvents()
@@ -92,9 +90,9 @@ export default {
       this.editor.setContent(content)
     },
     getMentionElementsByLang() {
-      let mentionElements = []
-      for (let glossaryElem of this.glossary) {
-        let idx = glossaryElem.translations.findIndex(t => t.lang === this.lang)
+      const mentionElements = []
+      for (const glossaryElem of this.glossary) {
+        const idx = glossaryElem.translations.findIndex((t) => t.lang === this.lang)
         if (idx !== -1) {
           mentionElements.push(glossaryElem.translations[idx])
         }
@@ -104,11 +102,11 @@ export default {
     setCurrentDescription(glossaryElem, element) {
       // Gets JSON description and transforms it to plain text
       // Create an invisible editor to transform the JSON into HTML for parsing
-      var editorInterpreter = new Editor({
+      const editorInterpreter = new Editor({
         editable: false,
         extensions: [
           new Mention({
-            items: () => this.getMentionElementsByLang(),
+            items: () => this.getMentionElementsByLang()
           }),
           new Bold(),
           new Italic(),
@@ -118,30 +116,30 @@ export default {
         ],
         content: glossaryElem.description
       })
-      var doc = new DOMParser().parseFromString(editorInterpreter.getHTML(), 'text/html');
-      var plainDescription = doc.body.textContent || "";
+      const doc = new DOMParser().parseFromString(editorInterpreter.getHTML(), 'text/html')
+      const plainDescription = doc.body.textContent || ''
       this.targetElement = element
       this.currentDescriptionContent = plainDescription
       editorInterpreter.destroy()
     },
     setGlossaryClickEvents() {
-      var glossaryElemByIdFunc = this.glossaryElemById
-      var currentDescriptionSetter = this.setCurrentDescription
-      var uuid = this.uuid
-      var lang = this.lang
-      document.addEventListener("mouseover", function (e) {
-        var componentDiv = document.getElementById(uuid)
-        var isParentOfDiv;
+      const glossaryElemByIdFunc = this.glossaryElemById
+      const currentDescriptionSetter = this.setCurrentDescription
+      const { uuid } = this
+      const { lang } = this
+      document.addEventListener('mouseover', function (e) {
+        const componentDiv = document.getElementById(uuid)
+        var isParentOfDiv
         if (componentDiv) {
           isParentOfDiv = componentDiv.contains(e.target)
         } else {
           isParentOfDiv = false
         }
         var isParentOfDiv = componentDiv !== null ? componentDiv.contains(e.target) : false
-        if (e.target && e.target.classList.contains("mention") && isParentOfDiv) {
-          var id = e.srcElement.getAttribute("data-mention-id")
-          var glossaryElem = glossaryElemByIdFunc(id)
-          let idx = glossaryElem.translations.findIndex(t => t.lang === lang)
+        if (e.target && e.target.classList.contains('mention') && isParentOfDiv) {
+          const id = e.srcElement.getAttribute('data-mention-id')
+          const glossaryElem = glossaryElemByIdFunc(id)
+          const idx = glossaryElem.translations.findIndex((t) => t.lang === lang)
           if (this.idx !== -1) {
             currentDescriptionSetter(glossaryElem.translations[idx], e.target)
           }
@@ -150,8 +148,8 @@ export default {
     }
   },
   beforeCreate() {
-    this.uuid = uuid.toString();
-    uuid += 1;
+    this.uuid = uuid.toString()
+    uuid += 1
   },
   created() {
     if (!this.glossary_fetched) {

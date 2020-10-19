@@ -248,6 +248,7 @@
                   {{ item.title }}
                 </q-item-label>
                 <glossary-editor-viewer
+                  class="viewer"
                   :content="item.description"
                   v-if="!loading"
                   glossary_fetched
@@ -698,10 +699,7 @@ export default {
     if (this.user_types_enabled) {
       promises.push(this.fetchUserType())
     }
-    Promise.all(promises).then(() => {
-      console.log(this.topic)
-      this.initializeList()
-    })
+    Promise.all(promises).then(() => this.initializeList())
   }
 }
 </script>
@@ -773,5 +771,8 @@ $btn_secondary: #cdd0d2;
 .filter-icon {
   max-height: 30px;
   max-width: 30px;
+}
+.viewer {
+  max-width: 100%;
 }
 </style>
