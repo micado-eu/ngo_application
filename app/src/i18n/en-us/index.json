@@ -24,6 +24,7 @@
     "cancel": "Cancel",
     "add_tag": "Add tag",
     "add_event": "Add Event",
+    "add_information": "Add Information",
     "categories": "Categories"
   },
   "input_labels": {
@@ -40,8 +41,8 @@
   },
   "information_centre": {
     "list_title": "Information centre",
-    "add_new": "Add New Event to the Information Centre",
-    "edit": "Edit Event from the Information Centre"
+    "add_new": "Add New Information to the Information Centre",
+    "edit": "Edit Information from the Information Centre"
   },
   "tags": {
     "duplicate_error": "Duplicates are not allowed.",

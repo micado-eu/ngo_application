@@ -8,7 +8,7 @@
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
       icon_name="document"
-      add_label="button.add_event"
+      add_label="button.add_information"
       title="information_centre.list_title"
       categories_enabled
       categories_url="/information/categories"
