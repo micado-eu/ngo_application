@@ -11,28 +11,24 @@
         </div>
 
       </div>
-      <div
-        class=" row"
-        style="width:750px"
-      >
-        <div
-          class=" q-pa-md  col"
-          style="text-align:left; padding-top:0px;padding-bottom:0px;padding-left:0px"
-        >
-          <q-chip
-            v-for="tag in Tag_1"
-            :label="tag.user_type"
-            :key="tag.id"
-          ></q-chip>
-          <q-chip
-            v-for="tag in Tag_2"
-            :label="tag.topic"
-            :key="tag.id"
-          ></q-chip>
-        </div>
-        <div
+     
+        <div class="row pad">
+            <q-img
+                class="image"
+                v-for="tag in Topics"
+                :src="processTopics.filter(topic => topic.id == tag.idTopic)[0].icon"
+                :key="tag.idTopic">
+              </q-img>
+               <q-img
+                class="image"
+                v-for="tag in Users"
+                :src="processUsers.filter(user => user.id == tag.idUserTypes)[0].icon"
+                :key="tag.idUserTypes"
+              >
+              </q-img>  
+              <div
           class="q-pa-md q-gutter-sm  col"
-          style="padding-top:0px; padding-bottom:0px; text-align:right"
+          style="padding-top:0px; padding-bottom:5px; text-align:right"
         >
           <q-btn
             size="11px"
@@ -45,7 +41,9 @@
             @click="hide();comment($event)"
           />
         </div>
-      </div>
+            </div>
+        
+      
       <hr style="margin:0px">
     </div>
   </q-item>
@@ -54,7 +52,7 @@
 <script>
 export default {
   name: 'Process',
-  props: ["Title", "Tag_1", "Tag_2", "Link", "Path", "process"],
+  props: ["Title", "Link", "Path", "process", "processTopics", "processUsers", "Topics", "Users"],
   data () {
     return {
       hideAdd: false
@@ -88,4 +86,9 @@ export default {
     color: blue;
   }
 }*/
+.image{
+  height: 25px; 
+  max-width: 25px;
+  margin-right:5px
+}
 </style>
