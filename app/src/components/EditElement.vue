@@ -12,6 +12,7 @@
           class="title_input q-mb-xl"
           outlined
           v-model="internalTitle"
+          :rules="[ val => val.length <= 20 || $t('error_messages.max_title')]"
         />
       </div>
       <div class="q-ml-xl">
@@ -569,7 +570,6 @@ export default {
     },
     checkErrors() {
       if (this.internalTitle.length <= 0) {
-        window.alert(this.$t('error_messages.title_empty'))
         return true
       }
       if (
@@ -577,7 +577,6 @@ export default {
         && Object.keys(this.selectedCategoryObject).length === 0
         && this.selectedCategoryObject.constructor === Object
       ) {
-        window.alert(this.$t('error_messages.category_empty'))
         return true
       }
       return false
@@ -585,16 +584,23 @@ export default {
     callSaveFn() {
       if (!this.checkErrors()) {
         this.saveContent()
-        for (const language of this.languages) {
+        for (const language of this.activeLanguages) {
           if (this.savedTranslations.findIndex((t) => t.lang === language.lang) == -1) {
-            this.savedTranslations.push({
+            const emptyTranslation = {
               title: '',
               description: '',
-              lang: language.lang,
-              category: this.selectedCategoryObject,
-              topics: this.selectedTopicsObjects,
-              userTypes: this.selectedUserTypesObjects
-            })
+              lang: language.lang
+            }
+            if (this.categories_enabled) {
+              emptyTranslation.category = this.selectedCategoryObject
+            }
+            if (this.topics_enabled) {
+              emptyTranslation.topics = this.selectedTopicsObjects
+            }
+            if (this.user_types_enabled) {
+              emptyTranslation.userTypes = this.selectedUserTypesObjects
+            }
+            this.savedTranslations.push(emptyTranslation)
           }
         }
         if (this.tags_enabled) {
