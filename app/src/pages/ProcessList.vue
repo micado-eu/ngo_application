@@ -49,6 +49,7 @@
 
         <q-btn
           color="accent"
+          :data-cy="'savecomment'"
           unelevated
           rounded
           style="width:70px;border-radius:2px"
@@ -57,6 +58,7 @@
         />
         <q-btn
           class="button"
+          :data-cy="'cancelcomment'"
           unelevated
           rounded
           style="width:70px;border-radius:2px"
@@ -65,6 +67,7 @@
         />
         <q-btn
           class="button"
+          :data-cy="'deletecomment'"
           unelevated
           rounded
           style="width:70px;border-radius:2px"

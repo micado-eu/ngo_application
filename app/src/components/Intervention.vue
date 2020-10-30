@@ -1,11 +1,12 @@
 <template>
   <div><b>{{userdata}}</b> has requested a validation for his plan: {{the_intervention.title}}
     <div
-      v-for="a_int in the_intervention.interventions"
+      v-for="a_int in interventionsToComplete"
       :key="a_int.id"
     >Intervention: {{a_int.title}}
       <q-btn
         size="11px"
+        :data-cy="'validateintervention'.concat(a_int.id)"
         no-caps
         style="width:70px:border-radius:2px"
         color="info"
@@ -38,6 +39,11 @@ export default {
       } else {
         return ""
       }
+    }, 
+    interventionsToComplete(){
+      return this.the_intervention.interventions.filter((interv)=>{
+        return interv.completed == false
+      })
     }
   },
   methods: {

@@ -47,6 +47,7 @@
           exact
           v-for="(nav) in navs"
           :to="nav.to"
+          :data-cy="nav.label.replace('.', '_')"
           :key="nav.label"
           active
           v-feature-flipping="nav.feature"

@@ -19,7 +19,7 @@
     <div>
       <q-list>
         <Intervention
-          v-for="interv in interventions"
+          v-for="interv in plansToComplete"
           :key="interv.id"
           :the_intervention="interv"
           @doValidation="openValidateDialog($event)"
@@ -58,6 +58,7 @@
           class="text-primary"
         >
           <q-btn
+          :data-cy="'cancel'"
             label="Cancel"
             color="accent"
             v-close-popup
@@ -65,6 +66,7 @@
           <q-btn
             label="Add document"
             color="accent"
+            :data-cy="'validatetask'"
             @click="validateTask()"
             v-close-popup
           />
@@ -127,6 +129,11 @@ export default {
   },
   computed: {
     //    ...mapGetters("interventions", ["interventions"]),
+    plansToComplete(){
+      return this.interventions.filter((plan)=>{
+        return plan.completed == false
+      })
+    }
   },
   methods: {
     //    ...mapActions("interventions", ["fetchInterventions"]),
