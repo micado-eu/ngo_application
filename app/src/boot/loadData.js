@@ -7,7 +7,7 @@ export default async ({ store, Vue }) => {
     var defaultLang = {}
     var userLang = {}
 
-    await store.dispatch('features/fetchFeatures');
+    //    await store.dispatch('features/fetchFeatures');
     await store.dispatch("language/fetchActiveLanguages")
 
     await store.dispatch('settings/fetchSettings')

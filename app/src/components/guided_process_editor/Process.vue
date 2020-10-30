@@ -33,10 +33,10 @@
           <q-btn
             size="11px"
             no-caps
+            :data-cy="'commentoprocess'.concat(Link)"
             style="width:70px:border-radius:2px"
             color="info"
             label="Comment"
-            :id=this.Link
             :disable="hideAdd"
             @click="hide();comment($event)"
           />
