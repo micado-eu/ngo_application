@@ -2,10 +2,10 @@
 export function someMutation (state) {
 }
 */
-export function setFeatures (state, features) {
-  console.log("state setfeatures")
+export function setFeaturesFlag (state, features) {
+  console.log("state setFeaturesFlag")
   console.log(features)
-    if(features){
-      state.features = features
-    }
+  if (features) {
+    state.featuresFlag = features
   }
+}
