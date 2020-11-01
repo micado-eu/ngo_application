@@ -38,10 +38,10 @@
       :breakpoint="767"
       bordered
       content-class="bg-accent text-white"
+      v-if="this.$auth.loggedIn()"
     >
-      <auth-menu />
       <q-list dark>
-        <q-item-label header>{{ $t('menu.title') }}</q-item-label>
+        <q-item-label header>{{ $t('menu.title') }} {{ user.name }} {{ user.lastname }}</q-item-label>
         <q-item
           clickable
           exact
@@ -49,6 +49,8 @@
           :to="nav.to"
           :key="nav.label"
           active
+          v-feature-flipping="nav.feature"
+          :data-cy="nav.label.replace('.', '_')"
           active-class="my-menu-link"
         >
           <q-item-section avatar>
@@ -69,65 +71,61 @@
 </template>
 
 <script>
-import AuthMenu from "./auth/AuthMenu";
+//import AuthMenu from "./auth/AuthMenu";
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 export default {
   name: "Layout",
 
   components: {
-    AuthMenu
-  },
 
+  },
+  created () {
+    console.log("AUTH IN LAYOUT")
+    console.log(this.$auth.loggedIn())
+  },
+  mixins: [storeMappingMixin({
+    getters: {
+      user: 'auth/user',
+    }
+  })],
   data () {
     return {
       leftDrawerOpen: false,
       navs: [
-        // {
-        //   label: "menu.courses",
-        //   icon: "school",
-        //   to: "/courses",
-        //   description: "Our course offerng"
-        // },
-        //        {label:'menu.documents', icon: 'description', to: '/documents', description: 'documents saved in my wallet'},
-        //        {label:'menu.assistant', icon: 'question_answer', to: '/chatbot', description: 'Micado Assistant'},
-        //        {label:'menu.processes', icon: 'timeline', to: '/flows', description: 'flow description of processes'},
-        //        {label:'menu.notifications', icon: 'mail_outline', to: '/notifications', description: 'messages from PA'},
-        //        {label:'menu.search', icon: 'search', to: '/map', description: "PA's services around you"},
-        //        {label:'menu.speech', icon: 'record_voice_over', to: '/speech', description: "I'll listen to you"},
-        /* {
-           label: "menu.migrant",
-           icon: "face",
-           to: "/migrant",
-           description: "view migrant user information"
-         },*/
         {
           label: "menu.information_centre",
           icon: "description",
           to: "/information",
+          feature: "FEAT_DEFAULT",
           description: "Manage the information"
         },
         {
           label: "menu.events",
           icon: "description",
           to: "/events",
+          feature: "FEAT_EVENTS",
           description: "Manage the events"
         },
         {
           label: "menu.process",
           icon: "linear_scale",
           to: "/guided_process_editor",
+          feature: "FEAT_PROCESSES",
           description: "Edit guided processes information"
         },
         {
           label: "menu.interventions",
           icon: "linear_scale",
           to: "/interventions",
+          feature: "FEAT_DOCUMENTS",
           description: "Check validation requests"
         },
         {
           label: "menu.settings",
           icon: "settings_applications",
           to: "/settings",
+          feature: "FEAT_DEFAULT",
           description: "configure the application"
         }
       ]

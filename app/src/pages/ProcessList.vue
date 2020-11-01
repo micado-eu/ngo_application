@@ -49,6 +49,7 @@
 
         <q-btn
           color="accent"
+          :data-cy="'savecomment'"
           unelevated
           rounded
           style="width:70px;border-radius:2px"
@@ -57,6 +58,7 @@
         />
         <q-btn
           class="button"
+          :data-cy="'cancelcomment'"
           unelevated
           rounded
           style="width:70px;border-radius:2px"
@@ -65,6 +67,7 @@
         />
         <q-btn
           class="button"
+          :data-cy="'deletecomment'"
           unelevated
           rounded
           style="width:70px;border-radius:2px"
@@ -103,8 +106,10 @@
           :process="process"
           :key="process.id"
           :Title="showProcessLabel(process)"
-          :Tag_1="process.user_tags"
-          :Tag_2="process.topic_tags"
+          :processTopics="topics"
+          :processUsers="users"
+          :Topics="process.processTopics"
+          :Users="process.applicableUsers"
           :Link="process.id"
           Path="guided_process_editor"
           @remove="deleteProcess"
@@ -132,13 +137,17 @@ export default {
   mixins: [storeMappingMixin({
     getters: {
       processes: 'flows/processes',
-      comments: 'comments/comments'
+      comments: 'comments/comments',
+      topics: 'topic/topic',
+      users: 'user_type/user'
     }, actions: {
       fetchCommentsByTenant: 'comments/fetchCommentsByTenant',
       saveComments: 'comments/saveComments',
       editComments: 'comments/editComments',
       deleteComments: 'comments/deleteComments',
-      fetchFlows: 'flows/fetchFlows'
+      fetchFlows: 'flows/fetchFlows',
+       fetchTopic: 'topic/fetchTopic',
+      fetchUserType: 'user_type/fetchUserType'
     }
   }),
     editEntityMixin],
@@ -357,6 +366,12 @@ export default {
       .then(comments => {
         this.loading = false
       })
+      this.fetchTopic({ defaultLang: this.$defaultLang, userLang: this.$userLang })  
+    this.fetchUserType({ defaultLang: this.$defaultLang, userLang: this.$userLang })
+    .then(user_types =>{
+      console.log("in user type")
+      console.log(user_types)
+    })
   }
 }
 </script>

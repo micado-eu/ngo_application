@@ -18,5 +18,8 @@ export function editIntervention (state, payload) {
     console.log(payload.intervention)
     return client
         .editIntervention(payload.plan, payload.intervention)
-        .then(intervention_plan_return => { return intervention_plan_return })
+        .then(intervention_plan_return => {
+            state.commit('editInterventions', payload.intervention)
+            return intervention_plan_return
+         })
 }

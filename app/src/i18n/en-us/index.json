@@ -1,6 +1,6 @@
 {
   "menu": {
-    "title": "My Tools",
+    "title": "Welcome",
     "dashboard": "Dashboard",
     "documenttype": "Mmanage document types",
     "configure": "Configuration",
@@ -44,6 +44,11 @@
     "add_new": "Add New Information to the Information Centre",
     "edit": "Edit Information from the Information Centre"
   },
+  "events": {
+    "list_title": "Events",
+    "add_new": "Add New Event to the Event List",
+    "edit": "Edit Event from the Event List"
+  },
   "tags": {
     "duplicate_error": "Duplicates are not allowed.",
     "empty_error": "Empty tags are not allowed."
@@ -62,6 +67,8 @@
     "category": "Category",
     "tags": "Tags",
     "topics": "Topics",
-    "user_types": "User types"
+    "user_types": "User Types",
+    "start_date": "Start date",
+    "end_date": "End date"
   }
 }
