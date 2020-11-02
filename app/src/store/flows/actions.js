@@ -33,3 +33,11 @@ export function saveProcess(state, process) {
     .saveProcess(process)
     .then(process_return => state.commit('saveProcess', process_return))
 }
+
+export function fetchGraph (state, payload) {
+  return client
+    .fetchGraph(payload.id, payload.userLang)
+    .then(graph => {
+      return graph
+    })
+}

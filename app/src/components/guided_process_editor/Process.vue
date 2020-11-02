@@ -1,6 +1,6 @@
 <template>
-
-  <q-item style="padding-top:0px; padding-bottom:0px">
+<div>
+  <q-item clickable @click="selectGraph()" style="padding-top:0px; padding-bottom:0px">
     <div>
       <div>
         <div
@@ -38,7 +38,7 @@
             color="info"
             label="Comment"
             :disable="hideAdd"
-            @click="hide();comment($event)"
+            @click.stop="hide();comment($event)"
           />
         </div>
             </div>
@@ -46,20 +46,50 @@
       
       <hr style="margin:0px">
     </div>
+
   </q-item>
+  <div v-if ="selectedProcess == this.Link" class="row">
+      <div class="col">
+
+       <vue-mermaid
+            class="center"
+            :nodes="mermaid"
+            :config="merconf"
+            type="graph TD"
+            v-on:nodeClick="editNodeMer"
+          ></vue-mermaid>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import storeMappingMixin from '../../mixin/storeMappingMixin'
+import editEntityMixin from '../../mixin/editEntityMixin'
 export default {
   name: 'Process',
-  props: ["Title", "Link", "Path", "process", "processTopics", "processUsers", "Topics", "Users"],
+  mixins:[editEntityMixin,
+    storeMappingMixin({
+    getters: {
+
+    }, actions: {
+      fetchGraph: 'flows/fetchGraph',
+    }
+  })
+  ],
+  props: ["Title", "Link", "Path", "process", "processTopics", "processUsers", "Topics", "Users", 'selectedProcess', 'mermaid'],
   data () {
     return {
-      hideAdd: false
+      open:true,
+      hideAdd: false,
+      merconf: { theme: "default", startOnLoad: false, securityLevel: 'loose', useMaxWidth: false, flowchart: { padding: 5 } },
     };
   },
 
   methods: {
+    editNodeMer(){
+      console.log("clicked on node")
+    },
     remove_process (event) {
       let target = event.currentTarget.id
       console.log(this.Link)
@@ -74,7 +104,15 @@ export default {
     },
     restore () {
       this.hideAdd = false
+    }, 
+    selectGraph(){
+     
+      console.log("emitting graph")
+      this.$emit('selectGraph', this.Link)
     }
+  }, 
+  created() {
+      
   }
 }
 </script>

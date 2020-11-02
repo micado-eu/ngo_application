@@ -123,6 +123,14 @@ export default {
       .delete('/backend/1.0.0/processes/' + id + '/process-users?where=' + JSON.stringify(whereClause))
       .then(response => response.data)
       .catch(error_handler);
+  },
+  fetchGraph (id, userLang) {
+    return axiosInstance
+      .get('backend/1.0.0/mermaid?processid=' + id + '&lang=' + userLang)
+      .then((response) => {
+        return response.data
+      })
+      .catch(error_handler);
   }
 
 }

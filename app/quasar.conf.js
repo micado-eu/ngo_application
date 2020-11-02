@@ -13,7 +13,8 @@ module.exports = function (ctx) {
       'axios',
       'featureflag',
       'loadData',
-      'countly'
+      'countly', 
+      'mermaid'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

@@ -111,9 +111,12 @@
           :Topics="process.processTopics"
           :Users="process.applicableUsers"
           :Link="process.id"
+          :selectedProcess="selectedGraph"
+          :mermaid="mermaid"
           Path="guided_process_editor"
           @remove="deleteProcess"
           @comment="editComment"
+          @selectGraph="show"
         >
         </Process>
       </q-list>
@@ -139,8 +142,10 @@ export default {
       processes: 'flows/processes',
       comments: 'comments/comments',
       topics: 'topic/topic',
-      users: 'user_type/user'
+      users: 'user_type/user',
+      graphList: 'flows/graphList'
     }, actions: {
+      fetchGraph: 'flows/fetchGraph',
       fetchCommentsByTenant: 'comments/fetchCommentsByTenant',
       saveComments: 'comments/saveComments',
       editComments: 'comments/editComments',
@@ -156,6 +161,9 @@ export default {
   },
   data () {
     return {
+      graphs:[],
+      mermaid:[],
+      selectedGraph:null, 
       temp_tenant_id: 2,
       is_new: true,
       search: ' ',
@@ -197,6 +205,27 @@ export default {
     }*/
   },
   methods: {
+    show(id){
+      if(this.selectedGraph == id){
+        this.selectedGraph = null
+      }
+      else{
+        console.log("i am th egraph list")
+        console.log(this.graphList)
+       var the_graph =  this.graphList.filter((graph)=>{
+         console.log(graph)
+          return graph.id == id
+        })[0]
+        console.log(the_graph)
+        this.mermaid = the_graph.graph
+        this.$store.commit("flows/setNodePanelVisible", "hidden");
+        console.log(this.selectedGraph)
+      console.log(id)
+      console.log("in show")
+      this.selectedGraph = id
+      }
+      
+    },
     /*
     ...mapActions("comments", [
       "fetchCommentsByTenant",
@@ -358,9 +387,24 @@ export default {
     //this.$store.dispatch('flows/fetchFlows')
     this.fetchFlows()
       .then(processes => {
-        this.loading = false
+        var promiseGraph=[]
         console.log(processes)
-      })
+        processes.forEach((process)=>{
+          this.fetchGraph({ id: process.id, userLang: this.$userLang }).then(graph =>{
+            this.graphs.push({id: process.id, graph: graph})
+          })
+          
+        })
+        this.$store.commit("flows/setGraphs", this.graphs);
+         /* Promise.all(promiseGraph).then(graph => {
+        console.log(graph)
+        this.graphs = graph
+        this.$store.commit("flows/setGraphs", this.graphs);
+        
+      })*/
+
+        })
+      
     //this.$store.dispatch('comments/fetchCommentsByTenant', this.temp_tenant_id)
     this.fetchCommentsByTenant(this.temp_tenant_id)
       .then(comments => {
@@ -372,6 +416,10 @@ export default {
       console.log("in user type")
       console.log(user_types)
     })
+    console.log("logged in")
+     console.log(this.$auth.loggedIn())
+         console.log(this.$auth.user())
+
   }
 }
 </script>
