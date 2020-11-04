@@ -27,10 +27,10 @@ import { Editor, EditorContent } from 'tiptap'
 import {
   Link,
   Bold,
-  Italic,
-  Mention
+  Italic
 } from 'tiptap-extensions'
-import Image from 'components/Image'
+import Image from 'components/editor_plugins/Image'
+import GlossaryMention from 'components/editor_plugins/GlossaryMention'
 
 let uuid = 0
 
@@ -73,18 +73,20 @@ export default {
       this.editor = new Editor({
         editable: false,
         extensions: [
-          new Mention({
-            items: () => this.getMentionElementsByLang()
-          }),
           new Bold(),
           new Italic(),
           new Link(),
-          new Image()
+          new Image(),
+          new GlossaryMention({
+            showTooltip: true,
+            glossaryElemByIdFunc: this.glossaryElemById,
+            setTooltipDescription: this.currentDescriptionSetter,
+            lang: this.lang
+          })
         ],
         content: ''
       })
       this.setContent(this.content)
-      this.setGlossaryClickEvents()
     },
     setContent(content) {
       this.editor.setContent(content)
@@ -105,14 +107,16 @@ export default {
       const editorInterpreter = new Editor({
         editable: false,
         extensions: [
-          new Mention({
-            items: () => this.getMentionElementsByLang()
-          }),
           new Bold(),
           new Italic(),
           new Link(),
-          new Underline(),
-          new Image()
+          new Image(),
+          new GlossaryMention({
+            showTooltip: true,
+            glossaryElemByIdFunc: this.glossaryElemById,
+            setTooltipDescription: this.currentDescriptionSetter,
+            lang: this.lang
+          })
         ],
         content: glossaryElem.description
       })
@@ -121,30 +125,6 @@ export default {
       this.targetElement = element
       this.currentDescriptionContent = plainDescription
       editorInterpreter.destroy()
-    },
-    setGlossaryClickEvents() {
-      const glossaryElemByIdFunc = this.glossaryElemById
-      const currentDescriptionSetter = this.setCurrentDescription
-      const { uuid } = this
-      const { lang } = this
-      document.addEventListener('mouseover', function (e) {
-        const componentDiv = document.getElementById(uuid)
-        var isParentOfDiv
-        if (componentDiv) {
-          isParentOfDiv = componentDiv.contains(e.target)
-        } else {
-          isParentOfDiv = false
-        }
-        var isParentOfDiv = componentDiv !== null ? componentDiv.contains(e.target) : false
-        if (e.target && e.target.classList.contains('mention') && isParentOfDiv) {
-          const id = e.srcElement.getAttribute('data-mention-id')
-          const glossaryElem = glossaryElemByIdFunc(id)
-          const idx = glossaryElem.translations.findIndex((t) => t.lang === lang)
-          if (this.idx !== -1) {
-            currentDescriptionSetter(glossaryElem.translations[idx], e.target)
-          }
-        }
-      })
     }
   },
   beforeCreate() {
@@ -163,7 +143,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .mention {
   text-decoration: underline;
 }

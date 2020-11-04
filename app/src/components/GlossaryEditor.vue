@@ -24,17 +24,20 @@
               :unelevated="!isActive.bold()"
               icon="img:statics/icons/MICADO PA APP Icon - Bold (600x600).png"
               @click="commands.bold"
+              :disabled="readonly"
             />
             <q-btn
               :outline="isActive.italic()"
               :unelevated="!isActive.italic()"
               icon="img:statics/icons/MICADO PA APP Icon - Italics (600x600).png"
               @click="commands.italic"
+              :disabled="readonly"
             />
             <q-btn
               unelevated
               icon="image"
               @click="showUploadModal = true"
+              :disabled="readonly"
             />
             <!-- Image upload dialog -->
             <q-dialog
@@ -126,8 +129,8 @@ import {
   Bold,
   Italic
 } from 'tiptap-extensions'
-import Image from 'components/Image'
-import { Converter } from 'showdown'
+import Image from 'components/editor_plugins/Image'
+import GlossaryMention from 'components/editor_plugins/GlossaryMention'
 
 export default {
   name: 'GlossaryEditor',
@@ -137,12 +140,16 @@ export default {
   },
   props: {
     value: {
-      type: String | Object,
+      type: String | Object, 
       default: ''
     },
     lang: {
       type: String,
       default: 'en'
+    },
+    readonly: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -165,11 +172,9 @@ export default {
     getHTML() {
       return this.editor.getHTML()
     },
-    getMarkdown() {
-      return this.converter.makeMarkdown(this.getHTML())
-    },
     getContent() {
-      return this.getJSON()
+      console.log(this.getHTML())
+      return this.getHTML()
     },
     setContent(content) {
       return this.editor.setContent(content)
@@ -184,12 +189,14 @@ export default {
           new Italic(),
           new Link(),
           new History(),
-          new Image(null, null, this.uploadImage)
+          new Image(null, null, this.uploadImage),
+          new GlossaryMention()
         ],
         onUpdate: ({ getHTML }) => {
           this.editorChange = true
           this.$emit('input', getHTML())
         },
+        editable: !this.readonly,
         content: this.value
       })
     },
@@ -214,7 +221,6 @@ export default {
   created() {
     this.loading = true
     this.internalLang = this.lang
-    this.converter = new Converter()
     this.fetchGlossary()
       .then(() => {
         this.createEditor()
