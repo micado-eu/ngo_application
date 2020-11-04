@@ -80,7 +80,7 @@ export default {
           new GlossaryMention({
             showTooltip: true,
             glossaryElemByIdFunc: this.glossaryElemById,
-            setTooltipDescription: this.currentDescriptionSetter,
+            setTooltipDescription: this.setCurrentDescription,
             lang: this.lang
           })
         ],
@@ -144,11 +144,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mention {
-  text-decoration: underline;
-}
 .editor_content {
   font-family: "Nunito Sans";
   font-size: 13pt;
+}
+</style>
+
+<style lang="scss">
+.mention {
+  text-decoration: underline;
 }
 </style>

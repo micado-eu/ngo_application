@@ -1,5 +1,4 @@
 import { Mark, Plugin } from 'tiptap'
-import { getMarkAttrs } from 'tiptap-utils'
 
 export default class GlossaryMention extends Mark {
 
@@ -51,10 +50,10 @@ export default class GlossaryMention extends Mark {
                   if (idString) {
                     const id = parseInt(idString)
                     event.stopPropagation()
-                    const glossaryElem = glossaryElemByIdFunc(id)
-                    const idx = glossaryElem.translations.findIndex((t) => t.lang === lang)
+                    const glossaryElem = this.options.glossaryElemByIdFunc(id)
+                    const idx = glossaryElem.translations.findIndex((t) => t.lang === this.options.lang)
                     if (this.idx !== -1) {
-                      setTooltipDescription(glossaryElem.translations[idx], event.target)
+                      this.options.setTooltipDescription(glossaryElem.translations[idx], event.target)
                     }
                   }
                 }

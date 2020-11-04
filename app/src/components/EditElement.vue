@@ -424,7 +424,7 @@ export default {
       const idx = this.savedTranslations.findIndex((t) => t.lang === this.langTab)
       const translation = {
         title: this.internalTitle,
-        description: JSON.stringify(this.$refs.editor.getContent()),
+        description: this.$refs.editor.getContent(),
         lang: this.langTab
       }
       if (this.categories_enabled) {
