@@ -4,10 +4,8 @@
     padding
   >
     <div class="editor-options">
-      <span v-if="loading">Loading glossary...</span>
       <div
         class="editor"
-        v-if="!loading"
       >
         <editor-content
           class="editor_content"
@@ -121,7 +119,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import { Editor, EditorContent, EditorMenuBar } from 'tiptap'
 import {
   Link,
@@ -140,12 +137,8 @@ export default {
   },
   props: {
     value: {
-      type: String | Object, 
+      type: String, 
       default: ''
-    },
-    lang: {
-      type: String,
-      default: 'en'
     },
     readonly: {
       type: Boolean,
@@ -155,26 +148,15 @@ export default {
   data() {
     return {
       editor: null,
-      loading: true,
-      internalLang: '',
       editorChange: false,
       showUploadModal: false,
       uploadTab: 'upload',
-      urlImage: '',
-      converter: undefined
+      urlImage: ''
     }
   },
   methods: {
-    ...mapActions('glossary', ['fetchGlossary']),
-    getJSON() {
-      return this.editor.getJSON()
-    },
-    getHTML() {
-      return this.editor.getHTML()
-    },
     getContent() {
-      console.log(this.getHTML())
-      return this.getHTML()
+      return this.editor.getHTML()
     },
     setContent(content) {
       return this.editor.setContent(content)
@@ -200,11 +182,6 @@ export default {
         content: this.value
       })
     },
-    setLang(lang) {
-      // set mention list to the glossary terms in the language selected
-      this.internalLang = lang
-      this.createEditor()
-    },
     uploadImage(file) {
       const formData = new FormData()
       formData.append('file', file)
@@ -212,20 +189,8 @@ export default {
       // TODO: implement when decision is made
     }
   },
-  computed: {
-    ...mapGetters('glossary', ['glossary']),
-    showSuggestions() {
-      return this.showSuggestionsData
-    }
-  },
   created() {
-    this.loading = true
-    this.internalLang = this.lang
-    this.fetchGlossary()
-      .then(() => {
-        this.createEditor()
-        this.loading = false
-      })
+    this.createEditor()
   },
   watch: {
     value(val) {
@@ -243,10 +208,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.mention {
-  text-decoration: underline;
-}
-
 .editor_content {
   font-family: "Nunito Sans";
   font-size: 13pt;
@@ -257,18 +218,5 @@ export default {
   display: inline-block;
   width: 80%;
   vertical-align: top;
-}
-
-.suggestion-list {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.suggestion-list-item {
-  width: 100%;
-}
-
-.list-without-styles {
-  list-style-type: none;
 }
 </style>

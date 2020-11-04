@@ -20,7 +20,6 @@
         <glossary-editor
           class="desc-editor q-mb-xl"
           v-model="internalDescription"
-          :lang="$userLang"
           ref="editor"
         />
       </div>
@@ -411,7 +410,6 @@ export default {
           this.internalDescription = parsedJson
           if (this.$refs.editor) {
             this.$refs.editor.setContent(parsedJson)
-            this.$refs.editor.setLang(al)
           }
         } else {
           this.resetFields(al)
@@ -461,7 +459,6 @@ export default {
       this.setInternalUserTypeSelector(al)
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
-        this.$refs.editor.setLang(al)
       }
     },
     addTag() {

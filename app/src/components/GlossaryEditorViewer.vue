@@ -41,7 +41,7 @@ export default {
   },
   props: {
     content: {
-      type: String | Object,
+      type: String,
       default: ''
     },
     glossary_fetched: {
@@ -91,16 +91,6 @@ export default {
     setContent(content) {
       this.editor.setContent(content)
     },
-    getMentionElementsByLang() {
-      const mentionElements = []
-      for (const glossaryElem of this.glossary) {
-        const idx = glossaryElem.translations.findIndex((t) => t.lang === this.lang)
-        if (idx !== -1) {
-          mentionElements.push(glossaryElem.translations[idx])
-        }
-      }
-      return mentionElements
-    },
     setCurrentDescription(glossaryElem, element) {
       // Gets JSON description and transforms it to plain text
       // Create an invisible editor to transform the JSON into HTML for parsing
@@ -114,7 +104,7 @@ export default {
           new GlossaryMention({
             showTooltip: true,
             glossaryElemByIdFunc: this.glossaryElemById,
-            setTooltipDescription: this.currentDescriptionSetter,
+            setTooltipDescription: this.setCurrentDescription,
             lang: this.lang
           })
         ],
