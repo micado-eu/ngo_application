@@ -37,6 +37,7 @@
               @click="showUploadModal = true"
               :disabled="readonly"
             />
+            <span class="error-message" v-if="errorMessage">{{errorMessage}}</span>
             <!-- Image upload dialog -->
             <q-dialog
               v-model="showUploadModal"
@@ -148,6 +149,10 @@ export default {
     isContentHTML: {
       type: Boolean,
       default: false
+    },
+    maxCharLimit: {
+      type: Number,
+      default: 800
     }
   },
   mixins: [markdownConverterMixin],
@@ -157,7 +162,8 @@ export default {
       editorChange: false,
       showUploadModal: false,
       uploadTab: 'upload',
-      urlImage: ''
+      urlImage: '',
+      errorMessage: ""
     }
   },
   methods: {
@@ -208,6 +214,9 @@ export default {
       formData.append('file', file)
       const headers = { 'Content-Type': 'multipart/form-data' }
       // TODO: implement when decision is made
+    },
+    hasError() {
+      return this.errorMessage.length > 0
     }
   },
   created() {
@@ -219,6 +228,14 @@ export default {
         this.editor.setContent(val, false)
       }
       this.editorChange = false
+      // check errors
+      const doc = new DOMParser().parseFromString(this.editor.getHTML(), 'text/html')
+      const plainDescription = doc.body.textContent || ''
+      if (plainDescription.length > this.maxCharLimit) {
+        this.errorMessage = this.$t("error_messages.max_char_limit") + this.maxCharLimit
+      } else {
+        this.errorMessage = false
+      }
     }
   },
   beforeDestroy() {
@@ -233,6 +250,10 @@ export default {
   font-family: "Nunito Sans";
   font-size: 13pt;
   background-color: lightgray;
+}
+
+.error-message {
+  color: red
 }
 
 .editor-options {

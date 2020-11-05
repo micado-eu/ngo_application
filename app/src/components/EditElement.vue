@@ -576,7 +576,7 @@ export default {
       ) {
         return true
       }
-      return false
+      return this.$refs.editor.hasError()
     },
     callSaveFn() {
       if (!this.checkErrors()) {

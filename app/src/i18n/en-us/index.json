@@ -70,5 +70,11 @@
     "user_types": "User Types",
     "start_date": "Start date",
     "end_date": "End date"
+  },
+  "error_messages": {
+    "title_empty": "Title is empty. Please add a title.",
+    "category_empty": "Please select a category.",
+    "max_title": "Please use a maximum of 20 characters.",
+    "max_char_limit": "Maximum number of characters reached: "
   }
 }
