@@ -52,11 +52,12 @@ export default {
       return `events/${id}/edit`
     },
     deleteItem(item) {
-      this.loading = true
-      this.deleteEventItem(item)
-        .then(this.fetchEvent())
+      this.deleteEventTagsFromEvent(item.id)
+        .then(this.deleteEventItem(item))
         .then(() => {
-          this.$router.go()
+          this.loading = true
+          setTimeout(() => this.updateContent(), 1000)
+          // this.$router.go()
         })
     }
   },
@@ -67,26 +68,30 @@ export default {
         this.fetchEventTags().then(() => {
           this.eventElems = JSON.parse(JSON.stringify(this.event))
           const eventCategoryElems = [...this.eventCategories]
-          for (let i = 0; i < this.eventElems.length; i += 1) {
-            const elem = this.eventElems[i]
-            // Set categories-elements relations
-            const idxCat = elem.category
-            const idxCategoryObject = eventCategoryElems.findIndex(
-              (ic) => ic.id === idxCat
-            )
-            elem.category = eventCategoryElems[idxCategoryObject]
-            // Set tag-elements relations
-            elem.tags = this.eventTagsByEvent(elem.id)
+          if (this.eventElems.length > 0) {
+            for (let i = 0; i < this.eventElems.length; i += 1) {
+              const elem = this.eventElems[i]
+              // Set categories-elements relations
+              const idxCat = elem.category
+              const idxCategoryObject = eventCategoryElems.findIndex(
+                (ic) => ic.id === idxCat
+              )
+              elem.category = eventCategoryElems[idxCategoryObject]
+              // Set tag-elements relations
+              elem.tags = this.eventTagsByEvent(elem.id)
 
-            this.fetchEventTopics(elem.id).then((topics) => {
-              elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
-              return this.fetchEventUserTypes(elem.id)
-            }).then((userTypes) => {
-              elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
-              if (i >= this.eventElems.length - 1) {
-                this.loading = false
-              }
-            })
+              this.fetchEventTopics(elem.id).then((topics) => {
+                elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
+                return this.fetchEventUserTypes(elem.id)
+              }).then((userTypes) => {
+                elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
+                if (i >= this.eventElems.length - 1) {
+                  this.loading = false
+                }
+              })
+            }
+          } else {
+            this.loading = false
           }
         })
       })

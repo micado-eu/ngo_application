@@ -66,26 +66,30 @@ export default {
           this.fetchInformationTags().then(() => {
             this.informationElems = JSON.parse(JSON.stringify(this.information))
             const informationCategoryElems = [...this.informationCategories]
-            for (let i = 0; i < this.informationElems.length; i += 1) {
-              const elem = this.informationElems[i]
-              // Set categories-elements relations
-              const idxCat = elem.category
-              const idxCategoryObject = informationCategoryElems.findIndex(
-                (ic) => ic.id === idxCat
-              )
-              elem.category = informationCategoryElems[idxCategoryObject]
-              // Set tag-elements relations
-              elem.tags = this.informationTagsByInformation(elem.id)
+            if (this.informationElems.length > 0) {
+              for (let i = 0; i < this.informationElems.length; i += 1) {
+                const elem = this.informationElems[i]
+                // Set categories-elements relations
+                const idxCat = elem.category
+                const idxCategoryObject = informationCategoryElems.findIndex(
+                  (ic) => ic.id === idxCat
+                )
+                elem.category = informationCategoryElems[idxCategoryObject]
+                // Set tag-elements relations
+                elem.tags = this.informationTagsByInformation(elem.id)
 
-              this.fetchInformationTopics(elem.id).then((topics) => {
-                elem.topics = topics.filter((topic) => topic.idInformation === elem.id)
-                return this.fetchInformationUserTypes(elem.id)
-              }).then((userTypes) => {
-                elem.userTypes = userTypes.filter((userType) => userType.idInformation === elem.id)
-                if (i >= this.informationElems.length - 1) {
-                  this.loading = false
-                }
-              })
+                this.fetchInformationTopics(elem.id).then((topics) => {
+                  elem.topics = topics.filter((topic) => topic.idInformation === elem.id)
+                  return this.fetchInformationUserTypes(elem.id)
+                }).then((userTypes) => {
+                  elem.userTypes = userTypes.filter((userType) => userType.idInformation === elem.id)
+                  if (i >= this.informationElems.length - 1) {
+                    this.loading = false
+                  }
+                })
+              }
+            } else {
+              this.loading = false
             }
           })
         })

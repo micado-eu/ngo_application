@@ -2,7 +2,10 @@
   <div>
     <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t(title)}}</div>
     <span v-if="loading">Loading...</span>
-    <div class="row" v-show=!loading>
+    <div
+      class="row"
+      v-show=!loading
+    >
       <div class="col q-mt-md q-ml-md">
         <q-list
           bordered
@@ -254,10 +257,16 @@
                   glossary_fetched
                   :lang="lang"
                 />
-                <span class="filter-text" v-if="is_event">
+                <span
+                  class="filter-text"
+                  v-if="is_event"
+                >
                   {{$t("lists.start_date")}}: {{item.startDate}}
                 </span>
-                <span class="filter-text" v-if="is_event">
+                <span
+                  class="filter-text"
+                  v-if="is_event"
+                >
                   {{$t("lists.end_date")}}: {{item.endDate}}
                 </span>
               </q-item-section>
@@ -619,9 +628,17 @@ export default {
           }
           if (this.is_event) {
             const startDate = new Date(e.startDate)
-            translation.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()} ${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
+            translation.startDate = `${startDate.getUTCFullYear()}-` +
+              `${startDate.getUTCMonth() + 1}-` +
+              `${startDate.getUTCDate()} ` +
+              `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
+              `${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
             const finishDate = new Date(e.endDate)
-            translation.endDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()} ${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+            translation.endDate = `${finishDate.getUTCFullYear()}-` +
+              `${finishDate.getUTCMonth() + 1}-` +
+              `${finishDate.getUTCDate()} ` +
+              `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
+              `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           }
         }
         return translation
