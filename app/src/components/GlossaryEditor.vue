@@ -7,10 +7,6 @@
       <div
         class="editor"
       >
-        <editor-content
-          class="editor_content"
-          :editor="editor"
-        />
         <editor-menu-bar
           :editor="editor"
           v-slot="{ commands, isActive }"
@@ -114,6 +110,10 @@
             </q-dialog>
           </div>
         </editor-menu-bar>
+        <editor-content
+          class="editor_content"
+          :editor="editor"
+        />
       </div>
     </div>
   </div>
@@ -249,13 +249,18 @@ export default {
 .editor_content {
   font-family: "Nunito Sans";
   font-size: 13pt;
-  background-color: lightgray;
+  background-color: $grey-3;
+  border: 1px solid $grey-5;
+  border-radius: 4px
 }
 
 .error-message {
   color: red
 }
 
+</style>
+
+<style>
 .editor-options {
   display: inline-block;
   width: 80%;

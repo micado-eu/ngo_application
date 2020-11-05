@@ -6,300 +6,319 @@
       class="edit-element-component q-pa-xl q-ma-xl"
       v-else
     >
-      <div class="q-ml-xl">
-        <span class="q-my-xl label-edit">{{$t('input_labels.title')}}</span>
-        <q-input
-          class="title_input q-mb-xl"
-          outlined
-          v-model="internalTitle"
-          :rules="[ val => val.length <= 20 || $t('error_messages.max_title')]"
-        />
-      </div>
-      <div class="q-ml-xl">
-        <span class="q-my-xl label-edit">{{$t('input_labels.description')}}</span>
-        <glossary-editor
-          class="desc-editor q-mb-xl"
-          v-model="internalDescription"
-          ref="editor"
-        />
-      </div>
-      <div class="row tag_category_selectors q-ml-xl">
-        <div
-          v-if="tags_enabled"
-          class="q-my-md tag_list col"
-        >
-          <span class="q-my-xl label-edit">{{$t('input_labels.tags')}}</span>
-          <div class="row">
-            <q-input
-              color="accent"
-              outlined
-              placeholder="New tag"
-              label-color="accent"
-              v-model="tagInput"
-              class="col-10"
-            />
-            <q-btn
-              no-caps
-              @click="addTag()"
-              :label="$t('button.add_tag')"
-              class="q-my-sm q-ml-sm add_tag_btn col"
-            />
-            <span
-              v-if="tagError"
-              class="q-ml-sm"
-            >
-              {{ $t(tagErrorMessage) }}
-            </span>
-          </div>
-          <div class="tag_list flex">
-            <div
-              class="tag_btn q-my-sm q-mr-sm"
-              v-for="tag in internalTags"
-              :key="tag"
-            >
-              <span>{{tag}} <span
-                  class="del_tag_btn"
-                  @click="internalTags.splice(internalTags.indexOf(tag), 1)"
-                >X</span></span>
-            </div>
-          </div>
-        </div>
-        <div
-          v-if="categories_enabled"
-          class="q-my-md q-ml-lg tag_list col"
-        >
-          <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}</span>
-          <q-select
-            v-model="selectedCategory"
-            :options="internalCategories"
-            @input="setCategoryObjectModel($event)"
+      <div class="center-edit q-ma-xl">
+        <div>
+          <span class="q-my-xl label-edit">{{$t('input_labels.title')}}</span>
+          <q-input
+            class="title_input q-mb-xl"
+            outlined
+            v-model="internalTitle"
+            bg-color="grey-3"
+            :rules="[ val => val.length <= 20 || $t('error_messages.max_title')]"
           />
         </div>
-      </div>
-      <div
-        class="row tag_category_selectors q-ml-lg"
-        v-if="is_event"
-      >
-        <div class="q-my-md q-ml-lg tag_list col">
-          <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
-          <q-input
-            filled
-            v-model="startDate"
+        <div>
+          <span class="q-my-xl label-edit">{{$t('input_labels.description')}}</span>
+          <glossary-editor
+            class="desc-editor q-mb-xl"
+            v-model="internalDescription"
+            ref="editor"
+          />
+        </div>
+        <div class="row tag_category_selectors">
+          <div
+            v-if="tags_enabled"
+            class="q-my-md tag_list col"
           >
-            <template v-slot:prepend>
-              <q-icon
-                name="event"
-                class="cursor-pointer"
+            <span class="q-my-xl label-edit">{{$t('input_labels.tags')}}</span>
+            <div class="row">
+              <q-input
+                color="accent"
+                outlined
+                placeholder="New tag"
+                label-color="accent"
+                v-model="tagInput"
+                class="col-10"
+              />
+              <q-btn
+                no-caps
+                @click="addTag()"
+                :label="$t('button.add_tag')"
+                class="q-my-sm q-ml-sm add_tag_btn col"
+              />
+              <span
+                v-if="tagError"
+                class="q-ml-sm"
               >
-                <q-popup-proxy
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    v-model="startDate"
-                    mask="YYYY-MM-DD HH:mm"
-                    color="accent"
-                  >
-                    <div class="row items-center justify-end">
-                      <q-btn
-                        v-close-popup
-                        :label="$t('date_selector.close')"
-                        color="accent"
-                        flat
-                      />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-
-            <template v-slot:append>
-              <q-icon
-                name="access_time"
-                class="cursor-pointer"
+                {{ $t(tagErrorMessage) }}
+              </span>
+            </div>
+            <div class="tag_list flex">
+              <div
+                class="tag_btn q-my-sm q-mr-sm"
+                v-for="tag in internalTags"
+                :key="tag"
               >
-                <q-popup-proxy
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-time
-                    v-model="startDate"
-                    mask="YYYY-MM-DD HH:mm"
-                    format24h
-                    color="accent"
-                  >
-                    <div class="row items-center justify-end">
-                      <q-btn
-                        v-close-popup
-                        :label="$t('date_selector.close')"
-                        color="accent"
-                        flat
-                      />
-                    </div>
-                  </q-time>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+                <span>{{tag}} <span
+                    class="del_tag_btn"
+                    @click="internalTags.splice(internalTags.indexOf(tag), 1)"
+                  >X</span></span>
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="categories_enabled"
+            class="q-my-md q-ml-lg tag_list col"
+          >
+            <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}</span>
+            <q-select
+              v-model="selectedCategory"
+              :options="internalCategories"
+              @input="setCategoryObjectModel($event)"
+            />
+          </div>
         </div>
         <div
+          class="row tag_category_selectors"
           v-if="is_event"
-          class="q-my-md q-ml-lg tag_list col"
         >
-          <span class="q-my-lg label-edit">{{$t('input_labels.finish_date')}}</span>
-          <q-input
-            filled
-            v-model="finishDate"
+          <div class="q-my-md q-mr-lg tag_list col">
+            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+            <div class="row">
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="startDate"
+                class="col q-mr-md"
+              >
+                <template v-slot:prepend>
+                  <q-icon
+                    name="event"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="startDate"
+                        mask="YYYY-MM-DD"
+                        color="accent"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="startTime"
+                class="col"
+              >
+                <template v-slot:prepend>
+                  <q-icon
+                    name="access_time"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-time
+                        v-model="startTime"
+                        mask="HH:mm"
+                        format24h
+                        color="accent"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                          />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+          </div>
+          <div class="q-my-md tag_list col">
+            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+            <div class="row">
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="finishDate"
+                class="col q-mr-md"
+              >
+                <template v-slot:prepend>
+                  <q-icon
+                    name="event"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="finishDate"
+                        mask="YYYY-MM-DD"
+                        color="accent"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="finishTime"
+                class="col"
+              >
+                <template v-slot:prepend>
+                  <q-icon
+                    name="access_time"
+                    class="cursor-pointer"
+                  >
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-time
+                        v-model="finishTime"
+                        mask="HH:mm"
+                        format24h
+                        color="accent"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                          />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
+          </div>
+        </div>
+        <div class="row tag_category_selectors">
+          <div
+            v-if="topics_enabled"
+            class="q-my-md tag_list col"
           >
-            <template v-slot:prepend>
-              <q-icon
-                name="event"
-                class="cursor-pointer"
+            <span class="q-my-lg label-edit">{{$t('input_labels.select_topic')}}</span>
+            <q-select
+              v-model="selectedTopic"
+              :options="internalTopics"
+              @input="setTopicObjectModel($event)"
+            />
+            <div class="tag_list flex">
+              <div
+                class="tag_btn q-my-sm q-mr-sm"
+                v-for="(topic, idx) in selectedTopicsObjects"
+                :key="idx"
               >
-                <q-popup-proxy
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    v-model="finishDate"
-                    mask="YYYY-MM-DD HH:mm"
-                    color="accent"
-                  >
-                    <div class="row items-center justify-end">
-                      <q-btn
-                        v-close-popup
-                        :label="$t('date_selector.close')"
-                        color="accent"
-                        flat
-                      />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-
-            <template v-slot:append>
-              <q-icon
-                name="access_time"
-                class="cursor-pointer"
+                <span>{{topic.topic}} <span
+                    class="del_tag_btn"
+                    @click="removeTopic(idx)"
+                  >X</span></span>
+              </div>
+            </div>
+          </div>
+          <div
+            v-if="user_types_enabled"
+            class="q-my-md q-ml-lg tag_list col"
+          >
+            <span class="q-my-lg label-edit">{{$t('input_labels.select_user_type')}}</span>
+            <q-select
+              v-model="selectedUserType"
+              :options="internalUserTypes"
+              @input="setUserTypeObjectModel($event)"
+            />
+            <div class="tag_list flex">
+              <div
+                class="tag_btn q-my-sm q-mr-sm"
+                v-for="(userType, idx) in selectedUserTypesObjects"
+                :key="idx"
               >
-                <q-popup-proxy
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-time
-                    v-model="finishDate"
-                    mask="YYYY-MM-DD HH:mm"
-                    format24h
-                    color="accent"
-                  >
-                    <div class="row items-center justify-end">
-                      <q-btn
-                        v-close-popup
-                        :label="$t('date_selector.close')"
-                        color="accent"
-                        flat
-                      />
-                    </div>
-                  </q-time>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </div>
-      </div>
-      <div class="row tag_category_selectors q-ml-lg">
-        <div
-          v-if="topics_enabled"
-          class="q-my-md q-ml-lg tag_list col"
-        >
-          <span class="q-my-lg label-edit">{{$t('input_labels.select_topic')}}</span>
-          <q-select
-            v-model="selectedTopic"
-            :options="internalTopics"
-            @input="setTopicObjectModel($event)"
-          />
-          <div class="tag_list flex">
-            <div
-              class="tag_btn q-my-sm q-mr-sm"
-              v-for="(topic, idx) in selectedTopicsObjects"
-              :key="idx"
-            >
-              <span>{{topic.topic}} <span
-                  class="del_tag_btn"
-                  @click="removeTopic(idx)"
-                >X</span></span>
+                <span>{{userType.userType}} <span
+                    class="del_tag_btn"
+                    @click="removeUserType(idx)"
+                  >X</span></span>
+              </div>
             </div>
           </div>
         </div>
-        <div
-          v-if="user_types_enabled"
-          class="q-my-md q-ml-lg tag_list col"
-        >
-          <span class="q-my-lg label-edit">{{$t('input_labels.select_user_type')}}</span>
-          <q-select
-            v-model="selectedUserType"
-            :options="internalUserTypes"
-            @input="setUserTypeObjectModel($event)"
-          />
-          <div class="tag_list flex">
-            <div
-              class="tag_btn q-my-sm q-mr-sm"
-              v-for="(userType, idx) in selectedUserTypesObjects"
-              :key="idx"
-            >
-              <span>{{userType.userType}} <span
-                  class="del_tag_btn"
-                  @click="removeUserType(idx)"
-                >X</span></span>
-            </div>
-          </div>
+        <div class="language_selector">
+          <hr
+            style="border: 0.999px solid #DADADA;"
+            class="q-my-lg"
+          >
+          <q-tabs
+            v-model="langTab"
+            @input="changeLanguage"
+            dense
+            class="text-grey"
+            active-color="black"
+            indicator-color="black"
+            align="justify"
+            narrow-indicator
+          >
+            <q-tab
+              v-for="language in activeLanguages"
+              :key="language.lang"
+              :name="language.lang"
+              :label="language.name"
+            />
+          </q-tabs>
+          <hr
+            style="border: 0.999px solid #DADADA"
+            class="q-my-lg"
+          >
         </div>
-      </div>
-      <div class="language_selector q-ml-xl">
-        <hr
-          style="border: 0.999px solid #DADADA;"
-          class="q-my-lg"
-        >
-        <q-tabs
-          v-model="langTab"
-          @input="changeLanguage"
-          dense
-          class="text-grey"
-          active-color="accent"
-          indicator-color="accent"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in activeLanguages"
-            :key="language.lang"
-            :name="language.lang"
-            :label="language.name"
+        <div class="row q-my-xl">
+          <q-btn
+            unelevated
+            no-caps
+            :label="$t('button.cancel')"
+            class="q-mr-lg edit-element-button cancel-btn"
+            @click="goBack()"
           />
-        </q-tabs>
-        <hr
-          style="border: 0.999px solid #DADADA"
-          class="q-my-lg"
-        >
-      </div>
-      <div class="row q-my-xl q-ml-xl">
-        <q-btn
-          outline
-          no-caps
-          color="accent"
-          :label="$t('button.cancel')"
-          class="q-mr-lg edit-element-button"
-          @click="goBack()"
-        />
-        <q-btn
-          unelevated
-          no-caps
-          color="accent"
-          :label="$t('button.save')"
-          @click="callSaveFn()"
-          class="row edit-element-button"
-        />
+          <q-btn
+            unelevated
+            no-caps
+            color="accent"
+            :label="$t('button.save')"
+            @click="callSaveFn()"
+            class="row edit-element-button"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -389,7 +408,9 @@ export default {
       selectedUserType: '',
       selectedUserTypesObjects: [],
       startDate: '',
+      startTime: '',
       finishDate: '',
+      finishTime: '',
       savedTranslations: []
     }
   },
@@ -438,8 +459,8 @@ export default {
         translation.userTypes = this.selectedUserTypesObjects
       }
       if (this.is_event) {
-        translation.startDate = new Date(this.startDate).toISOString()
-        translation.finishDate = new Date(this.finishDate).toISOString()
+        translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
+        translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
       }
       if (idx !== -1) {
         this.savedTranslations[idx] = translation
@@ -651,9 +672,11 @@ export default {
         }
         if (this.is_event) {
           const startDate = new Date(this.elem.startDate)
-          this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()} ${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
+          this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()}`
+          this.startTime = `${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
           const finishDate = new Date(this.elem.endDate)
-          this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()} ${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+          this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
+          this.finishTime = `${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
         }
       }
       if (this.categories.length > 0) {
@@ -745,7 +768,7 @@ $title_font_size: 16px;
 }
 .title_input {
   font-size: $title_font_size;
-  max-width: 80%;
+  max-width: 100%;
 }
 .add_tag_btn {
   background-color: #0b91ce;
@@ -753,10 +776,25 @@ $title_font_size: 16px;
 }
 
 .tag_category_selectors {
-  max-width: 80%;
+  max-width: 100%;
 }
 
 .language_selector {
-  max-width: 80%;
+  max-width: 100%;
+}
+
+.cancel-btn {
+  border: 1px solid #c71f40;
+  color: black;
+  font-weight: bold;
+}
+
+.center-edit {
+  max-width: 100%;
+}
+</style>
+<style>
+.desc-editor .editor-options {
+  width: 100%;
 }
 </style>

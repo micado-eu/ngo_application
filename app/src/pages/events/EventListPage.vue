@@ -59,43 +59,46 @@ export default {
           setTimeout(() => this.updateContent(), 1000)
           // this.$router.go()
         })
+    },
+    updateContent() {
+      this.loading = true
+      this.fetchEvent().then(() => {
+        this.fetchEventCategory().then(() => {
+          this.fetchEventTags().then(() => {
+            this.eventElems = JSON.parse(JSON.stringify(this.event))
+            const eventCategoryElems = [...this.eventCategories]
+            if (this.eventElems.length > 0) {
+              for (let i = 0; i < this.eventElems.length; i += 1) {
+                const elem = this.eventElems[i]
+                // Set categories-elements relations
+                const idxCat = elem.category
+                const idxCategoryObject = eventCategoryElems.findIndex(
+                  (ic) => ic.id === idxCat
+                )
+                elem.category = eventCategoryElems[idxCategoryObject]
+                // Set tag-elements relations
+                elem.tags = this.eventTagsByEvent(elem.id)
+
+                this.fetchEventTopics(elem.id).then((topics) => {
+                  elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
+                  return this.fetchEventUserTypes(elem.id)
+                }).then((userTypes) => {
+                  elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
+                  if (i >= this.eventElems.length - 1) {
+                    this.loading = false
+                  }
+                })
+              }
+            } else {
+              this.loading = false
+            }
+          })
+        })
+      })
     }
   },
   created() {
-    this.loading = true
-    this.fetchEvent().then(() => {
-      this.fetchEventCategory().then(() => {
-        this.fetchEventTags().then(() => {
-          this.eventElems = JSON.parse(JSON.stringify(this.event))
-          const eventCategoryElems = [...this.eventCategories]
-          if (this.eventElems.length > 0) {
-            for (let i = 0; i < this.eventElems.length; i += 1) {
-              const elem = this.eventElems[i]
-              // Set categories-elements relations
-              const idxCat = elem.category
-              const idxCategoryObject = eventCategoryElems.findIndex(
-                (ic) => ic.id === idxCat
-              )
-              elem.category = eventCategoryElems[idxCategoryObject]
-              // Set tag-elements relations
-              elem.tags = this.eventTagsByEvent(elem.id)
-
-              this.fetchEventTopics(elem.id).then((topics) => {
-                elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
-                return this.fetchEventUserTypes(elem.id)
-              }).then((userTypes) => {
-                elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
-                if (i >= this.eventElems.length - 1) {
-                  this.loading = false
-                }
-              })
-            }
-          } else {
-            this.loading = false
-          }
-        })
-      })
-    })
+    this.updateContent()
   }
 }
 </script>
