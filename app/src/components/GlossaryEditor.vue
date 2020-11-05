@@ -128,6 +128,7 @@ import {
 } from 'tiptap-extensions'
 import Image from 'components/editor_plugins/Image'
 import GlossaryMention from 'components/editor_plugins/GlossaryMention'
+import markdownConverterMixin from '../mixin/markdownConverterMixin'
 
 export default {
   name: 'GlossaryEditor',
@@ -143,8 +144,13 @@ export default {
     readonly: {
       type: Boolean,
       default: false
+    },
+    isContentHTML: {
+      type: Boolean,
+      default: false
     }
   },
+  mixins: [markdownConverterMixin],
   data() {
     return {
       editor: null,
@@ -156,15 +162,30 @@ export default {
   },
   methods: {
     getContent() {
+      if (this.isContentHTML) {
+        return this.getHTML()
+      } else {
+        return this.getMarkdown()
+      }
+    },
+    getMarkdown() {
+      return this.HTMLToMarkdown(this.editor.getHTML())
+    },
+    getHTML() {
       return this.editor.getHTML()
     },
-    setContent(content) {
-      return this.editor.setContent(content)
+    setContent(content, isHTML = false) {
+      if (!isHTML) {
+        this.editor.setContent(this.markdownToHTML(content))
+      } else {
+        this.editor.setContent(content)
+      }
     },
     createEditor() {
       if (this.editor) {
         this.editor.destroy()
       }
+      let currentContent = this.isContentHTML ? this.value : this.markdownToHTML(this.value)
       this.editor = new Editor({
         extensions: [
           new Bold(),
@@ -179,7 +200,7 @@ export default {
           this.$emit('input', getHTML())
         },
         editable: !this.readonly,
-        content: this.value
+        content: currentContent
       })
     },
     uploadImage(file) {

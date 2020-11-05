@@ -1,7 +1,6 @@
 <template>
   <div
     padding
-    :id="uuid"
   >
     <editor-content
       class="editor_content"
@@ -31,8 +30,7 @@ import {
 } from 'tiptap-extensions'
 import Image from 'components/editor_plugins/Image'
 import GlossaryMention from 'components/editor_plugins/GlossaryMention'
-
-let uuid = 0
+import markdownConverterMixin from '../mixin/markdownConverterMixin'
 
 export default {
   name: 'GlossaryEditorViewer',
@@ -51,8 +49,13 @@ export default {
     lang: {
       type: String,
       default: 'en'
+    },
+    isContentHTML: {
+      type: Boolean,
+      default: false
     }
   },
+  mixins: [markdownConverterMixin],
   data() {
     return {
       editor: null,
@@ -88,11 +91,21 @@ export default {
       })
       this.setContent(this.content)
     },
-    setContent(content) {
-      this.editor.setContent(content)
+    setContent(content, isHTML = false) {
+      let currentContent = content
+      if (!isHTML) {
+        currentContent = this.markdownToHTML(content)
+      }
+      this.markGlossaryReferences(currentContent, this.lang).then((markedContent) => {
+        this.editor.setContent(markedContent)
+      })
     },
     setCurrentDescription(glossaryElem, element) {
-      // Gets JSON description and transforms it to plain text
+      let currentContent = glossaryElem.description
+      if (!this.isContentHTML) {
+        currentContent = this.markdownToHTML(currentContent)
+      }
+      // Gets description and transforms it to plain text
       // Create an invisible editor to transform the JSON into HTML for parsing
       const editorInterpreter = new Editor({
         editable: false,
@@ -108,7 +121,7 @@ export default {
             lang: this.lang
           })
         ],
-        content: glossaryElem.description
+        content: currentContent
       })
       const doc = new DOMParser().parseFromString(editorInterpreter.getHTML(), 'text/html')
       const plainDescription = doc.body.textContent || ''
@@ -116,10 +129,6 @@ export default {
       this.currentDescriptionContent = plainDescription
       editorInterpreter.destroy()
     }
-  },
-  beforeCreate() {
-    this.uuid = uuid.toString()
-    uuid += 1
   },
   created() {
     if (!this.glossary_fetched) {
