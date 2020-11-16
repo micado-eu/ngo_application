@@ -51,7 +51,7 @@ export default {
       console.log(access_token)
       let tenant = this.$migrant_tenant
       console.log("before fetching the user")
-      client.fetchUser(id_token.sub, tenant)
+      client.fetchUserLogin(id_token.sub, tenant)
         .then(response => {
           console.log("response from getting internal user id")
           console.log(response)
