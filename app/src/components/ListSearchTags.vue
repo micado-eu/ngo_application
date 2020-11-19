@@ -4,9 +4,9 @@
     <span v-if="loading">Loading...</span>
     <div
       class="row"
-      v-show=!loading
+      v-if=!loading
     >
-      <div class="col q-mt-md q-ml-md">
+      <div class="col q-ml-md filter-list">
         <q-list
           bordered
           v-if="tags_enabled || categories_enabled || topics_enabled || user_types_enabled"
@@ -179,7 +179,7 @@
         </q-list>
       </div>
       <div class="q-mx-sm col-10">
-        <div class="q-my-md q-mr-md row">
+        <div class="q-mr-md row">
           <q-input
             color="accent"
             v-model="search"
@@ -187,7 +187,7 @@
             filled
             outlined
             :label='$t("input_labels.search")'
-            class="col-10 search-bar"
+            class="search-bar col"
           >
             <template v-slot:append>
               <q-icon name="search" />
@@ -196,7 +196,8 @@
           <q-btn
             no-caps
             :label='$t(add_label)'
-            class="add-btn col q-ml-md q-my-lg margin-right-btn"
+            class="add-btn q-ml-md q-my-lg margin-right-btn"
+            data-cy="add_element"
             :to="new_url"
           />
         </div>
@@ -235,13 +236,12 @@
           </span>
         </div>
         <div class="row q-mb-sm">
-          <q-separator style="max-width: 91.7%; background-color: black" />
+          <q-separator
+            style="max-width: 91.7%; background-color: black"
+          />
         </div>
         <div class="row">
-          <q-list
-            class="q-mt-md col-11 element-list"
-            separator
-          >
+          <q-list class="col-11 element-list" separator>
             <!-- items -->
             <q-item
               v-for="item in filteredElements"
@@ -331,6 +331,7 @@
                   class="item-btn"
                   icon="img:statics/icons/Icon - edit - orange (600x600).png"
                   :to="edit_url_fn(item.id)"
+                  :data-cy="'edit_button' + item.id"
                 />
               </q-item-section>
             </q-item>
@@ -829,6 +830,9 @@ $btn_secondary: #cdd0d2;
   border-radius: 5px;
   margin-top: 65px;
   margin-bottom: 75px;
-  max-width: 75%;
+  max-width: 75%
+}
+.filter-list {
+  margin-top: 65px;
 }
 </style>

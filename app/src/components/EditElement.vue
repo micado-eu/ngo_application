@@ -8,20 +8,33 @@
     >
       <div class="center-edit q-ma-xl">
         <div>
-          <span class="q-my-xl label-edit">{{$t('input_labels.title')}}</span>
+          <span class="q-my-xl label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.title')"
+              :helpLabel="$t('help.element_title')"
+            ></help-label>
+          </span>
           <q-input
             class="title_input q-mb-xl"
+            data-cy="title_input"
             outlined
             v-model="internalTitle"
             bg-color="grey-3"
-            :rules="[ val => val.length <= 20 || $t('error_messages.max_title')]"
+            :rules="[ val => val.length <= title_max_length || $t('error_messages.max_char_limit') + title_max_length]"
           />
         </div>
         <div>
-          <span class="q-my-xl label-edit">{{$t('input_labels.description')}}</span>
+          <span class="q-my-xl label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.description')"
+              :helpLabel="$t('help.element_description')"
+            ></help-label>
+          </span>
           <glossary-editor
             class="desc-editor q-mb-xl"
+            data-cy="description_input"
             v-model="internalDescription"
+            :maxCharLimit="description_max_length"
             ref="editor"
           />
         </div>
@@ -30,7 +43,12 @@
             v-if="tags_enabled"
             class="q-my-md tag_list col"
           >
-            <span class="q-my-xl label-edit">{{$t('input_labels.tags')}}</span>
+            <span class="q-my-xl label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.tags')"
+                :helpLabel="$t('help.element_tags')"
+              ></help-label>
+            </span>
             <div class="row">
               <q-input
                 color="accent"
@@ -39,12 +57,14 @@
                 label-color="accent"
                 v-model="tagInput"
                 class="col-10"
+                data-cy="add_tag_input"
               />
               <q-btn
                 no-caps
                 @click="addTag()"
                 :label="$t('button.add_tag')"
                 class="q-my-sm q-ml-sm add_tag_btn col"
+                data-cy="add_tag_button"
               />
               <span
                 v-if="tagError"
@@ -53,7 +73,10 @@
                 {{ $t(tagErrorMessage) }}
               </span>
             </div>
-            <div class="tag_list flex">
+            <div
+              class="tag_list flex"
+              data-cy="tag_list"
+            >
               <div
                 class="tag_btn q-my-sm q-mr-sm"
                 v-for="tag in internalTags"
@@ -70,11 +93,17 @@
             v-if="categories_enabled"
             class="q-my-md q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_category')"
+                :helpLabel="$t('help.element_category')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedCategory"
               :options="internalCategories"
               @input="setCategoryObjectModel($event)"
+              data-cy="category_select"
             />
           </div>
         </div>
@@ -83,7 +112,12 @@
           v-if="is_event"
         >
           <div class="q-my-md q-mr-lg tag_list col">
-            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.start_date')"
+                :helpLabel="$t('help.element_start_date')"
+              ></help-label>
+            </span>
             <div class="row">
               <q-input
                 outlined
@@ -95,6 +129,7 @@
                   <q-icon
                     name="event"
                     class="cursor-pointer"
+                    data-cy="start_date_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -111,6 +146,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-date>
@@ -128,6 +164,7 @@
                   <q-icon
                     name="access_time"
                     class="cursor-pointer"
+                    data-cy="start_time_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -145,6 +182,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-time>
@@ -155,7 +193,12 @@
             </div>
           </div>
           <div class="q-my-md tag_list col">
-            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.finish_date')"
+                :helpLabel="$t('help.element_end_date')"
+              ></help-label>
+            </span>
             <div class="row">
               <q-input
                 outlined
@@ -167,6 +210,7 @@
                   <q-icon
                     name="event"
                     class="cursor-pointer"
+                    data-cy="end_date_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -183,6 +227,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-date>
@@ -200,6 +245,7 @@
                   <q-icon
                     name="access_time"
                     class="cursor-pointer"
+                    data-cy="end_time_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -217,6 +263,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-time>
@@ -232,13 +279,22 @@
             v-if="topics_enabled"
             class="q-my-md tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_topic')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_topic')"
+                :helpLabel="$t('help.element_topic')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedTopic"
               :options="internalTopics"
               @input="setTopicObjectModel($event)"
+              data-cy="topic_select"
             />
-            <div class="tag_list flex">
+            <div
+              class="tag_list flex"
+              data-cy="topic_list"
+            >
               <div
                 class="tag_btn q-my-sm q-mr-sm"
                 v-for="(topic, idx) in selectedTopicsObjects"
@@ -255,13 +311,22 @@
             v-if="user_types_enabled"
             class="q-my-md q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_user_type')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_user_type')"
+                :helpLabel="$t('help.element_user_type')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedUserType"
               :options="internalUserTypes"
               @input="setUserTypeObjectModel($event)"
+              data-cy="user_types_select"
             />
-            <div class="tag_list flex">
+            <div
+              class="tag_list flex"
+              data-cy="user_types_list"
+            >
               <div
                 class="tag_btn q-my-sm q-mr-sm"
                 v-for="(userType, idx) in selectedUserTypesObjects"
@@ -282,7 +347,6 @@
           >
           <q-tabs
             v-model="langTab"
-            @input="changeLanguage"
             dense
             class="text-grey"
             active-color="black"
@@ -314,6 +378,7 @@
             unelevated
             no-caps
             color="accent"
+            data-cy="save_button"
             :label="$t('button.save')"
             @click="callSaveFn()"
             class="row edit-element-button"
@@ -326,9 +391,15 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import HelpLabel from './HelpLabel'
+import GlossaryEditor from './GlossaryEditor'
 
 export default {
   name: 'EditElement',
+  components: {
+    'help-label': HelpLabel,
+    'glossary-editor': GlossaryEditor
+  },
   props: {
     pagetitle: {
       type: String,
@@ -383,6 +454,14 @@ export default {
     is_event: {
       type: Boolean,
       default: false
+    },
+    title_max_length: {
+      type: Number,
+      default: 20
+    },
+    description_max_length: {
+      type: Number,
+      default: 800
     }
   },
   data() {
@@ -415,36 +494,44 @@ export default {
     }
   },
   methods: {
-    ...mapActions('language', ['fetchActiveLanguages']),
+    ...mapActions('language', ['fetchLanguages']),
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
-    changeLanguage(al) {
-      this.saveContent()
-      this.changeLanguageAux(al)
+    changeLanguage(newLang, oldLang) {
+      this.saveContent(oldLang)
+      this.changeLanguageAux(newLang)
     },
     changeLanguageAux(al) {
-      if (this.elem) {
-        const idx = this.elem.translations.findIndex((t) => t.lang === al)
-        if (idx !== -1) {
-          this.internalTitle = this.elem.translations[idx].title
-          const parsedJson = this.elem.translations[idx].description
-          this.internalDescription = parsedJson
-          if (this.$refs.editor) {
-            this.$refs.editor.setContent(parsedJson)
+      const idx = this.savedTranslations.findIndex((t) => t.lang === al)
+      if (idx !== -1) {
+        const element = this.savedTranslations[idx]
+        this.setContent(element, al)
+      } else {
+        if (this.elem) {
+          const idx = this.elem.translations.findIndex((t) => t.lang === al)
+          if (idx !== -1) {
+            this.setContent(this.elem.translations[idx], al)
+          } else {
+            this.resetFields(al)
           }
         } else {
           this.resetFields(al)
         }
-      } else {
-        this.resetFields(al)
       }
     },
-    saveContent() {
-      const idx = this.savedTranslations.findIndex((t) => t.lang === this.langTab)
+    setContent(element, al) {
+      this.internalTitle = element.title
+      this.internalDescription = element.description
+      if (this.$refs.editor) {
+        this.$refs.editor.setContent(this.internalDescription)
+      }
+    },
+    saveContent(lang) {
+      const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
       const translation = {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
-        lang: this.langTab
+        lang
       }
       if (this.categories_enabled) {
         translation.category = this.selectedCategoryObject
@@ -471,13 +558,6 @@ export default {
     resetFields(al) {
       this.internalTitle = ''
       this.internalDescription = ''
-      this.internalTags = []
-      this.tagInput = ''
-      this.setInternalCategorySelector(al)
-      this.selectedTopic = ''
-      this.setInternalTopicSelector(al)
-      this.selectedUserType = ''
-      this.setInternalUserTypeSelector(al)
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
       }
@@ -601,9 +681,9 @@ export default {
     },
     callSaveFn() {
       if (!this.checkErrors()) {
-        this.saveContent()
-        for (const language of this.activeLanguages) {
-          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) == -1) {
+        this.saveContent(this.langTab)
+        for (const language of this.languages) {
+          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
             const emptyTranslation = {
               title: '',
               description: '',
@@ -644,18 +724,30 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('language', ['activeLanguages']),
+    ...mapGetters('language', ['languages']),
     ...mapGetters('topic', ['topic']),
-    ...mapGetters('user_type', ['user'])
+    ...mapGetters('user_type', ['user']),
+    maxTags: function () {
+      let maxTagsElem = 0
+      if (this.tags) {
+        maxTagsElem = this.tags.length
+      }
+      let maxTagsSaved = 0
+      return Math.max(maxTagsElem, maxTagsSaved)
+    }
   },
-  components: {
-    'glossary-editor': require('components/GlossaryEditor.vue').default
+  watch: {
+    langTab: function (newVal, oldVal) {
+      if (newVal && oldVal) {
+        this.changeLanguage(newVal, oldVal)
+      }
+    }
   },
   created() {
     this.loading = true
     const al = this.$i18n.locale
-    this.fetchActiveLanguages().then(() => {
-      this.langTab = this.activeLanguages.filter((l) => l.lang === al)[0].lang
+    this.fetchLanguages().then(() => {
+      this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
         this.changeLanguageAux(al)
         if (this.categories_enabled) {

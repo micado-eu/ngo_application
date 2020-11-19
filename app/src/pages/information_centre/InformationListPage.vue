@@ -82,7 +82,9 @@ export default {
                   elem.topics = topics.filter((topic) => topic.idInformation === elem.id)
                   return this.fetchInformationUserTypes(elem.id)
                 }).then((userTypes) => {
-                  elem.userTypes = userTypes.filter((userType) => userType.idInformation === elem.id)
+                  elem.userTypes = userTypes.filter(
+                    (userType) => userType.idInformation === elem.id
+                  )
                   if (i >= this.informationElems.length - 1) {
                     this.loading = false
                   }
