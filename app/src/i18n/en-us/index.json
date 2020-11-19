@@ -19,6 +19,16 @@
     "process": "Guided processes",
     "events": "Events"
   },
+  "help": {
+    "element_title": "Write a title",
+    "element_description": "Write a description",
+    "element_tags": "Write new tags",
+    "element_category": "Select a category",
+    "element_topic": "Select a topic",
+    "element_user_type": "Select an user type",
+    "element_start_date": "Select the starting date",
+    "element_end_date": "Select the ending date"
+  },
   "button": {
     "save": "Save",
     "cancel": "Cancel",
@@ -71,10 +81,13 @@
     "start_date": "Start date",
     "end_date": "End date"
   },
+  "date_selector": {
+    "close": "Close"
+  },
   "error_messages": {
     "title_empty": "Title is empty. Please add a title.",
     "category_empty": "Please select a category.",
-    "max_title": "Please use a maximum of 20 characters.",
-    "max_char_limit": "Maximum number of characters reached: "
+    "max_char_limit": "Maximum number of characters reached: ",
+    "fill_default_language": "Please fill the default language title: "
   }
 }

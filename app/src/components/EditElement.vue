@@ -340,6 +340,7 @@
             </div>
           </div>
         </div>
+        <span v-if="errorDefaultLangEmpty">{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
         <div class="language_selector">
           <hr
             style="border: 0.999px solid #DADADA;"
@@ -385,6 +386,7 @@
           />
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -494,7 +496,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('language', ['fetchLanguages']),
+    ...mapActions('language', ['fetchActiveLanguages']),
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
     changeLanguage(newLang, oldLang) {
@@ -667,6 +669,9 @@ export default {
       this.$router.go(-1)
     },
     checkErrors() {
+      if (this.errorDefaultLangEmpty) {
+        return true
+      }
       if (this.internalTitle.length <= 0) {
         return true
       }
@@ -682,7 +687,7 @@ export default {
     callSaveFn() {
       if (!this.checkErrors()) {
         this.saveContent(this.langTab)
-        for (const language of this.languages) {
+        for (const language of this.activeLanguages) {
           if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
             const emptyTranslation = {
               title: '',
@@ -724,7 +729,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('language', ['languages']),
+    ...mapGetters('language', ['activeLanguages']),
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
     maxTags: function () {
@@ -734,6 +739,12 @@ export default {
       }
       let maxTagsSaved = 0
       return Math.max(maxTagsElem, maxTagsSaved)
+    },
+    errorDefaultLangEmpty: function() {
+      if (this.langTab !== this.$defaultLang) {
+        return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
+      }
+      return !this.internalTitle
     }
   },
   watch: {
@@ -746,8 +757,8 @@ export default {
   created() {
     this.loading = true
     const al = this.$i18n.locale
-    this.fetchLanguages().then(() => {
-      this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
+    this.fetchActiveLanguages().then(() => {
+      this.langTab = this.activeLanguages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
         this.changeLanguageAux(al)
         if (this.categories_enabled) {
