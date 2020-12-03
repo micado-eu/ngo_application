@@ -7,12 +7,12 @@
       new_url="information/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
+      :publish_fn="updatePublishedInformation"
       icon_name="document"
       add_label="button.add_information"
       title="information_centre.list_title"
       categories_enabled
       categories_url="/information/categories"
-      tags_enabled
       topics_enabled
       user_types_enabled
     />
@@ -35,65 +35,63 @@ export default {
   },
   computed: {
     ...mapGetters('information', ['information']),
-    ...mapGetters('information_category', ['informationCategories']),
-    ...mapGetters('information_tags', ['informationTagsByInformation'])
+    ...mapGetters('information_category', ['informationCategories'])
   },
   methods: {
     ...mapActions('information', [
       'fetchInformation',
       'deleteInformationItem',
       'fetchInformationTopics',
-      'fetchInformationUserTypes'
+      'fetchInformationUserTypes',
+      'updatePublished'
     ]),
     ...mapActions('information_category', ['fetchInformationCategory']),
-    ...mapActions('information_tags', ['fetchInformationTags', 'deleteInformationTagsFromInformation']),
     getEditRoute(id) {
       return `information/${id}/edit`
     },
     deleteItem(item) {
-      this.deleteInformationTagsFromInformation(item.id)
-        .then(this.deleteInformationItem(item))
+      this.deleteInformationItem(item)
         .then(() => {
-          this.loading = true
-          setTimeout(() => this.updateContent(), 1000)
+          this.updateContent()
           // this.$router.go()
         })
+    },
+    updatePublishedInformation(published, id) {
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      })
     },
     updateContent() {
       this.loading = true
       this.fetchInformation().then(() => {
         this.fetchInformationCategory().then(() => {
-          this.fetchInformationTags().then(() => {
-            this.informationElems = JSON.parse(JSON.stringify(this.information))
-            const informationCategoryElems = [...this.informationCategories]
-            if (this.informationElems.length > 0) {
-              for (let i = 0; i < this.informationElems.length; i += 1) {
-                const elem = this.informationElems[i]
-                // Set categories-elements relations
-                const idxCat = elem.category
-                const idxCategoryObject = informationCategoryElems.findIndex(
-                  (ic) => ic.id === idxCat
-                )
-                elem.category = informationCategoryElems[idxCategoryObject]
-                // Set tag-elements relations
-                elem.tags = this.informationTagsByInformation(elem.id)
+          this.informationElems = JSON.parse(JSON.stringify(this.information))
+          const informationCategoryElems = [...this.informationCategories]
+          if (this.informationElems.length > 0) {
+            for (let i = 0; i < this.informationElems.length; i += 1) {
+              const elem = this.informationElems[i]
+              // Set categories-elements relations
+              const idxCat = elem.category
+              const idxCategoryObject = informationCategoryElems.findIndex(
+                (ic) => ic.id === idxCat
+              )
+              elem.category = informationCategoryElems[idxCategoryObject]
 
-                this.fetchInformationTopics(elem.id).then((topics) => {
-                  elem.topics = topics.filter((topic) => topic.idInformation === elem.id)
-                  return this.fetchInformationUserTypes(elem.id)
-                }).then((userTypes) => {
-                  elem.userTypes = userTypes.filter(
-                    (userType) => userType.idInformation === elem.id
-                  )
-                  if (i >= this.informationElems.length - 1) {
-                    this.loading = false
-                  }
-                })
-              }
-            } else {
-              this.loading = false
+              this.fetchInformationTopics(elem.id).then((topics) => {
+                elem.topics = topics.filter((topic) => topic.idInformation === elem.id)
+                return this.fetchInformationUserTypes(elem.id)
+              }).then((userTypes) => {
+                elem.userTypes = userTypes.filter(
+                  (userType) => userType.idInformation === elem.id
+                )
+                if (i >= this.informationElems.length - 1) {
+                  this.loading = false
+                }
+              })
             }
-          })
+          } else {
+            this.loading = false
+          }
         })
       })
     }

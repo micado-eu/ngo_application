@@ -152,7 +152,7 @@ export default {
     },
     maxCharLimit: {
       type: Number,
-      default: 800
+      default: null
     }
   },
   mixins: [markdownConverterMixin],
@@ -231,7 +231,7 @@ export default {
       // check errors
       const doc = new DOMParser().parseFromString(this.editor.getHTML(), 'text/html')
       const plainDescription = doc.body.textContent || ''
-      if (plainDescription.length > this.maxCharLimit) {
+      if ((this.maxCharLimit !== null) && (plainDescription.length > this.maxCharLimit)) {
         this.errorMessage = this.$t("error_messages.max_char_limit") + this.maxCharLimit
       } else {
         this.errorMessage = false

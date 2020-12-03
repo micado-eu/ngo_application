@@ -40,56 +40,6 @@
         </div>
         <div class="row tag_category_selectors">
           <div
-            v-if="tags_enabled"
-            class="q-my-md tag_list col"
-          >
-            <span class="q-my-xl label-edit">
-              <help-label
-                :fieldLabel="$t('input_labels.tags')"
-                :helpLabel="$t('help.element_tags')"
-              ></help-label>
-            </span>
-            <div class="row">
-              <q-input
-                color="accent"
-                outlined
-                placeholder="New tag"
-                label-color="accent"
-                v-model="tagInput"
-                class="col-10"
-                data-cy="add_tag_input"
-              />
-              <q-btn
-                no-caps
-                @click="addTag()"
-                :label="$t('button.add_tag')"
-                class="q-my-sm q-ml-sm add_tag_btn col"
-                data-cy="add_tag_button"
-              />
-              <span
-                v-if="tagError"
-                class="q-ml-sm"
-              >
-                {{ $t(tagErrorMessage) }}
-              </span>
-            </div>
-            <div
-              class="tag_list flex"
-              data-cy="tag_list"
-            >
-              <div
-                class="tag_btn q-my-sm q-mr-sm"
-                v-for="tag in internalTags"
-                :key="tag"
-              >
-                <span>{{tag}} <span
-                    class="del_tag_btn"
-                    @click="internalTags.splice(internalTags.indexOf(tag), 1)"
-                  >X</span></span>
-              </div>
-            </div>
-          </div>
-          <div
             v-if="categories_enabled"
             class="q-my-md q-ml-lg tag_list col"
           >
@@ -367,6 +317,18 @@
             class="q-my-lg"
           >
         </div>
+        <!-- <div class="row">
+          <span class="label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.is_published')"
+              :helpLabel="$t('help.is_published')"
+            ></help-label>
+            <q-toggle
+              v-model="published"
+              color="green"
+            ></q-toggle>
+          </span>
+        </div> -->
         <div class="row q-my-xl">
           <q-btn
             unelevated
@@ -413,16 +375,6 @@ export default {
     save_item_fn: {
       type: Function
     },
-    tags: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    tags_enabled: {
-      type: Boolean,
-      default: false
-    },
     categories: {
       type: Array,
       default() {
@@ -463,7 +415,7 @@ export default {
     },
     description_max_length: {
       type: Number,
-      default: 800
+      default: null
     }
   },
   data() {
@@ -471,14 +423,10 @@ export default {
       loading: true,
       internalTitle: '',
       internalDescription: '',
-      internalTags: [],
       internalCategories: [],
       internalCategoriesObjects: [],
       selectedCategory: '',
       selectedCategoryObject: {},
-      tagInput: '',
-      tagError: false,
-      tagErrorMessage: '',
       langTab: '',
       internalTopics: [],
       internalTopicsObjects: [],
@@ -492,7 +440,8 @@ export default {
       startTime: '',
       finishDate: '',
       finishTime: '',
-      savedTranslations: []
+      savedTranslations: [],
+      published: false
     }
   },
   methods: {
@@ -533,13 +482,11 @@ export default {
       const translation = {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
-        lang
+        lang,
+        published: this.published
       }
       if (this.categories_enabled) {
         translation.category = this.selectedCategoryObject
-      }
-      if (this.tags_enabled) {
-        translation.tags = this.internalTags
       }
       if (this.topics_enabled) {
         translation.topics = this.selectedTopicsObjects
@@ -562,19 +509,6 @@ export default {
       this.internalDescription = ''
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
-      }
-    },
-    addTag() {
-      if (this.internalTags.indexOf(this.tagInput) !== -1) {
-        this.tagErrorMessage = 'Duplicates are not allowed.'
-        this.tagError = true
-      } else if (this.tagInput.length <= 0) {
-        this.tagErrorMessage = 'Empty tags are not allowed.'
-        this.tagError = true
-      } else {
-        this.internalTags.push(this.tagInput)
-        this.tagError = false
-        this.tagInput = ''
       }
     },
     setInternalCategorySelector(al) {
@@ -706,22 +640,6 @@ export default {
             this.savedTranslations.push(emptyTranslation)
           }
         }
-        if (this.tags_enabled) {
-          let largestTagArrayLength = -1
-          for (let i = 0; i < this.savedTranslations.length; i += 1) {
-            if (!this.savedTranslations[i].tags) {
-              this.savedTranslations[i].tags = []
-            }
-            if (this.savedTranslations[i].tags.length > largestTagArrayLength) {
-              largestTagArrayLength = this.savedTranslations[i].tags.length
-            }
-          }
-          for (let i = 0; i < this.savedTranslations.length; i += 1) {
-            while (this.savedTranslations[i].tags.length < largestTagArrayLength) {
-              this.savedTranslations[i].tags.push('')
-            }
-          }
-        }
         this.save_item_fn(
           this.savedTranslations
         )
@@ -732,15 +650,7 @@ export default {
     ...mapGetters('language', ['activeLanguages']),
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
-    maxTags: function () {
-      let maxTagsElem = 0
-      if (this.tags) {
-        maxTagsElem = this.tags.length
-      }
-      let maxTagsSaved = 0
-      return Math.max(maxTagsElem, maxTagsSaved)
-    },
-    errorDefaultLangEmpty: function() {
+    errorDefaultLangEmpty: function () {
       if (this.langTab !== this.$defaultLang) {
         return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
       }
@@ -761,6 +671,7 @@ export default {
       this.langTab = this.activeLanguages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
         this.changeLanguageAux(al)
+        this.published = this.elem.published
         if (this.categories_enabled) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category
@@ -784,12 +695,6 @@ export default {
       }
       if (this.categories.length > 0) {
         this.setInternalCategorySelector(al)
-      }
-      if (this.tags.length > 0) {
-        for (const tag of this.tags) {
-          const idxTag = tag.translations.findIndex((t) => t.lang === al)
-          this.internalTags.push(tag.translations[idxTag].tag)
-        }
       }
       if (this.topics_enabled) {
         this.fetchTopic().then(() => {

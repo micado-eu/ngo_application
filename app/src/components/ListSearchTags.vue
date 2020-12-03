@@ -9,7 +9,7 @@
       <div class="col q-ml-md filter-list">
         <q-list
           bordered
-          v-if="tags_enabled || categories_enabled || topics_enabled || user_types_enabled"
+          v-if="categories_enabled || topics_enabled || user_types_enabled"
         >
           <q-item>
             <q-item-section>
@@ -24,39 +24,6 @@
               </a>
             </q-item-section>
           </q-item>
-          <q-separator />
-          <q-expansion-item
-            expand-separator
-            v-if="tags_enabled"
-          >
-            <template v-slot:header>
-              <q-item-section>
-                <q-item-label class="title-label">{{$t("filters.tags_title")}}</q-item-label>
-              </q-item-section>
-            </template>
-            <q-item
-              v-for="tag in filterTags"
-              :key="tag"
-            >
-              <q-checkbox
-                color="accent"
-                v-model="selectedTags"
-                :val="tag"
-                :label="tag"
-                class="filter-text"
-                @input="filterByTags()"
-              />
-            </q-item>
-            <q-item>
-              <a
-                href="javascript:void(0)"
-                class="filter-text"
-                @click="showMoreTags()"
-              >
-                {{$t("filters.show_more")}}
-              </a>
-            </q-item>
-          </q-expansion-item>
           <q-separator />
           <q-expansion-item
             expand-separator
@@ -193,6 +160,13 @@
               <q-icon name="search" />
             </template>
           </q-input>
+          <!-- <q-btn
+            no-caps
+            :label='$t("button.categories")'
+            class="cat-btn q-ml-md"
+            :to="categories_url"
+            v-if="categories_enabled"
+          /> -->
           <q-btn
             no-caps
             :label='$t(add_label)'
@@ -201,47 +175,42 @@
             :to="new_url"
           />
         </div>
-        <div
-          class="flex"
-          v-if="categories_enabled || tags_enabled"
-        >
+        <div class="flex">
           <!-- column title -->
+          <!-- <span>
+            {{$t("lists.published")}}
+          </span> -->
           <span
             v-if="categories_enabled"
-            style="flex:4200"
+            style="flex:41"
           />
           <span
             v-if="categories_enabled"
-            style="flex:2100"
+            style="flex:21"
           >
             {{$t("lists.category")}}
           </span>
           <span
-            v-if="tags_enabled"
-            style="flex:1350"
-          >
-            {{$t("lists.tags")}}
-          </span>
-          <span
             v-if="topics_enabled"
-            style="flex:1450"
+            style="flex:14"
           >
             {{$t("lists.topics")}}
           </span>
           <span
             v-if="user_types_enabled"
-            style="flex:3250"
+            style="flex:32"
           >
             {{$t("lists.user_types")}}
           </span>
         </div>
         <div class="row q-mb-sm">
-          <q-separator
-            style="max-width: 91.7%; background-color: black"
-          />
+          <q-separator style="max-width: 91.7%; background-color: black" />
         </div>
         <div class="row">
-          <q-list class="col-11 element-list" separator>
+          <q-list
+            class="col-11 element-list"
+            separator
+          >
             <!-- items -->
             <q-item
               v-for="item in filteredElements"
@@ -251,6 +220,13 @@
               @mouseover="hovered = item.id"
               @mouseleave="hovered = -1"
             >
+              <!-- <q-item-section class="publish_section q-mt-md">
+                <q-toggle
+                  v-model="item.published"
+                  @input="updatePublished($event, item.id)"
+                  color="green"
+                />
+              </q-item-section> -->
               <q-item-section class="title_section q-mt-md">
                 <q-item-label class="title-label">
                   {{ item.title }}
@@ -280,18 +256,6 @@
                 v-if="categories_enabled"
               >
                 {{item.category.category}}
-              </q-item-section>
-              <q-item-section
-                class="tag_btn_section"
-                v-if="tags_enabled"
-              >
-                <q-btn
-                  no-caps
-                  v-for="tag in item.tags"
-                  :key="tag.id"
-                  :label="tag.tag"
-                  class="q-mb-sm tag_btn"
-                />
               </q-item-section>
               <q-item-section
                 class="tag_btn_section"
@@ -333,6 +297,14 @@
                   :to="edit_url_fn(item.id)"
                   :data-cy="'edit_button' + item.id"
                 />
+                <!-- <br>
+                <q-btn
+                  round
+                  class="item-btn"
+                  icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
+                  @click="delete_fn(item)"
+                  :data-cy="'delete_button' + item.id"
+                /> -->
               </q-item-section>
             </q-item>
           </q-list>
@@ -385,6 +357,12 @@ export default {
         return () => ''
       }
     },
+    // publish_fn: {
+    //   type: Function,
+    //   default() {
+    //     return () => ''
+    //   }
+    // },
     title: {
       type: String,
       default: ''
@@ -404,10 +382,6 @@ export default {
     categories_url: {
       type: String,
       default: '/'
-    },
-    tags_enabled: {
-      type: Boolean,
-      default: false
     },
     alphabetical_sorting: {
       type: Boolean,
@@ -432,23 +406,19 @@ export default {
       // display only elements in the language selected
       translatedElements: [],
       filteredElementsBySearch: [],
-      filteredElementsByTags: [],
       filteredElementsByCategory: [],
       filteredElementsByTopic: [],
       filteredElementsByUserType: [],
       searchText: '',
-      tags: [],
       topics: [],
       userTypes: [],
       translatedCategories: [],
-      selectedTags: [],
       selectedCategory: undefined,
       selectedTopics: [],
       selectedUserTypes: [],
       lang: '',
       alphabet: [],
       alphabetIds: [],
-      lastIndexTags: 5,
       lastIndexCategories: 5,
       lastIndexTopics: 5,
       lastIndexUserTypes: 5,
@@ -462,6 +432,9 @@ export default {
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
     ...mapActions('glossary', ['fetchGlossary']),
+    // updatePublished(value, id) {
+    //   this.publish_fn(value, id)
+    // },
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
@@ -469,31 +442,6 @@ export default {
         this.selectedCategory = category
       }
       this.filterByCategory()
-    },
-    filterByTags() {
-      if (this.selectedTags.length > 0) {
-        this.filteredElementsByTags = []
-        for (const e of this.translatedElements) {
-          const matchedTags = []
-          for (const tag of this.selectedTags) {
-            if (e.tags) {
-              for (const elemTag of e.tags) {
-                if (elemTag.tag === tag) {
-                  // This check avoids duplicate matches
-                  if (matchedTags.indexOf(tag) == -1) {
-                    matchedTags.push(tag)
-                  }
-                }
-              }
-            }
-          }
-          if (matchedTags.length == this.selectedTags.length) {
-            this.filteredElementsByTags.push(e)
-          }
-        }
-      } else {
-        this.filteredElementsByTags = this.translatedElements
-      }
     },
     filterByCategory() {
       if (this.selectedCategory) {
@@ -567,17 +515,12 @@ export default {
       document.getElementById(this.alphabetIds[index]).scrollIntoView()
     },
     clearFilters() {
-      this.selectedTags = []
       this.selectedCategory = undefined
-      this.filteredElementsByTags = this.translatedElements
       this.filteredElementsByCategory = this.translatedElements
       this.filteredElementsByTopic = this.translatedElements
       this.filteredElementsByUserType = this.translatedElements
       this.selectedTopics = []
       this.selectedUserTypes = []
-    },
-    showMoreTags() {
-      this.lastIndexTags += 5
     },
     showMoreCategories() {
       this.lastIndexCategories += 5
@@ -599,22 +542,6 @@ export default {
             translation.category = e.category.translations[idxCat]
             if (this.translatedCategories.indexOf(translation.category) == -1) {
               this.translatedCategories.push(translation.category)
-            }
-          }
-          if (this.tags_enabled) {
-            // Tags
-            if (e.tags.length > 0) {
-              const tagTranslations = []
-              for (const tag of e.tags) {
-                const translations = tag.translations.filter((tag) => tag.lang === this.lang)
-                if (translations.length > 0) {
-                  tagTranslations.push(translations[0])
-                  if (this.tags.indexOf(translations[0].tag) == -1) {
-                    this.tags.push(translations[0].tag)
-                  }
-                }
-              }
-              translation.tags = tagTranslations
             }
           }
           if (this.topics_enabled) {
@@ -656,6 +583,7 @@ export default {
               `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           }
         }
+        translation.published = e.published
         return translation
       })
       this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
@@ -672,7 +600,6 @@ export default {
         this.translatedElements.sort(this.compareTranslationDates)
       }
       this.filteredElementsBySearch = this.translatedElements
-      this.filteredElementsByTags = this.translatedElements
       this.filteredElementsByCategory = this.translatedElements
       this.filteredElementsByTopic = this.translatedElements
       this.filteredElementsByUserType = this.translatedElements
@@ -702,19 +629,14 @@ export default {
       }
     },
     filteredElements() {
-      const { filteredElementsByTags } = this
       const { filteredElementsByCategory } = this
       const { filteredElementsByTopic } = this
       const { filteredElementsByUserType } = this
       return this.filteredElementsBySearch.filter(
-        (n) => filteredElementsByTags.indexOf(n) !== -1
-          && filteredElementsByCategory.indexOf(n) !== -1
+        (n) => filteredElementsByCategory.indexOf(n) !== -1
           && filteredElementsByTopic.indexOf(n) !== -1
           && filteredElementsByUserType.indexOf(n) !== -1
       )
-    },
-    filterTags() {
-      return this.tags.slice(0, this.lastIndexTags)
     },
     filterCategories() {
       return this.translatedCategories.slice(0, this.lastIndexCategories)
@@ -830,7 +752,7 @@ $btn_secondary: #cdd0d2;
   border-radius: 5px;
   margin-top: 65px;
   margin-bottom: 75px;
-  max-width: 75%
+  max-width: 75%;
 }
 .filter-list {
   margin-top: 65px;

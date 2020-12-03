@@ -18,10 +18,8 @@ import documents from './documents'
 import document_type from './document_type'
 import information from './information'
 import information_category from './information_category'
-import information_tags from './information_tags'
 import event from './event'
 import event_category from './event_category'
-import event_tags from './event_tags'
 import user from './user'
 import features from './features'
 import interventions from './interventions'
@@ -63,10 +61,8 @@ export default function (/* { ssrContext } */) {
       settings,
       comments,
       information_category,
-      information_tags,
       event,
       event_category,
-      event_tags,
       topic,
       user_type
     },

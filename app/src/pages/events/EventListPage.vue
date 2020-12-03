@@ -7,12 +7,12 @@
       new_url="events/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
+      :publish_fn="updatePublishedEvents"
       icon_name="document"
       add_label="button.add_event"
       title="events.list_title"
       categories_enabled
       categories_url="/events/categories"
-      tags_enabled
       topics_enabled
       user_types_enabled
       is_event
@@ -36,63 +36,61 @@ export default {
   },
   computed: {
     ...mapGetters('event', ['event']),
-    ...mapGetters('event_category', ['eventCategories']),
-    ...mapGetters('event_tags', ['eventTagsByEvent'])
+    ...mapGetters('event_category', ['eventCategories'])
   },
   methods: {
     ...mapActions('event', [
       'fetchEvent',
       'deleteEventItem',
       'fetchEventTopics',
-      'fetchEventUserTypes'
+      'fetchEventUserTypes',
+      'updatePublished'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
-    ...mapActions('event_tags', ['fetchEventTags', 'deleteEventTagsFromEvent']),
     getEditRoute(id) {
       return `events/${id}/edit`
     },
     deleteItem(item) {
-      this.deleteEventTagsFromEvent(item.id)
-        .then(this.deleteEventItem(item))
+      this.deleteEventItem(item)
         .then(() => {
-          this.loading = true
-          setTimeout(() => this.updateContent(), 1000)
+          this.updateContent()
           // this.$router.go()
         })
+    },
+    updatePublishedEvents(published, id) {
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      })
     },
     updateContent() {
       this.loading = true
       this.fetchEvent().then(() => {
         this.fetchEventCategory().then(() => {
-          this.fetchEventTags().then(() => {
-            this.eventElems = JSON.parse(JSON.stringify(this.event))
-            const eventCategoryElems = [...this.eventCategories]
-            if (this.eventElems.length > 0) {
-              for (let i = 0; i < this.eventElems.length; i += 1) {
-                const elem = this.eventElems[i]
-                // Set categories-elements relations
-                const idxCat = elem.category
-                const idxCategoryObject = eventCategoryElems.findIndex(
-                  (ic) => ic.id === idxCat
-                )
-                elem.category = eventCategoryElems[idxCategoryObject]
-                // Set tag-elements relations
-                elem.tags = this.eventTagsByEvent(elem.id)
+          this.eventElems = JSON.parse(JSON.stringify(this.event))
+          const eventCategoryElems = [...this.eventCategories]
+          if (this.eventElems.length > 0) {
+            for (let i = 0; i < this.eventElems.length; i += 1) {
+              const elem = this.eventElems[i]
+              // Set categories-elements relations
+              const idxCat = elem.category
+              const idxCategoryObject = eventCategoryElems.findIndex(
+                (ic) => ic.id === idxCat
+              )
+              elem.category = eventCategoryElems[idxCategoryObject]
 
-                this.fetchEventTopics(elem.id).then((topics) => {
-                  elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
-                  return this.fetchEventUserTypes(elem.id)
-                }).then((userTypes) => {
-                  elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
-                  if (i >= this.eventElems.length - 1) {
-                    this.loading = false
-                  }
-                })
-              }
-            } else {
-              this.loading = false
+              this.fetchEventTopics(elem.id).then((topics) => {
+                elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
+                return this.fetchEventUserTypes(elem.id)
+              }).then((userTypes) => {
+                elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
+                if (i >= this.eventElems.length - 1) {
+                  this.loading = false
+                }
+              })
             }
-          })
+          } else {
+            this.loading = false
+          }
         })
       })
     }
