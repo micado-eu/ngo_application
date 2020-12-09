@@ -39,7 +39,9 @@ export default {
       'deleteTopics',
       'deleteUserTypes',
       'fetchInformationTopics',
-      'fetchInformationUserTypes'
+      'fetchInformationUserTypes',
+      'deleteProdTranslations',
+      'addNewInformationItemTranslationProd'
     ]),
     editInformationItemAndReturn(data) {
       const router = this.$router
@@ -49,6 +51,17 @@ export default {
         id,
         category: categoryId,
         published: data[0].published
+      }
+      if (this.elem.published && data[0].translationState === 0) {
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      }
+      if (this.elem.published && !eventData.published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
       }
       this.editInformationItem(eventData).then(() => {
         const { topics } = data[0]
@@ -67,6 +80,12 @@ export default {
           delete translation.topics
           delete translation.userTypes
           this.editInformationItemTranslation(dataWithId).then(() => {
+            if (!this.elem.published && eventData.published && dataWithId.translationState === 4) {
+              // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+              delete dataWithId.translationState
+              delete dataWithId.published
+              this.addNewInformationItemTranslationProd(dataWithId).then(() => { })
+            }
             if (i === data.length - 1) {
               router.push({ path: '/information' })
             }

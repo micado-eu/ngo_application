@@ -160,13 +160,13 @@
               <q-icon name="search" />
             </template>
           </q-input>
-          <!-- <q-btn
+          <q-btn
             no-caps
             :label='$t("button.categories")'
             class="cat-btn q-ml-md"
             :to="categories_url"
             v-if="categories_enabled"
-          /> -->
+          />
           <q-btn
             no-caps
             :label='$t(add_label)'
@@ -177,12 +177,12 @@
         </div>
         <div class="flex">
           <!-- column title -->
-          <!-- <span>
+          <span>
             {{$t("lists.published")}}
-          </span> -->
+          </span>
           <span
             v-if="categories_enabled"
-            style="flex:41"
+            style="flex:43"
           />
           <span
             v-if="categories_enabled"
@@ -220,13 +220,13 @@
               @mouseover="hovered = item.id"
               @mouseleave="hovered = -1"
             >
-              <!-- <q-item-section class="publish_section q-mt-md">
+              <q-item-section class="publish_section q-mt-md">
                 <q-toggle
                   v-model="item.published"
                   @input="updatePublished($event, item.id)"
                   color="green"
                 />
-              </q-item-section> -->
+              </q-item-section>
               <q-item-section class="title_section q-mt-md">
                 <q-item-label class="title-label">
                   {{ item.title }}
@@ -357,12 +357,12 @@ export default {
         return () => ''
       }
     },
-    // publish_fn: {
-    //   type: Function,
-    //   default() {
-    //     return () => ''
-    //   }
-    // },
+    publish_fn: {
+      type: Function,
+      default() {
+        return () => ''
+      }
+    },
     title: {
       type: String,
       default: ''
@@ -432,9 +432,9 @@ export default {
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
     ...mapActions('glossary', ['fetchGlossary']),
-    // updatePublished(value, id) {
-    //   this.publish_fn(value, id)
-    // },
+    updatePublished(value, id) {
+      this.publish_fn(value, id)
+    },
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined

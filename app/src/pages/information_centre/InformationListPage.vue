@@ -34,7 +34,7 @@ export default {
     'list-search-tags': ListSearchTags
   },
   computed: {
-    ...mapGetters('information', ['information']),
+    ...mapGetters('information', ['information', 'informationElemById']),
     ...mapGetters('information_category', ['informationCategories'])
   },
   methods: {
@@ -43,7 +43,9 @@ export default {
       'deleteInformationItem',
       'fetchInformationTopics',
       'fetchInformationUserTypes',
-      'updatePublished'
+      'updatePublished',
+      'deleteProdTranslations',
+      'addNewInformationItemTranslationProd'
     ]),
     ...mapActions('information_category', ['fetchInformationCategory']),
     getEditRoute(id) {
@@ -57,6 +59,21 @@ export default {
         })
     },
     updatePublishedInformation(published, id) {
+      let infoElem = this.informationElemById(id)
+      if (infoElem.translations[0].translationState === 4 && infoElem.published && !published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      } else if (infoElem.translations[0].translationState === 4 && !infoElem.published && published) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        for (let i = 0; i < infoElem.translations.length; i += 1) {
+          const translation = Object.assign({}, infoElem.translations[i])
+          delete translation.translationState
+          delete translation.published
+          this.addNewInformationItemTranslationProd(translation).then(() => { })
+        }
+      }
       this.updatePublished({ id, published }).then(() => {
         //console.log("new published value for " + id + ": " + published)
       })
