@@ -1,3 +1,9 @@
 {
-    "apiKey": "$MICADO_API_KEY"
+    "apiKey": "$MICADO_API_KEY",
+    "apiUrl": "$API_HOSTNAME",
+    "monitoringUrl": "$ANALYTIC_HOSTNAME",
+    "identityUrl": "$IDENTITY_HOSTNAME",
+    "countlyApiKey": "$COUNTLY_NGO_API_KEY",
+    "identitySPclientId": "$IDENTITY_SP_NGO_CLIENT_ID",
+    "paUrl": "$NGO_HOSTNAME"
 }

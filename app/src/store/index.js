@@ -24,6 +24,7 @@ import user from './user'
 import features from './features'
 import interventions from './interventions'
 import topic from './topic'
+import tenant from './tenant'
 import user_type from './user_type'
 
 VuexORM.use(VuexORMAxios, { axios })
@@ -64,6 +65,7 @@ export default function (/* { ssrContext } */) {
       event,
       event_category,
       topic,
+      tenant,
       user_type
     },
 

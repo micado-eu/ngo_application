@@ -13,7 +13,7 @@ module.exports = function (ctx) {
       'axios',
       'featureflag',
       'loadData',
-      'countly', 
+      'countly',
       'mermaid'
     ],
 
@@ -104,6 +104,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-interventions-client', 'src/api/interventions/server');
         chain.resolve.alias.set('api-comments-client', 'src/api/comments/server');
         chain.resolve.alias.set('api-topic-client', 'src/api/topic/server');
+        chain.resolve.alias.set('api-tenant-client', 'src/api/tenant/server');
         chain.resolve.alias.set('api-user_type-client', 'src/api/user_type/server');
       }
     },

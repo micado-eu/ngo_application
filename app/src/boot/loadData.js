@@ -9,6 +9,9 @@ export default async ({ store, Vue }) => {
 
     //    await store.dispatch('features/fetchFeatures');
     await store.dispatch("language/fetchActiveLanguages")
+    await store.dispatch("tenant/fetchTenants")
+    console.log("in locadata fetching tenants")
+    console.log(store.state.tenant)
 
     await store.dispatch('settings/fetchSettings')
         .then(settings => {
