@@ -14,7 +14,6 @@ export function saveNewEventItem(state, data) {
 export function addNewEventItemTranslation(state, data) {
   data.event = data.title
   delete data.title
-  data.translationState = 0
   return client
     .addNewEventItemTranslation(data)
 }
@@ -26,7 +25,6 @@ export function editEventItem(state, data) {
 export function editEventItemTranslation(state, data) {
   data.event = data.title
   delete data.title
-  data.translationState = 0
   return client
     .editEventItemTranslation(data)
 }
@@ -67,4 +65,23 @@ export function fetchEventUserTypes(state, id) {
   return client
     .fetchEventUserTypes(id)
     .then((eventUserTypes) => eventUserTypes)
+}
+
+export function updatePublished(state, data) {
+  return client
+    .updatePublished(data.id, data.published)
+    .then(() => {
+      state.commit("updatePublished", data)
+    })
+}
+
+export function deleteProdTranslations(state, data) {
+  return client.deleteProdTranslations()
+}
+
+export function addNewEventItemTranslationProd(state, data) {
+  data.event = data.title
+  delete data.title
+  return client
+    .addNewEventItemTranslationProd(data)
 }

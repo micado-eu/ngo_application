@@ -35,7 +35,7 @@ export default {
     'list-search-tags': ListSearchTags
   },
   computed: {
-    ...mapGetters('event', ['event']),
+    ...mapGetters('event', ['event', 'eventElemById']),
     ...mapGetters('event_category', ['eventCategories'])
   },
   methods: {
@@ -44,7 +44,9 @@ export default {
       'deleteEventItem',
       'fetchEventTopics',
       'fetchEventUserTypes',
-      'updatePublished'
+      'updatePublished',
+      'deleteProdTranslations',
+      'addNewEventItemTranslationProd'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
     getEditRoute(id) {
@@ -58,6 +60,21 @@ export default {
         })
     },
     updatePublishedEvents(published, id) {
+      let eventElem = this.eventElemById(id)
+      if (eventElem.translations[0].translationState === 4 && eventElem.published && !published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      } else if (eventElem.translations[0].translationState === 4 && !eventElem.published && published) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        for (let i = 0; i < eventElem.translations.length; i += 1) {
+          const translation = Object.assign({}, eventElem.translations[i])
+          delete translation.translationState
+          delete translation.published
+          this.addNewInformationItemTranslationProd(translation).then(() => { })
+        }
+      }
       this.updatePublished({ id, published }).then(() => {
         //console.log("new published value for " + id + ": " + published)
       })

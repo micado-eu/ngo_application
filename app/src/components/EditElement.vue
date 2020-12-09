@@ -7,6 +7,18 @@
       v-else
     >
       <div class="center-edit q-ma-xl">
+        <span
+          class="warning-error"
+          v-if="errorDefaultLangEmpty"
+        >{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
+        <span
+          class="warning-error"
+          v-if="selectedTranslationState === 3"
+        >{{$t("error_messages.in_translation")}}</span>
+        <span
+          class="warning-error"
+          v-if="(selectedTranslationState === 4) && elem.published"
+        >{{$t("error_messages.change_translated")}}</span>
         <div>
           <span class="q-my-xl label-edit">
             <help-label
@@ -36,6 +48,15 @@
             v-model="internalDescription"
             :maxCharLimit="description_max_length"
             ref="editor"
+          />
+        </div>
+        <div class="row tag_category_selectors">
+          <translate-state-button
+            v-model="selectedTranslationState"
+            :isForDefaultLanguage="langTab===$defaultLang"
+            :objectId="elemId"
+            :readonly="!(langTab===$defaultLang)"
+            @micado-change="(a) => {selectedTranslationState = a.state}"
           />
         </div>
         <div class="row tag_category_selectors">
@@ -290,7 +311,6 @@
             </div>
           </div>
         </div>
-        <span v-if="errorDefaultLangEmpty">{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
         <div class="language_selector">
           <hr
             style="border: 0.999px solid #DADADA;"
@@ -317,7 +337,7 @@
             class="q-my-lg"
           >
         </div>
-        <!-- <div class="row">
+        <div class="row">
           <span class="label-edit">
             <help-label
               :fieldLabel="$t('input_labels.is_published')"
@@ -328,7 +348,7 @@
               color="green"
             ></q-toggle>
           </span>
-        </div> -->
+        </div>
         <div class="row q-my-xl">
           <q-btn
             unelevated
@@ -357,12 +377,14 @@
 import { mapGetters, mapActions } from 'vuex'
 import HelpLabel from './HelpLabel'
 import GlossaryEditor from './GlossaryEditor'
+import TranslateStateButton from './shared/translatestatebutton/TranslateStateButton'
 
 export default {
   name: 'EditElement',
   components: {
     'help-label': HelpLabel,
-    'glossary-editor': GlossaryEditor
+    'glossary-editor': GlossaryEditor,
+    'translate-state-button': TranslateStateButton
   },
   props: {
     pagetitle: {
@@ -436,6 +458,8 @@ export default {
       internalUserTypesObjects: [],
       selectedUserType: '',
       selectedUserTypesObjects: [],
+      selectedTranslationState: 0,
+      elemId: -1,
       startDate: '',
       startTime: '',
       finishDate: '',
@@ -483,7 +507,8 @@ export default {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
         lang,
-        published: this.published
+        published: this.published,
+        translationState: this.selectedTranslationState
       }
       if (this.categories_enabled) {
         translation.category = this.selectedCategoryObject
@@ -603,6 +628,9 @@ export default {
       this.$router.go(-1)
     },
     checkErrors() {
+      if (this.selectedTranslationState >= 3) {
+        return true
+      }
       if (this.errorDefaultLangEmpty) {
         return true
       }
@@ -626,7 +654,8 @@ export default {
             const emptyTranslation = {
               title: '',
               description: '',
-              lang: language.lang
+              lang: language.lang,
+              translationState: this.selectedTranslationState
             }
             if (this.categories_enabled) {
               emptyTranslation.category = this.selectedCategoryObject
@@ -672,6 +701,8 @@ export default {
       if (this.elem) {
         this.changeLanguageAux(al)
         this.published = this.elem.published
+        this.elemId = this.elem.id
+        this.selectedTranslationState = this.elem.translations[0].translationState
         if (this.categories_enabled) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category
@@ -718,7 +749,7 @@ export default {
                 for (let i = 0; i < this.user_types.length; i += 1) {
                   const idUserType = this.user_types[i]
                   const idxUserType = this.user.findIndex((t) => t.id === idUserType)
-                  const idxUserTypeTranslation = this.topic[idxUserType]
+                  const idxUserTypeTranslation = this.user[idxUserType]
                     .translations
                     .findIndex((t) => t.lang === al)
                   this.selectedUserTypesObjects
@@ -799,6 +830,10 @@ $title_font_size: 16px;
 
 .center-edit {
   max-width: 100%;
+}
+
+.warning-error {
+  font-weight: bold;
 }
 </style>
 <style>

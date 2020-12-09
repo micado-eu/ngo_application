@@ -79,6 +79,8 @@
     "title_empty": "Title is empty. Please add a title.",
     "category_empty": "Please select a category.",
     "max_char_limit": "Maximum number of characters reached: ",
-    "fill_default_language": "Please fill the default language title: "
+    "fill_default_language": "Please fill the default language title: ",
+    "in_translation": "This content is waiting translation. The edited content will not be saved.",
+    "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted."
   }
 }

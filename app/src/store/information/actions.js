@@ -14,7 +14,6 @@ export function saveNewInformationItem(state, data) {
 export function addNewInformationItemTranslation(state, data) {
   data.information = data.title
   delete data.title
-  data.translationState = 0
   return client
     .addNewInformationItemTranslation(data)
 }
@@ -26,7 +25,6 @@ export function editInformationItem(state, data) {
 export function editInformationItemTranslation(state, data) {
   data.information = data.title
   delete data.title
-  data.translationState = 0
   return client
     .editInformationItemTranslation(data)
 }
@@ -67,4 +65,23 @@ export function fetchInformationUserTypes(state, id) {
   return client
     .fetchInformationUserTypes(id)
     .then((informationUserTypes) => informationUserTypes)
+}
+
+export function updatePublished(state, data) {
+  return client
+    .updatePublished(data.id, data.published)
+    .then(() => {
+      state.commit("updatePublished", data)
+    })
+}
+
+export function deleteProdTranslations(state, data) {
+  return client.deleteProdTranslations()
+}
+
+export function addNewInformationItemTranslationProd(state, data) {
+  data.information = data.title
+  delete data.title
+  return client
+    .addNewInformationItemTranslationProd(data)
 }
