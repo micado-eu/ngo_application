@@ -1,3 +1,4 @@
 {
-    "apiKey": "$MICADO_API_KEY"
+    "apiKey": "$MICADO_API_KEY",
+    "apiUrl": "$API_HOSTNAME"
 }
