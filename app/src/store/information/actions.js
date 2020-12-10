@@ -67,6 +67,18 @@ export function fetchInformationUserTypes(state, id) {
     .then((informationUserTypes) => informationUserTypes)
 }
 
+export function fetchAllInformationTopics(state) {
+  return client
+    .fetchAllInformationTopics()
+    .then((informationTopics) => informationTopics)
+}
+
+export function fetchAllInformationUserTypes(state) {
+  return client
+    .fetchAllInformationUserTypes()
+    .then((informationUserTypes) => informationUserTypes)
+}
+
 export function updatePublished(state, data) {
   return client
     .updatePublished(data.id, data.published)

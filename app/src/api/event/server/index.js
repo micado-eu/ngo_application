@@ -117,6 +117,18 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  fetchAllEventTopics() {
+    return axiosInstance
+      .get(`/backend/1.0.0/event-topics`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchAllEventUserTypes() {
+    return axiosInstance
+      .get(`/backend/1.0.0/event-user-types`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   updatePublished(id, is_published){
     return axiosInstance
     .patch('/backend/1.0.0/events?[where][id]='+ id, {published: is_published})

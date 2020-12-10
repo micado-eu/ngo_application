@@ -429,8 +429,6 @@ export default {
     'glossary-editor-viewer': GlossaryEditorViewer
   },
   methods: {
-    ...mapActions('topic', ['fetchTopic']),
-    ...mapActions('user_type', ['fetchUserType']),
     ...mapActions('glossary', ['fetchGlossary']),
     updatePublished(value, id) {
       this.publish_fn(value, id)
@@ -645,15 +643,7 @@ export default {
   created() {
     this.loading = true
     this.lang = this.$i18n.locale
-    const promises = []
-    promises.push(this.fetchGlossary())
-    if (this.topics_enabled) {
-      promises.push(this.fetchTopic())
-    }
-    if (this.user_types_enabled) {
-      promises.push(this.fetchUserType())
-    }
-    Promise.all(promises).then(() => this.initializeList())
+    this.fetchGlossary().then(() => this.initializeList())
   }
 }
 </script>

@@ -67,6 +67,18 @@ export function fetchEventUserTypes(state, id) {
     .then((eventUserTypes) => eventUserTypes)
 }
 
+export function fetchAllEventTopics(state) {
+  return client
+    .fetchAllEventTopics()
+    .then((eventTopics) => eventTopics)
+}
+
+export function fetchAllEventUserTypes(state) {
+  return client
+    .fetchAllEventUserTypes()
+    .then((eventUserTypes) => eventUserTypes)
+}
+
 export function updatePublished(state, data) {
   return client
     .updatePublished(data.id, data.published)

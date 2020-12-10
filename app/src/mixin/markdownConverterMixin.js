@@ -15,9 +15,8 @@ export default {
         markdownToHTML(markdown) {
             return this.converter.makeHtml(markdown)
         },
-        async markGlossaryReferences(html, lang) {
-            return this.fetchGlossary().then(() => {
-                let glossaryTermsByLang = []
+        async markGlossaryReferencesAux(html, lang) {
+            let glossaryTermsByLang = []
                 for (let glossaryElement of this.glossary) {
                     if (glossaryElement.translations) {
                         glossaryTermsByLang.push(glossaryElement.translations.filter(t => t.lang === lang)[0])
@@ -47,6 +46,13 @@ export default {
                     }
                 }
                 return result
+        },
+        async markGlossaryReferences(html, lang, isGlossaryFetched=false) {
+            if (isGlossaryFetched) {
+                return this.markGlossaryReferencesAux(html, lang)
+            }
+            return this.fetchGlossary().then(() => {
+                markGlossaryReferencesAux(html, lang)
             })
         }
     },

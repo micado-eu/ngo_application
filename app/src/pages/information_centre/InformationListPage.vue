@@ -38,11 +38,13 @@ export default {
     ...mapGetters('information_category', ['informationCategories'])
   },
   methods: {
+    ...mapActions('topic', ['fetchTopic']),
+    ...mapActions('user_type', ['fetchUserType']),
     ...mapActions('information', [
       'fetchInformation',
       'deleteInformationItem',
-      'fetchInformationTopics',
-      'fetchInformationUserTypes',
+      'fetchAllInformationTopics',
+      'fetchAllInformationUserTypes',
       'updatePublished',
       'deleteProdTranslations',
       'addNewInformationItemTranslationProd'
@@ -80,37 +82,33 @@ export default {
     },
     updateContent() {
       this.loading = true
-      this.fetchInformation().then(() => {
-        this.fetchInformationCategory().then(() => {
-          this.informationElems = JSON.parse(JSON.stringify(this.information))
-          const informationCategoryElems = [...this.informationCategories]
-          if (this.informationElems.length > 0) {
-            for (let i = 0; i < this.informationElems.length; i += 1) {
-              const elem = this.informationElems[i]
-              // Set categories-elements relations
-              const idxCat = elem.category
-              const idxCategoryObject = informationCategoryElems.findIndex(
-                (ic) => ic.id === idxCat
-              )
-              elem.category = informationCategoryElems[idxCategoryObject]
-
-              this.fetchInformationTopics(elem.id).then((topics) => {
-                elem.topics = topics.filter((topic) => topic.idInformation === elem.id)
-                return this.fetchInformationUserTypes(elem.id)
-              }).then((userTypes) => {
-                elem.userTypes = userTypes.filter(
-                  (userType) => userType.idInformation === elem.id
+      let promises = [this.fetchInformation(), this.fetchTopic(), this.fetchUserType(), this.fetchInformationCategory()]
+      Promise.all(promises)
+        .then(() => this.fetchAllInformationTopics())
+        .then((information_topics) => {
+          this.fetchAllInformationUserTypes().then((information_uts) => {
+            this.informationElems = JSON.parse(JSON.stringify(this.information))
+            const informationCategoryElems = [...this.informationCategories]
+            if (this.informationElems.length > 0) {
+              for (let i = 0; i < this.informationElems.length; i += 1) {
+                const elem = this.informationElems[i]
+                // Set categories-elements relations
+                const idxCat = elem.category
+                const idxCategoryObject = informationCategoryElems.findIndex(
+                  (ic) => ic.id === idxCat
                 )
+                elem.category = informationCategoryElems[idxCategoryObject]
+                elem.topics = information_topics.filter((topic) => topic.idInformation === elem.id)
+                elem.userTypes = information_uts.filter((userType) => userType.idInformation === elem.id)
                 if (i >= this.informationElems.length - 1) {
                   this.loading = false
                 }
-              })
+              }
+            } else {
+              this.loading = false
             }
-          } else {
-            this.loading = false
-          }
+          })
         })
-      })
     }
   },
   created() {

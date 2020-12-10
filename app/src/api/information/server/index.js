@@ -117,6 +117,18 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  fetchAllInformationTopics() {
+    return axiosInstance
+      .get(`/backend/1.0.0/information-topics`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchAllInformationUserTypes() {
+    return axiosInstance
+      .get(`/backend/1.0.0/information-user-types`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   updatePublished(id, is_published) {
     return axiosInstance
       .patch('/backend/1.0.0/information?[where][id]=' + id, { published: is_published })

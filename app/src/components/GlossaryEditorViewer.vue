@@ -96,7 +96,7 @@ export default {
       if (!isHTML) {
         currentContent = this.markdownToHTML(content)
       }
-      this.markGlossaryReferences(currentContent, this.lang).then((markedContent) => {
+      this.markGlossaryReferences(currentContent, this.lang, this.glossary_fetched).then((markedContent) => {
         this.editor.setContent(markedContent)
       })
     },
