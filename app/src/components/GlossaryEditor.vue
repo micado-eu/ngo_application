@@ -7,12 +7,16 @@
       <div
         class="editor"
       >
+        <editor-content
+          class="editor_content"
+          :editor="editor"
+        />
         <editor-menu-bar
           :editor="editor"
           v-slot="{ commands, isActive }"
           class="row"
         >
-          <div>
+          <div class="row">
             <q-btn
               :outline="isActive.bold()"
               :unelevated="!isActive.bold()"
@@ -33,6 +37,8 @@
               @click="showUploadModal = true"
               :disabled="readonly"
             />
+            <span style="flex: 10"></span>
+            <slot style="flex: 3"></slot>
             <span class="error-message" v-if="errorMessage">{{errorMessage}}</span>
             <!-- Image upload dialog -->
             <q-dialog
@@ -110,10 +116,6 @@
             </q-dialog>
           </div>
         </editor-menu-bar>
-        <editor-content
-          class="editor_content"
-          :editor="editor"
-        />
       </div>
     </div>
   </div>
