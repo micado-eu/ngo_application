@@ -42,6 +42,7 @@
                 :objectId="int_comment_shell.id"
                 :readonly="!(language.lang===activeLanguage)"
                 @micado-change="test"
+                @return-to-edit="test2"
               />
             </div>
           </q-tab-panel>
@@ -369,6 +370,11 @@ export default {
     },
     test (id) {
       console.log("received also mocado-change")
+      console.log(id)
+      this.changeTranslationState(this.int_comment_shell, id.state)
+    },
+    test2 (id) {
+      console.log("received also return to edit")
       console.log(id)
       this.changeTranslationState(this.int_comment_shell, id.state)
     },
