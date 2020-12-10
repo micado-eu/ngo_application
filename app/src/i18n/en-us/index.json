@@ -19,10 +19,18 @@
     "process": "Guided processes",
     "events": "Events"
   },
+  "help": {
+    "element_title": "Write a title",
+    "element_description": "Write a description",
+    "element_category": "Select a category",
+    "element_topic": "Select a topic",
+    "element_user_type": "Select an user type",
+    "element_start_date": "Select the starting date",
+    "element_end_date": "Select the ending date"
+  },
   "button": {
     "save": "Save",
     "cancel": "Cancel",
-    "add_tag": "Add tag",
     "add_event": "Add Event",
     "add_information": "Add Information",
     "categories": "Categories"
@@ -32,7 +40,6 @@
     "is_published": "Published",
     "description": "Description",
     "title": "Title",
-    "tags": "Tags",
     "select_category": "Select category",
     "select_topic": "Select topics",
     "select_user_type": "Select user types",
@@ -49,14 +56,9 @@
     "add_new": "Add New Event to the Event List",
     "edit": "Edit Event from the Event List"
   },
-  "tags": {
-    "duplicate_error": "Duplicates are not allowed.",
-    "empty_error": "Empty tags are not allowed."
-  },
   "filters": {
     "title": "Filter",
     "clear_all": "Clear all filters",
-    "tags_title": "Tags",
     "category_title": "Category",
     "show_more": "Show more",
     "topics_title": "Topics",
@@ -65,16 +67,20 @@
   "lists": {
     "published": "Published",
     "category": "Category",
-    "tags": "Tags",
     "topics": "Topics",
     "user_types": "User Types",
     "start_date": "Start date",
     "end_date": "End date"
   },
+  "date_selector": {
+    "close": "Close"
+  },
   "error_messages": {
     "title_empty": "Title is empty. Please add a title.",
     "category_empty": "Please select a category.",
-    "max_title": "Please use a maximum of 20 characters.",
-    "max_char_limit": "Maximum number of characters reached: "
+    "max_char_limit": "Maximum number of characters reached: ",
+    "fill_default_language": "Please fill the default language title: ",
+    "in_translation": "This content is waiting translation. The edited content will not be saved.",
+    "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted."
   }
 }

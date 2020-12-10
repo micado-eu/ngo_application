@@ -4,7 +4,6 @@
     <edit-information
       v-if="!loading"
       v-on:save="editInformationItemAndReturn($event)"
-      :tags="tags"
       :elem="elem"
       :topics="topics"
       :user_types="userTypes"
@@ -22,7 +21,6 @@ export default {
     return {
       loading: false,
       elem: undefined,
-      tags: undefined,
       topics: undefined,
       userTypes: undefined
     }
@@ -41,13 +39,9 @@ export default {
       'deleteTopics',
       'deleteUserTypes',
       'fetchInformationTopics',
-      'fetchInformationUserTypes'
-    ]),
-    ...mapActions('information_tags', [
-      'fetchInformationTags',
-      'deleteInformationTagsFromInformation',
-      'saveInformationTags',
-      'saveInformationTagsTranslation'
+      'fetchInformationUserTypes',
+      'deleteProdTranslations',
+      'addNewInformationItemTranslationProd'
     ]),
     editInformationItemAndReturn(data) {
       const router = this.$router
@@ -55,65 +49,59 @@ export default {
       const id = parseInt(this.$route.params.id, 10)
       const eventData = {
         id,
-        category: categoryId
+        category: categoryId,
+        published: data[0].published
       }
-      const tagArrayLength = data[0].tags.length
-      const tagData = []
-      for (let k = 0; k < tagArrayLength; k += 1) {
-        tagData.push({
-          informationId: id
+      if (this.elem.published && data[0].translationState === 0) {
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
         })
       }
-      this.deleteInformationTagsFromInformation(id)
-        .then(() => this.saveInformationTags(tagData))
-        .then((newTags) => {
-          this.editInformationItem(eventData).then(() => {
-            const { topics } = data[0]
-            this.deleteTopics(id)
-              .then(() => this.setTopics({ id, topics }))
-              .then(() => { })
-            const { userTypes } = data[0]
-            this.deleteUserTypes(id)
-              .then(() => this.setUserTypes({ id, userTypes }))
-              .then(() => { })
-            for (let i = 0; i < data.length; i += 1) {
-              const translation = data[i]
-              const tagInfo = translation.tags
-              delete translation.tags
-              const dataWithId = Object.assign(translation, { id })
-              delete translation.category
-              delete translation.topics
-              delete translation.userTypes
-              const newTagsWithTag = newTags.map((newTag, idx) => ({
-                id: newTag.id,
-                lang: translation.lang,
-                tag: tagInfo[idx],
-                translationState: 0
-              }))
-              this.saveInformationTagsTranslation(newTagsWithTag).then()
-              this.editInformationItemTranslation(dataWithId).then(() => {
-                if (i === data.length - 1) {
-                  router.push({ path: '/information' })
-                }
-              })
+      if (this.elem.published && !eventData.published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      }
+      this.editInformationItem(eventData).then(() => {
+        const { topics } = data[0]
+        this.deleteTopics(id)
+          .then(() => this.setTopics({ id, topics }))
+          .then(() => { })
+        const { userTypes } = data[0]
+        this.deleteUserTypes(id)
+          .then(() => this.setUserTypes({ id, userTypes }))
+          .then(() => { })
+        for (let i = 0; i < data.length; i += 1) {
+          const translation = data[i]
+          const dataWithId = Object.assign(translation, { id })
+          delete translation.published
+          delete translation.category
+          delete translation.topics
+          delete translation.userTypes
+          this.editInformationItemTranslation(dataWithId).then(() => {
+            if (!this.elem.published && eventData.published && dataWithId.translationState === 4) {
+              // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+              delete dataWithId.translationState
+              delete dataWithId.published
+              this.addNewInformationItemTranslationProd(dataWithId).then(() => { })
+            }
+            if (i === data.length - 1) {
+              router.push({ path: '/information' })
             }
           })
-        })
+        }
+      })
     }
   },
   computed: {
-    ...mapGetters('information', ['informationElemById']),
-    ...mapGetters('information_tags', ['informationTagsByInformation'])
+    ...mapGetters('information', ['informationElemById'])
   },
   created() {
     this.loading = true
     this.fetchInformation()
       .then(() => {
         this.elem = this.informationElemById(this.$route.params.id)
-        return this.fetchInformationTags()
-      })
-      .then(() => {
-        this.tags = this.informationTagsByInformation(this.elem.id)
         return this.fetchInformationTopics(this.elem.id)
       })
       .then((informationTopics) => {

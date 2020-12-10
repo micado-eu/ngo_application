@@ -11,7 +11,19 @@
         if((this.value==0 && val==1)||(this.value==1 && val==0)){
         $emit('input', val)
         $emit('micado-change',{id: this.objectId,state: val})
-        }else{$q.notify('you cannot change to that state')}
+        }
+        else if((this.value==3 && val ==0)){
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Going back to edit will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'OK', color: 'accent', handler: () => { 
+             $emit('return-to-edit', {id: this.objectId,state: val}) } },
+          { label: 'No', color: 'red', handler: () => {}}
+        ]
+        })
+        }
+        else{$q.notify('you cannot change to that state')}
       }else{
       $q.notify('Content in translation you cannot change its state')
       }}"

@@ -7,74 +7,81 @@
       v-else
     >
       <div class="center-edit q-ma-xl">
+        <div class="warning-error-row row">
+          <span class="col"></span>
+          <span
+            class="warning-error col"
+            v-if="errorDefaultLangEmpty"
+          >{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
+          <span
+            class="warning-error col"
+            v-if="selectedTranslationState === 3"
+          >{{$t("error_messages.in_translation")}}</span>
+          <span
+            class="warning-error col"
+            v-if="(selectedTranslationState === 4) && elem.published"
+          >{{$t("error_messages.change_translated")}}</span>
+          <span class="col"></span>
+        </div>
         <div>
-          <span class="q-my-xl label-edit">{{$t('input_labels.title')}}</span>
+          <span class="q-my-xl label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.title')"
+              :helpLabel="$t('help.element_title')"
+            ></help-label>
+          </span>
           <q-input
             class="title_input q-mb-xl"
+            data-cy="title_input"
             outlined
             v-model="internalTitle"
             bg-color="grey-3"
-            :rules="[ val => val.length <= 20 || $t('error_messages.max_title')]"
+            counter
+            :maxlength="title_max_length"
+            :rules="[ val => val.length <= title_max_length || $t('error_messages.max_char_limit') + title_max_length]"
           />
         </div>
         <div>
-          <span class="q-my-xl label-edit">{{$t('input_labels.description')}}</span>
+          <span class="q-my-xl label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.description')"
+              :helpLabel="$t('help.element_description')"
+            ></help-label>
+          </span>
           <glossary-editor
             class="desc-editor q-mb-xl"
+            data-cy="description_input"
             v-model="internalDescription"
+            :maxCharLimit="description_max_length"
             ref="editor"
+          >
+            <translate-state-button
+            v-model="selectedTranslationState"
+            :isForDefaultLanguage="langTab===$defaultLang"
+            :objectId="elemId"
+            :readonly="!(langTab===$defaultLang)"
+            @micado-change="(a) => {selectedTranslationState = a.state}"
+            class="q-my-sm"
           />
+          </glossary-editor>
         </div>
         <div class="row tag_category_selectors">
           <div
-            v-if="tags_enabled"
-            class="q-my-md tag_list col"
-          >
-            <span class="q-my-xl label-edit">{{$t('input_labels.tags')}}</span>
-            <div class="row">
-              <q-input
-                color="accent"
-                outlined
-                placeholder="New tag"
-                label-color="accent"
-                v-model="tagInput"
-                class="col-10"
-              />
-              <q-btn
-                no-caps
-                @click="addTag()"
-                :label="$t('button.add_tag')"
-                class="q-my-sm q-ml-sm add_tag_btn col"
-              />
-              <span
-                v-if="tagError"
-                class="q-ml-sm"
-              >
-                {{ $t(tagErrorMessage) }}
-              </span>
-            </div>
-            <div class="tag_list flex">
-              <div
-                class="tag_btn q-my-sm q-mr-sm"
-                v-for="tag in internalTags"
-                :key="tag"
-              >
-                <span>{{tag}} <span
-                    class="del_tag_btn"
-                    @click="internalTags.splice(internalTags.indexOf(tag), 1)"
-                  >X</span></span>
-              </div>
-            </div>
-          </div>
-          <div
             v-if="categories_enabled"
-            class="q-my-md q-ml-lg tag_list col"
+            class="q-my-xl tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_category')"
+                :helpLabel="$t('help.element_category')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedCategory"
               :options="internalCategories"
               @input="setCategoryObjectModel($event)"
+              data-cy="category_select"
+              bg-color="grey-3"
             />
           </div>
         </div>
@@ -82,8 +89,13 @@
           class="row tag_category_selectors"
           v-if="is_event"
         >
-          <div class="q-my-md q-mr-lg tag_list col">
-            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+          <div class="q-my-xl q-mr-lg tag_list col">
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.start_date')"
+                :helpLabel="$t('help.element_start_date')"
+              ></help-label>
+            </span>
             <div class="row">
               <q-input
                 outlined
@@ -95,6 +107,7 @@
                   <q-icon
                     name="event"
                     class="cursor-pointer"
+                    data-cy="start_date_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -111,6 +124,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-date>
@@ -128,6 +142,7 @@
                   <q-icon
                     name="access_time"
                     class="cursor-pointer"
+                    data-cy="start_time_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -145,6 +160,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-time>
@@ -154,8 +170,13 @@
               </q-input>
             </div>
           </div>
-          <div class="q-my-md tag_list col">
-            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+          <div class="q-my-xl tag_list col">
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.finish_date')"
+                :helpLabel="$t('help.element_end_date')"
+              ></help-label>
+            </span>
             <div class="row">
               <q-input
                 outlined
@@ -167,6 +188,7 @@
                   <q-icon
                     name="event"
                     class="cursor-pointer"
+                    data-cy="end_date_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -183,6 +205,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-date>
@@ -200,6 +223,7 @@
                   <q-icon
                     name="access_time"
                     class="cursor-pointer"
+                    data-cy="end_time_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -217,6 +241,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-time>
@@ -230,15 +255,25 @@
         <div class="row tag_category_selectors">
           <div
             v-if="topics_enabled"
-            class="q-my-md tag_list col"
+            class="q-my-xl tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_topic')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_topic')"
+                :helpLabel="$t('help.element_topic')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedTopic"
               :options="internalTopics"
               @input="setTopicObjectModel($event)"
+              data-cy="topic_select"
+              bg-color="grey-3"
             />
-            <div class="tag_list flex">
+            <div
+              class="tag_list flex"
+              data-cy="topic_list"
+            >
               <div
                 class="tag_btn q-my-sm q-mr-sm"
                 v-for="(topic, idx) in selectedTopicsObjects"
@@ -253,15 +288,25 @@
           </div>
           <div
             v-if="user_types_enabled"
-            class="q-my-md q-ml-lg tag_list col"
+            class="q-my-xl q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_user_type')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_user_type')"
+                :helpLabel="$t('help.element_user_type')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedUserType"
               :options="internalUserTypes"
               @input="setUserTypeObjectModel($event)"
+              data-cy="user_types_select"
+              bg-color="grey-3"
             />
-            <div class="tag_list flex">
+            <div
+              class="tag_list flex"
+              data-cy="user_types_list"
+            >
               <div
                 class="tag_btn q-my-sm q-mr-sm"
                 v-for="(userType, idx) in selectedUserTypesObjects"
@@ -278,17 +323,17 @@
         <div class="language_selector">
           <hr
             style="border: 0.999px solid #DADADA;"
-            class="q-my-lg"
+            class="q-mb-lg q-mt-xl"
           >
           <q-tabs
             v-model="langTab"
-            @input="changeLanguage"
             dense
             class="text-grey"
             active-color="black"
             indicator-color="black"
             align="justify"
             narrow-indicator
+            no-caps
           >
             <q-tab
               v-for="language in activeLanguages"
@@ -299,8 +344,20 @@
           </q-tabs>
           <hr
             style="border: 0.999px solid #DADADA"
-            class="q-my-lg"
+            class="q-mt-lg q-mb-xl"
           >
+        </div>
+        <div class="row">
+          <span class="label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.is_published')"
+              :helpLabel="$t('help.is_published')"
+            ></help-label>
+          </span>
+          <q-toggle
+            v-model="published"
+            color="green"
+          ></q-toggle>
         </div>
         <div class="row q-my-xl">
           <q-btn
@@ -314,21 +371,31 @@
             unelevated
             no-caps
             color="accent"
+            data-cy="save_button"
             :label="$t('button.save')"
             @click="callSaveFn()"
             class="row edit-element-button"
           />
         </div>
       </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import HelpLabel from './HelpLabel'
+import GlossaryEditor from './GlossaryEditor'
+import translatedButtonMixin from '../mixin/translatedButtonMixin'
 
 export default {
   name: 'EditElement',
+  components: {
+    'help-label': HelpLabel,
+    'glossary-editor': GlossaryEditor
+  },
+  mixins: [translatedButtonMixin],
   props: {
     pagetitle: {
       type: String,
@@ -339,16 +406,6 @@ export default {
     },
     save_item_fn: {
       type: Function
-    },
-    tags: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    tags_enabled: {
-      type: Boolean,
-      default: false
     },
     categories: {
       type: Array,
@@ -383,6 +440,14 @@ export default {
     is_event: {
       type: Boolean,
       default: false
+    },
+    title_max_length: {
+      type: Number,
+      default: 20
+    },
+    description_max_length: {
+      type: Number,
+      default: null
     }
   },
   data() {
@@ -390,14 +455,10 @@ export default {
       loading: true,
       internalTitle: '',
       internalDescription: '',
-      internalTags: [],
       internalCategories: [],
       internalCategoriesObjects: [],
       selectedCategory: '',
       selectedCategoryObject: {},
-      tagInput: '',
-      tagError: false,
-      tagErrorMessage: '',
       langTab: '',
       internalTopics: [],
       internalTopicsObjects: [],
@@ -407,50 +468,60 @@ export default {
       internalUserTypesObjects: [],
       selectedUserType: '',
       selectedUserTypesObjects: [],
+      selectedTranslationState: 0,
+      elemId: -1,
       startDate: '',
       startTime: '',
       finishDate: '',
       finishTime: '',
-      savedTranslations: []
+      savedTranslations: [],
+      published: false
     }
   },
   methods: {
     ...mapActions('language', ['fetchActiveLanguages']),
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
-    changeLanguage(al) {
-      this.saveContent()
-      this.changeLanguageAux(al)
+    changeLanguage(newLang, oldLang) {
+      this.saveContent(oldLang)
+      this.changeLanguageAux(newLang)
     },
     changeLanguageAux(al) {
-      if (this.elem) {
-        const idx = this.elem.translations.findIndex((t) => t.lang === al)
-        if (idx !== -1) {
-          this.internalTitle = this.elem.translations[idx].title
-          const parsedJson = this.elem.translations[idx].description
-          this.internalDescription = parsedJson
-          if (this.$refs.editor) {
-            this.$refs.editor.setContent(parsedJson)
+      const idx = this.savedTranslations.findIndex((t) => t.lang === al)
+      if (idx !== -1) {
+        const element = this.savedTranslations[idx]
+        this.setContent(element, al)
+      } else {
+        if (this.elem) {
+          const idx = this.elem.translations.findIndex((t) => t.lang === al)
+          if (idx !== -1) {
+            this.setContent(this.elem.translations[idx], al)
+          } else {
+            this.resetFields(al)
           }
         } else {
           this.resetFields(al)
         }
-      } else {
-        this.resetFields(al)
       }
     },
-    saveContent() {
-      const idx = this.savedTranslations.findIndex((t) => t.lang === this.langTab)
+    setContent(element, al) {
+      this.internalTitle = element.title
+      this.internalDescription = element.description
+      if (this.$refs.editor) {
+        this.$refs.editor.setContent(this.internalDescription)
+      }
+    },
+    saveContent(lang) {
+      const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
       const translation = {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
-        lang: this.langTab
+        lang,
+        published: this.published,
+        translationState: this.selectedTranslationState
       }
       if (this.categories_enabled) {
         translation.category = this.selectedCategoryObject
-      }
-      if (this.tags_enabled) {
-        translation.tags = this.internalTags
       }
       if (this.topics_enabled) {
         translation.topics = this.selectedTopicsObjects
@@ -471,28 +542,8 @@ export default {
     resetFields(al) {
       this.internalTitle = ''
       this.internalDescription = ''
-      this.internalTags = []
-      this.tagInput = ''
-      this.setInternalCategorySelector(al)
-      this.selectedTopic = ''
-      this.setInternalTopicSelector(al)
-      this.selectedUserType = ''
-      this.setInternalUserTypeSelector(al)
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
-      }
-    },
-    addTag() {
-      if (this.internalTags.indexOf(this.tagInput) !== -1) {
-        this.tagErrorMessage = 'Duplicates are not allowed.'
-        this.tagError = true
-      } else if (this.tagInput.length <= 0) {
-        this.tagErrorMessage = 'Empty tags are not allowed.'
-        this.tagError = true
-      } else {
-        this.internalTags.push(this.tagInput)
-        this.tagError = false
-        this.tagInput = ''
       }
     },
     setInternalCategorySelector(al) {
@@ -587,6 +638,12 @@ export default {
       this.$router.go(-1)
     },
     checkErrors() {
+      if (this.selectedTranslationState >= 3) {
+        return true
+      }
+      if (this.errorDefaultLangEmpty) {
+        return true
+      }
       if (this.internalTitle.length <= 0) {
         return true
       }
@@ -601,13 +658,14 @@ export default {
     },
     callSaveFn() {
       if (!this.checkErrors()) {
-        this.saveContent()
+        this.saveContent(this.langTab)
         for (const language of this.activeLanguages) {
-          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) == -1) {
+          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
             const emptyTranslation = {
               title: '',
               description: '',
-              lang: language.lang
+              lang: language.lang,
+              translationState: this.selectedTranslationState
             }
             if (this.categories_enabled) {
               emptyTranslation.category = this.selectedCategoryObject
@@ -621,22 +679,6 @@ export default {
             this.savedTranslations.push(emptyTranslation)
           }
         }
-        if (this.tags_enabled) {
-          let largestTagArrayLength = -1
-          for (let i = 0; i < this.savedTranslations.length; i += 1) {
-            if (!this.savedTranslations[i].tags) {
-              this.savedTranslations[i].tags = []
-            }
-            if (this.savedTranslations[i].tags.length > largestTagArrayLength) {
-              largestTagArrayLength = this.savedTranslations[i].tags.length
-            }
-          }
-          for (let i = 0; i < this.savedTranslations.length; i += 1) {
-            while (this.savedTranslations[i].tags.length < largestTagArrayLength) {
-              this.savedTranslations[i].tags.push('')
-            }
-          }
-        }
         this.save_item_fn(
           this.savedTranslations
         )
@@ -646,10 +688,23 @@ export default {
   computed: {
     ...mapGetters('language', ['activeLanguages']),
     ...mapGetters('topic', ['topic']),
-    ...mapGetters('user_type', ['user'])
+    ...mapGetters('user_type', ['user']),
+    errorDefaultLangEmpty: function () {
+      if (this.langTab !== this.$defaultLang) {
+        return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
+      }
+      return !this.internalTitle
+    }
   },
-  components: {
-    'glossary-editor': require('components/GlossaryEditor.vue').default
+  watch: {
+    langTab: function (newVal, oldVal) {
+      if (newVal && oldVal) {
+        this.changeLanguage(newVal, oldVal)
+      }
+    },
+    selectedTranslationState: function() {
+      console.log(this.selectedTranslationState)
+    }
   },
   created() {
     this.loading = true
@@ -658,6 +713,9 @@ export default {
       this.langTab = this.activeLanguages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
         this.changeLanguageAux(al)
+        this.published = this.elem.published
+        this.elemId = this.elem.id
+        this.selectedTranslationState = this.elem.translations[0].translationState
         if (this.categories_enabled) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category
@@ -682,12 +740,6 @@ export default {
       if (this.categories.length > 0) {
         this.setInternalCategorySelector(al)
       }
-      if (this.tags.length > 0) {
-        for (const tag of this.tags) {
-          const idxTag = tag.translations.findIndex((t) => t.lang === al)
-          this.internalTags.push(tag.translations[idxTag].tag)
-        }
-      }
       if (this.topics_enabled) {
         this.fetchTopic().then(() => {
           if (this.elem && this.topics.length > 0) {
@@ -710,7 +762,7 @@ export default {
                 for (let i = 0; i < this.user_types.length; i += 1) {
                   const idUserType = this.user_types[i]
                   const idxUserType = this.user.findIndex((t) => t.id === idUserType)
-                  const idxUserTypeTranslation = this.topic[idxUserType]
+                  const idxUserTypeTranslation = this.user[idxUserType]
                     .translations
                     .findIndex((t) => t.lang === al)
                   this.selectedUserTypesObjects
@@ -791,6 +843,12 @@ $title_font_size: 16px;
 
 .center-edit {
   max-width: 100%;
+}
+
+.warning-error {
+  font-weight: 700;
+  font-family: Nunito;
+  font-size: 16px;
 }
 </style>
 <style>

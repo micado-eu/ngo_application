@@ -13,7 +13,7 @@ module.exports = function (ctx) {
       'axios',
       'featureflag',
       'loadData',
-      'countly', 
+      'countly',
       'mermaid'
     ],
 
@@ -93,10 +93,8 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-document_type-client', 'src/api/document_type/server');
         chain.resolve.alias.set('api-information-client', 'src/api/information/server');
         chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/server');
-        chain.resolve.alias.set('api-information_tags-client', 'src/api/information_tags/server');
         chain.resolve.alias.set('api-event-client', 'src/api/event/server');
         chain.resolve.alias.set('api-event_category-client', 'src/api/event_category/server');
-        chain.resolve.alias.set('api-event_tags-client', 'src/api/event_tags/server');
         chain.resolve.alias.set('api-user-client', 'src/api/user/server');
         chain.resolve.alias.set('api-features-client', 'src/api/features/server');
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/server');
@@ -106,6 +104,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-interventions-client', 'src/api/interventions/server');
         chain.resolve.alias.set('api-comments-client', 'src/api/comments/server');
         chain.resolve.alias.set('api-topic-client', 'src/api/topic/server');
+        chain.resolve.alias.set('api-tenant-client', 'src/api/tenant/server');
         chain.resolve.alias.set('api-user_type-client', 'src/api/user_type/server');
       }
     },

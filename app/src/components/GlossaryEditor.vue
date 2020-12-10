@@ -7,12 +7,16 @@
       <div
         class="editor"
       >
+        <editor-content
+          class="editor_content"
+          :editor="editor"
+        />
         <editor-menu-bar
           :editor="editor"
           v-slot="{ commands, isActive }"
           class="row"
         >
-          <div>
+          <div class="row">
             <q-btn
               :outline="isActive.bold()"
               :unelevated="!isActive.bold()"
@@ -33,6 +37,8 @@
               @click="showUploadModal = true"
               :disabled="readonly"
             />
+            <span style="flex: 10"></span>
+            <slot style="flex: 3"></slot>
             <span class="error-message" v-if="errorMessage">{{errorMessage}}</span>
             <!-- Image upload dialog -->
             <q-dialog
@@ -110,10 +116,6 @@
             </q-dialog>
           </div>
         </editor-menu-bar>
-        <editor-content
-          class="editor_content"
-          :editor="editor"
-        />
       </div>
     </div>
   </div>
@@ -152,7 +154,7 @@ export default {
     },
     maxCharLimit: {
       type: Number,
-      default: 800
+      default: null
     }
   },
   mixins: [markdownConverterMixin],
@@ -231,7 +233,7 @@ export default {
       // check errors
       const doc = new DOMParser().parseFromString(this.editor.getHTML(), 'text/html')
       const plainDescription = doc.body.textContent || ''
-      if (plainDescription.length > this.maxCharLimit) {
+      if ((this.maxCharLimit !== null) && (plainDescription.length > this.maxCharLimit)) {
         this.errorMessage = this.$t("error_messages.max_char_limit") + this.maxCharLimit
       } else {
         this.errorMessage = false

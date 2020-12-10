@@ -2,18 +2,20 @@ import { axiosInstance } from 'boot/axios'
 import { error_handler } from '../../../helper/utility'
 
 export default {
-  fetchComments() {
+  fetchTenants () {
     return axiosInstance
-      .get('/backend/1.0.0/comments?filter[include][0][relation]=translations')
-      .then(response => { return response.data })
-      .catch(error_handler);
+      .get('/backend/1.0.0/tenants?filter[include][0][relation]=tenantData')
+      .then((response) => { return response.data })
+      .catch(error_handler)
   },
-  fetchCommentsByTenant(tenant_id) {
+  saveTenant (tenant) {
+    // create fake id here
     return axiosInstance
-      .get('/backend/1.0.0/comments?filter[include][0][relation]=translations&filter[where][tenantId]=' + tenant_id)
-      .then(response => { return response.data })
-      .catch(error_handler);
-  },
+      .post('/backend/1.0.0/tenants', tenant)
+      .then(response => response.data)
+      .catch(error_handler)
+  }
+  /* ,
   saveComment (comment) {
     // create fake id here
     return axiosInstance
@@ -23,7 +25,7 @@ export default {
   },
   saveCommentTranslation (translation, id) {
     translation.id = id
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment', 'translationState']));
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment']));
 
     // create fake id here
     return axiosInstance
@@ -59,7 +61,7 @@ export default {
     const whereClause = {
       id: { eq: comment.id }
     },
-      updatingTopic = JSON.parse(JSON.stringify(comment, ['id','tenantId']))
+      updatingTopic =  JSON.parse(JSON.stringify(comment, ['id']))
 
     return axiosInstance
       .patch('/backend/1.0.0/comments?where=' + JSON.stringify(whereClause), updatingTopic)
@@ -71,11 +73,12 @@ export default {
     const whereClause = {
       id: { eq: translation.id }, lang: { eq: translation.lang }
     },
-      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment', 'translationState'])) : translation
+      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment'])) : translation
 
     return axiosInstance
       .patch('/backend/1.0.0/comments/' + translation.id + '/comments-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   }
+  */
 }

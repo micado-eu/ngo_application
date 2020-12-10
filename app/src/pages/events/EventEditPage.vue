@@ -42,13 +42,9 @@ export default {
       'deleteTopics',
       'setTopics',
       'deleteUserTypes',
-      'setUserTypes'
-    ]),
-    ...mapActions('event_tags', [
-      'fetchEventTags',
-      'deleteEventTagsFromEvent',
-      'saveEventTags',
-      'saveEventTagsTranslation'
+      'setUserTypes',
+      'deleteProdTranslations',
+      'addNewEventItemTranslationProd'
     ]),
     editEventItemAndReturn(data) {
       const router = this.$router
@@ -58,67 +54,61 @@ export default {
         id,
         category: categoryId,
         startDate: data[0].startDate,
-        endDate: data[0].finishDate
+        endDate: data[0].finishDate,
+        published: data[0].published
       }
-      const tagArrayLength = data[0].tags.length
-      const tagData = []
-      for (let k = 0; k < tagArrayLength; k += 1) {
-        tagData.push({
-          eventId: id
+      if (this.elem.published && data[0].translationState === 0) {
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
         })
       }
-      this.deleteEventTagsFromEvent(id)
-        .then(() => this.saveEventTags(tagData))
-        .then((newTags) => {
-          this.editEventItem(eventData).then(() => {
-            const { topics } = data[0]
-            this.deleteTopics(id)
-              .then(() => this.setTopics({ id, topics }))
-              .then(() => { })
-            const { userTypes } = data[0]
-            this.deleteUserTypes(id)
-              .then(() => this.setUserTypes({ id, userTypes }))
-              .then(() => { })
-            for (let i = 0; i < data.length; i += 1) {
-              const translation = data[i]
-              const tagInfo = translation.tags
-              delete translation.tags
-              const dataWithId = Object.assign(translation, { id })
-              delete translation.category
-              delete translation.topics
-              delete translation.userTypes
-              delete translation.startDate
-              delete translation.finishDate
-              const newTagsWithTag = newTags.map((newTag, idx) => ({
-                id: newTag.id,
-                lang: translation.lang,
-                tag: tagInfo[idx],
-                translationState: 0
-              }))
-              this.saveEventTagsTranslation(newTagsWithTag).then()
-              this.editEventItemTranslation(dataWithId).then(() => {
-                if (i === data.length - 1) {
-                  router.push({ path: '/events' })
-                }
-              })
+      if (this.elem.published && !eventData.published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      }
+      this.editEventItem(eventData).then(() => {
+        const { topics } = data[0]
+        this.deleteTopics(id)
+          .then(() => this.setTopics({ id, topics }))
+          .then(() => { })
+        const { userTypes } = data[0]
+        this.deleteUserTypes(id)
+          .then(() => this.setUserTypes({ id, userTypes }))
+          .then(() => { })
+        for (let i = 0; i < data.length; i += 1) {
+          const translation = data[i]
+          const dataWithId = Object.assign(translation, { id })
+          delete translation.published
+          delete translation.category
+          delete translation.topics
+          delete translation.userTypes
+          delete translation.startDate
+          delete translation.finishDate
+          this.editEventItemTranslation(dataWithId).then(() => {
+            if (!this.elem.published && eventData.published && dataWithId.translationState === 4) {
+              // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+              delete dataWithId.translationState
+              delete dataWithId.published
+              this.addNewEventItemTranslationProd(dataWithId).then(() => { })
+            }
+            if (i === data.length - 1) {
+              router.push({ path: '/events' })
             }
           })
-        })
+        }
+      })
     }
   },
   computed: {
-    ...mapGetters('event', ['eventElemById']),
-    ...mapGetters('event_tags', ['eventTagsByEvent'])
+    ...mapGetters('event', ['eventElemById'])
   },
   created() {
     this.loading = true
     this.fetchEvent()
       .then(() => {
         this.elem = this.eventElemById(this.$route.params.id)
-        return this.fetchEventTags()
-      })
-      .then(() => {
-        this.tags = this.eventTagsByEvent(this.elem.id)
         return this.fetchEventTopics(this.elem.id)
       })
       .then((eventTopics) => {

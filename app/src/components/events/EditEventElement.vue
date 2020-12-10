@@ -5,9 +5,7 @@
       v-if="!loading"
       :elem="elem"
       :save_item_fn="saveEventItem"
-      :tags="tags"
       :pagetitle="pagetitle"
-      tags_enabled
       :categories="eventCategories"
       categories_enabled
       topics_enabled
@@ -15,6 +13,7 @@
       user_types_enabled
       :user_types="user_types"
       is_event
+      :title_max_length="255"
     />
   </div>
 </template>
@@ -39,9 +38,6 @@ export default {
     },
     pagetitle: {
       type: String
-    },
-    tags: {
-      type: Array
     },
     topics: {
       type: Array

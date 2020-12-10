@@ -25,6 +25,15 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  addNewEventItemTranslationProd(translation) {
+    if (!translation.translationDate) {
+      translation.translationDate = new Date().toISOString()
+    }
+    return axiosInstance
+      .post(`/backend/1.0.0/events/${translation.id}/event-translation-prods`, translation)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   editEventItem(newItem) {
     return axiosInstance
       .patch(`/backend/1.0.0/events/${newItem.id}`, newItem)
@@ -48,9 +57,18 @@ export default {
     // Delete translations then item
     return axiosInstance
       .delete(`/backend/1.0.0/events/${item.id}/event-translations`)
+      // .then(
+      //   () => axiosInstance.delete(`/backend/1.0.0/events/${item.id}/event-translation-prods`)
+      // )
       .then(
         (response) => axiosInstance.delete(`/backend/1.0.0/events/${item.id}`)
       ).then((response) => response.data)
+      .catch(error_handler)
+  },
+  deleteProdTranslations(item) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/events/${item.id}/event-translation-prods`)
+      .then((response) => response.data)
       .catch(error_handler)
   },
   setTopics(topics) {
@@ -98,5 +116,23 @@ export default {
       .get(`/backend/1.0.0/events/${id}/event-user-types`)
       .then((response) => response.data)
       .catch(error_handler)
+  },
+  fetchAllEventTopics() {
+    return axiosInstance
+      .get(`/backend/1.0.0/event-topics`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchAllEventUserTypes() {
+    return axiosInstance
+      .get(`/backend/1.0.0/event-user-types`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  updatePublished(id, is_published){
+    return axiosInstance
+    .patch('/backend/1.0.0/events?[where][id]='+ id, {published: is_published})
+    .then(response => response.data)
+    .catch(error_handler)
   }
 }

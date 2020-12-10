@@ -5,15 +5,14 @@
       v-if="!loading"
       :elem="elem"
       :save_item_fn="saveInformationItem"
-      :tags="tags"
       :pagetitle="pagetitle"
-      tags_enabled
       :categories="informationCategories"
       categories_enabled
       topics_enabled
       :topics="topics"
       user_types_enabled
       :user_types="user_types"
+      :title_max_length="255"
     />
   </div>
 </template>
@@ -38,9 +37,6 @@ export default {
     },
     pagetitle: {
       type: String
-    },
-    tags: {
-      type: Array
     },
     topics: {
       type: Array

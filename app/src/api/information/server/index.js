@@ -25,6 +25,15 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  addNewInformationItemTranslationProd(translation) {
+    if (!translation.translationDate) {
+      translation.translationDate = new Date().toISOString()
+    }
+    return axiosInstance
+      .post(`/backend/1.0.0/information/${translation.id}/information-translation-prods`, translation)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   editInformationItem(newItem) {
     return axiosInstance
       .patch(`/backend/1.0.0/information/${newItem.id}`, newItem)
@@ -48,9 +57,18 @@ export default {
     // Delete translations then item
     return axiosInstance
       .delete(`/backend/1.0.0/information/${item.id}/information-translations`)
+      // .then(
+      //   () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
+      // )
       .then(
         () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}`)
       ).then((response) => response.data)
+      .catch(error_handler)
+  },
+  deleteProdTranslations(item) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
+      .then((response) => response.data)
       .catch(error_handler)
   },
   setTopics(topics) {
@@ -97,6 +115,24 @@ export default {
     return axiosInstance
       .get(`/backend/1.0.0/information/${id}/information-user-types`)
       .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchAllInformationTopics() {
+    return axiosInstance
+      .get(`/backend/1.0.0/information-topics`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchAllInformationUserTypes() {
+    return axiosInstance
+      .get(`/backend/1.0.0/information-user-types`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  updatePublished(id, is_published) {
+    return axiosInstance
+      .patch('/backend/1.0.0/information?[where][id]=' + id, { published: is_published })
+      .then(response => response.data)
       .catch(error_handler)
   }
 }

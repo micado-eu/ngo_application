@@ -7,12 +7,12 @@
       new_url="events/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
+      :publish_fn="updatePublishedEvents"
       icon_name="document"
       add_label="button.add_event"
       title="events.list_title"
       categories_enabled
       categories_url="/events/categories"
-      tags_enabled
       topics_enabled
       user_types_enabled
       is_event
@@ -35,36 +35,59 @@ export default {
     'list-search-tags': ListSearchTags
   },
   computed: {
-    ...mapGetters('event', ['event']),
-    ...mapGetters('event_category', ['eventCategories']),
-    ...mapGetters('event_tags', ['eventTagsByEvent'])
+    ...mapGetters('event', ['event', 'eventElemById']),
+    ...mapGetters('event_category', ['eventCategories'])
   },
   methods: {
+    ...mapActions('topic', ['fetchTopic']),
+    ...mapActions('user_type', ['fetchUserType']),
     ...mapActions('event', [
       'fetchEvent',
       'deleteEventItem',
-      'fetchEventTopics',
-      'fetchEventUserTypes'
+      'fetchAllEventTopics',
+      'fetchAllEventUserTypes',
+      'updatePublished',
+      'deleteProdTranslations',
+      'addNewEventItemTranslationProd'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
-    ...mapActions('event_tags', ['fetchEventTags', 'deleteEventTagsFromEvent']),
     getEditRoute(id) {
       return `events/${id}/edit`
     },
     deleteItem(item) {
-      this.deleteEventTagsFromEvent(item.id)
-        .then(this.deleteEventItem(item))
+      this.deleteEventItem(item)
         .then(() => {
-          this.loading = true
-          setTimeout(() => this.updateContent(), 1000)
+          this.updateContent()
           // this.$router.go()
         })
     },
+    updatePublishedEvents(published, id) {
+      let eventElem = this.eventElemById(id)
+      if (eventElem.translations[0].translationState === 4 && eventElem.published && !published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      } else if (eventElem.translations[0].translationState === 4 && !eventElem.published && published) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        for (let i = 0; i < eventElem.translations.length; i += 1) {
+          const translation = Object.assign({}, eventElem.translations[i])
+          delete translation.translationState
+          delete translation.published
+          this.addNewEventItemTranslationProd(translation).then(() => { })
+        }
+      }
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      })
+    },
     updateContent() {
       this.loading = true
-      this.fetchEvent().then(() => {
-        this.fetchEventCategory().then(() => {
-          this.fetchEventTags().then(() => {
+      let promises = [this.fetchTopic(), this.fetchUserType(), this.fetchEvent(), this.fetchEventCategory()]
+      Promise.all(promises)
+        .then(() => this.fetchAllEventTopics())
+        .then((event_topics) => {
+          this.fetchAllEventUserTypes().then((events_uts) => {
             this.eventElems = JSON.parse(JSON.stringify(this.event))
             const eventCategoryElems = [...this.eventCategories]
             if (this.eventElems.length > 0) {
@@ -76,25 +99,17 @@ export default {
                   (ic) => ic.id === idxCat
                 )
                 elem.category = eventCategoryElems[idxCategoryObject]
-                // Set tag-elements relations
-                elem.tags = this.eventTagsByEvent(elem.id)
-
-                this.fetchEventTopics(elem.id).then((topics) => {
-                  elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
-                  return this.fetchEventUserTypes(elem.id)
-                }).then((userTypes) => {
-                  elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
-                  if (i >= this.eventElems.length - 1) {
-                    this.loading = false
-                  }
-                })
+                elem.topics = event_topics.filter((topic) => topic.idEvent === elem.id)
+                elem.userTypes = events_uts.filter((userType) => userType.idEvent === elem.id)
+                if (i >= this.eventElems.length - 1) {
+                  this.loading = false
+                }
               }
             } else {
               this.loading = false
             }
           })
         })
-      })
     }
   },
   created() {

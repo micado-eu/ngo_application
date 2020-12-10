@@ -11,10 +11,18 @@
 
 <script>
 import client from 'api-user-client'
+import storeMappingMixin from '../../mixin/storeMappingMixin'
 
 
 export default {
   name: 'Verification',
+    mixins: [storeMappingMixin({
+    getters: {
+      tenants: 'tenant/tenants'
+    }, actions: {
+      fetchTenants: 'tenant/fetchTenants'
+    }
+  })],
   data () {
     return {
       token: '',
@@ -22,10 +30,16 @@ export default {
     }
   },
   mounted () {
-    this.verifyUser()
+    this.fetchTenants()
+    .then((res_tenants) =>{
+      console.log("before calling verify user")
+      console.log(res_tenants)
+      this.verifyUser(res_tenants)
+    })
+ //   this.verifyUser()
   },
   methods: {
-    verifyUser () {
+    verifyUser (res_tenants) {
 
       const hashes = this.$route.hash.slice(this.$route.hash.indexOf('#') + 1).split('&');
 
@@ -48,10 +62,14 @@ export default {
       console.log('pagina di validate')
       console.log(this.$route)
       console.log(id_token)
+      // in the id_token we have the real.tenant that talls us from which tenant the user arrived.
       console.log(access_token)
-      let tenant = this.$migrant_tenant
+      let the_tenant = res_tenants.filter((aTenant)=>{return (aTenant.tenantData != null ? aTenant.tenantData.umDomainName == id_token.realm.tenant : false)})[0]
+      console.log("THE TENANT")
+      console.log(the_tenant)
+      id_token.umtenantid=the_tenant.id
       console.log("before fetching the user")
-      client.fetchUserLogin(id_token.sub, tenant)
+      client.fetchUserLogin(id_token.sub, the_tenant.id)
         .then(response => {
           console.log("response from getting internal user id")
           console.log(response)

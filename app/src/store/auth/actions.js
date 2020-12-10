@@ -18,10 +18,8 @@ export function login (state, data) {
   let d = new Date()
   let t = d.getTime()
   //  let aut_url = "https://identity.micadoproject.eu/oauth2/authorize" + "?client_id=" + "6E6Gps3pfRJbzdrjxBiRYSNUVuoa" + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://migrants.micadoproject.eu/gioppo"
-  //  let aut_url = "https://identity.micadoproject.eu/oauth2/authorize" + "?client_id=" + "ca5c50c4a3b941b3bfbe1b216a2b" + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://ngo.micadoproject.eu/verification"
-  let aut_url = "https://localhost:9443/oauth2/authorize" + "?client_id=" + "pSoOnCk41wDduPOHkwmro42cfgUa" + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=http://localhost:8080/verification&isSaaSApp=true"
-
-  //tenantDomain%3Dcarbon.super%26sessionDataKey%3Dd1896712-d932-4d0b-bf8d-6f7964909b84%26relyingParty%3Dhttps%253A%252F%252Ftempus.so.edu.au%252Fauth%252Fsaml2%252Fsp%252Fmetadata.php%26type%3Dsamlsso%26sp%3Ddefault%26isSaaSApp%3Dtrue%26authenticators%3DBasicAuthenticator%3ALOCAL
+  // let aut_url = "https://identity.micadoproject.eu/oauth2/authorize" + "?client_id=" + "ca5c50c4a3b941b3bfbe1b216a2b" + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://ngo.micadoproject.eu/verification"
+  let aut_url = "https://" + this._vm.$envconfig.identityUrl + "/oauth2/authorize?client_id=" + this._vm.$envconfig.identitySPclientId + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://" + this._vm.$envconfig.ngoUrl + "/verification"
 
   // curl -X POST --basic -u "<client id>:<client secret>" -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -k -d "token=<token to revoke>&token_type_hint=access_token" https://localhost:9443/oauth2/revoke
 
