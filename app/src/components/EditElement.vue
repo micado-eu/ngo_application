@@ -68,7 +68,7 @@
         <div class="row tag_category_selectors">
           <div
             v-if="categories_enabled"
-            class="q-my-md tag_list col"
+            class="q-my-xl tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -89,7 +89,7 @@
           class="row tag_category_selectors"
           v-if="is_event"
         >
-          <div class="q-my-md q-mr-lg tag_list col">
+          <div class="q-my-xl q-mr-lg tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.start_date')"
@@ -170,7 +170,7 @@
               </q-input>
             </div>
           </div>
-          <div class="q-my-md tag_list col">
+          <div class="q-my-xl tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.finish_date')"
@@ -255,7 +255,7 @@
         <div class="row tag_category_selectors">
           <div
             v-if="topics_enabled"
-            class="q-my-md tag_list col"
+            class="q-my-xl tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -288,7 +288,7 @@
           </div>
           <div
             v-if="user_types_enabled"
-            class="q-my-md q-ml-lg tag_list col"
+            class="q-my-xl q-ml-lg tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -323,7 +323,7 @@
         <div class="language_selector">
           <hr
             style="border: 0.999px solid #DADADA;"
-            class="q-my-lg"
+            class="q-mb-lg q-mt-xl"
           >
           <q-tabs
             v-model="langTab"
@@ -336,7 +336,7 @@
             no-caps
           >
             <q-tab
-              v-for="language in languages"
+              v-for="language in activeLanguages"
               :key="language.lang"
               :name="language.lang"
               :label="language.name"
@@ -344,7 +344,7 @@
           </q-tabs>
           <hr
             style="border: 0.999px solid #DADADA"
-            class="q-my-lg"
+            class="q-mt-lg q-mb-xl"
           >
         </div>
         <div class="row">
