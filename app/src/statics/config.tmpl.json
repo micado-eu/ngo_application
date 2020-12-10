@@ -3,7 +3,7 @@
     "apiUrl": "$API_HOSTNAME",
     "monitoringUrl": "$ANALYTIC_HOSTNAME",
     "identityUrl": "$IDENTITY_HOSTNAME",
-    "countlyApiKey": "$COUNTLY_NGO_API_KEY",
+    "countlyAppKey": "$COUNTLY_NGO_APP_KEY",
     "identitySPclientId": "$IDENTITY_SP_NGO_CLIENT_ID",
     "ngoUrl": "$NGO_HOSTNAME"
 }
