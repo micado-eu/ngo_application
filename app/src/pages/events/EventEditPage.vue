@@ -60,23 +60,43 @@ export default {
       if (this.elem.published && data[0].translationState === 0) {
         this.deleteProdTranslations().then(() => {
           console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting event production translations: ${err}`
+          })
         })
       }
       if (this.elem.published && !eventData.published) {
         // If published goes from true to false, all the content gets deleted from the translation prod table
         this.deleteProdTranslations().then(() => {
           console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting event production translations: ${err}`
+          })
         })
       }
       this.editEventItem(eventData).then(() => {
         const { topics } = data[0]
         this.deleteTopics(id)
           .then(() => this.setTopics({ id, topics }))
-          .then(() => { })
+          .catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving topics: ${err}`
+            })
+          })
         const { userTypes } = data[0]
         this.deleteUserTypes(id)
           .then(() => this.setUserTypes({ id, userTypes }))
-          .then(() => { })
+          .catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving user types: ${err}`
+            })
+          })
         for (let i = 0; i < data.length; i += 1) {
           const translation = data[i]
           const dataWithId = Object.assign(translation, { id })
@@ -91,13 +111,28 @@ export default {
               // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
               delete dataWithId.translationState
               delete dataWithId.published
-              this.addNewEventItemTranslationProd(dataWithId).then(() => { })
+              this.addNewEventItemTranslationProd(dataWithId).catch((err) => {
+                this.$q.notify({
+                  type: 'negative',
+                  message: `Error while saving event production translation ${dataWithId.lang}: ${err}`
+                })
+              })
             }
             if (i === data.length - 1) {
               router.push({ path: '/events' })
             }
+          }).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving event translation ${dataWithId.lang}: ${err}`
+            })
           })
         }
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while saving event: ${err}`
+        })
       })
     }
   },
@@ -118,6 +153,11 @@ export default {
       .then((eventUserTypes) => {
         this.userTypes = eventUserTypes.map((iut) => iut.idUserTypes)
         this.loading = false
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while fetching event: ${err}`
+        })
       })
   }
 }

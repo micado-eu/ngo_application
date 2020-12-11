@@ -534,55 +534,58 @@ export default {
         let translation
         if (e.translations) {
           const idx = e.translations.findIndex((t) => t.lang === this.lang)
-          translation = { ...e.translations[idx] }
-          if (this.categories_enabled) {
-            const idxCat = e.category.translations.findIndex((t) => t.lang === this.lang)
-            translation.category = e.category.translations[idxCat]
-            if (this.translatedCategories.indexOf(translation.category) == -1) {
-              this.translatedCategories.push(translation.category)
+          if (idx !== -1) {
+            translation = { ...e.translations[idx] }
+            translation.id = e.id // In case of errors we still have the id
+            if (this.categories_enabled) {
+              const idxCat = e.category.translations.findIndex((t) => t.lang === this.lang)
+              translation.category = e.category.translations[idxCat]
+              if (this.translatedCategories.indexOf(translation.category) == -1) {
+                this.translatedCategories.push(translation.category)
+              }
             }
-          }
-          if (this.topics_enabled) {
-            translation.topics = e.topics.map(
-              (topicRel) => {
-                const finalTopic = this.topic.filter((topic) => topicRel.idTopic === topic.id)[0]
-                if (this.topics.indexOf(finalTopic) === -1) {
-                  this.topics.push(finalTopic)
+            if (this.topics_enabled) {
+              translation.topics = e.topics.map(
+                (topicRel) => {
+                  const finalTopic = this.topic.filter((topic) => topicRel.idTopic === topic.id)[0]
+                  if (this.topics.indexOf(finalTopic) === -1) {
+                    this.topics.push(finalTopic)
+                  }
+                  return finalTopic
                 }
-                return finalTopic
-              }
-            )
-          }
-          if (this.user_types_enabled) {
-            translation.userTypes = e.userTypes.map(
-              (userTypeRel) => {
-                const finalUserTypes = this.user.filter(
-                  (userType) => userTypeRel.idUserTypes === userType.id
-                )[0]
-                if (this.userTypes.indexOf(finalUserTypes) === -1) {
-                  this.userTypes.push(finalUserTypes)
+              )
+            }
+            if (this.user_types_enabled) {
+              translation.userTypes = e.userTypes.map(
+                (userTypeRel) => {
+                  const finalUserTypes = this.user.filter(
+                    (userType) => userTypeRel.idUserTypes === userType.id
+                  )[0]
+                  if (this.userTypes.indexOf(finalUserTypes) === -1) {
+                    this.userTypes.push(finalUserTypes)
+                  }
+                  return finalUserTypes
                 }
-                return finalUserTypes
-              }
-            )
-          }
-          if (this.is_event) {
-            const startDate = new Date(e.startDate)
-            translation.startDate = `${startDate.getUTCFullYear()}-` +
-              `${startDate.getUTCMonth() + 1}-` +
-              `${startDate.getUTCDate()} ` +
-              `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
-              `${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
-            const finishDate = new Date(e.endDate)
-            translation.endDate = `${finishDate.getUTCFullYear()}-` +
-              `${finishDate.getUTCMonth() + 1}-` +
-              `${finishDate.getUTCDate()} ` +
-              `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
-              `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
-          }
+              )
+            }
+            if (this.is_event) {
+              const startDate = new Date(e.startDate)
+              translation.startDate = `${startDate.getUTCFullYear()}-` +
+                `${startDate.getUTCMonth() + 1}-` +
+                `${startDate.getUTCDate()} ` +
+                `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
+                `${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+              const finishDate = new Date(e.endDate)
+              translation.endDate = `${finishDate.getUTCFullYear()}-` +
+                `${finishDate.getUTCMonth() + 1}-` +
+                `${finishDate.getUTCDate()} ` +
+                `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
+                `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+            }
+            translation.published = e.published
+            return translation
+          } else return undefined
         }
-        translation.published = e.published
-        return translation
       })
       this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
       if (this.alphabetical_sorting) {
@@ -601,6 +604,7 @@ export default {
       this.filteredElementsByCategory = this.translatedElements
       this.filteredElementsByTopic = this.translatedElements
       this.filteredElementsByUserType = this.translatedElements
+      console.log(this.filteredElements)
       this.loading = false
     }
   },

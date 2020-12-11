@@ -59,6 +59,11 @@ export default {
     this.loading = true
     this.fetchEventCategory().then(() => {
       this.loading = false
+    }).catch((err) => {
+      this.$q.notify({
+        type: 'negative',
+        message: `Error while fetching event categories: ${err}`
+      })
     })
   }
 }

@@ -17,7 +17,6 @@ export default {
     ...mapActions('information', [
       'saveNewInformationItem',
       'addNewInformationItemTranslation',
-      'deleteInformationItem',
       'setTopics',
       'setUserTypes'
     ]),
@@ -48,14 +47,24 @@ export default {
                     if (i === translationData.length - 1) {
                       router.push({ path: '/information' })
                     }
+                  }).catch((err) => {
+                    this.$q.notify({
+                      type: 'negative',
+                      message: `Error while saving information translation ${dataWithId.lang}: ${err}`
+                    })
                   })
               }
+            }).catch((err) => {
+              this.$q.notify({
+                type: 'negative',
+                message: `Error while saving information: ${err}`
+              })
             })
-        }).catch((e) => {
-          console.error(e)
-          if (id !== -1) {
-            this.deleteInformationItem({ id })
-          }
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving information: ${err}`
+          })
         })
     }
   }

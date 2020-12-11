@@ -238,6 +238,10 @@ export default {
       } else {
         this.errorMessage = false
       }
+    },
+    readonly(val) {
+      console.log("readonly: " + val)
+      this.editor.setOptions({editable: !val})
     }
   },
   beforeDestroy() {

@@ -58,6 +58,11 @@ export default {
     this.loading = true
     this.fetchInformationCategory().then(() => {
       this.loading = false
+    }).catch((err) => {
+      this.$q.notify({
+        type: 'negative',
+        message: `Error while fetching information categories: ${err}`
+      })
     })
   }
 }

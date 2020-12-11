@@ -58,6 +58,11 @@ export default {
         .then(() => {
           this.updateContent()
           // this.$router.go()
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting information: ${err}`
+          })
         })
     },
     updatePublishedInformation(published, id) {
@@ -66,6 +71,11 @@ export default {
         // If published goes from true to false, all the content gets deleted from the translation prod table
         this.deleteProdTranslations().then(() => {
           console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting information production translations: ${err}`
+          })
         })
       } else if (infoElem.translations[0].translationState === 4 && !infoElem.published && published) {
         // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
@@ -73,11 +83,21 @@ export default {
           const translation = Object.assign({}, infoElem.translations[i])
           delete translation.translationState
           delete translation.published
-          this.addNewInformationItemTranslationProd(translation).then(() => { })
+          this.addNewInformationItemTranslationProd(translation).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving information production translation ${translation.lang}: ${err}`
+            })
+          })
         }
       }
       this.updatePublished({ id, published }).then(() => {
         //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
       })
     },
     updateContent() {
@@ -107,6 +127,16 @@ export default {
             } else {
               this.loading = false
             }
+          }).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while deleting fetching information: ${err}`
+            })
+          })
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while fetching information: ${err}`
           })
         })
     }

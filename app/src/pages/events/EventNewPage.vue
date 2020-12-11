@@ -52,14 +52,24 @@ export default {
                     if (i === translationData.length - 1) {
                       router.push({ path: '/events' })
                     }
+                  }).catch((err) => {
+                    this.$q.notify({
+                      type: 'negative',
+                      message: `Error while saving event translation ${dataWithId.lang}: ${err}`
+                    })
                   })
               }
+            }).catch((err) => {
+              this.$q.notify({
+                type: 'negative',
+                message: `Error saving event: ${err}`
+              })
             })
-        }).catch((e) => {
-          console.error(e)
-          if (id !== -1) {
-            this.deleteEventItem({ id })
-          }
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving event: ${err}`
+          })
         })
     }
   }
