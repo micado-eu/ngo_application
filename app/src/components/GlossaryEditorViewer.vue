@@ -98,6 +98,11 @@ export default {
       }
       this.markGlossaryReferences(currentContent, this.lang, this.glossary_fetched).then((markedContent) => {
         this.editor.setContent(markedContent)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while fetching glossary description: ${err}`
+        })
       })
     },
     setCurrentDescription(glossaryElem, element) {

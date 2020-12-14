@@ -160,13 +160,13 @@
               <q-icon name="search" />
             </template>
           </q-input>
-          <q-btn
+          <!-- <q-btn
             no-caps
             :label='$t("button.categories")'
             class="cat-btn q-ml-md"
             :to="categories_url"
             v-if="categories_enabled"
-          />
+          /> -->
           <q-btn
             no-caps
             :label='$t(add_label)'

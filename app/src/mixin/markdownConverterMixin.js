@@ -51,14 +51,8 @@ export default {
       if (isGlossaryFetched) {
         return this.markGlossaryReferencesAux(html, lang)
       }
-      return this.fetchGlossary().then(() => {
-        markGlossaryReferencesAux(html, lang)
-      }).catch((err) => {
-        this.$q.notify({
-          type: 'negative',
-          message: `Error while fetching glossary description: ${err}`
-        })
-      })
+      await this.fetchGlossary()
+      return this.markGlossaryReferencesAux(html, lang)
     }
   },
   computed: {

@@ -65,9 +65,9 @@ export default {
       ).then((response) => response.data)
       .catch(error_handler)
   },
-  deleteProdTranslations(item) {
+  deleteProdTranslations(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
+      .delete(`/backend/1.0.0/information/${id}/information-translation-prods`)
       .then((response) => response.data)
       .catch(error_handler)
   },
