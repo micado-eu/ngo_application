@@ -106,6 +106,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-topic-client', 'src/api/topic/server');
         chain.resolve.alias.set('api-tenant-client', 'src/api/tenant/server');
         chain.resolve.alias.set('api-user_type-client', 'src/api/user_type/server');
+        chain.resolve.alias.set('api-images-client', 'src/api/images/server')
       }
     },
 

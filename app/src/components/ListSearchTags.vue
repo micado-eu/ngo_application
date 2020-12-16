@@ -11,14 +11,12 @@
           bordered
           v-if="categories_enabled || topics_enabled || user_types_enabled"
         >
-          <q-item>
-            <q-item-section>
-              <q-item-label class="title-label">{{$t("filters.title")}}</q-item-label>
-            </q-item-section>
+          <q-item style="max-width: 100%">
             <q-item-section>
               <a
                 href="javascript:void(0)"
                 @click="clearFilters()"
+                class="clear_all"
               >
                 {{$t("filters.clear_all")}}
               </a>
@@ -27,48 +25,17 @@
           <q-separator />
           <q-expansion-item
             expand-separator
-            v-if="categories_enabled"
-          >
-            <template v-slot:header>
-              <q-item-section>
-                <q-item-label class="title-label">{{$t("filters.category_title")}}</q-item-label>
-              </q-item-section>
-            </template>
-            <q-item
-              v-for="category in filterCategories"
-              :key="category.id"
-            >
-              <q-radio
-                color="accent"
-                v-model="selectedCategory"
-                :val="category"
-                :label="category.category"
-                @input="filterByCategory()"
-                class="filter-text"
-              />
-            </q-item>
-            <q-item>
-              <a
-                href="javascript:void(0)"
-                class="filter-text"
-                @click="showMoreCategories()"
-              >
-                {{$t("filters.show_more")}}
-              </a>
-            </q-item>
-          </q-expansion-item>
-          <q-separator />
-          <q-expansion-item
-            expand-separator
             v-if="topics_enabled"
           >
             <template v-slot:header>
               <q-item-section>
-                <q-item-label class="title-label">{{$t("filters.topics_title")}}</q-item-label>
+                <q-item-label class="filter-title">
+                  {{$t("filters.topics_title")}}
+                </q-item-label>
               </q-item-section>
             </template>
             <q-item
-              v-for="topic in topics"
+              v-for="topic in filterTopics"
               :key="topic.id"
             >
               <q-checkbox
@@ -90,11 +57,46 @@
                 class="q-ml-sm filter-icon"
               />
             </q-item>
-            <q-item>
+            <q-item v-if="!isMaxShowMoreTopics">
               <a
                 href="javascript:void(0)"
-                class="filter-text"
+                class="show_more"
                 @click="showMoreTopics()"
+              >
+                {{$t("filters.show_more")}}
+              </a>
+            </q-item>
+          </q-expansion-item>
+          <q-separator />
+          <q-expansion-item
+            expand-separator
+            v-if="categories_enabled"
+          >
+            <template v-slot:header>
+              <q-item-section>
+                <q-item-label class="filter-title">
+                  {{$t("filters.category_title")}}
+                </q-item-label>
+              </q-item-section>
+            </template>
+            <q-item
+              v-for="category in filterCategories"
+              :key="category.id"
+            >
+              <q-radio
+                color="accent"
+                v-model="selectedCategory"
+                :val="category"
+                :label="category.category"
+                @input="filterByCategory()"
+                class="filter-text"
+              />
+            </q-item>
+            <q-item v-if="!isMaxShowMoreCategories">
+              <a
+                href="javascript:void(0)"
+                class="show_more"
+                @click="showMoreCategories()"
               >
                 {{$t("filters.show_more")}}
               </a>
@@ -107,11 +109,13 @@
           >
             <template v-slot:header>
               <q-item-section>
-                <q-item-label class="title-label">{{$t("filters.user_types_title")}}</q-item-label>
+                <q-item-label class="filter-title">
+                  {{$t("filters.user_types_title")}}
+                </q-item-label>
               </q-item-section>
             </template>
             <q-item
-              v-for="userType in userTypes"
+              v-for="userType in filterUserTypes"
               :key="userType.id"
             >
               <q-checkbox
@@ -133,10 +137,10 @@
                 class="q-ml-sm filter-icon"
               />
             </q-item>
-            <q-item>
+            <q-item v-if="!isMaxShowMoreUserTypes">
               <a
                 href="javascript:void(0)"
-                class="filter-text"
+                class="show_more"
                 @click="showMoreUserTypes()"
               >
                 {{$t("filters.show_more")}}
@@ -177,30 +181,9 @@
         </div>
         <div class="flex">
           <!-- column title -->
-          <span>
+          <span style="flex: 11.45"></span>
+          <span style="flex: 4">
             {{$t("lists.published")}}
-          </span>
-          <span
-            v-if="categories_enabled"
-            style="flex:43"
-          />
-          <span
-            v-if="categories_enabled"
-            style="flex:21"
-          >
-            {{$t("lists.category")}}
-          </span>
-          <span
-            v-if="topics_enabled"
-            style="flex:14"
-          >
-            {{$t("lists.topics")}}
-          </span>
-          <span
-            v-if="user_types_enabled"
-            style="flex:32"
-          >
-            {{$t("lists.user_types")}}
           </span>
         </div>
         <div class="row q-mb-sm">
@@ -220,17 +203,52 @@
               @mouseover="hovered = item.id"
               @mouseleave="hovered = -1"
             >
-              <q-item-section class="publish_section q-mt-md">
-                <q-toggle
-                  v-model="item.published"
-                  @input="updatePublished($event, item.id)"
-                  color="green"
-                />
-              </q-item-section>
               <q-item-section class="title_section q-mt-md">
                 <q-item-label class="title-label">
                   {{ item.title }}
                 </q-item-label>
+                <div
+                  class="q-my-sm"
+                  style="display: inline"
+                >
+                  <span
+                    class="q-mr-md tags_text"
+                    v-if="topics_enabled"
+                  >
+                    {{$t("lists.topics")}}:
+                    <q-img
+                      v-for="topic in item.topics"
+                      :key="topic.id"
+                      :src="topic.icon"
+                      spinner-color="white"
+                      id="image"
+                      :alt="topic.topic"
+                      class="filter-icon"
+                    />
+                  </span>
+                  <span
+                    class="q-mr-md tags_text"
+                    v-if="categories_enabled"
+                  >
+                    {{$t("lists.category")}}: {{item.category.category}}
+                  </span>
+                  <span
+                    v-if="user_types_enabled"
+                    class="tags_text"
+                  >
+                    {{$t("lists.user_types")}}:
+                    <q-img
+                      v-for="userType in item.userTypes"
+                      :key="userType.id"
+                      :src="userType.icon"
+                      spinner-color="white"
+                      id="image"
+                      :alt="userType.topic"
+                      class="filter-icon"
+                    />
+                  </span>
+                </div>
+
                 <span
                   class="date-text q-mt-sm"
                   v-if="is_event"
@@ -249,40 +267,17 @@
                   v-if="!loading"
                   glossary_fetched
                   :lang="lang"
+                  readMore
                 />
               </q-item-section>
               <q-item-section
-                class="category_section"
-                v-if="categories_enabled"
+                side
+                class="q-mt-md"
               >
-                {{item.category.category}}
-              </q-item-section>
-              <q-item-section
-                class="tag_btn_section"
-                v-if="topics_enabled"
-              >
-                <q-img
-                  v-for="topic in item.topics"
-                  :key="topic.id"
-                  :src="topic.icon"
-                  spinner-color="white"
-                  id="image"
-                  :alt="topic.topic"
-                  class="filter-icon"
-                />
-              </q-item-section>
-              <q-item-section
-                class="tag_btn_section"
-                v-if="user_types_enabled"
-              >
-                <q-img
-                  v-for="userType in item.userTypes"
-                  :key="userType.id"
-                  :src="userType.icon"
-                  spinner-color="white"
-                  id="image"
-                  :alt="userType.topic"
-                  class="filter-icon"
+                <q-toggle
+                  v-model="item.published"
+                  @input="updatePublished($event, item.id)"
+                  color="green"
                 />
               </q-item-section>
               <q-item-section
@@ -407,8 +402,8 @@ export default {
       translatedElements: [],
       filteredElementsBySearch: [],
       filteredElementsByCategory: [],
-      filteredElementsByTopic: [],
-      filteredElementsByUserType: [],
+      filteredElementsByTopics: [],
+      filteredElementsByUserTypes: [],
       searchText: '',
       topics: [],
       userTypes: [],
@@ -419,9 +414,9 @@ export default {
       lang: '',
       alphabet: [],
       alphabetIds: [],
-      lastIndexCategories: 5,
-      lastIndexTopics: 5,
-      lastIndexUserTypes: 5,
+      lastIndexCategories: 3,
+      lastIndexTopics: 3,
+      lastIndexUserTypes: 3,
       loading: true
     }
   },
@@ -496,11 +491,11 @@ export default {
             }
           }
           if (matchedUserTypes.length == this.selectedUserTypes.length) {
-            this.filteredElementsByTopics.push(e)
+            this.filteredElementsByUserTypes.push(e)
           }
         }
       } else {
-        this.filteredElementsByTopics = this.translatedElements
+        this.filteredElementsByUserTypes = this.translatedElements
       }
     },
     compare(a, b) {
@@ -515,19 +510,19 @@ export default {
     clearFilters() {
       this.selectedCategory = undefined
       this.filteredElementsByCategory = this.translatedElements
-      this.filteredElementsByTopic = this.translatedElements
+      this.filteredElementsByTopics = this.translatedElements
       this.filteredElementsByUserType = this.translatedElements
       this.selectedTopics = []
       this.selectedUserTypes = []
     },
     showMoreCategories() {
-      this.lastIndexCategories += 5
+      this.lastIndexCategories += 3
     },
     showMoreTopics() {
-      this.lastIndexTopics += 5
+      this.lastIndexTopics += 3
     },
     showMoreUserTypes() {
-      this.lastIndexUserTypes += 5
+      this.lastIndexUserTypes += 3
     },
     initializeList() {
       this.translatedElements = this.elements.map((e) => {
@@ -604,7 +599,6 @@ export default {
       this.filteredElementsByCategory = this.translatedElements
       this.filteredElementsByTopic = this.translatedElements
       this.filteredElementsByUserType = this.translatedElements
-      console.log(this.filteredElements)
       this.loading = false
     }
   },
@@ -633,15 +627,30 @@ export default {
     filteredElements() {
       const { filteredElementsByCategory } = this
       const { filteredElementsByTopic } = this
-      const { filteredElementsByUserType } = this
+      const { filteredElementsByUserTypes } = this
       return this.filteredElementsBySearch.filter(
         (n) => filteredElementsByCategory.indexOf(n) !== -1
           && filteredElementsByTopic.indexOf(n) !== -1
-          && filteredElementsByUserType.indexOf(n) !== -1
+          && filteredElementsByUserTypes.indexOf(n) !== -1
       )
     },
     filterCategories() {
       return this.translatedCategories.slice(0, this.lastIndexCategories)
+    },
+    isMaxShowMoreCategories() {
+      return this.translatedCategories.slice(0, this.lastIndexCategories).length >= this.translatedCategories.length
+    },
+    filterTopics() {
+      return this.topics.slice(0, this.lastIndexTopics)
+    },
+    isMaxShowMoreTopics() {
+      return this.topics.slice(0, this.lastIndexTopics).length >= this.topics.length
+    },
+    filterUserTypes() {
+      return this.userTypes.slice(0, this.lastIndexUserTypes)
+    },
+    isMaxShowMoreUserTypes() {
+      return this.userTypes.slice(0, this.lastIndexUserTypes).length >= this.userTypes.length
     }
   },
   created() {
@@ -675,9 +684,9 @@ $btn_secondary: #cdd0d2;
   border-radius: 2px;
 }
 .title-label {
-  font-weight: bold;
+  font-weight: 600;
   font-family: "Nunito";
-  font-size: 15pt;
+  font-size: 20px;
 }
 .item-btn {
   background-color: white;
@@ -693,29 +702,11 @@ $btn_secondary: #cdd0d2;
   text-decoration: underline;
   border: 1px solid $accent_list;
 }
-.published {
-  opacity: 1;
-}
-.unpublished {
-  opacity: 0.5;
-}
-.publish_section {
-  flex: 500;
-}
 .title_section {
   flex: 3000;
 }
-.tag_btn_section {
-  flex: 1000;
-}
-.category_section {
-  flex: 1500;
-}
 .icon_btn_section {
   flex: 350;
-}
-.col_title_section {
-  flex: 650;
 }
 .alphabet {
   color: $primary;
@@ -724,8 +715,29 @@ $btn_secondary: #cdd0d2;
   cursor: pointer;
 }
 .filter-text {
+  font-family: "Nunito Sans";
+  font-weight: 600;
+  font-size: 15px;
+}
+.filter-title {
+  font-family: "Nunito Sans";
+  font-weight: 600;
+  font-size: 20px;
+}
+.clear_all {
   font-family: "Nunito";
-  font-weight: normal;
+  font-weight: 600;
+  font-size: 16px;
+}
+.show_more {
+  font-family: "Nunito";
+  font-weight: 600;
+  font-size: 12px;
+}
+.tags_text {
+  font-family: "Nunito Sans";
+  font-weight: 400;
+  font-size: 14px;
 }
 .date-text {
   font-family: "Nunito";
@@ -741,6 +753,7 @@ $btn_secondary: #cdd0d2;
 }
 .viewer {
   max-width: 100%;
+  font-size: 15px;
 }
 .search-bar {
   border-radius: 5px;

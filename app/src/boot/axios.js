@@ -24,3 +24,11 @@ export default ({ Vue }) => {
 }
 
 export { axiosInstance }
+
+export const getCancelTokenSource = () => {
+  return axios.CancelToken.source()
+}
+
+export const isCancel = thrown => {
+  return axios.isCancel(thrown)
+}

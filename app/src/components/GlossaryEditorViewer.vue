@@ -1,11 +1,19 @@
 <template>
-  <div
-    padding
-  >
+  <div padding>
     <editor-content
-      class="editor_content"
+      class="editor_content ellipsis"
       :editor="editor"
     />
+    <q-btn
+      @click="showAllContent"
+      v-if="!showingFullContent"
+      rounded
+      color="grey-5"
+      no-caps
+      padding="xs lg"
+    >
+      {{ $t("button.read_more") }}
+    </q-btn>
     <q-tooltip
       class="desc_tooltip"
       v-model="showTooltip"
@@ -31,6 +39,7 @@ import {
 import Image from 'components/editor_plugins/Image'
 import GlossaryMention from 'components/editor_plugins/GlossaryMention'
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
+import * as htmlsave from 'htmlsave'
 
 export default {
   name: 'GlossaryEditorViewer',
@@ -53,6 +62,10 @@ export default {
     isContentHTML: {
       type: Boolean,
       default: false
+    },
+    readMore: {
+      type: Boolean,
+      default: false
     }
   },
   mixins: [markdownConverterMixin],
@@ -61,7 +74,9 @@ export default {
       editor: null,
       currentDescriptionContent: '',
       targetElement: false,
-      showTooltip: false // Don't show by default
+      showTooltip: false, // Don't show by default
+      fullHTMLContent: '',
+      showingFullContent: !this.readMore
     }
   },
   computed: {
@@ -97,13 +112,26 @@ export default {
         currentContent = this.markdownToHTML(content)
       }
       this.markGlossaryReferences(currentContent, this.lang, this.glossary_fetched).then((markedContent) => {
-        this.editor.setContent(markedContent)
+        let newContent = markedContent
+        this.allHTMLContent = markedContent
+        if (this.readMore) {
+          newContent = htmlsave.truncate(markedContent, 300)
+          if (markedContent===newContent) {
+            this.showingFullContent = true
+          }
+        }
+        this.editor.setContent(newContent)
       }).catch((err) => {
+        console.error(err)
         this.$q.notify({
           type: 'negative',
           message: `Error while fetching glossary description: ${err}`
         })
       })
+    },
+    showAllContent() {
+      this.editor.setContent(this.allHTMLContent)
+      this.showingFullContent = true
     },
     setCurrentDescription(glossaryElem, element) {
       let currentContent = glossaryElem.description
@@ -147,15 +175,17 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.editor_content {
-  font-family: "Nunito Sans";
-  font-size: 13pt;
-}
-</style>
-
 <style lang="scss">
 .mention {
   text-decoration: underline;
+}
+
+img {
+  width: 100%;
+}
+
+.editor_content {
+  font-family: "Nunito Sans";
+  font-size: 13pt;
 }
 </style>

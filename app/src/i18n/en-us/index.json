@@ -33,7 +33,10 @@
     "cancel": "Cancel",
     "add_event": "Add Event",
     "add_information": "Add Information",
-    "categories": "Categories"
+    "categories": "Categories",
+    "read_more": "Read more",
+    "update_link": "Update link",
+    "add_link": "Add link"
   },
   "input_labels": {
     "search": "Search",
@@ -82,5 +85,12 @@
     "fill_default_language": "Please fill the default language title: ",
     "in_translation": "This content is waiting translation. The edited content will not be saved.",
     "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted."
+  },
+  "upload_modal": {
+    "upload_label": "Upload",
+    "url": "URL",
+    "url_label": "URL",
+    "upload_button": "Upload",
+    "uploader_label": "Upload image (Max 25 MB)"
   }
 }
