@@ -259,19 +259,25 @@
                   glossary_fetched
                   :lang="lang"
                   readMore
-                />
-                <span
-                  class="date-text q-mt-sm"
-                  v-if="is_event"
+                  @readMorePressed=toggleDate(item.id)
+                  @readLessPressed=toggleDate(item.id)
                 >
-                  {{$t("lists.start_date")}}: {{item.startDate}}
-                </span>
-                <span
-                  class="date-text q-mb-sm"
-                  v-if="is_event"
-                >
-                  {{$t("lists.end_date")}}: {{item.endDate}}
-                </span>
+                  <template v-slot:append>
+                    <span
+                      class="date-text q-mt-sm"
+                      v-if="is_event && showDates[item.id]"
+                    >
+                      {{$t("lists.start_date")}}: {{item.startDate}}
+                    </span>
+                    <br/>
+                    <span
+                      class="date-text q-mb-sm"
+                      v-if="is_event && showDates[item.id]"
+                    >
+                      {{$t("lists.end_date")}}: {{item.endDate}}
+                    </span>
+                  </template>
+                </glossary-editor-viewer>
               </q-item-section>
               <q-item-section
                 side
@@ -420,7 +426,8 @@ export default {
       lastIndexCategories: 3,
       lastIndexTopics: 3,
       lastIndexUserTypes: 3,
-      loading: true
+      loading: true,
+      showDates: []
     }
   },
   components: {
@@ -527,6 +534,9 @@ export default {
     showMoreUserTypes() {
       this.lastIndexUserTypes += 3
     },
+    toggleDate(id) {
+      this.showDates[id] = !this.showDates[id]
+    },
     initializeList() {
       this.translatedElements = this.elements.map((e) => {
         let translation
@@ -581,6 +591,7 @@ export default {
                 `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
             }
             translation.published = e.published
+            this.showDates[e.id] = false
             return translation
           } else return undefined
         }
@@ -668,7 +679,7 @@ export default {
 $accent_list: #ff7c44;
 $btn_secondary: #cdd0d2;
 .add-btn {
-  background-color: #0B91CE;
+  background-color: #0b91ce;
   color: white;
   border-radius: 5px;
   margin-right: 85px;

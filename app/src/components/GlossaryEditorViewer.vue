@@ -5,29 +5,38 @@
       :editor="editor"
       ref="editor"
     />
-    <q-btn
-      @click="showAllContent"
-      v-if="readMore && !showingFullContent"
-      rounded
-      color="grey-5"
-      size="sm"
-      no-caps
-      padding="1px 15px"
-    >
-      {{ $t("button.read_more") }}
-    </q-btn>
-    <q-btn
-      @click="showLessContent"
-      v-if="readMore && showingFullContent"
-      rounded
-      size="sm"
-      outline
-      color="grey-8"
-      no-caps
-      padding="1px 15px"
-    >
-      {{ $t("button.read_less") }}
-    </q-btn>
+    <div>
+      <slot name="append"></slot>
+    </div>
+    <div>
+      <q-btn
+        unelevated
+        @click="showAllContent"
+        v-if="readMore && !showingFullContent"
+        rounded
+        color="grey-5"
+        size="sm"
+        no-caps
+        padding="1px 15px"
+        class="q-mb-md"
+      >
+        {{ $t("button.read_more") }}
+      </q-btn>
+      <q-btn
+        unelevated
+        @click="showLessContent"
+        v-if="readMore && showingFullContent"
+        rounded
+        size="sm"
+        outline
+        color="grey-8"
+        no-caps
+        padding="1px 15px"
+        class="q-mb-md"
+      >
+        {{ $t("button.read_less") }}
+      </q-btn>
+    </div>
     <q-tooltip
       class="desc_tooltip"
       v-model="showTooltip"
@@ -147,10 +156,12 @@ export default {
     showAllContent() {
       this.$refs.editor.$el.classList.remove('max-lines')
       this.showingFullContent = true
+      this.$emit("readMorePressed")
     },
     showLessContent() {
       this.$refs.editor.$el.classList.add('max-lines')
       this.showingFullContent = false
+      this.$emit("readLessPressed")
     },
     setCurrentDescription(glossaryElem, element) {
       let currentContent = glossaryElem.description
