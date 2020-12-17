@@ -511,7 +511,7 @@ export default {
       this.selectedCategory = undefined
       this.filteredElementsByCategory = this.translatedElements
       this.filteredElementsByTopics = this.translatedElements
-      this.filteredElementsByUserType = this.translatedElements
+      this.filteredElementsByUserTypes = this.translatedElements
       this.selectedTopics = []
       this.selectedUserTypes = []
     },
@@ -597,8 +597,8 @@ export default {
       }
       this.filteredElementsBySearch = this.translatedElements
       this.filteredElementsByCategory = this.translatedElements
-      this.filteredElementsByTopic = this.translatedElements
-      this.filteredElementsByUserType = this.translatedElements
+      this.filteredElementsByTopics = this.translatedElements
+      this.filteredElementsByUserTypes = this.translatedElements
       this.loading = false
     }
   },
@@ -626,11 +626,11 @@ export default {
     },
     filteredElements() {
       const { filteredElementsByCategory } = this
-      const { filteredElementsByTopic } = this
+      const { filteredElementsByTopics } = this
       const { filteredElementsByUserTypes } = this
       return this.filteredElementsBySearch.filter(
         (n) => filteredElementsByCategory.indexOf(n) !== -1
-          && filteredElementsByTopic.indexOf(n) !== -1
+          && filteredElementsByTopics.indexOf(n) !== -1
           && filteredElementsByUserTypes.indexOf(n) !== -1
       )
     },
