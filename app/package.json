@@ -21,7 +21,6 @@
     "axios-jsonp": "^1.0.4",
     "countly-sdk-web": "^20.4.0",
     "fuse.js": "^6.0.0",
-    "htmlsave": "^2.0.1",
     "jsonapi-vuex": "^3.1.1",
     "quasar": "^1.14.0",
     "showdown": "^1.9.1",

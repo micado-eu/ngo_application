@@ -55,6 +55,7 @@
                 id="image"
                 :alt="topic.topic"
                 class="q-ml-sm filter-icon"
+                :img-style="{'max-width': '24px', 'max-height': '24px'}"
               />
             </q-item>
             <q-item v-if="!isMaxShowMoreTopics">
@@ -135,6 +136,7 @@
                 id="image"
                 :alt="userType.user_type"
                 class="q-ml-sm filter-icon"
+                :img-style="{'max-width': '24px', 'max-height': '24px'}"
               />
             </q-item>
             <q-item v-if="!isMaxShowMoreUserTypes">
@@ -213,17 +215,18 @@
                 >
                   <span
                     class="q-mr-md tags_text"
-                    v-if="topics_enabled"
+                    v-if="topics_enabled && item.topics.length > 0"
                   >
                     {{$t("lists.topics")}}:
                     <q-img
-                      v-for="topic in item.topics"
+                      v-for="(topic, index) in item.topics"
                       :key="topic.id"
                       :src="topic.icon"
                       spinner-color="white"
                       id="image"
                       :alt="topic.topic"
-                      class="filter-icon"
+                      :img-style="{'max-width': '24px', 'max-height': '24px'}"
+                      :class="index !== (item.topics.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
                     />
                   </span>
                   <span
@@ -233,22 +236,30 @@
                     {{$t("lists.category")}}: {{item.category.category}}
                   </span>
                   <span
-                    v-if="user_types_enabled"
+                    v-if="user_types_enabled && item.userTypes.length > 0"
                     class="tags_text"
                   >
                     {{$t("lists.user_types")}}:
                     <q-img
-                      v-for="userType in item.userTypes"
+                      v-for="(userType, index) in item.userTypes"
                       :key="userType.id"
                       :src="userType.icon"
                       spinner-color="white"
                       id="image"
                       :alt="userType.topic"
-                      class="filter-icon"
+                      :img-style="{'max-width': '24px', 'max-height': '24px'}"
+                      :class="index !== (item.userTypes.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
                     />
                   </span>
                 </div>
-
+                <glossary-editor-viewer
+                  class="viewer"
+                  :content="item.description"
+                  v-if="!loading"
+                  glossary_fetched
+                  :lang="lang"
+                  readMore
+                />
                 <span
                   class="date-text q-mt-sm"
                   v-if="is_event"
@@ -261,14 +272,6 @@
                 >
                   {{$t("lists.end_date")}}: {{item.endDate}}
                 </span>
-                <glossary-editor-viewer
-                  class="viewer"
-                  :content="item.description"
-                  v-if="!loading"
-                  glossary_fetched
-                  :lang="lang"
-                  readMore
-                />
               </q-item-section>
               <q-item-section
                 side
@@ -448,7 +451,7 @@ export default {
         this.filteredElementsByCategory = this.translatedElements
       }
     },
-    filterByTopic() {
+    filterByTopics() {
       if (this.selectedTopics.length > 0) {
         this.filteredElementsByTopics = []
         for (const e of this.translatedElements) {
@@ -473,7 +476,7 @@ export default {
         this.filteredElementsByTopics = this.translatedElements
       }
     },
-    filterByUserType() {
+    filterByUserTypes() {
       if (this.selectedUserTypes.length > 0) {
         this.filteredElementsByUserTypes = []
         for (const e of this.translatedElements) {
@@ -665,7 +668,7 @@ export default {
 $accent_list: #ff7c44;
 $btn_secondary: #cdd0d2;
 .add-btn {
-  background-color: $primary;
+  background-color: #0B91CE;
   color: white;
   border-radius: 5px;
   margin-right: 85px;
@@ -748,8 +751,8 @@ $btn_secondary: #cdd0d2;
   max-height: 75vh;
 }
 .filter-icon {
-  max-height: 30px;
-  max-width: 30px;
+  max-height: 24px;
+  max-width: 24px;
 }
 .viewer {
   max-width: 100%;

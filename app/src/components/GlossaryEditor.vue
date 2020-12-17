@@ -426,4 +426,8 @@ img {
   width: 100%;
   max-width: 300px;
 }
+
+.ProseMirror:focus {
+  outline: none;
+}
 </style>

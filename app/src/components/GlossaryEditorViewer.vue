@@ -1,18 +1,32 @@
 <template>
   <div padding>
     <editor-content
-      class="editor_content ellipsis"
+      class='editor_content'
       :editor="editor"
+      ref="editor"
     />
     <q-btn
       @click="showAllContent"
-      v-if="!showingFullContent"
+      v-if="readMore && !showingFullContent"
       rounded
       color="grey-5"
+      size="sm"
       no-caps
-      padding="xs lg"
+      padding="1px 15px"
     >
       {{ $t("button.read_more") }}
+    </q-btn>
+    <q-btn
+      @click="showLessContent"
+      v-if="readMore && showingFullContent"
+      rounded
+      size="sm"
+      outline
+      color="grey-8"
+      no-caps
+      padding="1px 15px"
+    >
+      {{ $t("button.read_less") }}
     </q-btn>
     <q-tooltip
       class="desc_tooltip"
@@ -39,7 +53,6 @@ import {
 import Image from 'components/editor_plugins/Image'
 import GlossaryMention from 'components/editor_plugins/GlossaryMention'
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
-import * as htmlsave from 'htmlsave'
 
 export default {
   name: 'GlossaryEditorViewer',
@@ -76,7 +89,7 @@ export default {
       targetElement: false,
       showTooltip: false, // Don't show by default
       fullHTMLContent: '',
-      showingFullContent: !this.readMore
+      showingFullContent: true
     }
   },
   computed: {
@@ -115,9 +128,11 @@ export default {
         let newContent = markedContent
         this.allHTMLContent = markedContent
         if (this.readMore) {
-          newContent = htmlsave.truncate(markedContent, 300)
-          if (markedContent===newContent) {
-            this.showingFullContent = true
+          let el = this.$refs.editor.$el
+          let height = parseFloat(getComputedStyle(el, null).height.replace("px", ""))
+          if (height >= 41) {
+            el.classList.add('max-lines')
+            this.showingFullContent = false
           }
         }
         this.editor.setContent(newContent)
@@ -130,8 +145,12 @@ export default {
       })
     },
     showAllContent() {
-      this.editor.setContent(this.allHTMLContent)
+      this.$refs.editor.$el.classList.remove('max-lines')
       this.showingFullContent = true
+    },
+    showLessContent() {
+      this.$refs.editor.$el.classList.add('max-lines')
+      this.showingFullContent = false
     },
     setCurrentDescription(glossaryElem, element) {
       let currentContent = glossaryElem.description
@@ -187,6 +206,19 @@ img {
 
 .editor_content {
   font-family: "Nunito Sans";
-  font-size: 13pt;
+}
+
+.max-lines {
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  white-space: nowrap;
+  max-height: 41px;
+  line-height: 21px;
+}
+
+.ProseMirror:focus {
+  outline: none;
 }
 </style>
