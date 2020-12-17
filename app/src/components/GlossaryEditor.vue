@@ -4,6 +4,13 @@
     padding
   >
     <div class="editor-options">
+      <vue-countable
+        :text="editor.getHTML()"
+        :elementId="'myId'"
+        @change="change"
+        stripTags
+      ></vue-countable> <!-- Counts words, has no visuals -->
+      <span class="word-count">{{  $t("text_editor.word_count")  }}: {{ textCount.words }}</span>
       <div class="editor">
         <!-- Add link option when hovering text -->
         <editor-menu-bubble
@@ -187,6 +194,7 @@ import GlossaryMention from 'components/editor_plugins/GlossaryMention'
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
 import imageUpload from '../mixin/imageUpload'
 import ImageUploader from './ImageUploader.vue'
+import VueCountable from 'vue-countable'
 
 export default {
   name: 'GlossaryEditor',
@@ -194,7 +202,8 @@ export default {
     EditorContent,
     EditorMenuBar,
     EditorMenuBubble,
-    ImageUploader
+    ImageUploader,
+    VueCountable
   },
   props: {
     value: {
@@ -227,7 +236,8 @@ export default {
       urlImage: '',
       errorMessage: "",
       linkUrl: null,
-      linkMenuIsActive: false
+      linkMenuIsActive: false,
+      textCount: {} // value returned from VueCountable on text change
     }
   },
   methods: {
@@ -294,6 +304,9 @@ export default {
     setLinkUrl(command, url) {
       command({ href: url })
       this.hideLinkMenu()
+    },
+    change(event) {
+      this.textCount = event
     }
   },
   created() {
@@ -306,9 +319,7 @@ export default {
       }
       this.editorChange = false
       // check errors
-      const doc = new DOMParser().parseFromString(this.editor.getHTML(), 'text/html')
-      const plainDescription = doc.body.textContent || ''
-      if ((this.maxCharLimit !== null) && (plainDescription.length > this.maxCharLimit)) {
+      if ((this.maxCharLimit !== null) && (this.textCount.characters > this.maxCharLimit)) {
         this.errorMessage = this.$t("error_messages.max_char_limit") + this.maxCharLimit
       } else {
         this.errorMessage = false
@@ -395,6 +406,12 @@ export default {
     background: transparent;
     color: $grey-1;
   }
+}
+
+.word-count {
+  font-family: "Nunito";
+  font-weight: 600;
+  font-size: 15px;
 }
 </style>
 
