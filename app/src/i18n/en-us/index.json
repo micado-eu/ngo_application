@@ -26,7 +26,8 @@
     "element_topic": "Select a topic",
     "element_user_type": "Select an user type",
     "element_start_date": "Select the starting date",
-    "element_end_date": "Select the ending date"
+    "element_end_date": "Select the ending date",
+    "word_count": "Number of words in the description"
   },
   "button": {
     "save": "Save",
@@ -92,5 +93,8 @@
     "url_label": "URL",
     "upload_button": "Upload",
     "uploader_label": "Upload image (Max 25 MB)"
+  },
+  "text_editor": {
+    "word_count": "Word count"
   }
 }
