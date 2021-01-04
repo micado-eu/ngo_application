@@ -65,6 +65,33 @@
           />
           </glossary-editor>
         </div>
+        <div class="language_selector">
+          <hr
+            style="border: 0.999px solid #DADADA;"
+            class="q-mb-lg q-mt-xl"
+          >
+          <q-tabs
+            v-model="langTab"
+            dense
+            class="text-grey"
+            active-color="black"
+            indicator-color="black"
+            align="justify"
+            narrow-indicator
+            no-caps
+          >
+            <q-tab
+              v-for="language in activeLanguages"
+              :key="language.lang"
+              :name="language.lang"
+              :label="language.name"
+            />
+          </q-tabs>
+          <hr
+            style="border: 0.999px solid #DADADA"
+            class="q-mt-lg q-mb-xl"
+          >
+        </div>
         <div class="row tag_category_selectors">
           <div
             v-if="categories_enabled"
@@ -319,33 +346,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="language_selector">
-          <hr
-            style="border: 0.999px solid #DADADA;"
-            class="q-mb-lg q-mt-xl"
-          >
-          <q-tabs
-            v-model="langTab"
-            dense
-            class="text-grey"
-            active-color="black"
-            indicator-color="black"
-            align="justify"
-            narrow-indicator
-            no-caps
-          >
-            <q-tab
-              v-for="language in activeLanguages"
-              :key="language.lang"
-              :name="language.lang"
-              :label="language.name"
-            />
-          </q-tabs>
-          <hr
-            style="border: 0.999px solid #DADADA"
-            class="q-mt-lg q-mb-xl"
-          >
         </div>
         <div class="row">
           <span class="label-edit">
