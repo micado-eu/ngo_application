@@ -26,23 +26,17 @@ export default {
       for (const glossaryTerm of glossaryTermsByLang) {
         if (glossaryTerm.title) {
           // Look for the term's titles that are not already marked
-          let regexp = new RegExp(`(?<!<span data-mention-id="\d+" class="mention">)${glossaryTerm.title}`, "gi")
-          let match
-          let initialText = result
-          let offset = 0
-          while ((match = regexp.exec(result)) !== null) {
-            const index = match.index + offset
-            const lastIndex = regexp.lastIndex + offset
-            // Add the tag to the text
-            const prefixTag = `<span data-mention-id="${glossaryTerm.id}" class="mention">`
-            const suffixTag = "</span>"
-            offset = offset + prefixTag.length + suffixTag.length
-            const first = initialText.substring(0, index)
-            const middle = initialText.substring(index, lastIndex)
-            const last = initialText.substring(lastIndex)
-            initialText = first + prefixTag + middle + suffixTag + last
+          let regexp = new RegExp(`(${glossaryTerm.title})`, "gi")
+          let splitted = result.split(regexp)
+          // Add the tag to the text
+          const prefixTag = `<span data-mention-id="${glossaryTerm.id}" class="mention">`
+          const suffixTag = "</span>"
+          for (let i = 0; i < splitted.length; i = i + 1) {
+            if (splitted[i].length === glossaryTerm.title.length) {
+              splitted[i] = prefixTag + splitted[i] + suffixTag
+            }
           }
-          result = initialText
+          result = splitted.join("")
         }
       }
       return result
