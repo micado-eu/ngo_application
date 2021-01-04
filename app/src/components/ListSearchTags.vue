@@ -286,7 +286,7 @@
                 <q-toggle
                   v-model="item.published"
                   @input="updatePublished($event, item.id)"
-                  color="green"
+                  color="accent"
                 />
               </q-item-section>
               <q-item-section

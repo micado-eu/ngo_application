@@ -356,7 +356,7 @@
           </span>
           <q-toggle
             v-model="published"
-            color="green"
+            color="accent"
           ></q-toggle>
         </div>
         <div class="row q-my-xl">
