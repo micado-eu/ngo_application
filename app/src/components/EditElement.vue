@@ -39,6 +39,7 @@
             counter
             :maxlength="title_max_length"
             :rules="[ val => val.length <= title_max_length || $t('error_messages.max_char_limit') + title_max_length]"
+            :readonly="published"
           />
         </div>
         <div>
@@ -54,15 +55,15 @@
             v-model="internalDescription"
             :maxCharLimit="description_max_length"
             ref="editor"
+            :readonly="published"
           >
             <translate-state-button
-            v-model="selectedTranslationState"
-            :isForDefaultLanguage="langTab===$defaultLang"
-            :objectId="elemId"
-            :readonly="!(langTab===$defaultLang)"
-            @micado-change="(a) => {selectedTranslationState = a.state}"
-            class="q-my-sm"
-          />
+              v-model="selectedTranslationState"
+              :isForDefaultLanguage="langTab===$defaultLang"
+              :objectId="elemId"
+              @micado-change="(a) => {selectedTranslationState = a.state}"
+              class="q-my-sm"
+            />
           </glossary-editor>
         </div>
         <div class="language_selector">
@@ -109,6 +110,7 @@
               @input="setCategoryObjectModel($event)"
               data-cy="category_select"
               bg-color="grey-3"
+              :readonly="published"
             />
           </div>
         </div>
@@ -129,6 +131,7 @@
                 bg-color="grey-3"
                 v-model="startDate"
                 class="col q-mr-md"
+                :readonly="published"
               >
                 <template v-slot:prepend>
                   <q-icon
@@ -164,6 +167,7 @@
                 bg-color="grey-3"
                 v-model="startTime"
                 class="col"
+                :readonly="published"
               >
                 <template v-slot:prepend>
                   <q-icon
@@ -210,6 +214,7 @@
                 bg-color="grey-3"
                 v-model="finishDate"
                 class="col q-mr-md"
+                :readonly="published"
               >
                 <template v-slot:prepend>
                   <q-icon
@@ -245,6 +250,7 @@
                 bg-color="grey-3"
                 v-model="finishTime"
                 class="col"
+                :readonly="published"
               >
                 <template v-slot:prepend>
                   <q-icon
@@ -296,6 +302,7 @@
               @input="setTopicObjectModel($event)"
               data-cy="topic_select"
               bg-color="grey-3"
+              :readonly="published"
             />
             <div
               class="tag_list flex"
@@ -329,6 +336,7 @@
               @input="setUserTypeObjectModel($event)"
               data-cy="user_types_select"
               bg-color="grey-3"
+              :readonly="published"
             />
             <div
               class="tag_list flex"
@@ -357,6 +365,8 @@
           <q-toggle
             v-model="published"
             color="accent"
+            @input="showWarningPublish($event)"
+            disabled
           ></q-toggle>
         </div>
         <div class="row q-my-xl">
@@ -375,6 +385,7 @@
             :label="$t('button.save')"
             @click="callSaveFn()"
             class="row edit-element-button"
+            :disable="published"
           />
         </div>
       </div>
@@ -448,6 +459,12 @@ export default {
     description_max_length: {
       type: Number,
       default: null
+    },
+    on_publish: {
+      type: Function
+    },
+    on_unpublish: {
+      type: Function
     }
   },
   data() {
@@ -487,13 +504,13 @@ export default {
       this.changeLanguageAux(newLang)
     },
     changeLanguageAux(al) {
-      const idx = this.savedTranslations.findIndex((t) => t.lang === al)
+      let idx = this.savedTranslations.findIndex((t) => t.lang === al)
       if (idx !== -1) {
         const element = this.savedTranslations[idx]
         this.setContent(element, al)
       } else {
         if (this.elem) {
-          const idx = this.elem.translations.findIndex((t) => t.lang === al)
+          idx = this.elem.translations.findIndex((t) => t.lang === al)
           if (idx !== -1) {
             this.setContent(this.elem.translations[idx], al)
           } else {
@@ -510,6 +527,7 @@ export default {
       if (this.$refs.editor) {
         this.$refs.editor.setContent(this.internalDescription)
       }
+      this.selectedTranslationState = element.translationState
     },
     saveContent(lang) {
       const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
@@ -545,6 +563,7 @@ export default {
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
       }
+      this.selectedTranslationState = 0
     },
     setInternalCategorySelector(al) {
       this.internalCategories = this.categories.map((ic) => {
@@ -665,7 +684,7 @@ export default {
               title: '',
               description: '',
               lang: language.lang,
-              translationState: this.selectedTranslationState
+              translationState: 0
             }
             if (this.categories_enabled) {
               emptyTranslation.category = this.selectedCategoryObject
@@ -683,6 +702,46 @@ export default {
           this.savedTranslations
         )
       }
+    },
+    showWarningPublish(event, id) {
+      if (event == true) {
+        this.$q.notify({
+          type: 'warning',
+          message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+          actions: [
+            {
+              label: 'Yes', color: 'accent', handler: () => {
+                this.on_publish(id).then(() => this.goBack())
+              }
+            },
+            {
+              label: 'No', color: 'red', handler: () => {
+                this.published = false
+              }
+            }
+          ]
+        })
+
+      }
+      else {
+        this.$q.notify({
+          type: 'warning',
+          message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
+          actions: [
+            {
+              label: 'Yes', color: 'accent', handler: () => {
+                this.on_unpublish(id).then(() => this.published = false)
+              }
+            },
+            {
+              label: 'No', color: 'red', handler: () => {
+                this.published = true
+              }
+            }
+          ]
+        })
+
+      }
     }
   },
   computed: {
@@ -694,6 +753,21 @@ export default {
         return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
       }
       return !this.internalTitle
+    },
+    publishToggleState: function () {
+      if (this.elem) {
+        let idx = this.savedTranslations.findIndex((t) => t.lang === this.$defaultLang)
+        let translation
+        if (idx === -1) {
+          idx = this.elem.translations.findIndex((t) => t.lang === this.$defaultLang)
+          translation = this.elem.translations[idx]
+        } else {
+          translation = this.savedTranslations[idx]
+        }
+        return translation.translationState < 2
+      } else {
+        return this.selectedTranslationState
+      }
     }
   },
   watch: {
@@ -702,7 +776,7 @@ export default {
         this.changeLanguage(newVal, oldVal)
       }
     },
-    selectedTranslationState: function() {
+    selectedTranslationState: function () {
       console.log(this.selectedTranslationState)
     }
   },

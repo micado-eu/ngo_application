@@ -7,7 +7,6 @@
       new_url="information/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
-      :publish_fn="updatePublishedInformation"
       icon_name="document"
       add_label="button.add_information"
       title="information_centre.list_title"
@@ -44,10 +43,7 @@ export default {
       'fetchInformation',
       'deleteInformationItem',
       'fetchAllInformationTopics',
-      'fetchAllInformationUserTypes',
-      'updatePublished',
-      'deleteProdTranslations',
-      'addNewInformationItemTranslationProd'
+      'fetchAllInformationUserTypes'
     ]),
     ...mapActions('information_category', ['fetchInformationCategory']),
     getEditRoute(id) {
@@ -64,41 +60,6 @@ export default {
             message: `Error while deleting information: ${err}`
           })
         })
-    },
-    updatePublishedInformation(published, id) {
-      let infoElem = this.informationElemById(id)
-      if (infoElem.translations[0].translationState === 4 && infoElem.published && !published) {
-        // If published goes from true to false, all the content gets deleted from the translation prod table
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting information production translations: ${err}`
-          })
-        })
-      } else if (infoElem.translations[0].translationState === 4 && !infoElem.published && published) {
-        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-        for (let i = 0; i < infoElem.translations.length; i += 1) {
-          const translation = Object.assign({}, infoElem.translations[i])
-          delete translation.translationState
-          delete translation.published
-          this.addNewInformationItemTranslationProd(translation).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving information production translation ${translation.lang}: ${err}`
-            })
-          })
-        }
-      }
-      this.updatePublished({ id, published }).then(() => {
-        //console.log("new published value for " + id + ": " + published)
-      }).catch((err) => {
-        this.$q.notify({
-          type: 'negative',
-          message: `Error while updating published state: ${err}`
-        })
-      })
     },
     updateContent() {
       this.loading = true

@@ -10,6 +10,8 @@
       :user_types="userTypes"
       class="q-ma-md"
       pagetitle="events.edit"
+      :on_publish="onPublish"
+      :on_unpublish="onUnpublish"
     />
   </div>
 </template>
@@ -44,8 +46,49 @@ export default {
       'deleteUserTypes',
       'setUserTypes',
       'deleteProdTranslations',
-      'addNewEventItemTranslationProd'
+      'addNewEventItemTranslationProd',
+      'updatePublished'
     ]),
+    onPublish(id) {
+      let eventElem = this.eventElemById(id)
+      for (let i = 0; i < eventElem.translations.length; i += 1) {
+        const translation = Object.assign({}, eventElem.translations[i])
+        delete translation.translationState
+        delete translation.published
+        this.addNewEventItemTranslationProd(translation).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving event production translation ${translation.lang}: ${err}`
+          })
+        })
+      }
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
+    },
+    onUnpublish(id) {
+      this.deleteProdTranslations(id).then(() => {
+        console.log("Deleted prod translations")
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while deleting event production translations: ${err}`
+        })
+      })
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
+    },
     editEventItemAndReturn(data) {
       const router = this.$router
       const categoryId = data[0].category.id
@@ -56,27 +99,6 @@ export default {
         startDate: data[0].startDate,
         endDate: data[0].finishDate,
         published: data[0].published
-      }
-      if (this.elem.published && data[0].translationState === 0) {
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting event production translations: ${err}`
-          })
-        })
-      }
-      if (this.elem.published && !eventData.published) {
-        // If published goes from true to false, all the content gets deleted from the translation prod table
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting event production translations: ${err}`
-          })
-        })
       }
       this.editEventItem(eventData).then(() => {
         const { topics } = data[0]
@@ -107,17 +129,6 @@ export default {
           delete translation.startDate
           delete translation.finishDate
           this.editEventItemTranslation(dataWithId).then(() => {
-            if (!this.elem.published && eventData.published && dataWithId.translationState === 4) {
-              // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-              delete dataWithId.translationState
-              delete dataWithId.published
-              this.addNewEventItemTranslationProd(dataWithId).catch((err) => {
-                this.$q.notify({
-                  type: 'negative',
-                  message: `Error while saving event production translation ${dataWithId.lang}: ${err}`
-                })
-              })
-            }
             if (i === data.length - 1) {
               router.push({ path: '/events' })
             }

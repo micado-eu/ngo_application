@@ -7,7 +7,6 @@
       new_url="events/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
-      :publish_fn="updatePublishedEvents"
       icon_name="document"
       add_label="button.add_event"
       title="events.list_title"
@@ -45,10 +44,7 @@ export default {
       'fetchEvent',
       'deleteEventItem',
       'fetchAllEventTopics',
-      'fetchAllEventUserTypes',
-      'updatePublished',
-      'deleteProdTranslations',
-      'addNewEventItemTranslationProd'
+      'fetchAllEventUserTypes'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
     getEditRoute(id) {
@@ -65,41 +61,6 @@ export default {
             message: `Error while deleting event: ${err}`
           })
         })
-    },
-    updatePublishedEvents(published, id) {
-      let eventElem = this.eventElemById(id)
-      if (eventElem.translations[0].translationState === 4 && eventElem.published && !published) {
-        // If published goes from true to false, all the content gets deleted from the translation prod table
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting event production translations: ${err}`
-          })
-        })
-      } else if (eventElem.translations[0].translationState === 4 && !eventElem.published && published) {
-        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-        for (let i = 0; i < eventElem.translations.length; i += 1) {
-          const translation = Object.assign({}, eventElem.translations[i])
-          delete translation.translationState
-          delete translation.published
-          this.addNewEventItemTranslationProd(translation).then(() => { }).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving event production translation ${translation.lang}: ${err}`
-            })
-          })
-        }
-      }
-      this.updatePublished({ id, published }).then(() => {
-        //console.log("new published value for " + id + ": " + published)
-      }).catch((err) => {
-        this.$q.notify({
-          type: 'negative',
-          message: `Error while updating published state: ${err}`
-        })
-      })
     },
     updateContent() {
       this.loading = true

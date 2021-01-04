@@ -7,6 +7,8 @@
       :elem="elem"
       :topics="topics"
       :user_types="userTypes"
+      :on_publish="onPublish"
+      :on_unpublish="onUnpublish"
       class="q-ma-md"
       pagetitle="information_centre.edit"
     />
@@ -41,8 +43,49 @@ export default {
       'fetchInformationTopics',
       'fetchInformationUserTypes',
       'deleteProdTranslations',
-      'addNewInformationItemTranslationProd'
+      'addNewInformationItemTranslationProd',
+      'updatePublished'
     ]),
+    onPublish(id) {
+      let infoElem = this.informationElemById(id)
+      for (let i = 0; i < infoElem.translations.length; i += 1) {
+        const translation = Object.assign({}, infoElem.translations[i])
+        delete translation.translationState
+        delete translation.published
+        this.addNewInformationItemTranslationProd(translation).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving information production translation ${translation.lang}: ${err}`
+          })
+        })
+      }
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
+    },
+    onUnpublish(id) {
+      this.deleteProdTranslations(id).then(() => {
+        console.log("Deleted prod translations")
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while deleting information production translations: ${err}`
+        })
+      })
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
+    },
     editInformationItemAndReturn(data) {
       const router = this.$router
       const categoryId = data[0].category.id
@@ -51,27 +94,6 @@ export default {
         id,
         category: categoryId,
         published: data[0].published
-      }
-      if (this.elem.published && data[0].translationState === 0) {
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting information production translations: ${err}`
-          })
-        })
-      }
-      if (this.elem.published && !eventData.published) {
-        // If published goes from true to false, all the content gets deleted from the translation prod table
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting information production translations: ${err}`
-          })
-        })
       }
       this.editInformationItem(eventData).then(() => {
         const { topics } = data[0]
@@ -100,17 +122,6 @@ export default {
           delete translation.topics
           delete translation.userTypes
           this.editInformationItemTranslation(dataWithId).then(() => {
-            if (!this.elem.published && eventData.published && dataWithId.translationState === 4) {
-              // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-              delete dataWithId.translationState
-              delete dataWithId.published
-              this.addNewInformationItemTranslationProd(dataWithId).catch((err) => {
-                this.$q.notify({
-                  type: 'negative',
-                  message: `Error while saving information production translations ${dataWithId.lang}: ${err}`
-                })
-              })
-            }
             if (i === data.length - 1) {
               router.push({ path: '/information' })
             }

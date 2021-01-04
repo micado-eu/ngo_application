@@ -287,6 +287,7 @@
                   v-model="item.published"
                   @input="updatePublished($event, item.id)"
                   color="accent"
+                  disabled
                 />
               </q-item-section>
               <q-item-section
@@ -361,12 +362,6 @@ export default {
         return () => ''
       }
     },
-    publish_fn: {
-      type: Function,
-      default() {
-        return () => ''
-      }
-    },
     title: {
       type: String,
       default: ''
@@ -435,9 +430,6 @@ export default {
   },
   methods: {
     ...mapActions('glossary', ['fetchGlossary']),
-    updatePublished(value, id) {
-      this.publish_fn(value, id)
-    },
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
