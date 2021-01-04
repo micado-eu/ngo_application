@@ -100,7 +100,7 @@ export function logout (store) {
   let the_token = store.state.token
   console.log(the_token)
   console.log("BEFORE COMPOSING URL")
-  let aut_url = 'https://identity.micadoproject.eu/oidc/logout?id_token_hint=' + the_token.token.id_token + '&post_logout_redirect_uri=https://migrants.micadoproject.eu'
+  let aut_url = "https://" + this._vm.$envconfig.identityUrl + "/oidc/logout?id_token_hint=" + the_token.token.id_token + "&post_logout_redirect_uri=https://" + this._vm.$envconfig.ngoUrl
   store.commit('setToken', null)
   console.log(aut_url)
   window.location = aut_url

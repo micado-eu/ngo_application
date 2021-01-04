@@ -17,7 +17,9 @@
     "activelanguages": "Change active languages",
     "information_centre": "Information centre",
     "process": "Guided processes",
-    "events": "Events"
+    "events": "Events",
+    "login": "Login",
+    "logout": "Logout"
   },
   "help": {
     "element_title": "Write a title",
