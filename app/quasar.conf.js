@@ -78,9 +78,9 @@ module.exports = function (ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history',
- //     env: {
-  //      APP_BUILD_DATE: Date.now()
- //     },
+      env: {
+        APP_BUILD_DATE: Date.now()
+      },
       transpile: true,
       transpileDependencies: ['@vuex-orm/plugin-axios', 'fuse.js'],
       // showProgress: false,

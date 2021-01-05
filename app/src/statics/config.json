@@ -5,5 +5,6 @@
     "identityUrl": "identity.micadoproject.eu",
     "countlyAppKey": "a840375e9bc0b145a72af3b05a0cf8653e19e7cb",
     "identitySPclientId": "ca5c50c4a3b941b3bfbe1b216a2b",
+    "appBuildDate": "$APP_BUILD_DATE",
     "ngoUrl": "ngo.micadoproject.eu"
 }

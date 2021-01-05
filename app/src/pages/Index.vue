@@ -27,7 +27,7 @@ export default {
   name: 'PageIndex',
   data () {
     return {
-      buildDate: Date(process.env.APP_BUILD_DATE)
+      buildDate: Date(this.$envconfig.appBuildDate)
     }
   },
   methods: {
