@@ -73,20 +73,20 @@
               :unelevated="!isActive.bold()"
               icon="img:statics/icons/MICADO PA APP Icon - Bold (600x600).png"
               @click="commands.bold"
-              :disabled="readonly"
+              :disable="readonly"
             />
             <q-btn
               :outline="isActive.italic()"
               :unelevated="!isActive.italic()"
               icon="img:statics/icons/MICADO PA APP Icon - Italics (600x600).png"
               @click="commands.italic"
-              :disabled="readonly"
+              :disable="readonly"
             />
             <q-btn
               unelevated
               icon="image"
               @click="showUploadModal = true"
-              :disabled="readonly"
+              :disable="readonly"
             />
             <span style="flex: 10"></span>
             <slot style="flex: 3"></slot>
