@@ -81,6 +81,8 @@ module.exports = function (ctx) {
       env: {
         APP_BUILD_DATE: Date.now()
       },
+      transpile: true,
+      transpileDependencies: ['@vuex-orm/plugin-axios', 'fuse.js'],
       // showProgress: false,
       // gzip: true,
       // analyze: true,
