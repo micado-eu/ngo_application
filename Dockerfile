@@ -8,6 +8,9 @@ RUN quasar build
 
 # production stage
 FROM alpine
+ARG APP_BUILD_DATE
+ENV APP_BUILD_DATE=${APP_BUILD_DATE:-0}
+LABEL org.label-schema.build-date=$APP_BUILD_DATE 
 RUN apk add --no-cache gettext
 COPY --from=build-stage /code/dist/spa /var/www/html2
 VOLUME /var/www/html2/
