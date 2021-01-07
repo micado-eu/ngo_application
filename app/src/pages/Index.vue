@@ -26,9 +26,11 @@
 export default {
   name: 'PageIndex',
   data () {
+    console.log("wrinting the build date")
     console.log(this.$envconfig.appBuildDate)
+    console.log(new Date(this.$envconfig.appBuildDate))
     return {
-      buildDate: Date(this.$envconfig.appBuildDate)
+      buildDate: new Date(this.$envconfig.appBuildDate)
     }
   },
   methods: {
