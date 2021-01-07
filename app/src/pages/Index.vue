@@ -26,6 +26,7 @@
 export default {
   name: 'PageIndex',
   data () {
+    console.log(this.$envconfig.appBuildDate)
     return {
       buildDate: Date(this.$envconfig.appBuildDate)
     }
