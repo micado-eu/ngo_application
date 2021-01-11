@@ -43,6 +43,7 @@
         <q-btn
           round
           class="q-gutter-y-md"
+          v-if="isLoggedIn"
         >
           <q-avatar size="42px">
             <img src="https://cdn.quasar.dev/img/avatar2.jpg">

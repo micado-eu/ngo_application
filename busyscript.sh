@@ -1,24 +1,20 @@
 #!/bin/sh
 #set -x
 
-pid=0
+# removing olf files from volume
+echo "removing olf files from volume"
+rm -rf /var/www/html/*
+# showing that we removed the files
+ls -lat /var/www/html/
+echo "corretc if only empty folder is shown"
+echo "showing the content of the container image"
+ls -lat /var/www/html2/
+echo "copying the new files from the container image"
+cp -ra /var/www/html2/* /var/www/html/ 
+echo "showing the new content"
+ls -lat /var/www/html/
+echo "creating the file with the env content"
+envsubst < /var/www/html/statics/config.tmpl.json > /var/www/html/statics/config.json
+cat /var/www/html/statics/config.json
 
-# SIGTERM-handler
-term_handler() {
-  if [ $pid -ne 0 ]; then
-    kill -SIGTERM "$pid"
-    wait "$pid"
-  fi
-  exit 143; # 128 + 15 -- SIGTERM
-}
-
-# setup handlers
-# on callback, kill the last background process, which is `tail -f /dev/null` and execute the specified handler
-trap 'kill ${!}; term_handler' SIGTERM
-
-echo "Started code"
-# wait forever
-while true
-do
-  tail -f /dev/null & wait ${!}
-done
+exit
