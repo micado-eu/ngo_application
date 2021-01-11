@@ -1,12 +1,12 @@
 #!/bin/sh
 #set -x
 
-# removing olf files from volume
-echo "removing olf files from volume"
+# removing old files from volume
+echo "removing old files from volume"
 rm -rf /var/www/html/*
 # showing that we removed the files
 ls -lat /var/www/html/
-echo "corretc if only empty folder is shown"
+echo "correct if only empty folder is shown"
 echo "showing the content of the container image"
 ls -lat /var/www/html2/
 echo "copying the new files from the container image"

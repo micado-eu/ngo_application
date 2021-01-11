@@ -55,6 +55,7 @@
         clickable
         @click="toLogin()"
         v-if="!isLoggedIn"
+        style="padding-top:30px"
       >
         <q-item-section avatar>
           <q-icon name="exit_to_app" />
