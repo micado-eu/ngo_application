@@ -40,6 +40,7 @@
     "read_more": "Read more",
     "read_less": "Read less",
     "update_link": "Update link",
+    "edit": "Edit",
     "add_link": "Add link"
   },
   "input_labels": {
@@ -99,5 +100,17 @@
   },
   "text_editor": {
     "word_count": "Word count"
+  },
+  "pa_profile":{
+    "change_pic": "Change picture",
+    "username": "Username",
+    "password": "Password",
+    "legal_name": "Legal Name",
+    "country": "Country",
+    "dob": "Date of Birth",
+    "gender": "Gender",
+    "personal_profile": "Personal Profile",
+    "phone_number":"Phone Number",
+    "mail":"Email"
   }
 }

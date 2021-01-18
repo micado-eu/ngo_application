@@ -17,13 +17,13 @@
                 class="image"
                 v-for="tag in Topics"
                 :src="processTopics.filter(topic => topic.id == tag.idTopic)[0].icon"
-                :key="tag.idTopic">
+                :key="'topic'.concat(tag.idTopic)">
               </q-img>
                <q-img
                 class="image"
                 v-for="tag in Users"
                 :src="processUsers.filter(user => user.id == tag.idUserTypes)[0].icon"
-                :key="tag.idUserTypes"
+                :key="'user'.concat(tag.idUserTypes)"
               >
               </q-img>  
               <div

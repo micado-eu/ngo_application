@@ -7,3 +7,7 @@ export function userByid (state) {
         return state.user.filter(a_user => a_user.umId === userId)
     }
 }
+export function csoUserProfile (state) {
+    console.log("aske for pa user profile")
+    return state.csoUserProfile
+  }

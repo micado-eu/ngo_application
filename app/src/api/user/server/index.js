@@ -24,5 +24,30 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler);
   },
+     saveUserPicture(picture){
+    const workingPic= JSON.parse(JSON.stringify(picture, ['picture', 'userId', 'tenantId']))
+    return axiosInstance
+      .post('/backend/1.0.0/user-pictures', workingPic)
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
+  editUserPicture(pic, id){
+    return axiosInstance
+      .patch('/backend/1.0.0/user-pictures/' + id, {picture:pic})
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
+  editUserData(user, tenant, token){
+    return axiosInstance
+      .patch('/backend/1.0.0/updateUser?payload=' +user + '&tenant=' + tenant +'&authType=Bearer&authToken=' + token)
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
+  fetchCSOUserProfile(id){
+    return axiosInstance
+    .get(`/backend/1.0.0/users/${id}?filter[include][0][relation]=attributes&filter[include][1][relation]=interventionPlans&filter[include][2][relation]=tenant&filter[include][3][relation]=userPicture`)
+    .then((response) => response.data)
+    .catch(error_handler)
+  }
 
 }
