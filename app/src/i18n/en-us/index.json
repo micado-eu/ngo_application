@@ -32,6 +32,7 @@
     "word_count": "Number of words in the description"
   },
   "button": {
+    "change_pass":"Change Password",
     "save": "Save",
     "cancel": "Cancel",
     "add_event": "Add Event",
@@ -111,6 +112,9 @@
     "gender": "Gender",
     "personal_profile": "Personal Profile",
     "phone_number":"Phone Number",
-    "mail":"Email"
+    "mail":"Email",
+    "old_pass":"Old Password",
+    "new_pass":"New Password",
+    "confirm_pass":"Confirm password"
   }
 }

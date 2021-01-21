@@ -92,10 +92,56 @@
     <div class=" q-pa-xsm " >
       <div v-if="!editing" class="col-8 input" >
         <q-btn class="button" color="info" unelevated no-caps rounded text-color="white" :label="$t('button.edit')" @click="editing=true" />
+        <q-btn class="button" color="accent" unelevated no-caps rounded text-color="white" :label="$t('button.change_pass')" @click="change_pass=true" />
       </div>
       <div v-else class="col-8 input" >
         <q-btn class="button" color="accent" unelevated no-caps rounded text-color="white" :label="$t('button.save')" @click="editUser()" />
         <q-btn class="button" color="red" unelevated no-caps rounded text-color="white" :label="$t('button.cancel')" @click="cancelUser()" />
+      </div>
+    </div>
+    <div v-if="change_pass">
+    <div class=" q-pa-xsm " >
+      <div class="col-8 input" >
+      <q-input dense  standout outlined bg-color="grey-1" v-model="password.old_password" filled :type="isPwd0 ? 'password' : 'text'" :label="$t('pa_profile.old_pass')">
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd0? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd0 = !isPwd0"
+          />
+        </template>
+      </q-input>
+      </div>
+    </div>
+    <div class=" q-pa-xsm " >
+      <div class="col-8 input" >
+      <q-input dense  standout outlined bg-color="grey-1" v-model="password.new_password" filled :type="isPwd1 ? 'password' : 'text'" :label="$t('pa_profile.new_pass')">
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd1? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd1 = !isPwd1"
+          />
+        </template>
+      </q-input>
+      </div>
+    </div>
+    <div class=" q-pa-xsm " >
+      <div class="col-8 input" >
+      <q-input dense  standout outlined bg-color="grey-1" v-model="password.confirm_password" filled :type="isPwd2? 'password' : 'text'" :label="$t('pa_profile.confirm_pass')">
+        <template v-slot:append>
+          <q-icon
+            :name="isPwd2 ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd2 = !isPwd2"
+          />
+        </template>
+      </q-input>
+      </div>
+    </div>
+    <div class="col-8 input" >
+        <q-btn class="button" color="accent" unelevated no-caps rounded text-color="white" :label="$t('button.save')" @click="editPass()" />
+        <q-btn class="button" color="red" unelevated no-caps rounded text-color="white" :label="$t('button.cancel')" @click="cancelPass()" />
       </div>
     </div>
   </div>
@@ -119,13 +165,23 @@ export default {
         fetchSpecificUser: 'user/fetchCSOUserProfile',
         saveUserPic:'user/saveUserPic',
         editUserPic:'user/editUserPic',
-        editUserData:'user/editUserData'
+        editUserData:'user/editUserData',
+        editUserPassword:'user/editUserPassword'
       }
     })
 
   ],
   data () {
     return {
+      isPwd0:true,
+      isPwd1:true,
+      isPwd2:true,
+      change_pass:false,
+      password:{
+        old_password:null,
+        new_password:null,
+        confirm_password:null
+      },
       loading:true,
       editing:false,
       picture_select:false, 
@@ -168,6 +224,33 @@ export default {
     }
   },
   methods: {
+     cancelPass(){
+      this.change_pass = false
+      this.password.old_password=null
+      this.password.new_password=null
+      this.password.confirm_password = null
+    },
+    editPass(){
+      var user_admin = this.the_user.username + '@' + this.user.tenant.umDomainName
+      console.log(user_admin)
+      var user_pass = this.password.old_password
+      console.log(user_pass)
+      var pass_payload = JSON.stringify({password:this.password.new_password})
+      console.log(pass_payload)
+      var working_tenant= this.user.tenant.umDomainName
+      console.log(working_tenant)
+      if(this.password.new_password == this.password.confirm_password){
+        console.log("saving new password")
+        this.editUserPassword({admin:user_admin, adminpwd:user_pass, payload:pass_payload, tenant:working_tenant})
+        this.cancelPass()
+      }
+      else{
+        this.$q.notify({
+        message: 'The new password and the confirmation password do not match',
+        color: 'purple'
+      })
+      }
+    },
     findAttribute(umAttribute,userAttribute){
       console.log(umAttribute)
       var arr = this.user.attributes.filter((attr)=>{

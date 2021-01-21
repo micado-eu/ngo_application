@@ -48,6 +48,12 @@ export default {
     .get(`/backend/1.0.0/users/${id}?filter[include][0][relation]=attributes&filter[include][1][relation]=interventionPlans&filter[include][2][relation]=tenant&filter[include][3][relation]=userPicture`)
     .then((response) => response.data)
     .catch(error_handler)
+  },
+  editUserPassword(admin, adminpwd, payload, tenant){
+    return axiosInstance
+      .patch('/backend/1.0.0/updateUser?payload=' +payload + '&tenant=' + tenant +'&admin=' + admin + '&adminpwd=' + adminpwd + '&isPswd=1')
+      .then(response => { return response.data })
+      .catch(error_handler);
   }
 
 }

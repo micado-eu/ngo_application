@@ -65,6 +65,12 @@ export function fetchCSOUserProfile (state, id) {
       return csoUser
     })
 }
+export function editUserPassword (state, payload) {
+  // we need BEFORE to call the API to do the update and if ok we update wuex state
+  console.log(payload)
+  return client
+    .editUserPassword(payload.admin, payload.adminpwd, payload.payload, payload.tenant)
+}
 
 /*export function deleteDocument({commit}, document_type) {
 
