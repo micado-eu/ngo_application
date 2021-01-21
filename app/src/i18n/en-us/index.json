@@ -29,7 +29,8 @@
     "element_user_type": "Select an user type",
     "element_start_date": "Select the starting date",
     "element_end_date": "Select the ending date",
-    "word_count": "Number of words in the description"
+    "word_count": "Number of words in the description",
+    "location": "Write the location of the event"
   },
   "button": {
     "change_pass":"Change Password",
@@ -53,7 +54,8 @@
     "select_topic": "Select topics",
     "select_user_type": "Select user types",
     "start_date": "Start date",
-    "finish_date": "End date"
+    "finish_date": "End date",
+    "location": "Location"
   },
   "information_centre": {
     "list_title": "Information centre",
@@ -79,7 +81,8 @@
     "topics": "Topics",
     "user_types": "User Types",
     "start_date": "Start date",
-    "end_date": "End date"
+    "end_date": "End date",
+    "location": "Location"
   },
   "date_selector": {
     "close": "Close"

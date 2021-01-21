@@ -230,14 +230,8 @@
                     />
                   </span>
                   <span
-                    class="q-mr-md tags_text"
-                    v-if="categories_enabled"
-                  >
-                    {{$t("lists.category")}}: {{item.category.category}}
-                  </span>
-                  <span
                     v-if="user_types_enabled && item.userTypes.length > 0"
-                    class="tags_text"
+                    class="q-mr-md tags_text"
                   >
                     {{$t("lists.user_types")}}:
                     <q-img
@@ -251,6 +245,12 @@
                       :class="index !== (item.userTypes.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
                     />
                   </span>
+                  <span
+                    class="tags_text"
+                    v-if="categories_enabled && item.category"
+                  >
+                    {{$t("lists.category")}}: {{item.category.category}}
+                  </span>
                 </div>
                 <glossary-editor-viewer
                   class="viewer"
@@ -259,23 +259,46 @@
                   glossary_fetched
                   :lang="lang"
                   readMore
-                  @readMorePressed=toggleDate(item.id)
-                  @readLessPressed=toggleDate(item.id)
+                  @readMorePressed=toggleExtraInfo(item.id)
+                  @readLessPressed=toggleExtraInfo(item.id)
                 >
                   <template v-slot:append>
-                    <span
-                      class="date-text q-mt-sm"
-                      v-if="is_event && showDates[item.id]"
-                    >
-                      {{$t("lists.start_date")}}: {{item.startDate}}
-                    </span>
-                    <br/>
-                    <span
-                      class="date-text q-mb-sm"
-                      v-if="is_event && showDates[item.id]"
-                    >
-                      {{$t("lists.end_date")}}: {{item.endDate}}
-                    </span>
+                    <div>
+                      <q-img
+                        src="statics/icons/Icon - Calender.svg"
+                        spinner-color="white"
+                        :img-style="{'max-width': '24px', 'max-height': '24px'}"
+                        class="filter-icon"
+                        v-if="is_event && showExtraInfo[item.id]"
+                      />
+                      <span
+                        class="date-text q-mt-sm q-mr-xl"
+                        v-if="is_event && item.startDate && showExtraInfo[item.id]"
+                      >
+                        {{$t("lists.start_date")}}: {{item.startDate}}
+                      </span>
+                      <span
+                        class="date-text q-mt-sm"
+                        v-if="is_event && item.endDate && showExtraInfo[item.id]"
+                      >
+                        {{$t("lists.end_date")}}: {{item.endDate}}
+                      </span>
+                    </div>
+                    <div class="q-mt-sm">
+                      <q-img
+                        src="statics/icons/Icon - Location Pin.svg"
+                        spinner-color="white"
+                        :img-style="{'max-width': '24px', 'max-height': '24px'}"
+                        class="filter-icon"
+                        v-if="is_event && item.location && showExtraInfo[item.id]"
+                      />
+                      <span
+                        class="date-text q-mb-sm"
+                        v-if="is_event && item.location && showExtraInfo[item.id]"
+                      >
+                        {{$t("lists.location")}}: {{item.location}}
+                      </span>
+                    </div>
                   </template>
                 </glossary-editor-viewer>
               </q-item-section>
@@ -342,7 +365,7 @@ export default {
   props: {
     elements: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     },
@@ -352,13 +375,13 @@ export default {
     },
     edit_url_fn: {
       type: Function,
-      default() {
+      default () {
         return () => '/'
       }
     },
     delete_fn: {
       type: Function,
-      default() {
+      default () {
         return () => ''
       }
     },
@@ -399,7 +422,7 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
     return {
       hovered: -1,
       // display only elements in the language selected
@@ -422,7 +445,7 @@ export default {
       lastIndexTopics: 3,
       lastIndexUserTypes: 3,
       loading: true,
-      showDates: []
+      showExtraInfo: []
     }
   },
   components: {
@@ -430,7 +453,7 @@ export default {
   },
   methods: {
     ...mapActions('glossary', ['fetchGlossary']),
-    addOrRemoveSelectedCategory(category) {
+    addOrRemoveSelectedCategory (category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
       } else {
@@ -438,7 +461,7 @@ export default {
       }
       this.filterByCategory()
     },
-    filterByCategory() {
+    filterByCategory () {
       if (this.selectedCategory) {
         this.filteredElementsByCategory = this.translatedElements.filter((e) => {
           if (e.category !== this.selectedCategory) {
@@ -450,7 +473,7 @@ export default {
         this.filteredElementsByCategory = this.translatedElements
       }
     },
-    filterByTopics() {
+    filterByTopics () {
       if (this.selectedTopics.length > 0) {
         this.filteredElementsByTopics = []
         for (const e of this.translatedElements) {
@@ -475,7 +498,7 @@ export default {
         this.filteredElementsByTopics = this.translatedElements
       }
     },
-    filterByUserTypes() {
+    filterByUserTypes () {
       if (this.selectedUserTypes.length > 0) {
         this.filteredElementsByUserTypes = []
         for (const e of this.translatedElements) {
@@ -500,16 +523,16 @@ export default {
         this.filteredElementsByUserTypes = this.translatedElements
       }
     },
-    compare(a, b) {
+    compare (a, b) {
       return a.title.localeCompare(b.title, this.$userLang, { sensitivity: 'base' })
     },
-    compareTranslationDates(a, b) {
+    compareTranslationDates (a, b) {
       return new Date(b.translationDate) - new Date(a.translationDate)
     },
-    scrollIntoElement(index) {
+    scrollIntoElement (index) {
       document.getElementById(this.alphabetIds[index]).scrollIntoView()
     },
-    clearFilters() {
+    clearFilters () {
       this.selectedCategory = undefined
       this.filteredElementsByCategory = this.translatedElements
       this.filteredElementsByTopics = this.translatedElements
@@ -517,19 +540,19 @@ export default {
       this.selectedTopics = []
       this.selectedUserTypes = []
     },
-    showMoreCategories() {
+    showMoreCategories () {
       this.lastIndexCategories += 3
     },
-    showMoreTopics() {
+    showMoreTopics () {
       this.lastIndexTopics += 3
     },
-    showMoreUserTypes() {
+    showMoreUserTypes () {
       this.lastIndexUserTypes += 3
     },
-    toggleDate(id) {
-      this.showDates[id] = !this.showDates[id]
+    toggleExtraInfo (id) {
+      this.showExtraInfo[id] = !this.showExtraInfo[id]
     },
-    initializeList() {
+    initializeList () {
       this.translatedElements = this.elements.map((e) => {
         let translation
         if (e.translations) {
@@ -581,9 +604,10 @@ export default {
                 `${finishDate.getUTCDate()} ` +
                 `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
                 `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+              translation.location = e.location
             }
             translation.published = e.published
-            this.showDates[e.id] = false
+            this.showExtraInfo[e.id] = false
             return translation
           } else return undefined
         }
@@ -612,10 +636,10 @@ export default {
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
     search: {
-      get() {
+      get () {
         return this.searchText
       },
-      set(newSearch) {
+      set (newSearch) {
         if (newSearch) {
           const fuse = new Fuse(this.translatedElements, {
             keys: ['title']
@@ -630,7 +654,7 @@ export default {
         }
       }
     },
-    filteredElements() {
+    filteredElements () {
       const { filteredElementsByCategory } = this
       const { filteredElementsByTopics } = this
       const { filteredElementsByUserTypes } = this
@@ -640,26 +664,26 @@ export default {
           && filteredElementsByUserTypes.indexOf(n) !== -1
       )
     },
-    filterCategories() {
+    filterCategories () {
       return this.translatedCategories.slice(0, this.lastIndexCategories)
     },
-    isMaxShowMoreCategories() {
+    isMaxShowMoreCategories () {
       return this.translatedCategories.slice(0, this.lastIndexCategories).length >= this.translatedCategories.length
     },
-    filterTopics() {
+    filterTopics () {
       return this.topics.slice(0, this.lastIndexTopics)
     },
-    isMaxShowMoreTopics() {
+    isMaxShowMoreTopics () {
       return this.topics.slice(0, this.lastIndexTopics).length >= this.topics.length
     },
-    filterUserTypes() {
+    filterUserTypes () {
       return this.userTypes.slice(0, this.lastIndexUserTypes)
     },
-    isMaxShowMoreUserTypes() {
+    isMaxShowMoreUserTypes () {
       return this.userTypes.slice(0, this.lastIndexUserTypes).length >= this.userTypes.length
     }
   },
-  created() {
+  created () {
     this.loading = true
     this.lang = this.$i18n.locale
     this.fetchGlossary().then(() => this.initializeList())

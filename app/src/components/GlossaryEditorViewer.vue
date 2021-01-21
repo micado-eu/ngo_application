@@ -32,7 +32,7 @@
         color="grey-8"
         no-caps
         padding="1px 15px"
-        class="q-mb-md"
+        class="q-my-md"
       >
         {{ $t("button.read_less") }}
       </q-btn>

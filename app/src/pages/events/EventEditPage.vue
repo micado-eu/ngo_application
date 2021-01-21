@@ -98,6 +98,7 @@ export default {
         category: categoryId,
         startDate: data[0].startDate,
         endDate: data[0].finishDate,
+        location: data[0].location,
         published: data[0].published
       }
       this.editEventItem(eventData).then(() => {
@@ -128,6 +129,7 @@ export default {
           delete translation.userTypes
           delete translation.startDate
           delete translation.finishDate
+          delete translation.location
           this.editEventItemTranslation(dataWithId).then(() => {
             if (i === data.length - 1) {
               router.push({ path: '/events' })

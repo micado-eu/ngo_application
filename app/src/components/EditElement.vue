@@ -15,11 +15,11 @@
           >{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
           <span
             class="warning-error col"
-            v-if="selectedTranslationState === 3"
+            v-if="selectedTranslationState === 2"
           >{{$t("error_messages.in_translation")}}</span>
           <span
             class="warning-error col"
-            v-if="(selectedTranslationState === 4) && elem.published"
+            v-if="(selectedTranslationState === 3) && elem.published"
           >{{$t("error_messages.change_translated")}}</span>
           <span class="col"></span>
         </div>
@@ -109,6 +109,25 @@
               :options="internalCategories"
               @input="setCategoryObjectModel($event)"
               data-cy="category_select"
+              bg-color="grey-3"
+              :readonly="published"
+            />
+          </div>
+          <div
+            v-if="is_event"
+            class="q-my-xl q-ml-lg tag_list col"
+          >
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.location')"
+                :helpLabel="$t('help.location')"
+              ></help-label>
+            </span>
+            <q-input
+              class="title_input q-mb-xl"
+              data-cy="location_input"
+              outlined
+              v-model="location"
               bg-color="grey-3"
               :readonly="published"
             />
@@ -366,7 +385,7 @@
             v-model="published"
             color="accent"
             @input="showWarningPublish($event)"
-            disable
+            :disable="publishToggleState"
           ></q-toggle>
         </div>
         <div class="row q-my-xl">
@@ -420,7 +439,7 @@ export default {
     },
     categories: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     },
@@ -434,7 +453,7 @@ export default {
     },
     topics: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     },
@@ -444,7 +463,7 @@ export default {
     },
     user_types: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     },
@@ -467,7 +486,7 @@ export default {
       type: Function
     }
   },
-  data() {
+  data () {
     return {
       loading: true,
       internalTitle: '',
@@ -492,18 +511,19 @@ export default {
       finishDate: '',
       finishTime: '',
       savedTranslations: [],
-      published: false
+      published: false,
+      location: ''
     }
   },
   methods: {
     ...mapActions('language', ['fetchActiveLanguages']),
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
-    changeLanguage(newLang, oldLang) {
+    changeLanguage (newLang, oldLang) {
       this.saveContent(oldLang)
       this.changeLanguageAux(newLang)
     },
-    changeLanguageAux(al) {
+    changeLanguageAux (al) {
       let idx = this.savedTranslations.findIndex((t) => t.lang === al)
       if (idx !== -1) {
         const element = this.savedTranslations[idx]
@@ -521,51 +541,56 @@ export default {
         }
       }
     },
-    setContent(element, al) {
+    setContent (element, al) {
       this.internalTitle = element.title
       this.internalDescription = element.description
       if (this.$refs.editor) {
         this.$refs.editor.setContent(this.internalDescription)
       }
-      this.selectedTranslationState = element.translationState
     },
-    saveContent(lang) {
+    saveContent (lang) {
       const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
       const translation = {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
-        lang,
-        published: this.published,
-        translationState: this.selectedTranslationState
-      }
-      if (this.categories_enabled) {
-        translation.category = this.selectedCategoryObject
-      }
-      if (this.topics_enabled) {
-        translation.topics = this.selectedTopicsObjects
-      }
-      if (this.user_types_enabled) {
-        translation.userTypes = this.selectedUserTypesObjects
-      }
-      if (this.is_event) {
-        translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
-        translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
+        lang
       }
       if (idx !== -1) {
         this.savedTranslations[idx] = translation
       } else {
         this.savedTranslations.push(translation)
       }
+      for (const savedTranslation of this.savedTranslations) {
+        savedTranslation.published = this.published
+        savedTranslation.translationState = this.selectedTranslationState
+        if (this.categories_enabled) {
+          translation.category = this.selectedCategoryObject
+        }
+        if (this.topics_enabled) {
+          translation.topics = this.selectedTopicsObjects
+        }
+        if (this.user_types_enabled) {
+          translation.userTypes = this.selectedUserTypesObjects
+        }
+        if (this.is_event && this.startDate && this.startTime) {
+          if (this.startDate && this.startTime) {
+            translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
+          }
+          if (this.finishDate && this.finishTime) {
+            translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
+          }
+          translation.location = this.location
+        }
+      }
     },
-    resetFields(al) {
+    resetFields (al) {
       this.internalTitle = ''
       this.internalDescription = ''
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
       }
-      this.selectedTranslationState = 0
     },
-    setInternalCategorySelector(al) {
+    setInternalCategorySelector (al) {
       this.internalCategories = this.categories.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
@@ -580,7 +605,7 @@ export default {
         return category
       })
     },
-    setInternalTopicSelector(al) {
+    setInternalTopicSelector (al) {
       this.internalTopics = this.topic.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
@@ -598,7 +623,7 @@ export default {
         return topic
       })
     },
-    setInternalUserTypeSelector(al) {
+    setInternalUserTypeSelector (al) {
       this.internalUserTypes = this.user.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
@@ -616,13 +641,13 @@ export default {
         return userType
       })
     },
-    setCategoryObjectModel(category) {
+    setCategoryObjectModel (category) {
       const idx = this.internalCategoriesObjects.findIndex(
         (t) => t.category === category
       )
       this.selectedCategoryObject = this.internalCategoriesObjects[idx]
     },
-    setTopicObjectModel(topic) {
+    setTopicObjectModel (topic) {
       const idx = this.internalTopicsObjects.findIndex(
         (t) => t.topic === topic
       )
@@ -632,7 +657,7 @@ export default {
         this.selectedTopicsObjects.push(topicObj)
       }
     },
-    setUserTypeObjectModel(userType) {
+    setUserTypeObjectModel (userType) {
       const idx = this.internalUserTypesObjects.findIndex(
         (t) => t.userType === userType
       )
@@ -643,21 +668,21 @@ export default {
         this.selectedUserTypesObjects.push(userTypeObj)
       }
     },
-    removeTopic(idx) {
+    removeTopic (idx) {
       this.selectedTopicsObjects.splice(
         idx, 1
       )
     },
-    removeUserType(idx) {
+    removeUserType (idx) {
       this.selectedUserTypesObjects.splice(
         idx, 1
       )
     },
-    goBack() {
+    goBack () {
       this.$router.go(-1)
     },
-    checkErrors() {
-      if (this.selectedTranslationState >= 3) {
+    checkErrors () {
+      if (this.selectedTranslationState >= 2) {
         return true
       }
       if (this.errorDefaultLangEmpty) {
@@ -675,7 +700,7 @@ export default {
       }
       return this.$refs.editor.hasError()
     },
-    callSaveFn() {
+    callSaveFn () {
       if (!this.checkErrors()) {
         this.saveContent(this.langTab)
         for (const language of this.activeLanguages) {
@@ -684,7 +709,7 @@ export default {
               title: '',
               description: '',
               lang: language.lang,
-              translationState: 0
+              translationState: this.selectedTranslationState
             }
             if (this.categories_enabled) {
               emptyTranslation.category = this.selectedCategoryObject
@@ -703,7 +728,7 @@ export default {
         )
       }
     },
-    showWarningPublish(event, id) {
+    showWarningPublish (event, id) {
       if (event == true) {
         this.$q.notify({
           type: 'warning',
@@ -766,7 +791,7 @@ export default {
         }
         return translation.translationState < 2
       } else {
-        return this.selectedTranslationState
+        return true
       }
     }
   },
@@ -780,17 +805,21 @@ export default {
       console.log(this.selectedTranslationState)
     }
   },
-  created() {
+  created () {
     this.loading = true
     const al = this.$i18n.locale
     this.fetchActiveLanguages().then(() => {
       this.langTab = this.activeLanguages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
+        console.log(this.elem)
         this.changeLanguageAux(al)
         this.published = this.elem.published
         this.elemId = this.elem.id
-        this.selectedTranslationState = this.elem.translations[0].translationState
-        if (this.categories_enabled) {
+        const sTSIdx = this.elem.translations.findIndex((t) => t.lang === this.langTab)
+        if (sTSIdx !== -1) {
+          this.selectedTranslationState = this.elem.translations[sTSIdx].translationState
+        }
+        if (this.categories_enabled && this.elem.category !== null) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category
           )
@@ -809,6 +838,7 @@ export default {
           const finishDate = new Date(this.elem.endDate)
           this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
           this.finishTime = `${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+          this.location = this.elem.location
         }
       }
       if (this.categories.length > 0) {

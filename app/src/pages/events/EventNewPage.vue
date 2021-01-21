@@ -27,7 +27,8 @@ export default {
       const eventData = {
         startDate: translationData[0].startDate,
         endDate: translationData[0].finishDate,
-        published: translationData[0].published
+        published: translationData[0].published,
+        location: translationData[0].location
       }
       if ('category' in translationData[0]) {
         eventData.category = translationData[0].category.id
@@ -47,6 +48,7 @@ export default {
                 delete translation.userTypes
                 delete translation.startDate
                 delete translation.finishDate
+                delete translation.location
                 this.addNewEventItemTranslation(dataWithId)
                   .then(() => {
                     if (i === translationData.length - 1) {
