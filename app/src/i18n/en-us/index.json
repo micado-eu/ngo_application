@@ -13,6 +13,7 @@
     "interventions": "Manage validations",
     "migrant": "Migrant users",
     "settings": "Settings",
+    "CSO_user":"CSO User Management",
     "glossary": "Glossary",
     "activelanguages": "Change active languages",
     "information_centre": "Information centre",
@@ -30,7 +31,15 @@
     "element_start_date": "Select the starting date",
     "element_end_date": "Select the ending date",
     "word_count": "Number of words in the description",
-    "location": "Write the location of the event"
+    "location": "Write the location of the event",
+    "pa_username":"Write the username that the user will use to login",
+    "pa_password":"Write the password that the user will use to login",
+    "pa_name":"Write the name of the user",
+    "pa_surname":"Write the surname of the user",
+    "pa_external_id":"Write, if avalaible, the external ID of the user",
+    "pa_admin":"Choose if this account will have admin powers",
+    "pa_mig_tenant":"Choose if this account will be a migrant tenant",
+    "pa_email":"Please insert the user's email"
   },
   "button": {
     "change_pass":"Change Password",
@@ -43,6 +52,7 @@
     "read_less": "Read less",
     "update_link": "Update link",
     "edit": "Edit",
+    "add_user": "Add User",
     "add_link": "Add link"
   },
   "input_labels": {
@@ -119,5 +129,16 @@
     "old_pass":"Old Password",
     "new_pass":"New Password",
     "confirm_pass":"Confirm password"
+  },
+  "new_pa_user":{
+    "usermgmt":"User Management",
+    "username": "Username",
+    "password": "Password",
+    "name":"Name",
+    "surname":"Surname",
+    "external_id":"External ID",
+    "admin":"Admin",
+    "mig_tenant":"Migrant Tenant",
+    "email": "Email"
   }
 }

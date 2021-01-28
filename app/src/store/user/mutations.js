@@ -6,7 +6,9 @@ export function someMutation (state) {
 export function setUser(state, user) {
   state.user = user
 }
-
+export function setCSOUser(state, user) {
+  state.csouser = user
+}
 export function editUser(state, user) {
   console.log("update the state")
   const index = state.user.findIndex(item => item.id === user.id);

@@ -54,6 +54,31 @@ export default {
       .patch('/backend/1.0.0/updateUser?payload=' +payload + '&tenant=' + tenant +'&admin=' + admin + '&adminpwd=' + adminpwd + '&isPswd=1')
       .then(response => { return response.data })
       .catch(error_handler);
-  }
+  },
+  saveCSOUser(user, roles, tenant, token){
+    return axiosInstance
+      .post('/backend/1.0.0/wso2UserComplete?username=' + user.username + '&password=' + user.password + '&name=' + user.givenName+ '&surname=' + user.familyName + '&email=' + user.email + '&roles=' + roles + '&tenant=' + tenant + '&authType=Bearer&authToken=' + token)
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
+  fetchUserGroup(user, token){
+    return axiosInstance
+    .get('/backend/1.0.0/wso2UserRoles?user=' +user + '&tenant=ngo.micado.eu&authType=Bearer&authToken=' + token)
+    .then((response) => response.data)
+    .catch(error_handler)
+  },
+  editUserDataByAdmin(user, tenant, token){
+    return axiosInstance
+      .patch('/backend/1.0.0/updateUser?payload=' +user + '&tenant=' + tenant +'&authType=Bearer&authToken=' + token + '&isAdmin=1')
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
+  fetchCSOUser (tenant) {
+    console.log(tenant)
+    return axiosInstance
+      .get(`/backend/1.0.0/users?filter[include][0][relation]=attributes&filter[where][and][0][umUserName][neq]=admin&filter[where][and][1][umTenantId]=${tenant}`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
 
 }

@@ -174,6 +174,13 @@ export default {
           to: "/settings",
           feature: "FEAT_DEFAULT",
           description: "configure the application"
+        },
+        {
+          label: "menu.CSO_user",
+          icon: "settings_applications",
+          to: "/usermgmt",
+          feature: "FEAT_DEFAULT",
+          description: "Manage CSO users"
         }
       ]
     };

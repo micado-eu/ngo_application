@@ -7,6 +7,7 @@ import EventEditPage from '../pages/events/EventEditPage.vue'
 import Settings from '../components/Settings.vue'
 import MigrantManager from '../components/MigrantManager'
 import ProcessList from '../pages/ProcessList.vue'
+import UserManagement from '../pages/UserManagement'
 
 const routes = [
   {
@@ -26,6 +27,7 @@ const routes = [
       { path: '/events/:id/edit/', component: EventEditPage },
       { path: '/settings', component: Settings },
       { path: '/migrant', component: MigrantManager },
+      { path: 'usermgmt', component: UserManagement },
       { path: '/guided_process_editor', component: ProcessList },
 
       //       { path: '/notifications', component: () => import('components/Notifications.vue') },
