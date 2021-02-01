@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/micado-eu/ngo_application/badge)](https://www.codefactor.io/repository/github/micado-eu/ngo_application)
+
 # Micado app (micado)
 
 NGO application

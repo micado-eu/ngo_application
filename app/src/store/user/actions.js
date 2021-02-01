@@ -71,6 +71,33 @@ export function editUserPassword (state, payload) {
   return client
     .editUserPassword(payload.admin, payload.adminpwd, payload.payload, payload.tenant)
 }
+export function saveCSOUser (state, payload) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log(payload)
+  return client
+    .saveCSOUser(payload.user, payload.roles, payload.tenant, payload.token)
+}
+export function fetchUserGroup (state, payload) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log(payload)
+  return client
+    .fetchUserGroup(payload.user, payload.token)
+}
+export function fetchCSOUser (state, data) {
+  console.log(data)
+  return client
+    .fetchCSOUser(data)
+    .then((csouser) => {
+      state.commit('setCSOUser', csouser)
+      return csouser
+    })
+}
+export function editUserDataByAdmin (state, payload) {
+  // we need BEFORE to call the API to do the update and if ok we update wuex state
+  console.log(payload)
+  return client
+    .editUserDataByAdmin(payload.user,  payload.tenant, payload.token)
+}
 
 /*export function deleteDocument({commit}, document_type) {
 

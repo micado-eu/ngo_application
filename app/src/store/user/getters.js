@@ -11,3 +11,6 @@ export function csoUserProfile (state) {
     console.log("aske for pa user profile")
     return state.csoUserProfile
   }
+  export function csouser (state) {
+    return state.csouser
+  }
