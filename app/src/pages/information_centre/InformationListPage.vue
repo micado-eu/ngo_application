@@ -14,6 +14,8 @@
       categories_url="/information/categories"
       topics_enabled
       user_types_enabled
+      entity="information"
+      @batchUpload="updateContent()"
     />
   </div>
 </template>

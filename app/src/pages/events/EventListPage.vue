@@ -15,6 +15,8 @@
       topics_enabled
       user_types_enabled
       is_event
+      entity="event"
+      @batchUpload="updateContent()"
     />
   </div>
 </template>

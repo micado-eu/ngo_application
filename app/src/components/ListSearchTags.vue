@@ -43,20 +43,21 @@
                 v-model="selectedTopics"
                 :val="topic.id"
                 class="filter-text"
-                :label="topic.topic"
+                :label="topicTransl(topic)"
                 @input="filterByTopics()"
               />
-              <span class="q-mt-sm">
-                {{topic.translations.filter(t => t.lang ===  lang)[0].topic}}
-              </span>
               <q-img
                 :src="topic.icon"
                 spinner-color="white"
                 id="image"
-                :alt="topic.topic"
-                class="q-ml-sm filter-icon"
+                :alt="topicTransl(topic)"
+                class="q-ml-sm q-mt-sm filter-icon"
                 :img-style="{'max-width': '24px', 'max-height': '24px'}"
-              />
+              >
+                <q-tooltip :key="'topic_tooltip'.concat(topic.id)">
+                  {{topicTransl(topic)}}
+                </q-tooltip>
+              </q-img>
             </q-item>
             <q-item v-if="!isMaxShowMoreTopics">
               <a
@@ -124,20 +125,21 @@
                 v-model="selectedUserTypes"
                 :val="userType.id"
                 class="filter-text"
-                :label="userType.user_type"
+                :label="userTypeTransl(userType)"
                 @input="filterByUserTypes()"
               />
-              <span class="q-mt-sm">
-                {{userType.translations.filter(t => t.lang ===  lang)[0].userType}}
-              </span>
               <q-img
                 :src="userType.icon"
                 spinner-color="white"
                 id="image"
-                :alt="userType.user_type"
-                class="q-ml-sm filter-icon"
+                :alt="userTypeTransl(userType)"
+                class="q-ml-sm q-mt-sm filter-icon"
                 :img-style="{'max-width': '24px', 'max-height': '24px'}"
-              />
+              >
+                <q-tooltip :key="'userType_tooltip'.concat(userType.id)">
+                  {{userTypeTransl(userType)}}
+                </q-tooltip>
+              </q-img>
             </q-item>
             <q-item v-if="!isMaxShowMoreUserTypes">
               <a
@@ -176,11 +178,18 @@
           <q-btn
             no-caps
             :label='$t(add_label)'
-            class="add-btn q-ml-md q-my-lg margin-right-btn"
+            class="add-btn q-ml-md"
             data-cy="add_element"
             :to="new_url"
           />
         </div>
+        <!-- <div class="row">
+          <upload-button
+            :entity="entity"
+            @uploadSuccess="batchUploadSuccess($event)"
+            @uploadError="batchUploadError($event)"
+          ></upload-button>
+        </div> -->
         <div class="flex">
           <!-- column title -->
           <span style="flex: 11.45"></span>
@@ -224,10 +233,14 @@
                       :src="topic.icon"
                       spinner-color="white"
                       id="image"
-                      :alt="topic.topic"
+                      :alt="topicTransl(topic)"
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.topics.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
-                    />
+                    >
+                      <q-tooltip :key="'topic_tooltip'.concat(topic.id)">
+                        {{topicTransl(topic)}}
+                      </q-tooltip>
+                    </q-img>
                   </span>
                   <span
                     v-if="user_types_enabled && item.userTypes.length > 0"
@@ -240,10 +253,14 @@
                       :src="userType.icon"
                       spinner-color="white"
                       id="image"
-                      :alt="userType.topic"
+                      :alt="userTypeTransl(userType)"
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.userTypes.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
-                    />
+                    >
+                      <q-tooltip :key="'userType_tooltip'.concat(userType.id)">
+                        {{userTypeTransl(userType)}}
+                      </q-tooltip>
+                    </q-img>
                   </span>
                   <span
                     class="tags_text"
@@ -289,7 +306,7 @@
                         src="statics/icons/Icon - Location Pin.svg"
                         spinner-color="white"
                         :img-style="{'max-width': '24px', 'max-height': '24px'}"
-                        class="filter-icon"
+                        class="filter-icon q-mb-sms"
                         v-if="is_event && item.location && showExtraInfo[item.id]"
                       />
                       <span
@@ -308,7 +325,6 @@
               >
                 <q-toggle
                   v-model="item.published"
-                  @input="updatePublished($event, item.id)"
                   color="accent"
                   disable
                 />
@@ -359,6 +375,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import Fuse from 'fuse.js'
 import GlossaryEditorViewer from './GlossaryEditorViewer'
+// import UploadButton from 'components/UploadButton'
 
 export default {
   name: 'ListSearchTags',
@@ -420,7 +437,10 @@ export default {
     is_event: {
       type: Boolean,
       default: false
-    }
+    },
+    // entity: {
+    //   type: String
+    // }
   },
   data () {
     return {
@@ -449,7 +469,8 @@ export default {
     }
   },
   components: {
-    'glossary-editor-viewer': GlossaryEditorViewer
+    'glossary-editor-viewer': GlossaryEditorViewer,
+    // 'upload-button': UploadButton
   },
   methods: {
     ...mapActions('glossary', ['fetchGlossary']),
@@ -552,6 +573,15 @@ export default {
     toggleExtraInfo (id) {
       this.showExtraInfo[id] = !this.showExtraInfo[id]
     },
+    // batchUploadSuccess (success) {
+    //   this.$emit("batchUpload")
+    // },
+    // batchUploadError (error) {
+    //   this.$q.notify({
+    //     type: 'negative',
+    //     message: `Error while uploading: ${err}`
+    //   })
+    // },
     initializeList () {
       this.translatedElements = this.elements.map((e) => {
         let translation
@@ -560,7 +590,7 @@ export default {
           if (idx !== -1) {
             translation = { ...e.translations[idx] }
             translation.id = e.id // In case of errors we still have the id
-            if (this.categories_enabled) {
+            if (this.categories_enabled && e.category) {
               const idxCat = e.category.translations.findIndex((t) => t.lang === this.lang)
               translation.category = e.category.translations[idxCat]
               if (this.translatedCategories.indexOf(translation.category) == -1) {
@@ -630,6 +660,14 @@ export default {
       this.filteredElementsByTopics = this.translatedElements
       this.filteredElementsByUserTypes = this.translatedElements
       this.loading = false
+    },
+    topicTransl (topic) {
+      const idx = topic.translations.findIndex((t) => t.lang === this.lang)
+      return idx !== -1 ? topic.translations[idx].topic : ''
+    },
+    userTypeTransl (userType) {
+      const idx = userType.translations.findIndex((t) => t.lang === this.lang)
+      return idx !== -1 ? userType.translations[idx].userType : ''
     }
   },
   computed: {
@@ -700,14 +738,14 @@ $btn_secondary: #cdd0d2;
   border-radius: 5px;
   margin-right: 85px;
   margin-top: 65px;
-  margin-bottom: 75px;
+  margin-bottom: 25px;
 }
 .cat-btn {
   background-color: $accent_list;
   color: white;
   border-radius: 5px;
   margin-top: 65px;
-  margin-bottom: 75px;
+  margin-bottom: 25px;
 }
 .toolbar-list {
   background-color: $accent_list;
@@ -788,7 +826,7 @@ $btn_secondary: #cdd0d2;
 .search-bar {
   border-radius: 5px;
   margin-top: 65px;
-  margin-bottom: 75px;
+  margin-bottom: 25px;
   max-width: 75%;
 }
 .filter-list {

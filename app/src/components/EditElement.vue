@@ -7,20 +7,54 @@
       v-else
     >
       <div class="center-edit q-ma-xl">
-        <div class="warning-error-row row">
+        <div
+          class="warning-error-row row"
+          v-if="errorDefaultLangEmpty"
+        >
           <span class="col"></span>
-          <span
-            class="warning-error col"
-            v-if="errorDefaultLangEmpty"
-          >{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
-          <span
-            class="warning-error col"
-            v-if="selectedTranslationState === 2"
-          >{{$t("error_messages.in_translation")}}</span>
-          <span
-            class="warning-error col"
-            v-if="(selectedTranslationState === 3) && elem.published"
-          >{{$t("error_messages.change_translated")}}</span>
+          <span class="warning-error col">
+            {{$t("error_messages.fill_default_language")}} {{$defaultLangString}}
+          </span>
+          <span class="col"></span>
+        </div>
+        <div
+          class="warning-error-row row"
+          v-if="errorCategoryEmpty"
+        >
+          <span class="col"></span>
+          <span class="warning-error col">
+            {{$t("error_messages.category_empty")}}
+          </span>
+          <span class="col"></span>
+        </div>
+        <div
+          class="row"
+          v-if="selectedTranslationState === 2"
+        >
+          <span class="col"></span>
+          <span class="warning-error col">
+            {{$t("error_messages.in_translation")}}
+          </span>
+          <span class="col"></span>
+        </div>
+        <div
+          class="warning-error-row row"
+          v-if="(selectedTranslationState === 3) && elem.published"
+        >
+          <span class="col"></span>
+          <span class="warning-error col">
+            {{$t("error_messages.change_translated")}}
+          </span>
+          <span class="col"></span>
+        </div>
+        <div
+          class="warning-error-row row"
+          v-if="errorDateTimeEmpty"
+        >
+          <span class="col"></span>
+          <span class="warning-error col">
+            {{$t("error_messages.date_time_empty")}}
+          </span>
           <span class="col"></span>
         </div>
         <div>
@@ -682,23 +716,12 @@ export default {
       this.$router.go(-1)
     },
     checkErrors () {
-      if (this.selectedTranslationState >= 2) {
-        return true
-      }
-      if (this.errorDefaultLangEmpty) {
-        return true
-      }
-      if (this.internalTitle.length <= 0) {
-        return true
-      }
-      if (
-        this.categories_enabled
-        && Object.keys(this.selectedCategoryObject).length === 0
-        && this.selectedCategoryObject.constructor === Object
-      ) {
-        return true
-      }
-      return this.$refs.editor.hasError()
+      return (this.selectedTranslationState >= 2) 
+        || this.errorDefaultLangEmpty 
+        || (this.internalTitle.length <= 0) 
+        || this.errorCategoryEmpty 
+        || this.errorDateTimeEmpty 
+        || this.$refs.editor.hasError()
     },
     callSaveFn () {
       if (!this.checkErrors()) {
@@ -779,6 +802,20 @@ export default {
       }
       return !this.internalTitle
     },
+    errorCategoryEmpty: function () {
+      return this.categories_enabled
+        && Object.keys(this.selectedCategoryObject).length === 0
+        && this.selectedCategoryObject.constructor === Object
+    },
+    errorDateTimeEmpty: function () {
+      return this.is_event
+        && (
+          this.startDate === ''
+          || this.finishDate === ''
+          || this.startTime === ''
+          || this.finishTime === ''
+        )
+    },
     publishToggleState: function () {
       if (this.elem) {
         let idx = this.savedTranslations.findIndex((t) => t.lang === this.$defaultLang)
@@ -834,10 +871,10 @@ export default {
         if (this.is_event) {
           const startDate = new Date(this.elem.startDate)
           this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()}`
-          this.startTime = `${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
+          this.startTime = `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           const finishDate = new Date(this.elem.endDate)
           this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
-          this.finishTime = `${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+          this.finishTime = `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           this.location = this.elem.location
         }
       }

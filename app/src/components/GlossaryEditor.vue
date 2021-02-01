@@ -144,6 +144,12 @@
                         class="uploader"
                         @onUpload="onUploadImage($event, commands)"
                       ></image-uploader>
+                      <q-input
+                        :label="$t('upload_modal.text_alternative')"
+                        color="accent"
+                        style="width: 500px"
+                        v-model="altImage"
+                      />
                     </q-card-section>
                   </q-tab-panel>
                   <q-tab-panel name="url">
@@ -154,14 +160,19 @@
                         style="width: 500px"
                         v-model="urlImage"
                       />
+                      <q-input
+                        :label="$t('upload_modal.text_alternative')"
+                        color="accent"
+                        style="width: 500px"
+                        v-model="altImage"
+                      />
                     </q-card-section>
                     <q-card-actions align="right">
                       <q-btn
                         unelevated
                         :label="$t('upload_modal.upload_button')"
-                        @click="commands.image({src: urlImage})"
+                        @click="onUploadImage(urlImage, commands)"
                         color="accent"
-                        v-close-popup
                         no-caps
                       />
                     </q-card-actions>
@@ -237,7 +248,8 @@ export default {
       errorMessage: "",
       linkUrl: null,
       linkMenuIsActive: false,
-      textCount: {} // value returned from VueCountable on text change
+      textCount: {}, // value returned from VueCountable on text change
+      altImage: null
     }
   },
   methods: {
@@ -284,8 +296,9 @@ export default {
       })
     },
     onUploadImage(event, commands) {
-      commands.image({ src: event })
+      commands.image({ src: event, alt: this.altImage})
       this.$refs.uploadDialog.hide()
+      this.altImage = null
     },
     hasError() {
       return this.errorMessage.length > 0

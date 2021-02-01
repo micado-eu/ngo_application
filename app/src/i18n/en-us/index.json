@@ -93,14 +93,16 @@
     "max_char_limit": "Maximum number of characters reached: ",
     "fill_default_language": "Please fill the default language title: ",
     "in_translation": "This content is waiting translation. The edited content will not be saved.",
-    "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted."
+    "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted.",
+    "date_time_empty": "Please fill the start and end dates and times."
   },
   "upload_modal": {
     "upload_label": "Upload",
     "url": "URL",
     "url_label": "URL",
     "upload_button": "Upload",
-    "uploader_label": "Upload image (Max 25 MB)"
+    "uploader_label": "Upload image (Max 25 MB)",
+    "text_alternative": "Text alternative to image"
   },
   "text_editor": {
     "word_count": "Word count"
