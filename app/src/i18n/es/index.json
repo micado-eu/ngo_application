@@ -1,86 +1,103 @@
 {
-  "menu": {
-      "title": "Mis herramientas",
-      "dashboard": "Tablero",
-      "documenttype": "Administrar tipos de documentos",
-      "configure": "Configuración",
-      "processmanager": "Administrar procesos",
-      "mediation": "Solicitar mediación",
-      "integrationcategory": "Administrar categorías de integración",
-      "integrationtype": "Administrar tipos de integración",
-      "courses": "Cursos",
-      "topic": "Administrar temas",
-      "interventions": "Administrar validaciones",
-      "migrant": "Gestión de migrantes",
-      "settings": "Configuración",
-      "glossary": "Glosario",
-      "activelanguages": "Cambiar idiomas activos",
-      "information_centre": "Centro de Información",
-      "process": "Procesos guiados",
-      "events": "Eventos"
-  },
-  "help": {
-      "element_title": "Escriba un titulo",
-      "element_description": "Escriba una descripción",
-      "element_category": "Seleccione una categoría",
-      "element_topic": "Elija un tema",
-      "element_user_type": "Seleccione un tipo de usuario",
-      "element_start_date": "Seleccione la fecha de inicio",
-      "element_end_date": "Seleccione la fecha de finalización"
-  },
-  "button": {
-      "save": "Guardar",
-      "cancel": "Cancelar",
-      "add_event": "Añadir Evento",
-      "add_information": "Añadir Información",
-      "categories": "Categorías"
-  },
-  "input_labels": {
-      "search": "Buscar",
-      "is_published": "Publicado",
-      "description": "Descripción",
-      "title": "Título",
-      "select_category": "Selecciona una categoría",
-      "select_topic": "Seleccionar tema",
-      "select_user_type": "Seleccionar tipo de usuario",
-      "start_date": "Seleccionar fecha de inicio",
-      "finish_date": "Seleccionar fecha de finalización"
-  },
-  "information_centre": {
-      "list_title": "Centro de Información",
-      "add_new": "Agregar nueva información al centro de información",
-      "edit": "Editar información desde el Centro de información"
-  },
-  "events": {
-      "list_title": "Eventos",
-      "add_new": "Agregar nuevo evento a la lista de eventos",
-      "edit": "Editar evento de la lista de eventos"
-  },
-  "filters": {
-      "title": "Filtrar",
-      "clear_all": "Borrar todos los filtros",
-      "category_title": "Categorías",
-      "show_more": "Mostrar más",
-      "topics_title": "Temas",
-      "user_types_title": "Tipos de Usuarios"
-  },
-  "lists": {
-      "published": "Publicado",
-      "category": "Categoría",
-      "topics": "Temas",
-      "user_types": "Tipos de Usuarios",
-      "start_date": "Fecha de inicio",
-      "end_date": "Fecha de fin"
-  },
-  "date_selector": {
-      "close": "Cerrar"
-  },
-  "error_messages": {
-      "title_empty": "El título está vacío. Añade un título.",
-      "category_empty": "Por favor seleccione una categoría.",
-      "max_char_limit": "Número máximo de caracteres alcanzado: ",
-      "fill_default_language": "Complete el título del idioma predeterminado: ",
-      "in_translation": "Este contenido está esperando traducción. El contenido editado no se guardará.",
-      "change_translated": "Para editar el contenido, cambie el estado de traducción a Edición. Si el contenido se cambia a Edición y se guarda, se eliminarán las traducciones actuales."
-  }
+    "menu": {
+        "title": "Mis herramientas",
+        "dashboard": "Tablero",
+        "documenttype": "Administrar tipos de documentos",
+        "configure": "Configuración",
+        "processmanager": "Administrar procesos",
+        "mediation": "Solicitar mediación",
+        "integrationcategory": "Administrar categorías de integración",
+        "integrationtype": "Administrar tipos de integración",
+        "courses": "Cursos",
+        "topic": "Administrar temas",
+        "interventions": "Administrar validaciones",
+        "migrant": "Gestión de migrantes",
+        "settings": "Configuración",
+        "glossary": "Glosario",
+        "activelanguages": "Cambiar idiomas activos",
+        "information_centre": "Centro de Información",
+        "process": "Procesos guiados",
+        "events": "Eventos",
+        "login": "Iniciar sesión",
+        "logout": "Cerrar sesión"
+    },
+    "help": {
+        "element_title": "Escriba un titulo",
+        "element_description": "Escriba una descripción",
+        "element_category": "Seleccione una categoría",
+        "element_topic": "Elija un tema",
+        "element_user_type": "Seleccione un tipo de usuario",
+        "element_start_date": "Seleccione la fecha de inicio",
+        "element_end_date": "Seleccione la fecha de finalización",
+        "word_count": "Número de palabras en la descripción"
+    },
+    "button": {
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "add_event": "Añadir Evento",
+        "add_information": "Añadir Información",
+        "categories": "Categorías",
+        "read_more": "Leer más",
+        "read_less": "Leer menos",
+        "update_link": "Actualizar enlace",
+        "add_link": "Añadir enlace"
+    },
+    "input_labels": {
+        "search": "Buscar",
+        "is_published": "Publicado",
+        "description": "Descripción",
+        "title": "Título",
+        "select_category": "Selecciona una categoría",
+        "select_topic": "Seleccionar tema",
+        "select_user_type": "Seleccionar tipo de usuario",
+        "start_date": "Seleccionar fecha de inicio",
+        "finish_date": "Seleccionar fecha de finalización"
+    },
+    "information_centre": {
+        "list_title": "Centro de Información",
+        "add_new": "Agregar nueva información al centro de información",
+        "edit": "Editar información desde el Centro de información"
+    },
+    "events": {
+        "list_title": "Eventos",
+        "add_new": "Agregar nuevo evento a la lista de eventos",
+        "edit": "Editar evento de la lista de eventos"
+    },
+    "filters": {
+        "title": "Filtrar",
+        "clear_all": "Borrar todos los filtros",
+        "category_title": "Categorías",
+        "show_more": "Mostrar más",
+        "topics_title": "Temas",
+        "user_types_title": "Tipos de Usuarios"
+    },
+    "lists": {
+        "published": "Publicado",
+        "category": "Categoría",
+        "topics": "Temas",
+        "user_types": "Tipos de Usuarios",
+        "start_date": "Fecha de inicio",
+        "end_date": "Fecha de fin"
+    },
+    "date_selector": {
+        "close": "Cerrar"
+    },
+    "error_messages": {
+        "title_empty": "El título está vacío. Añade un título.",
+        "category_empty": "Por favor seleccione una categoría.",
+        "max_char_limit": "Número máximo de caracteres alcanzado: ",
+        "fill_default_language": "Complete el título del idioma predeterminado: ",
+        "in_translation": "Este contenido está esperando traducción. El contenido editado no se guardará.",
+        "change_translated": "Para editar el contenido, cambie el estado de traducción a Edición. Si el contenido se cambia a Edición y se guarda, se eliminarán las traducciones actuales."
+    },
+    "upload_modal": {
+        "upload_label": "Subir",
+        "url": "URL",
+        "url_label": "URL",
+        "upload_button": "Subir",
+        "uploader_label": "Subir imagen (Máximo 25 MB)"
+    },
+    "text_editor": {
+        "word_count": "Recuento de palabras"
+    }
 }
