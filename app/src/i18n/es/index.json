@@ -29,7 +29,16 @@
         "element_user_type": "Seleccione un tipo de usuario",
         "element_start_date": "Seleccione la fecha de inicio",
         "element_end_date": "Seleccione la fecha de finalización",
-        "word_count": "Número de palabras en la descripción"
+        "word_count": "Número de palabras en la descripción",
+        "location": "Escriba la localización del evento",
+        "pa_email": "Por favor, introduzca el correo electrónico del usuario",
+        "pa_mig_tenant": "Elija si esta cuenta será un inquilino migrante",
+        "pa_admin": "Elija si esta cuenta tendrá poderes de administrador",
+        "pa_external_id": "Escriba, si está disponible, el ID externo del usuario",
+        "pa_surname": "Escriba el apellido del usuario",
+        "pa_name": "Escriba el nombre del usuario",
+        "pa_password": "Escriba la contraseña que el usuario utilizará para iniciar la sesión",
+        "pa_username": "Escriba el nombre de usuario que el usuario utilizará para iniciar sesión"
     },
     "button": {
         "save": "Guardar",
@@ -40,7 +49,10 @@
         "read_more": "Leer más",
         "read_less": "Leer menos",
         "update_link": "Actualizar enlace",
-        "add_link": "Añadir enlace"
+        "add_link": "Añadir enlace",
+        "add_user": "Añadir Usuario",
+        "edit": "Editar",
+        "change_pass": "Cambiar contraseña"
     },
     "input_labels": {
         "search": "Buscar",
@@ -51,7 +63,8 @@
         "select_topic": "Seleccionar tema",
         "select_user_type": "Seleccionar tipo de usuario",
         "start_date": "Seleccionar fecha de inicio",
-        "finish_date": "Seleccionar fecha de finalización"
+        "finish_date": "Seleccionar fecha de finalización",
+        "location": "Localización"
     },
     "information_centre": {
         "list_title": "Centro de Información",
@@ -77,7 +90,8 @@
         "topics": "Temas",
         "user_types": "Tipos de Usuarios",
         "start_date": "Fecha de inicio",
-        "end_date": "Fecha de fin"
+        "end_date": "Fecha de fin",
+        "location": "Localización"
     },
     "date_selector": {
         "close": "Cerrar"
@@ -88,16 +102,42 @@
         "max_char_limit": "Número máximo de caracteres alcanzado: ",
         "fill_default_language": "Complete el título del idioma predeterminado: ",
         "in_translation": "Este contenido está esperando traducción. El contenido editado no se guardará.",
-        "change_translated": "Para editar el contenido, cambie el estado de traducción a Edición. Si el contenido se cambia a Edición y se guarda, se eliminarán las traducciones actuales."
+        "change_translated": "Para editar el contenido, cambie el estado de traducción a Edición. Si el contenido se cambia a Edición y se guarda, se eliminarán las traducciones actuales.",
+        "date_time_empty": "Por favor complete las fechas y horas de inicio y fin."
     },
     "upload_modal": {
         "upload_label": "Subir",
         "url": "URL",
         "url_label": "URL",
         "upload_button": "Subir",
-        "uploader_label": "Subir imagen (Máximo 25 MB)"
+        "uploader_label": "Subir imagen (Máximo 25 MB)",
+        "text_alternative": "Texto alternativo a la imagen"
     },
     "text_editor": {
         "word_count": "Recuento de palabras"
+    },
+    "new_pa_user": {
+        "email": "Correo electrónico",
+        "mig_tenant": "Inquilino migrante",
+        "admin": "Administrador",
+        "external_id": "ID externo",
+        "surname": "Apellido",
+        "name": "Nombre",
+        "password": "Contraseña",
+        "username": "Nombre de usuario"
+    },
+    "pa_profile": {
+        "confirm_pass": "Confirmar contraseña",
+        "new_pass": "Nueva contraseña",
+        "old_pass": "Contraseña antigua",
+        "mail": "Correo electrónico",
+        "phone_number": "Número de teléfono",
+        "personal_profile": "Perfil personal",
+        "gender": "Género",
+        "dob": "Fecha de nacimiento",
+        "country": "País",
+        "legal_name": "Nombre legal",
+        "password": "Contraseña",
+        "username": "Nombre de usuario"
     }
 }
