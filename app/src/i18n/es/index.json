@@ -19,7 +19,8 @@
         "process": "Procesos guiados",
         "events": "Eventos",
         "login": "Iniciar sesión",
-        "logout": "Cerrar sesión"
+        "logout": "Cerrar sesión",
+        "CSO_user": "Administración de Usuario OSC"
     },
     "help": {
         "element_title": "Escriba un titulo",
@@ -124,7 +125,8 @@
         "surname": "Apellido",
         "name": "Nombre",
         "password": "Contraseña",
-        "username": "Nombre de usuario"
+        "username": "Nombre de usuario",
+        "usermgmt": "Administración de Usuarios"
     },
     "pa_profile": {
         "confirm_pass": "Confirmar contraseña",
@@ -138,6 +140,7 @@
         "country": "País",
         "legal_name": "Nombre legal",
         "password": "Contraseña",
-        "username": "Nombre de usuario"
+        "username": "Nombre de usuario",
+        "change_pic": "Cambiar foto"
     }
 }
