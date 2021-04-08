@@ -1,1 +1,89 @@
-{}
+{
+    "help": {
+        "element_category": "Kategorie auswählen",
+        "element_topic": "Themenfeld auswählen",
+        "element_user_type": "Nutzergruppe auswählen",
+        "element_end_date": "Enddatum auswählen ",
+        "element_title": "Titel einfügen",
+        "element_description": "Beschreibung einfügen "
+    },
+    "events": {
+        "list_title": "Veranstaltungen",
+        "edit": "Veranstaltung aus der Veranstaltungsliste editieren",
+        "add_new": "Neue Veranstaltung in der Veranstaltungsliste anlegen"
+    },
+    "filters": {
+        "title": "Filter",
+        "category_title": "Kategorie",
+        "topics_title": "Themenfelder",
+        "show_more": "Mehr zeigen",
+        "clear_all": "Alle Filter zurücksetzen"
+    },
+    "lists": {
+        "published": "Veröffentlicht",
+        "category": "Kategorie",
+        "topics": "Themenfelder",
+        "user_types": "Nutzergruppen",
+        "start_date": "Startdatum",
+        "end_date": "Enddatum",
+        "location": "Ort"
+    },
+    "information_centre": {
+        "edit": "Eintrag in \"Nützliche Informationen\" editieren",
+        "add_new": "Eintrag in \"Nützliche Informationen\" anlegen",
+        "list_title": "Nützliche Informationen"
+    },
+    "input_labels": {
+        "location": "Ort",
+        "select_category": "Kategorie auswählen",
+        "title": "Titel"
+    },
+    "date_selector": {
+        "close": "Schließen"
+    },
+    "error_messages": {
+        "title_empty": "Titel ist leer. Bitte Titel einfügen.",
+        "category_empty": "Kategorie wählen",
+        "max_char_limit": "Maximale Anzahl der Zeichen erreicht",
+        "fill_default_language": "Titel in der Standardsprache einfügen",
+        "date_time_empty": "Bitte Start- und Enddatum, sowie Uhrzeit angeben",
+        "in_translation": "Der Inhalt befindet sich im Übersetzungsmodus. Änderungen werden nicht gespeichert.",
+        "change_translated": "Den Übersetzungsstatus auf \"in Bearbeitung\" setzen, um die Editierung zu ermöglichen. Wird der Inhalt geändert und gespeichert, wird die bestehende Übersetzung gelöscht."
+    },
+    "upload_modal": {
+        "url": "URL",
+        "url_label": "URL",
+        "upload_button": "Hochladen",
+        "text_alternative": "Alternativtext (falls Bild nicht vorhanden)",
+        "upload_label": "Hochladen",
+        "uploader_label": "Bild hochladen (max. 25 MB)"
+    },
+    "text_editor": {
+        "word_count": "Anzahl Wörter"
+    },
+    "pa_profile": {
+        "dob": "Geburtsdatum",
+        "country": "Land",
+        "legal_name": "Vollständiger offizieller Name",
+        "password": "Passwort",
+        "change_pic": "Bild ändern",
+        "confirm_pass": "Passwort bestätigen",
+        "new_pass": "Neues Passwort",
+        "old_pass": "Bisheriges Passwort",
+        "mail": "E-Mail",
+        "personal_profile": "Persönliches Profil",
+        "gender": "Gender",
+        "phone_number": "Telefonnummer",
+        "username": "Benutzername"
+    },
+    "new_pa_user": {
+        "email": "E-Mail",
+        "mig_tenant": "Migrant Tenant",
+        "admin": "Admin",
+        "surname": "Nachname",
+        "name": "Vorname",
+        "password": "Passwort",
+        "username": "Benutzername",
+        "external_id": "Externe ID"
+    }
+}
