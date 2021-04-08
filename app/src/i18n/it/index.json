@@ -1,5 +1,89 @@
 {
     "error_messages": {
         "title_empty": "Il titolo è vuoto. Si prega di aggiungere un titolo."
+    },
+    "help": {
+        "pa_mig_tenant": "Scegli se questo account sarà un tenant dei migranti",
+        "word_count": "Numero di parole nella descrizione",
+        "pa_password": "Inserisci la password che l'utente userà per accedere",
+        "element_description": "Aggiungi una descrizione",
+        "element_category": "Seleziona una categoria",
+        "element_end_date": "Seleziona la data di fine",
+        "location": "Aggiungi il luogo dell'evento",
+        "pa_username": "Inserici il nome utente che l'utente userà per accedere",
+        "pa_name": "Inserisci il nome dell'utente",
+        "pa_surname": "Inserisci il cognome dell'utente",
+        "pa_admin": "Scegli se questo account avrà poteri d amministratore",
+        "pa_email": "Inserire l'email dell'utente",
+        "pa_external_id": "Inserisci, se disponibile, l'ID esterno dell'utente",
+        "element_title": "Aggiungi un titolo",
+        "element_topic": "Seleziona un argomento",
+        "element_user_type": "Seleziona un tipo di utente",
+        "element_start_date": "Seleziona la data d'inizio"
+    },
+    "button": {
+        "categories": "Categorie",
+        "read_more": "Leggi di più",
+        "update_link": "Aggiorna link",
+        "add_user": "Aggiungi utente",
+        "add_link": "Aggiungi link",
+        "add_event": "Aggiungi evento",
+        "add_information": "Aggiungi informazioni",
+        "save": "Salva",
+        "cancel": "Cancella",
+        "read_less": "Leggi di meno",
+        "change_pass": "Cambia Password",
+        "edit": "Modifica"
+    },
+    "input_labels": {
+        "finish_date": "Data di fine",
+        "location": "Luogo",
+        "search": "Cerca",
+        "is_published": "Pubblicato",
+        "description": "Descrizione",
+        "title": "Titolo",
+        "select_category": "Seleziona categoria",
+        "select_topic": "Seleziona argomento",
+        "select_user_type": "Seleziona tipi di utente",
+        "start_date": "Data d'inizio"
+    },
+    "menu": {
+        "title": "Benvenuto",
+        "dashboard": "Dashboard",
+        "configure": "Configurazione",
+        "courses": "Corsi",
+        "topic": "Gestisci argomenti",
+        "interventions": "Gestisci validazioni",
+        "migrant": "Migranti",
+        "CSO_user": "Gestione utente CSO",
+        "glossary": "Glossario",
+        "activelanguages": "Cambia lingue attive",
+        "information_centre": "Centro informazioni",
+        "login": "Accedi",
+        "logout": "Esci",
+        "settings": "Opzioni",
+        "events": "Eventi",
+        "documenttype": "Gestisci tipi di documento",
+        "processmanager": "Gestisci processi",
+        "mediation": "Richiedi mediazione",
+        "integrationcategory": "Gestisci categorie d'intervento",
+        "integrationtype": "Gestisci tipi d'intervento",
+        "process": "Processi guidati"
+    },
+    "information_centre": {
+        "list_title": "Centro informazioni",
+        "add_new": "Aggiungi nuova informazione al centro informazioni",
+        "edit": "Modifica informazione del centro informazioni"
+    },
+    "events": {
+        "list_title": "Eventi",
+        "add_new": "Aggiungi nuovo evento alla lista di eventi",
+        "edit": "Modifica evento della lista eventi"
+    },
+    "filters": {
+        "title": "Filtra"
+    },
+    "date_selector": {
+        "close": "Chiudi"
     }
 }
