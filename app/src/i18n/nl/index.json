@@ -1,1 +1,47 @@
-{}
+{
+    "help": {
+        "element_title": "Schrijf een titel",
+        "element_description": "Schrijf een beschrijving",
+        "element_category": "Selecteer een categorie",
+        "element_topic": "Selecteer een topic",
+        "element_user_type": "Selecteer een type user",
+        "element_end_date": "Selecteer de einddatum",
+        "word_count": "Aantal woorden in de beschrijving",
+        "location": "Geef de locatie van het evenement op",
+        "pa_password": "Geef het wachtwoord op de dat gebruiker zal gebruiken om in te loggen",
+        "pa_name": "Geef de naam van de gebruiker in",
+        "pa_surname": "Geef de familienaam van de gebruiker in",
+        "pa_external_id": "Geef, indien van toepassing, de externe ID van de gebruiker in",
+        "pa_mig_tenant": "Kies of deze account een migrant gebruiker is",
+        "pa_email": "Gelieve het email adres van de gebruiker om te geven",
+        "element_start_date": "Selecteer de startdatum",
+        "pa_username": "Geef de gebruikersnaam in waarmee deze gebruiker zal inloggen",
+        "pa_admin": "Kies of de account beheersrechten moet krijgen"
+    },
+    "menu": {
+        "glossary": "Woordenlijst",
+        "login": "Login",
+        "logout": "Logout"
+    },
+    "button": {
+        "change_pass": "Wachtwoord veranderen",
+        "save": "Opslaan",
+        "cancel": "Annuleren",
+        "edit": "Wijzigen",
+        "add_user": "Gebruiker toevoegen",
+        "add_event": "Evenement toevoegen",
+        "categories": "Categorieën",
+        "read_more": "Lees meer",
+        "read_less": "Lees minder",
+        "update_link": "Link updaten",
+        "add_link": "Link toevoegen",
+        "add_information": "Informatie toevoegen"
+    },
+    "input_labels": {
+        "search": "Zoeken",
+        "is_published": "Gepubliceerd",
+        "description": "Beschrijving",
+        "title": "Titel",
+        "select_category": "Categorie selecteren"
+    }
+}
