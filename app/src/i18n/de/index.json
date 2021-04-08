@@ -36,7 +36,10 @@
     "input_labels": {
         "location": "Ort",
         "select_category": "Kategorie auswählen",
-        "title": "Titel"
+        "title": "Titel",
+        "search": "Suchen",
+        "is_published": "Veröffentlicht",
+        "description": "Beschreibung"
     },
     "date_selector": {
         "close": "Schließen"
