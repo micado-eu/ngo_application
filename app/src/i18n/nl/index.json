@@ -21,7 +21,25 @@
     "menu": {
         "glossary": "Woordenlijst",
         "login": "Login",
-        "logout": "Logout"
+        "logout": "Logout",
+        "events": "Evenementen",
+        "process": "Processen",
+        "information_centre": "Informatiecenter",
+        "activelanguages": "Wijzig actieve talen",
+        "CSO_user": "CSO Gebruikersbeheer",
+        "settings": "Instellingen",
+        "migrant": "Migrant gebruikers",
+        "interventions": "Beheer goedkeuringen",
+        "topic": "Beheer onderwerpen",
+        "courses": "Cursussen",
+        "integrationtype": "Beheer integratietypes",
+        "integrationcategory": "Beheer integratiecategorieën",
+        "mediation": "Bemiddeling aanvragen",
+        "processmanager": "Beheer processen",
+        "configure": "Configuratie",
+        "documenttype": "Document types beheren",
+        "dashboard": "Dashboard",
+        "title": "Welkom"
     },
     "button": {
         "change_pass": "Wachtwoord veranderen",
@@ -42,6 +60,87 @@
         "is_published": "Gepubliceerd",
         "description": "Beschrijving",
         "title": "Titel",
-        "select_category": "Categorie selecteren"
+        "select_category": "Categorie selecteren",
+        "finish_date": "Einddatum",
+        "start_date": "Startdatum",
+        "select_user_type": "Selecter gebruikerstypes",
+        "select_topic": "Selecteer onderwerpen",
+        "location": "Locatie"
+    },
+    "new_pa_user": {
+        "usermgmt": "Beheer gebruiker",
+        "email": "Email",
+        "mig_tenant": "Migrant gebruiker",
+        "admin": "Beheerder",
+        "external_id": "Externe ID",
+        "surname": "Familienaam",
+        "name": "Naam",
+        "password": "Wachtwoord",
+        "username": "Gebruikersnaam"
+    },
+    "filters": {
+        "user_types_title": "Gebruikerstypes",
+        "show_more": "Lees meer",
+        "topics_title": "Onderwerpen",
+        "category_title": "Categorie",
+        "clear_all": "Reset alle filters",
+        "title": "Filter"
+    },
+    "text_editor": {
+        "word_count": "Aantal woorden"
+    },
+    "error_messages": {
+        "date_time_empty": "Gelieve de starttijd, eindtijd, startdatum en einddatum in te vullen.",
+        "change_translated": "Verander de vertaalstatus naar \"Schrijven\" om de inhoud te wijzigen. In dit geval wordt de huidige vertaling verwijderd.",
+        "in_translation": "Deze inhoud moet nog vertaald worden. De gewijzigde inhoud zal niet opgeslagen worden.",
+        "fill_default_language": "Gelieve de standaard taal titel in te vullen: ",
+        "max_char_limit": "Maximum aantal karakters bereikt: ",
+        "category_empty": "Gelieve een categorie te selecteren.",
+        "title_empty": "Titel is leeg. Gelieve een titel toe te voegen."
+    },
+    "date_selector": {
+        "close": "Sluiten"
+    },
+    "upload_modal": {
+        "text_alternative": "Tekstueel alternatief voor de afbeelding",
+        "uploader_label": "Afbeelding uploaden (Max 25MB)",
+        "upload_button": "Uploaden",
+        "url_label": "URL",
+        "url": "URL",
+        "upload_label": "Uploaden"
+    },
+    "lists": {
+        "location": "Locatie",
+        "end_date": "Einddatum",
+        "start_date": "Startdatum",
+        "user_types": "Gebruikerstypes",
+        "topics": "Onderwerpen",
+        "category": "Categorie",
+        "published": "Gepubliceerd"
+    },
+    "events": {
+        "edit": "Wijzig een evenement in de evenementenlijst",
+        "add_new": "Voeg een nieuw evenement toe aan de evenementenlijst",
+        "list_title": "Evenementen"
+    },
+    "information_centre": {
+        "edit": "Wijzig de informatie in het informatiecenter",
+        "add_new": "Voeg nieuwe informatie toe aan het informatiecenter",
+        "list_title": "Informatiecenter"
+    },
+    "pa_profile": {
+        "confirm_pass": "Wachtwoord controle",
+        "new_pass": "Nieuw wachtwoord",
+        "old_pass": "Oud wachtwoord",
+        "mail": "Email",
+        "phone_number": "Telefoonnummer",
+        "personal_profile": "Persoonlijk profiel",
+        "gender": "Geslacht",
+        "dob": "Geboortedatum",
+        "country": "Land",
+        "legal_name": "Wettelijke naam",
+        "password": "Wachtwoord",
+        "username": "Gebruikersnaam",
+        "change_pic": "Afbeelding wijzigen"
     }
 }
