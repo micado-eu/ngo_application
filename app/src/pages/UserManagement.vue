@@ -414,6 +414,7 @@ export default {
     },
     saveUser(){
       console.log(this.new_user)
+      this.new_user.roles.push('ngo_sp')
       if(this.new_user.admin == true){
         this.new_user.roles.push('micado_ngo_admin')
       }
