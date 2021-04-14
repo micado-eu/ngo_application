@@ -85,5 +85,8 @@
     },
     "date_selector": {
         "close": "Chiudi"
+    },
+    "new_pa_user": {
+        "name": "Nome"
     }
 }
