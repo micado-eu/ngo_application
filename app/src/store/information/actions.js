@@ -6,6 +6,12 @@ export function fetchInformation(state, data) {
     .then((information) => state.commit('setInformation', information))
 }
 
+export function fetchInformationProd(state, data) {
+  return client
+    .fetchInformationProd(data.defaultLang, data.userLang)
+    .then((information) => state.commit('setInformationProd', information))
+}
+
 export function saveNewInformationItem(state, data) {
   return client
     .saveNewInformationItem(data)

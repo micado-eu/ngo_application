@@ -1,3 +1,4 @@
 export default {
-  information: []
+  information: [],
+  informationProd: []
 }

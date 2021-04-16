@@ -6,6 +6,12 @@ export function fetchEvent(state, data) {
     .then((event) => state.commit('setEvent', event))
 }
 
+export function fetchEventProd(state, data) {
+  return client
+    .fetchEventProd(data.defaultLang, data.userLang)
+    .then((event) => state.commit('setEventProd', event))
+}
+
 export function saveNewEventItem(state, data) {
   return client
     .saveNewEventItem(data)

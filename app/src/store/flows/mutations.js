@@ -7,6 +7,9 @@ export function setFlows (state, flows) {
   console.log(flows)
   state.flows = flows
 }
+export function setFlowsProd (state, flows) {
+  state.flowsProd = flows
+}
 export function setGraphs (state, graphs) {
   console.log("setting the graphs")
   state.graphs = graphs

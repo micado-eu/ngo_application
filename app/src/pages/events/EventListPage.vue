@@ -26,7 +26,7 @@ import { mapGetters, mapActions } from 'vuex'
 import ListSearchTags from 'components/ListSearchTags'
 
 export default {
-  data() {
+  data () {
     return {
       loading: true,
       eventElems: []
@@ -49,10 +49,10 @@ export default {
       'fetchAllEventUserTypes'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
-    getEditRoute(id) {
+    getEditRoute (id) {
       return `events/${id}/edit`
     },
-    deleteItem(item) {
+    deleteItem (item) {
       this.deleteEventItem(item)
         .then(() => {
           this.updateContent()
@@ -64,7 +64,7 @@ export default {
           })
         })
     },
-    updateContent() {
+    updateContent () {
       this.loading = true
       let promises = [this.fetchTopic(), this.fetchUserType(), this.fetchEvent(), this.fetchEventCategory()]
       Promise.all(promises)
@@ -105,7 +105,7 @@ export default {
         })
     }
   },
-  created() {
+  created () {
     this.updateContent()
   }
 }

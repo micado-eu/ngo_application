@@ -9,6 +9,15 @@ export default {
         (response) => response.data
       ).catch(error_handler)
   },
+  fetchInformationProd(defaultLang, userLang) {
+    return axiosInstance
+      .get(`/backend/1.0.0/production-information?defaultlang=${defaultLang}&currentlang=${userLang}`, {
+      })
+      .then((response) => {
+        return response.data
+      })
+      .catch(error_handler)
+  },
   saveNewInformationItem(eventItem) {
     return axiosInstance
       .post('/backend/1.0.0/information', eventItem)

@@ -9,6 +9,15 @@ export default {
         response => response.data
       ).catch(error_handler);
   },
+  fetchGlossaryProd(defaultLang, userLang) {
+    return axiosInstance
+      .get(`/backend/1.0.0/production-glossary?defaultlang=${defaultLang}&currentlang=${userLang}`, {
+      })
+      .then((response) => {
+        return response.data
+      })
+      .catch(error_handler)
+  },
   saveNewGlossaryItem(glossaryItem) {
     return axiosInstance
       .post('/backend/1.0.0/glossaries', glossaryItem)
