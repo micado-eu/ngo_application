@@ -39,9 +39,13 @@
     "pa_external_id":"Write, if avalaible, the external ID of the user",
     "pa_admin":"Choose if this account will have admin powers",
     "pa_mig_tenant":"Choose if this account will be a migrant tenant",
-    "pa_email":"Please insert the user's email"
+    "pa_email":"Please insert the user's email",
+    "location_maps": "Click here to preview the search results of this location on Google Maps",
+    "event_cost": "Price of the event. Mark the checkbox if the event is free.",
+    "is_published": "The CSO can't publish or unpublish elements"
   },
   "button": {
+    "validate_and_publish": "Validate and publish",
     "change_pass":"Change Password",
     "save": "Save",
     "cancel": "Cancel",
@@ -53,7 +57,8 @@
     "update_link": "Update link",
     "edit": "Edit",
     "add_user": "Add User",
-    "add_link": "Add link"
+    "add_link": "Add link",
+    "upload": "Upload"
   },
   "input_labels": {
     "search": "Search",
@@ -65,7 +70,16 @@
     "select_user_type": "Select user types",
     "start_date": "Start date",
     "finish_date": "End date",
-    "location": "Location"
+    "location": "Location",
+    "upload_file": "Upload file",
+    "event_cost": "Cost of the event",
+    "event_free": "The event is free"
+  },
+  "link_modal": {
+    "text": "Text",
+    "link": "Link",
+    "apply": "Apply",
+    "selected": "Select some text to apply a link"
   },
   "information_centre": {
     "list_title": "Information centre",
@@ -83,7 +97,8 @@
     "category_title": "Category",
     "show_more": "Show more",
     "topics_title": "Topics",
-    "user_types_title": "User types"
+    "user_types_title": "User types",
+    "date_title": "Date"
   },
   "lists": {
     "published": "Published",
@@ -92,7 +107,18 @@
     "user_types": "User Types",
     "start_date": "Start date",
     "end_date": "End date",
-    "location": "Location"
+    "location": "Location",
+    "creator": "Created by/Organizer",
+    "cost": "Cost",
+    "cost_free": "Free",
+    "translation_state": "Translation state"
+  },
+  "translation_states": {
+    "editing": "Editing",
+    "translatable": "Translatable",
+    "translating": "Translating",
+    "translated": "Translated",
+    "unknown": "Unknown"
   },
   "date_selector": {
     "close": "Close"
@@ -142,5 +168,10 @@
     "admin":"Admin",
     "mig_tenant":"Migrant Tenant",
     "email": "Email"
+  },
+  "internal_reference": {
+    "more_info_1": "More information for",
+    "more_info_2": "can be found at:",
+    "go_to_reference": "Go to reference"
   }
 }

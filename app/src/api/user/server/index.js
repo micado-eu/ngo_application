@@ -17,6 +17,13 @@ export default {
       .catch(error_handler);
 
   },
+  fetchSpecificUser (tenant, id) {
+    console.log(tenant)
+    return axiosInstance
+      .get(`/backend/1.0.0/users/${id}?filter[include][0][relation]=attributes&filter[include][1][relation]=interventionPlans&filter[include][2][relation]=tenant&filter[include][3][relation]=userPicture&filter[include][4][relation]=userConsent`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   fetchUserLogin (username, tenant) {
     console.log(username, tenant)
     return axiosInstance

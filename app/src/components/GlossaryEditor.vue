@@ -88,6 +88,16 @@
               @click="showUploadModal = true"
               :disable="readonly"
             />
+            <div>
+            <q-btn
+              icon="link"
+              :disable="isSelectionEmpty || readonly"
+              @click="showLinkModalFn(commands.link)"
+              :outline="isActive.link()"
+              :unelevated="!isActive.link()"
+            />
+            <q-tooltip v-if="isSelectionEmpty">{{$t("link_modal.selected")}}</q-tooltip>
+            </div>
             <span style="flex: 10"></span>
             <slot style="flex: 3"></slot>
             <span
@@ -180,6 +190,43 @@
                 </q-tab-panels>
               </q-card>
             </q-dialog>
+            <!-- Link dialog -->
+            <q-dialog
+              v-model="showLinkModal"
+              ref="linkDialog"
+              persistent
+            >
+              <q-card style="width: 500px">
+                <q-toolbar class="bg-white">
+                  <q-space />
+                  <q-btn
+                    color="red"
+                    flat
+                    v-close-popup
+                    round
+                    dense
+                    icon="close"
+                  />
+                </q-toolbar>
+                <q-card-section class="row items-center">
+                  <q-input
+                    :label="$t('link_modal.link')"
+                    color="accent"
+                    style="width: 500px"
+                    v-model="linkUrl"
+                  />
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn
+                    unelevated
+                    :label="$t('link_modal.apply')"
+                    @click="setLinkUrl(linkCommand, linkUrl)"
+                    color="accent"
+                    no-caps
+                  />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
           </div>
         </editor-menu-bar>
       </div>
@@ -201,7 +248,7 @@ import {
   Italic
 } from 'tiptap-extensions'
 import Image from 'components/editor_plugins/Image'
-import GlossaryMention from 'components/editor_plugins/GlossaryMention'
+import InternalMention from 'components/editor_plugins/InternalMention'
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
 import imageUpload from '../mixin/imageUpload'
 import ImageUploader from './ImageUploader.vue'
@@ -243,25 +290,29 @@ export default {
       editor: null,
       editorChange: false,
       showUploadModal: false,
+      showLinkModal: false,
       uploadTab: 'upload',
       urlImage: '',
       errorMessage: "",
       linkUrl: null,
       linkMenuIsActive: false,
       textCount: {}, // value returned from VueCountable on text change
-      altImage: null
+      altImage: null,
+      linkCommand: null,
+      linkText: "",
+      disableChangingTextLink: false
     }
   },
   methods: {
-    getContent() {
+    async getContent() {
       if (this.isContentHTML) {
         return this.getHTML()
       } else {
-        return this.getMarkdown()
+        return await this.getMarkdown()
       }
     },
-    getMarkdown() {
-      return this.HTMLToMarkdown(this.editor.getHTML())
+    async getMarkdown() {
+      return await this.HTMLToMarkdown(this.editor.getHTML())
     },
     getHTML() {
       return this.editor.getHTML()
@@ -285,7 +336,7 @@ export default {
           new Link(),
           new History(),
           new Image(null, null, this.uploadImage),
-          new GlossaryMention()
+          new InternalMention()
         ],
         onUpdate: ({ getHTML }) => {
           this.editorChange = true
@@ -296,7 +347,7 @@ export default {
       })
     },
     onUploadImage(event, commands) {
-      commands.image({ src: event, alt: this.altImage})
+      commands.image({ src: event, alt: this.altImage })
       this.$refs.uploadDialog.hide()
       this.altImage = null
     },
@@ -313,10 +364,21 @@ export default {
     hideLinkMenu() {
       this.linkUrl = null
       this.linkMenuIsActive = false
+      this.showLinkModal = false
     },
     setLinkUrl(command, url) {
       command({ href: url })
       this.hideLinkMenu()
+    },
+    showLinkModalFn(command) {
+      this.showLinkModal = true
+      const { selection, state } = this.editor
+      const { from, to } = selection
+      this.linkText = state.doc.textBetween(from, to, ' ')
+      if (this.linkText.length > 0) {
+        this.disableChangingTextLink = true
+      }
+      this.linkCommand = command
     },
     change(event) {
       this.textCount = event
@@ -339,8 +401,14 @@ export default {
       }
     },
     readonly(val) {
-      console.log("readonly: " + val)
       this.editor.setOptions({ editable: !val })
+    }
+  },
+  computed: {
+    isSelectionEmpty() {
+      const { view } = this.editor
+      const { selection } = view.state
+      return selection.empty
     }
   },
   beforeDestroy() {

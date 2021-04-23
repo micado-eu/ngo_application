@@ -2,15 +2,26 @@
     "help": {
         "element_category": "Kategorie auswählen",
         "element_topic": "Themenfeld auswählen",
-        "element_user_type": "Nutzergruppe auswählen",
-        "element_end_date": "Enddatum auswählen ",
+        "element_user_type": "Nutzer/-innen-Gruppe auswählen",
+        "element_end_date": "Enddatum auswählen",
         "element_title": "Titel einfügen",
-        "element_description": "Beschreibung einfügen "
+        "element_description": "Beschreibung einfügen",
+        "location": "Ort der Veranstaltung nennen",
+        "element_start_date": "Startdatum auswählen",
+        "pa_username": "Nutzer/-innen-Namen einfügen, der für Login genutzt wird",
+        "pa_password": "Passwort einfügen, das für Login genutzt wird",
+        "pa_name": "Vornamen des/der Nutzer/-in einfügen",
+        "pa_surname": "Nachnamen des/der Nutzer/-in einfügen",
+        "pa_email": "E-Mail Adresse des/der Nutzer/-in einfügen",
+        "word_count": "Wortanzahl in der Beschreibung",
+        "pa_admin": "Auswählen ob dieser Account Adminrechte besitzt",
+        "pa_mig_tenant": "Auswählen ob dieser Account ein Tenant in der Migrant/-innen-App ist",
+        "pa_external_id": "Falls verfügbar, externe ID des/der Nutzer/-in einfügen"
     },
     "events": {
         "list_title": "Veranstaltungen",
         "edit": "Veranstaltung aus der Veranstaltungsliste editieren",
-        "add_new": "Neue Veranstaltung in der Veranstaltungsliste anlegen"
+        "add_new": "Neue Veranstaltung der Veranstaltungsliste hinzufügen"
     },
     "filters": {
         "title": "Filter",
@@ -23,15 +34,15 @@
         "published": "Veröffentlicht",
         "category": "Kategorie",
         "topics": "Themenfelder",
-        "user_types": "Nutzergruppen",
+        "user_types": "Nutzer/-innen-Gruppen",
         "start_date": "Startdatum",
         "end_date": "Enddatum",
         "location": "Ort"
     },
     "information_centre": {
-        "edit": "Eintrag in \"Nützliche Informationen\" editieren",
-        "add_new": "Eintrag in \"Nützliche Informationen\" anlegen",
-        "list_title": "Nützliche Informationen"
+        "edit": "Eintrag in \"Allgemeine Informationen\" editieren",
+        "add_new": "Eintrag in \"Allgemeine Informationen\" hinzufügen",
+        "list_title": "Allgemeine Informationen"
     },
     "input_labels": {
         "location": "Ort",
@@ -48,10 +59,10 @@
         "title_empty": "Titel ist leer. Bitte Titel einfügen.",
         "category_empty": "Kategorie wählen",
         "max_char_limit": "Maximale Anzahl der Zeichen erreicht",
-        "fill_default_language": "Titel in der Standardsprache einfügen",
-        "date_time_empty": "Bitte Start- und Enddatum, sowie Uhrzeit angeben",
+        "fill_default_language": "Titel in der Standardsprache einfügen: ",
+        "date_time_empty": "Bitte Start- und Enddatum sowie Uhrzeit angeben",
         "in_translation": "Der Inhalt befindet sich im Übersetzungsmodus. Änderungen werden nicht gespeichert.",
-        "change_translated": "Den Übersetzungsstatus auf \"in Bearbeitung\" setzen, um die Editierung zu ermöglichen. Wird der Inhalt geändert und gespeichert, wird die bestehende Übersetzung gelöscht."
+        "change_translated": "Den Übersetzungsstatus auf \"in Bearbeitung\" setzen, um eine Editierung zu ermöglichen. Wird der Inhalt geändert und gespeichert, wird die bestehende Übersetzung gelöscht."
     },
     "upload_modal": {
         "url": "URL",
@@ -75,9 +86,9 @@
         "old_pass": "Bisheriges Passwort",
         "mail": "E-Mail",
         "personal_profile": "Persönliches Profil",
-        "gender": "Gender",
+        "gender": "Geschlecht",
         "phone_number": "Telefonnummer",
-        "username": "Benutzername"
+        "username": "Nutzer/-innen-Name"
     },
     "new_pa_user": {
         "email": "E-Mail",
@@ -86,7 +97,26 @@
         "surname": "Nachname",
         "name": "Vorname",
         "password": "Passwort",
-        "username": "Benutzername",
+        "username": "Nutzer/-innen-Name",
         "external_id": "Externe ID"
+    },
+    "menu": {
+        "logout": "Abmelden",
+        "login": "Anmelden",
+        "glossary": "Glossar"
+    },
+    "button": {
+        "update_link": "Link aktualisieren",
+        "read_less": "Weniger anzeigen",
+        "read_more": "Mehr anzeigen",
+        "categories": "Kategorien",
+        "add_user": "Nutzer/-in anlegen",
+        "edit": "Bearbeiten",
+        "cancel": "Abbrechen",
+        "save": "Speichern",
+        "change_pass": "Passwort ändern",
+        "add_information": "Information hinzufügen",
+        "add_link": "Link hinzufügen",
+        "add_event": "Veranstaltung hinzufügen"
     }
 }

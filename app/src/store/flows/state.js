@@ -3,5 +3,6 @@ export default {
   flows: [],
   steps: [],
   nodePanelVisible: "hidden",
-  theFlow: []
+  theFlow: [],
+  flowsProd: []
 }

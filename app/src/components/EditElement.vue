@@ -60,7 +60,7 @@
         <div>
           <span class="q-my-xl label-edit">
             <help-label
-              :fieldLabel="$t('input_labels.title')"
+              :fieldLabel="$t('input_labels.title') + ' *'"
               :helpLabel="$t('help.element_title')"
             ></help-label>
           </span>
@@ -134,7 +134,7 @@
           >
             <span class="q-my-lg label-edit">
               <help-label
-                :fieldLabel="$t('input_labels.select_category')"
+                :fieldLabel="$t('input_labels.select_category') + ' *'"
                 :helpLabel="$t('help.element_category')"
               ></help-label>
             </span>
@@ -157,14 +157,29 @@
                 :helpLabel="$t('help.location')"
               ></help-label>
             </span>
-            <q-input
-              class="title_input q-mb-xl"
-              data-cy="location_input"
-              outlined
-              v-model="location"
-              bg-color="grey-3"
-              :readonly="published"
-            />
+            <div class="row q-mb-xl">
+              <q-input
+                class="title_input col"
+                data-cy="location_input"
+                outlined
+                v-model="location"
+                bg-color="grey-3"
+                :readonly="published"
+              />
+              <a
+                :href="gmap_location(location)"
+                target="_blank"
+              >
+                <q-icon
+                  size="40px"
+                  class="col q-mt-sm"
+                  name="img:statics/icons/location.svg"
+                />
+                <q-tooltip>
+                  {{$t('help.location_maps')}}
+                </q-tooltip>
+              </a>
+            </div>
           </div>
         </div>
         <div
@@ -174,168 +189,34 @@
           <div class="q-my-xl q-mr-lg tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
-                :fieldLabel="$t('input_labels.start_date')"
+                :fieldLabel="$t('input_labels.start_date') + ' *'"
                 :helpLabel="$t('help.element_start_date')"
               ></help-label>
             </span>
-            <div class="row">
-              <q-input
-                outlined
-                bg-color="grey-3"
-                v-model="startDate"
-                class="col q-mr-md"
-                :readonly="published"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="event"
-                    class="cursor-pointer"
-                    data-cy="start_date_icon"
-                  >
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="startDate"
-                        mask="YYYY-MM-DD"
-                        color="accent"
-                      >
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            :label="$t('date_selector.close')"
-                            color="accent"
-                            flat
-                            data-cy="close_date_menu"
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-              <q-input
-                outlined
-                bg-color="grey-3"
-                v-model="startTime"
-                class="col"
-                :readonly="published"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="access_time"
-                    class="cursor-pointer"
-                    data-cy="start_time_icon"
-                  >
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-time
-                        v-model="startTime"
-                        mask="HH:mm"
-                        format24h
-                        color="accent"
-                      >
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            :label="$t('date_selector.close')"
-                            color="accent"
-                            flat
-                            data-cy="close_date_menu"
-                          />
-                        </div>
-                      </q-time>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
+            <date-time-selector
+              :date="startDate"
+              :time="startTime"
+              @inputDate="startDate = $event"
+              @inputTime="startTime = $event"
+              :readonly="published"
+              inline
+            ></date-time-selector>
           </div>
           <div class="q-my-xl tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
-                :fieldLabel="$t('input_labels.finish_date')"
+                :fieldLabel="$t('input_labels.finish_date') + ' *'"
                 :helpLabel="$t('help.element_end_date')"
               ></help-label>
             </span>
-            <div class="row">
-              <q-input
-                outlined
-                bg-color="grey-3"
-                v-model="finishDate"
-                class="col q-mr-md"
-                :readonly="published"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="event"
-                    class="cursor-pointer"
-                    data-cy="end_date_icon"
-                  >
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="finishDate"
-                        mask="YYYY-MM-DD"
-                        color="accent"
-                      >
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            :label="$t('date_selector.close')"
-                            color="accent"
-                            flat
-                            data-cy="close_date_menu"
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-              <q-input
-                outlined
-                bg-color="grey-3"
-                v-model="finishTime"
-                class="col"
-                :readonly="published"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="access_time"
-                    class="cursor-pointer"
-                    data-cy="end_time_icon"
-                  >
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-time
-                        v-model="finishTime"
-                        mask="HH:mm"
-                        format24h
-                        color="accent"
-                      >
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            :label="$t('date_selector.close')"
-                            color="accent"
-                            flat
-                            data-cy="close_date_menu"
-                          />
-                        </div>
-                      </q-time>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
+            <date-time-selector
+              :date="finishDate"
+              :time="finishTime"
+              @inputDate="finishDate = $event"
+              @inputTime="finishTime = $event"
+              :readonly="published"
+              inline
+            ></date-time-selector>
           </div>
         </div>
         <div class="row tag_category_selectors">
@@ -408,18 +289,49 @@
             </div>
           </div>
         </div>
+        <div
+          class="row"
+          v-if="is_event"
+        >
+          <div class="col">
+            <span class="label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.event_cost')"
+                :helpLabel="$t('help.event_cost')"
+              ></help-label>
+            </span>
+            <div class="row">
+              <q-input
+                class="q-mr-md col-8"
+                outlined
+                v-model="cost"
+                bg-color="grey-3"
+                counter
+                :maxlength="50"
+                :rules="[ val => val.length <= 50 || $t('error_messages.max_char_limit') + 50]"
+                :readonly="published || costIsFree"
+              />
+              <q-checkbox
+                color="accent"
+                v-model="costIsFree"
+                :readonly="published"
+                :label="$t('input_labels.event_free')"
+              />
+            </div>
+          </div>
+          <div class="col"></div>
+        </div>
         <div class="row">
           <span class="label-edit">
             <help-label
-              :fieldLabel="$t('input_labels.is_published')"
+              :fieldLabel="$t('button.validate_and_publish')"
               :helpLabel="$t('help.is_published')"
             ></help-label>
           </span>
           <q-toggle
             v-model="published"
             color="accent"
-            @input="showWarningPublish($event)"
-            :disable="publishToggleState"
+            :disable="true"
           ></q-toggle>
         </div>
         <div class="row q-my-xl">
@@ -451,13 +363,15 @@
 import { mapGetters, mapActions } from 'vuex'
 import HelpLabel from './HelpLabel'
 import GlossaryEditor from './GlossaryEditor'
+import DateTimeSelector from './DateTimeSelector'
 import translatedButtonMixin from '../mixin/translatedButtonMixin'
 
 export default {
   name: 'EditElement',
   components: {
     'help-label': HelpLabel,
-    'glossary-editor': GlossaryEditor
+    'glossary-editor': GlossaryEditor,
+    'date-time-selector': DateTimeSelector
   },
   mixins: [translatedButtonMixin],
   props: {
@@ -473,7 +387,7 @@ export default {
     },
     categories: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -487,7 +401,7 @@ export default {
     },
     topics: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -497,7 +411,7 @@ export default {
     },
     user_types: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -520,7 +434,7 @@ export default {
       type: Function
     }
   },
-  data () {
+  data() {
     return {
       loading: true,
       internalTitle: '',
@@ -546,18 +460,23 @@ export default {
       finishTime: '',
       savedTranslations: [],
       published: false,
-      location: ''
+      location: '',
+      cost: null,
+      costIsFree: true
     }
   },
   methods: {
     ...mapActions('language', ['fetchActiveLanguages']),
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
-    changeLanguage (newLang, oldLang) {
-      this.saveContent(oldLang)
+    gmap_location(location) {
+      return "https://www.google.com/maps/search/?api=1&query=" + location
+    },
+    async changeLanguage(newLang, oldLang) {
+      await this.saveContent(oldLang)
       this.changeLanguageAux(newLang)
     },
-    changeLanguageAux (al) {
+    changeLanguageAux(al) {
       let idx = this.savedTranslations.findIndex((t) => t.lang === al)
       if (idx !== -1) {
         const element = this.savedTranslations[idx]
@@ -575,19 +494,20 @@ export default {
         }
       }
     },
-    setContent (element, al) {
+    setContent(element, al) {
       this.internalTitle = element.title
       this.internalDescription = element.description
       if (this.$refs.editor) {
         this.$refs.editor.setContent(this.internalDescription)
       }
     },
-    saveContent (lang) {
+    async saveContent(lang) {
       const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
       const translation = {
         title: this.internalTitle,
-        description: this.$refs.editor.getContent(),
-        lang
+        description: await this.$refs.editor.getContent(),
+        lang,
+        creator: this.loggedUser?.umid
       }
       if (idx !== -1) {
         this.savedTranslations[idx] = translation
@@ -606,7 +526,8 @@ export default {
         if (this.user_types_enabled) {
           translation.userTypes = this.selectedUserTypesObjects
         }
-        if (this.is_event && this.startDate && this.startTime) {
+        if (this.is_event) {
+          // Dates are expected to be UTC by the server
           if (this.startDate && this.startTime) {
             translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
           }
@@ -614,18 +535,25 @@ export default {
             translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
           }
           translation.location = this.location
+          if (!this.costIsFree) {
+            translation.cost = this.cost
+          }
         }
       }
     },
-    resetFields (al) {
+    resetFields(al) {
       this.internalTitle = ''
       this.internalDescription = ''
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
       }
     },
-    setInternalCategorySelector (al) {
+    setInternalCategorySelector(al) {
       this.internalCategories = this.categories.map((ic) => {
+        if (!ic.published) {
+          this.internalCategoriesObjects.push(undefined)
+          return undefined
+        }
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
         this.internalCategoriesObjects.push(translation)
@@ -638,8 +566,10 @@ export default {
         }
         return category
       })
+      this.internalCategories = this.internalCategories.filter((c) => c !== undefined)
+      this.internalCategoriesObjects = this.internalCategoriesObjects.filter((c) => c !== undefined)
     },
-    setInternalTopicSelector (al) {
+    setInternalTopicSelector(al) {
       this.internalTopics = this.topic.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
@@ -657,7 +587,7 @@ export default {
         return topic
       })
     },
-    setInternalUserTypeSelector (al) {
+    setInternalUserTypeSelector(al) {
       this.internalUserTypes = this.user.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
@@ -675,13 +605,13 @@ export default {
         return userType
       })
     },
-    setCategoryObjectModel (category) {
+    setCategoryObjectModel(category) {
       const idx = this.internalCategoriesObjects.findIndex(
         (t) => t.category === category
       )
       this.selectedCategoryObject = this.internalCategoriesObjects[idx]
     },
-    setTopicObjectModel (topic) {
+    setTopicObjectModel(topic) {
       const idx = this.internalTopicsObjects.findIndex(
         (t) => t.topic === topic
       )
@@ -691,7 +621,7 @@ export default {
         this.selectedTopicsObjects.push(topicObj)
       }
     },
-    setUserTypeObjectModel (userType) {
+    setUserTypeObjectModel(userType) {
       const idx = this.internalUserTypesObjects.findIndex(
         (t) => t.userType === userType
       )
@@ -702,68 +632,77 @@ export default {
         this.selectedUserTypesObjects.push(userTypeObj)
       }
     },
-    removeTopic (idx) {
+    removeTopic(idx) {
       this.selectedTopicsObjects.splice(
         idx, 1
       )
     },
-    removeUserType (idx) {
+    removeUserType(idx) {
       this.selectedUserTypesObjects.splice(
         idx, 1
       )
     },
-    goBack () {
+    goBack() {
       this.$router.go(-1)
     },
-    checkErrors () {
-      return (this.selectedTranslationState >= 2) 
-        || this.errorDefaultLangEmpty 
-        || (this.internalTitle.length <= 0) 
-        || this.errorCategoryEmpty 
-        || this.errorDateTimeEmpty 
+    checkErrors() {
+      return (this.selectedTranslationState >= 2)
+        || this.errorDefaultLangEmpty
+        || (this.internalTitle.length <= 0)
+        || this.errorCategoryEmpty
+        || this.errorDateTimeEmpty
         || this.$refs.editor.hasError()
     },
-    callSaveFn () {
+    callSaveFn() {
       if (!this.checkErrors()) {
-        this.saveContent(this.langTab)
-        for (const language of this.activeLanguages) {
-          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
-            const emptyTranslation = {
-              title: '',
-              description: '',
-              lang: language.lang,
-              translationState: this.selectedTranslationState
+        this.saveContent(this.langTab).then(() => {
+          for (const language of this.activeLanguages) {
+            if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
+              const emptyTranslation = {
+                title: '',
+                description: '',
+                lang: language.lang,
+                translationState: this.selectedTranslationState,
+                creator: this.loggedUser?.name
+              }
+              if (this.categories_enabled) {
+                emptyTranslation.category = this.selectedCategoryObject
+              }
+              if (this.topics_enabled) {
+                emptyTranslation.topics = this.selectedTopicsObjects
+              }
+              if (this.user_types_enabled) {
+                emptyTranslation.userTypes = this.selectedUserTypesObjects
+              }
+              if (this.is_event) {
+                emptyTranslation.location = this.location
+                if (!this.costIsFree) {
+                  emptyTranslation.cost = this.cost
+                }
+              }
+              this.savedTranslations.push(emptyTranslation)
             }
-            if (this.categories_enabled) {
-              emptyTranslation.category = this.selectedCategoryObject
-            }
-            if (this.topics_enabled) {
-              emptyTranslation.topics = this.selectedTopicsObjects
-            }
-            if (this.user_types_enabled) {
-              emptyTranslation.userTypes = this.selectedUserTypesObjects
-            }
-            this.savedTranslations.push(emptyTranslation)
           }
-        }
-        this.save_item_fn(
-          this.savedTranslations
-        )
+          this.save_item_fn(
+            this.savedTranslations
+          )
+        })
       }
     },
-    showWarningPublish (event, id) {
+    showWarningPublish(event, id) {
       if (event == true) {
         this.$q.notify({
           type: 'warning',
-          message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+          timeout: 0,
+          message: this.$t("lists.publish_warning"),
           actions: [
             {
-              label: 'Yes', color: 'accent', handler: () => {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
                 this.on_publish(id).then(() => this.goBack())
               }
             },
             {
-              label: 'No', color: 'red', handler: () => {
+              label: this.$t("lists.yes"), color: 'red', handler: () => {
                 this.published = false
               }
             }
@@ -774,15 +713,15 @@ export default {
       else {
         this.$q.notify({
           type: 'warning',
-          message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
+          message: this.$t("lists.unpublish_warning"),
           actions: [
             {
-              label: 'Yes', color: 'accent', handler: () => {
-                this.on_unpublish(id).then(() => this.published = false)
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
+                this.on_unpublish(id).then(() => this.goBack())
               }
             },
             {
-              label: 'No', color: 'red', handler: () => {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
                 this.published = true
               }
             }
@@ -796,6 +735,7 @@ export default {
     ...mapGetters('language', ['activeLanguages']),
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
+    ...mapGetters({ loggedUser: 'auth/user' }),
     errorDefaultLangEmpty: function () {
       if (this.langTab !== this.$defaultLang) {
         return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
@@ -837,18 +777,14 @@ export default {
       if (newVal && oldVal) {
         this.changeLanguage(newVal, oldVal)
       }
-    },
-    selectedTranslationState: function () {
-      console.log(this.selectedTranslationState)
     }
   },
-  created () {
+  created() {
     this.loading = true
     const al = this.$i18n.locale
     this.fetchActiveLanguages().then(() => {
       this.langTab = this.activeLanguages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
-        console.log(this.elem)
         this.changeLanguageAux(al)
         this.published = this.elem.published
         this.elemId = this.elem.id
@@ -869,13 +805,19 @@ export default {
           this.selectedCategory = this.selectedCategoryObject.category
         }
         if (this.is_event) {
+          // Expects ISO String, automatically converts to user's locale
           const startDate = new Date(this.elem.startDate)
+          // Format used by QDate and QTime
           this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()}`
           this.startTime = `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           const finishDate = new Date(this.elem.endDate)
           this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
           this.finishTime = `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           this.location = this.elem.location
+          if (this.elem.cost) {
+            this.cost = this.elem.cost
+            this.costIsFree = false
+          }
         }
       }
       if (this.categories.length > 0) {
