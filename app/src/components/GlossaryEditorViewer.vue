@@ -233,10 +233,10 @@ export default {
     if (!this.all_fetched) {
       const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
       Promise.all([
-        this.fetchGlossary(langs),
-        this.fetchInformation(langs),
-        this.fetchFlows(langs),
-        this.fetchEvents(langs)
+        this.fetchGlossaryTemp(langs),
+        this.fetchInformationTemp(langs),
+        this.fetchFlowsTemp(langs),
+        this.fetchEventTemp(langs)
       ])
         .then(() => this.initialize())
     } else {
