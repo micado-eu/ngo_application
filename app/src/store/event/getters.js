@@ -6,6 +6,10 @@ export function eventProd(state) {
   return state.eventProd
 }
 
+export function eventTemp(state) {
+  return state.eventTemp
+}
+
 export function eventElemByTitle(state) {
   const getterFunc = function (title) {
     return state.event.filter((g) => g.title === title)[0]
@@ -23,6 +27,13 @@ export function eventElemById(state) {
 export function eventProdElemById(state) {
   const getterFunc = function (id) {
     return state.eventProd.filter((g) => g.id == id)[0]
+  }
+  return getterFunc
+}
+
+export function eventTempElemById(state) {
+  const getterFunc = function (id) {
+    return state.eventTemp.filter((g) => g.id == id)[0]
   }
   return getterFunc
 }

@@ -20,6 +20,14 @@ export default {
       })
       .catch(error_handler)
   },
+  fetchFlowsTemp (defaultLang, userLang) {
+    return axiosInstance
+      .get('backend/1.0.0/temp-processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
+      .then((response) => {
+        return response.data
+      })
+      .catch(error_handler)
+  },
   fetchDocuments () {
     return fetch(flows, 1000) // wait 1s before returning posts
   },

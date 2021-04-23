@@ -507,10 +507,10 @@ export default {
     'date-time-selector': DateTimeSelector
   },
   methods: {
-    ...mapActions('glossary', ['fetchGlossaryProd']),
-    ...mapActions('information', ['fetchInformationProd']),
-    ...mapActions('flows', ['fetchFlowsProd']),
-    ...mapActions('event', ['fetchEventProd']),
+    ...mapActions('glossary', ['fetchGlossaryTemp']),
+    ...mapActions('information', ['fetchInformationTemp']),
+    ...mapActions('flows', ['fetchFlowsTemp']),
+    ...mapActions('event', ['fetchEventTemp']),
     ...mapActions('user', ['fetchSpecificUser']),
     getCurrentUser() {
       if (this.loggedUser) {
@@ -824,10 +824,10 @@ export default {
     this.lang = this.$i18n.locale
     const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
     Promise.all([
-      this.fetchGlossaryProd(langs),
-      this.fetchInformationProd(langs),
-      this.fetchFlowsProd(langs),
-      this.fetchEventProd(langs)
+      this.fetchGlossaryTemp(langs),
+      this.fetchInformationTemp(langs),
+      this.fetchFlowsTemp(langs),
+      this.fetchEventTemp(langs)
     ]).then(this.initializeList())
   }
 }

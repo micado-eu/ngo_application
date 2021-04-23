@@ -18,6 +18,15 @@ export default {
       })
       .catch(error_handler)
   },
+  fetchEventTemp(defaultLang, userLang) {
+    return axiosInstance
+      .get(`/backend/1.0.0/temp-events?defaultlang=${defaultLang}&currentlang=${userLang}`, {
+      })
+      .then((response) => {
+        return response.data
+      })
+      .catch(error_handler)
+  },
   saveNewEventItem(eventItem) {
     return axiosInstance
       .post('/backend/1.0.0/events', eventItem)

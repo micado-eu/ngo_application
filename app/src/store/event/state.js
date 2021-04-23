@@ -1,4 +1,5 @@
 export default {
   event: [],
-  eventProd: []
+  eventProd: [],
+  eventTemp: []
 }

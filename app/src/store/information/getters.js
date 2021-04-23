@@ -6,6 +6,10 @@ export function informationProd(state) {
   return state.informationProd
 }
 
+export function informationTemp(state) {
+  return state.informationTemp
+}
+
 export function informationElemByTitle(state) {
   let getterFunc = function (title) {
     return state.information.filter(g => g.title === title)[0]
@@ -26,3 +30,10 @@ export function informationProdElemById(state) {
   }
   return getterFunc
 }
+
+export function informationTempElemById(state) {
+  let getterFunc = function (id) {
+    return state.informationTemp.filter(g => g.id == id)[0]
+  }
+  return getterFunc
+} 

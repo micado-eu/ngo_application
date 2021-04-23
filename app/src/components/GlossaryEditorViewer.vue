@@ -110,19 +110,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('glossary', ['glossaryProdElemById']),
-    ...mapGetters('information', ['informationProdElemById']),
-    ...mapGetters('flows', ['processProdById']),
-    ...mapGetters('event', ['eventProdElemById']),
+    ...mapGetters('glossary', ['glossaryTempElemById']),
+    ...mapGetters('information', ['informationTempElemById']),
+    ...mapGetters('flows', ['processTempById']),
+    ...mapGetters('event', ['eventTempElemById']),
     currentDescription() {
       return this.currentDescriptionContent
     }
   },
   methods: {
-    ...mapActions('glossary', ['fetchGlossaryProd']),
-    ...mapActions('information', ['fetchInformationProd']),
-    ...mapActions('flows', ['fetchFlowsProd']),
-    ...mapActions('event', ['fetchEventProd']),
+    ...mapActions('glossary', ['fetchGlossaryTemp']),
+    ...mapActions('information', ['fetchInformationTemp']),
+    ...mapActions('flows', ['fetchFlowsTemp']),
+    ...mapActions('event', ['fetchEventTemp']),
     async initialize() {
       this.editor = new Editor({
         editable: false,
@@ -173,10 +173,10 @@ export default {
     },
     cacheDialog() {
       const elemByIdFunctions = {
-        "g": this.glossaryProdElemById,
-        "i": this.informationProdElemById,
-        "e": this.eventProdElemById,
-        "p": this.processProdById
+        "g": this.glossaryTempElemById,
+        "i": this.informationTempElemById,
+        "e": this.eventTempElemById,
+        "p": this.processTempById
       }
       this.mentions = this.$refs.editor.$el.querySelectorAll("[data-mention-id]")
       this.referenceData = {}

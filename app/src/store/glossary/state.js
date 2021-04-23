@@ -1,4 +1,5 @@
 export default {
   glossary: [],
-  glossaryProd: []
+  glossaryProd: [],
+  glossaryTemp: []
 }

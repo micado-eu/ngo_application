@@ -22,6 +22,7 @@
     "countly-sdk-web": "^20.4.0",
     "fuse.js": "^6.0.0",
     "jsonapi-vuex": "^3.1.1",
+    "lodash": "^4.17.21",
     "quasar": "^1.14.0",
     "showdown": "^1.9.1",
     "tiptap": "^1.27.1",

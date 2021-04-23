@@ -12,6 +12,12 @@ export function fetchGlossaryProd(state, data) {
     .then((glossary) => state.commit('setGlossaryProd', glossary))
 }
 
+export function fetchGlossaryTemp(state, data) {
+  return client
+    .fetchGlossaryTemp(data.defaultLang, data.userLang)
+    .then((glossary) => state.commit('setGlossaryTemp', glossary))
+}
+
 export function saveNewGlossaryItem(state, data) {
   return client
     .saveNewGlossaryItem(data)

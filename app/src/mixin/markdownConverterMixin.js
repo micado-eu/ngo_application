@@ -1,5 +1,6 @@
 import { Converter } from 'showdown'
 import { mapGetters, mapActions } from "vuex"
+import _ from "lodash"
 import referenceExtension from "./markdownExtensions/referenceExtension.js"
 
 export default {
@@ -9,10 +10,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossaryProd"]),
-    ...mapActions('information', ['fetchInformationProd']),
-    ...mapActions('flows', ['fetchFlowsProd']),
-    ...mapActions('event', ['fetchEventProd']),
+    ...mapActions("glossary", ["fetchGlossaryTemp"]),
+    ...mapActions('information', ['fetchInformationTemp']),
+    ...mapActions('flows', ['fetchFlowsTemp']),
+    ...mapActions('event', ['fetchEventTemp']),
     cleanSpaces(text) {
       // At the moment of writing there is this issue with the Showdown converter: https://github.com/showdownjs/showdown/issues/669
       // Having &nbsp; instead of spaces breaks tooltips overflow wrap, so we substitute them here
@@ -36,10 +37,10 @@ export default {
     async markReferencesAux(md, lang) {
       let result = md
       let entities = { // Key is mention-type, value is getter, order is important because of possible title duplicates
-        "g": this.glossaryProd,
-        "p": this.processesProd,
-        "i": this.informationProd,
-        "e": this.eventProd
+        "g": this.glossaryTemp,
+        "p": this.processesTemp,
+        "i": this.informationTemp,
+        "e": this.eventTemp
       }
       let markedTitles = [] // Avoids marking twice if an element has already been marked with the same title from another entity
       const stringComparator = new Intl.Collator(lang, { sensitivity: 'accent' })
@@ -58,7 +59,8 @@ export default {
           let title = this.elemTitle(term)
           if (title.length > 0) {
             // Look for the term's titles that are not already marked
-            let regexp = new RegExp(`(${title})`, "gi")
+            const escapedTitle = _.escapeRegExp(title)
+            let regexp = new RegExp(`(${escapedTitle})`, "gi")
             let splitted = result.split(regexp)
             // Add the tag to the text
             const prefixTag = `@[${key},${term.id}]`
@@ -79,10 +81,10 @@ export default {
         return this.markReferencesAux(md, userLang)
       }
       await Promise.all([
-        this.fetchGlossaryProd({ defaultLang, userLang }),
-        this.fetchInformationProd({ defaultLang, userLang }),
-        this.fetchFlowsProd({ defaultLang, userLang }),
-        this.fetchEventProd({ defaultLang, userLang })
+        this.fetchGlossaryTemp({ defaultLang, userLang }),
+        this.fetchInformationTemp({ defaultLang, userLang }),
+        this.fetchFlowsTemp({ defaultLang, userLang }),
+        this.fetchEventTemp({ defaultLang, userLang })
       ])
       return this.markReferencesAux(md, userLang)
     },
@@ -96,9 +98,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("glossary", ["glossaryProd"]),
-    ...mapGetters('information', ['informationProd']),
-    ...mapGetters('flows', ['processesProd']),
-    ...mapGetters('event', ['eventProd'])
+    ...mapGetters("glossary", ["glossaryTemp"]),
+    ...mapGetters('information', ['informationTemp']),
+    ...mapGetters('flows', ['processesTemp']),
+    ...mapGetters('event', ['eventTemp'])
   }
 }

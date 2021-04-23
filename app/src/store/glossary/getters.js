@@ -6,6 +6,10 @@ export function glossaryProd (state) {
   return state.glossaryProd
 }
 
+export function glossaryTemp (state) {
+  return state.glossaryTemp
+}
+
 export function glossaryElemByTitle (state) {
   let getterFunc = function (title) {
     return state.glossary.filter(g => g.title === title)[0]
@@ -26,3 +30,10 @@ export function glossaryProdElemById (state) {
   }
   return getterFunc
 }
+
+export function glossaryTempElemById (state) {
+  let getterFunc = function (id) {
+    return state.glossaryTemp.filter(g => g.id == id)[0]
+  }
+  return getterFunc
+} 
