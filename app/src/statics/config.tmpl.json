@@ -6,5 +6,6 @@
     "countlyAppKey": "$COUNTLY_NGO_APP_KEY",
     "identitySPclientId": "$IDENTITY_SP_NGO_CLIENT_ID",
     "appBuildDate": "$APP_BUILD_DATE",
-    "ngoUrl": "$NGO_HOSTNAME"
+    "ngoUrl": "$NGO_HOSTNAME",
+    "ngoTenantDomain":"$NGO_TENANT_DOMAIN"
 }

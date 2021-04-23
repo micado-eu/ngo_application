@@ -427,16 +427,14 @@ export default {
       var working_roles = JSON.stringify(this.new_user.roles)
       var working_token = this.token.token.access_token
       console.log(working_token)
-      console.log(working_user)
-      console.log({user: working_user, tenant:"pa.micado.eu", token:working_token, roles:working_roles})
       if(this.is_new){
       var working_user =JSON.parse(JSON.stringify(this.new_user, ['username', 'password', 'givenName', 'familyName','email']))
-      this.saveCSOUser({user: working_user, tenant:"ngo.micado.eu", token:working_token, roles:working_roles})
+      this.saveCSOUser({user: working_user, tenant:this.$envconfig.ngoTenantDomain, token:working_token, roles:working_roles})
       }
       else{
         var working_user =JSON.parse(JSON.stringify(this.new_user, ['userid','username', 'password', 'givenName', 'familyName','email', 'roles']))
         console.log(working_user)
-        this.editUserDataByAdmin({user:JSON.stringify(working_user), tenant:"ngo.micado.eu", token:working_token})
+        this.editUserDataByAdmin({user:JSON.stringify(working_user), tenant:this.$envconfig.ngoTenantDomain, token:working_token})
       }
       
 
