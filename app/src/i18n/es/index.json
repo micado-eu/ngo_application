@@ -39,7 +39,10 @@
         "pa_surname": "Escriba el apellido del usuario",
         "pa_name": "Escriba el nombre del usuario",
         "pa_password": "Escriba la contraseña que el usuario utilizará para iniciar la sesión",
-        "pa_username": "Escriba el nombre de usuario que el usuario utilizará para iniciar sesión"
+        "pa_username": "Escriba el nombre de usuario que el usuario utilizará para iniciar sesión",
+        "is_published": "Un CSO no pueden publicar o dejar de publicar el contenido",
+        "event_cost": "Precio del evento. Marque la casilla si el evento es gratuito.",
+        "location_maps": "Haga clic aquí para obtener una vista previa de los resultados de la búsqueda de esta ubicación en Google Maps"
     },
     "button": {
         "save": "Guardar",
@@ -53,7 +56,9 @@
         "add_link": "Añadir enlace",
         "add_user": "Añadir Usuario",
         "edit": "Editar",
-        "change_pass": "Cambiar contraseña"
+        "change_pass": "Cambiar contraseña",
+        "upload": "Subir",
+        "validate_and_publish": "Validar y publicar"
     },
     "input_labels": {
         "search": "Buscar",
@@ -65,7 +70,10 @@
         "select_user_type": "Seleccionar tipo de usuario",
         "start_date": "Seleccionar fecha de inicio",
         "finish_date": "Seleccionar fecha de finalización",
-        "location": "Localización"
+        "location": "Localización",
+        "event_free": "El evento es gratuito",
+        "event_cost": "Coste del evento",
+        "upload_file": "Subir archivo"
     },
     "information_centre": {
         "list_title": "Centro de Información",
@@ -83,7 +91,8 @@
         "category_title": "Categorías",
         "show_more": "Mostrar más",
         "topics_title": "Temas",
-        "user_types_title": "Tipos de Usuarios"
+        "user_types_title": "Tipos de Usuarios",
+        "date_title": "Fecha"
     },
     "lists": {
         "published": "Publicado",
@@ -92,7 +101,11 @@
         "user_types": "Tipos de Usuarios",
         "start_date": "Fecha de inicio",
         "end_date": "Fecha de fin",
-        "location": "Localización"
+        "location": "Localización",
+        "translation_state": "Estado de traducción",
+        "cost_free": "Gratis",
+        "cost": "Coste",
+        "creator": "Creado por/Organizador"
     },
     "date_selector": {
         "close": "Cerrar"
@@ -142,5 +155,23 @@
         "password": "Contraseña",
         "username": "Nombre de usuario",
         "change_pic": "Cambiar foto"
+    },
+    "internal_reference": {
+        "go_to_reference": "Ir a la referencia",
+        "more_info_2": "se puede encontrar en:",
+        "more_info_1": "Más información sobre"
+    },
+    "translation_states": {
+        "unknown": "Desconocido",
+        "translated": "Traducido",
+        "translating": "Traduciendo",
+        "translatable": "Listo para traducir",
+        "editing": "Editando"
+    },
+    "link_modal": {
+        "selected": "Seleccione un texto para convertir en enlace",
+        "apply": "Aplicar",
+        "link": "Enlace",
+        "text": "Texto"
     }
 }
