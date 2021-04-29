@@ -103,7 +103,9 @@
     "menu": {
         "logout": "Abmelden",
         "login": "Anmelden",
-        "glossary": "Glossar"
+        "glossary": "Glossar",
+        "events": "Veranstaltungen",
+        "settings": "Einstellungen"
     },
     "button": {
         "update_link": "Link aktualisieren",
