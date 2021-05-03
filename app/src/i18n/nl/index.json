@@ -17,7 +17,7 @@
         "element_start_date": "Selecteer de startdatum",
         "pa_username": "Vul de gebruikersnaam in waarmee deze gebruiker zal inloggen",
         "pa_admin": "Kies of de account beheersrechten moet krijgen",
-        "event_cost": "Vul de prijs van het evenement in. Is het gratis?  Vink de checkbox aan.",
+        "event_cost": "Vul de prijs van het evenement in. Is het gratis? Vink de checkbox aan.",
         "location_maps": "Bekijk hier welke zoekresultaten zichtbaar zullen zijn op Google Maps"
     },
     "menu": {
@@ -124,7 +124,11 @@
         "user_types": "Gebruikerstypes",
         "topics": "Thema's",
         "category": "Categorie",
-        "published": "Gepubliceerd"
+        "published": "Gepubliceerd",
+        "translation_state": "Status van de vertaling",
+        "cost_free": "Gratis",
+        "cost": "Kostprijs",
+        "creator": "Aangemaakt door"
     },
     "events": {
         "edit": "Wijzig een evenement in de evenementenlijst",
@@ -150,5 +154,10 @@
         "password": "Wachtwoord",
         "username": "Gebruikersnaam",
         "change_pic": "Afbeelding wijzigen"
+    },
+    "link_modal": {
+        "apply": "Toepassen",
+        "link": "Link",
+        "text": "Tekst"
     }
 }
