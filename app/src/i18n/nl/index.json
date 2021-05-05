@@ -158,6 +158,19 @@
     "link_modal": {
         "apply": "Toepassen",
         "link": "Link",
-        "text": "Tekst"
+        "text": "Tekst",
+        "selected": "Selecteer tekst om de link op toe te passen"
+    },
+    "translation_states": {
+        "editing": "Bewerken",
+        "unknown": "Onbekend",
+        "translated": "Vertaald",
+        "translating": "De vertaling is nog niet klaar",
+        "translatable": "Klaar om te vertalen"
+    },
+    "internal_reference": {
+        "go_to_reference": "Ga naar de pagina",
+        "more_info_2": "kan je vinden op:",
+        "more_info_1": "Meer informatie over"
     }
 }
