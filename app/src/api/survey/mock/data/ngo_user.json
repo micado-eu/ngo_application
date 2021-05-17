@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "type":"Education",
+    "name": "Dialogforum"
+  },
+  {
+    "id": 2,
+    "type":"Education",
+    "name": "BSB"
+  },
+  {
+    "id": 3,
+    "type":"Education",
+    "name": "Central Contact Point for Recognition"
+  },
+  {
+    "id": 4,
+    "type":"Health",
+    "name": "Mi4Mi"
+  },
+  {
+    "id": 5,
+    "type":"Health",
+    "name": "Triaphon"
+  }
+]

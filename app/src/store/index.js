@@ -26,6 +26,7 @@ import interventions from './interventions'
 import topic from './topic'
 import tenant from './tenant'
 import user_type from './user_type'
+import survey from './survey'
 
 VuexORM.use(VuexORMAxios, { axios })
 
@@ -66,7 +67,8 @@ export default function (/* { ssrContext } */) {
       event_category,
       topic,
       tenant,
-      user_type
+      user_type,
+      survey
     },
 
     // enable strict mode (adds overhead!)
