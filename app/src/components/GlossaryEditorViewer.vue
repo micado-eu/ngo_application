@@ -87,10 +87,6 @@ export default {
       type: Boolean,
       default: false
     },
-    isContentHTML: {
-      type: Boolean,
-      default: false
-    },
     readMore: {
       type: Boolean,
       default: false

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.9.5",
+    "@riophae/vue-treeselect": "^0.4.0",
     "@uppy/core": "^1.6.0",
     "@uppy/dashboard": "^1.5.0",
     "@uppy/tus": "^1.5.0",
@@ -23,6 +24,7 @@
     "fuse.js": "^6.0.0",
     "jsonapi-vuex": "^3.1.1",
     "lodash": "^4.17.21",
+    "performant-array-to-tree": "^1.8.2",
     "quasar": "^1.14.0",
     "showdown": "^1.9.1",
     "tiptap": "^1.27.1",

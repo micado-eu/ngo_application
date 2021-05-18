@@ -272,10 +272,6 @@ export default {
       type: Boolean,
       default: false
     },
-    isContentHTML: {
-      type: Boolean,
-      default: false
-    },
     maxCharLimit: {
       type: Number,
       default: null
@@ -300,35 +296,30 @@ export default {
       altImage: null,
       linkCommand: null,
       linkText: "",
-      disableChangingTextLink: false
+      disableChangingTextLink: false,
+      allFetched: false
     }
   },
   methods: {
     async getContent() {
-      if (this.isContentHTML) {
-        return this.getHTML()
-      } else {
-        return await this.getMarkdown()
-      }
+      return await this.getMarkdown()
     },
     async getMarkdown() {
-      return await this.HTMLToMarkdown(this.editor.getHTML())
+      const result = await this.HTMLToMarkdown(this.editor.getHTML(), this.$defaultLang, this.$userLang, this.allFetched)
+      this.allFetched = true
+      return result
     },
     getHTML() {
       return this.editor.getHTML()
     },
-    setContent(content, isHTML = false) {
-      if (!isHTML) {
-        this.editor.setContent(this.markdownToHTML(content))
-      } else {
-        this.editor.setContent(content)
-      }
+    setContent(content) {
+      this.editor.setContent(this.markdownToHTML(content))
     },
     createEditor() {
       if (this.editor) {
         this.editor.destroy()
       }
-      let currentContent = this.isContentHTML ? this.value : this.markdownToHTML(this.value)
+      let currentContent = this.markdownToHTML(this.value)
       this.editor = new Editor({
         extensions: [
           new Bold(),
@@ -390,7 +381,7 @@ export default {
   watch: {
     value(val) {
       if (this.editor && !this.editorChange) {
-        this.setContent(val, this.isContentHTML)
+        this.setContent(val)
       }
       this.editorChange = false
       // check errors

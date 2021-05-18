@@ -18,16 +18,6 @@
           <span class="col"></span>
         </div>
         <div
-          class="warning-error-row row"
-          v-if="errorCategoryEmpty"
-        >
-          <span class="col"></span>
-          <span class="warning-error col">
-            {{$t("error_messages.category_empty")}}
-          </span>
-          <span class="col"></span>
-        </div>
-        <div
           class="row"
           v-if="selectedTranslationState === 2"
         >
@@ -134,7 +124,7 @@
           >
             <span class="q-my-lg label-edit">
               <help-label
-                :fieldLabel="$t('input_labels.select_category') + ' *'"
+                :fieldLabel="$t('input_labels.select_category')"
                 :helpLabel="$t('help.element_category')"
               ></help-label>
             </span>
@@ -230,29 +220,30 @@
                 :helpLabel="$t('help.element_topic')"
               ></help-label>
             </span>
-            <q-select
-              v-model="selectedTopic"
-              :options="internalTopics"
-              @input="setTopicObjectModel($event)"
-              data-cy="topic_select"
-              bg-color="grey-3"
-              :readonly="published"
-            />
-            <div
-              class="tag_list flex"
-              data-cy="topic_list"
+            <treeselect
+              :multiple="true"
+              :options="this.tree_options"
+              :flat="true"
+              :default-expand-level="1"
+              placeholder="Try selecting some options."
+              v-model="selectedTopics"
+              @select="selectedTopics.push($event)"
+              @deselect="selectedTopics = selectedTopics.filter(t => t !== $event)"
+              @clear="selectedTopics = []"
             >
               <div
-                class="tag_btn q-my-sm q-mr-sm"
-                v-for="(topic, idx) in selectedTopicsObjects"
-                :key="idx"
+                slot="value-label"
+                slot-scope="{ node }"
+                :class="{unpublished: !node.raw.published}"
+              >{{ node.label }}</div>
+              <label
+                slot="option-label"
+                slot-scope="{node}"
+                :class="{unpublished: !node.raw.published}"
               >
-                <span>{{topic.topic}} <span
-                    class="del_tag_btn"
-                    @click="removeTopic(idx)"
-                  >X</span></span>
-              </div>
-            </div>
+                {{ node.label }}
+              </label>
+            </treeselect>
           </div>
           <div
             v-if="user_types_enabled"
@@ -365,13 +356,16 @@ import HelpLabel from './HelpLabel'
 import GlossaryEditor from './GlossaryEditor'
 import DateTimeSelector from './DateTimeSelector'
 import translatedButtonMixin from '../mixin/translatedButtonMixin'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   name: 'EditElement',
   components: {
-    'help-label': HelpLabel,
-    'glossary-editor': GlossaryEditor,
-    'date-time-selector': DateTimeSelector
+    HelpLabel,
+    GlossaryEditor,
+    DateTimeSelector,
+    Treeselect
   },
   mixins: [translatedButtonMixin],
   props: {
@@ -444,11 +438,7 @@ export default {
       selectedCategory: '',
       selectedCategoryObject: {},
       langTab: '',
-      internalTopics: [],
-      internalTopicsObjects: [],
-      selectedTopic: '',
-      selectedTopicsObjects: [],
-      internalUserType: '',
+      selectedTopics: [],
       internalUserTypesObjects: [],
       selectedUserType: '',
       selectedUserTypesObjects: [],
@@ -462,7 +452,8 @@ export default {
       published: false,
       location: '',
       cost: null,
-      costIsFree: true
+      costIsFree: true,
+      errorDefaultLangEmpty: false
     }
   },
   methods: {
@@ -496,10 +487,11 @@ export default {
     },
     setContent(element, al) {
       this.internalTitle = element.title
-      this.internalDescription = element.description
-      if (this.$refs.editor) {
-        this.$refs.editor.setContent(this.internalDescription)
-      }
+      this.errorDefaultLangEmpty = !this.internalTitle
+      this.internalDescription = element.description ? element.description : ""
+      // if (this.$refs.editor) {
+      //   this.$refs.editor.setContent(this.internalDescription)
+      // }
     },
     async saveContent(lang) {
       const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
@@ -521,10 +513,10 @@ export default {
           translation.category = this.selectedCategoryObject
         }
         if (this.topics_enabled) {
-          translation.topics = this.selectedTopicsObjects
+          translation.topics = this.selectedTopics
         }
         if (this.user_types_enabled) {
-          translation.userTypes = this.selectedUserTypesObjects
+          translation.userTypes = this.selectedUserTypesObjects.map(u => u.id)
         }
         if (this.is_event) {
           // Dates are expected to be UTC by the server
@@ -569,24 +561,6 @@ export default {
       this.internalCategories = this.internalCategories.filter((c) => c !== undefined)
       this.internalCategoriesObjects = this.internalCategoriesObjects.filter((c) => c !== undefined)
     },
-    setInternalTopicSelector(al) {
-      this.internalTopics = this.topic.map((ic) => {
-        const idx = ic.translations.findIndex((t) => t.lang === al)
-        const translation = ic.translations[idx]
-        this.internalTopicsObjects.push(translation)
-        let { topic } = translation
-        if (!topic || topic.length <= 0) {
-          topic = this.$t('input_labels.not_translated')
-        }
-        const idxSelectedTopic = this.selectedTopicsObjects.findIndex(
-          (st) => translation.id === st.id
-        )
-        if (idxSelectedTopic !== -1) {
-          this.selectedTopicsObjects[idxSelectedTopic] = translation
-        }
-        return topic
-      })
-    },
     setInternalUserTypeSelector(al) {
       this.internalUserTypes = this.user.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
@@ -611,16 +585,6 @@ export default {
       )
       this.selectedCategoryObject = this.internalCategoriesObjects[idx]
     },
-    setTopicObjectModel(topic) {
-      const idx = this.internalTopicsObjects.findIndex(
-        (t) => t.topic === topic
-      )
-      const topicObj = this.internalTopicsObjects[idx]
-      const idxSelected = this.selectedTopicsObjects.findIndex((st) => st.topic === topicObj.topic)
-      if (idxSelected === -1) {
-        this.selectedTopicsObjects.push(topicObj)
-      }
-    },
     setUserTypeObjectModel(userType) {
       const idx = this.internalUserTypesObjects.findIndex(
         (t) => t.userType === userType
@@ -631,11 +595,6 @@ export default {
       if (idxSelected === -1) {
         this.selectedUserTypesObjects.push(userTypeObj)
       }
-    },
-    removeTopic(idx) {
-      this.selectedTopicsObjects.splice(
-        idx, 1
-      )
     },
     removeUserType(idx) {
       this.selectedUserTypesObjects.splice(
@@ -649,7 +608,6 @@ export default {
       return (this.selectedTranslationState >= 2)
         || this.errorDefaultLangEmpty
         || (this.internalTitle.length <= 0)
-        || this.errorCategoryEmpty
         || this.errorDateTimeEmpty
         || this.$refs.editor.hasError()
     },
@@ -669,10 +627,10 @@ export default {
                 emptyTranslation.category = this.selectedCategoryObject
               }
               if (this.topics_enabled) {
-                emptyTranslation.topics = this.selectedTopicsObjects
+                emptyTranslation.topics = this.selectedTopics
               }
               if (this.user_types_enabled) {
-                emptyTranslation.userTypes = this.selectedUserTypesObjects
+                emptyTranslation.userTypes = this.selectedUserTypesObjects.map(u => u.id)
               }
               if (this.is_event) {
                 emptyTranslation.location = this.location
@@ -702,7 +660,7 @@ export default {
               }
             },
             {
-              label: this.$t("lists.yes"), color: 'red', handler: () => {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
                 this.published = false
               }
             }
@@ -733,20 +691,9 @@ export default {
   },
   computed: {
     ...mapGetters('language', ['activeLanguages']),
-    ...mapGetters('topic', ['topic']),
+    ...mapGetters('topic', ['topic', 'tree_options']),
     ...mapGetters('user_type', ['user']),
     ...mapGetters({ loggedUser: 'auth/user' }),
-    errorDefaultLangEmpty: function () {
-      if (this.langTab !== this.$defaultLang) {
-        return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
-      }
-      return !this.internalTitle
-    },
-    errorCategoryEmpty: function () {
-      return this.categories_enabled
-        && Object.keys(this.selectedCategoryObject).length === 0
-        && this.selectedCategoryObject.constructor === Object
-    },
     errorDateTimeEmpty: function () {
       return this.is_event
         && (
@@ -775,7 +722,13 @@ export default {
   watch: {
     langTab: function (newVal, oldVal) {
       if (newVal && oldVal) {
-        this.changeLanguage(newVal, oldVal)
+        this.changeLanguage(newVal, oldVal).then(() => {
+          // Set errorDefaultLangEmpty
+          if (this.langTab !== this.$defaultLang) {
+            this.errorDefaultLangEmpty = !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
+          }
+          this.errorDefaultLangEmpty = !this.internalTitle
+        })
       }
     }
   },
@@ -825,20 +778,7 @@ export default {
       }
       if (this.topics_enabled) {
         this.fetchTopic().then(() => {
-          if (this.elem && this.topics.length > 0) {
-            for (let i = 0; i < this.topics.length; i += 1) {
-              const idTopic = this.topics[i]
-              const idxTopic = this.topic.findIndex((t) => t.id === idTopic)
-              const idxTopicTranslation = this.topic[idxTopic]
-                .translations
-                .findIndex((t) => t.lang === al)
-              this.selectedTopicsObjects
-                .push(this.topic[idxTopic].translations[idxTopicTranslation])
-            }
-          }
-          if (this.topic.length > 0) {
-            this.setInternalTopicSelector(al)
-          }
+          this.selectedTopics = this.topics
           if (this.user_types_enabled) {
             this.fetchUserType().then(() => {
               if (this.elem && this.user_types.length > 0) {
