@@ -110,17 +110,36 @@
         </q-item>
       </q-list>
     </q-drawer>
-    <q-dialog v-model="alert">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">{{$t('button.survey')}}</div>
-        </q-card-section>
 
-        <q-card-section class="q-pt-none">
-          <div id="surveyContainer">
+
+    <q-dialog v-model="alert" full-width>
+       <q-layout
+        view="Lhh lpR fff"
+        container
+        class="bg-white"
+      >
+      <q-header
+          
+          class="bg-accent"
+        >
+          <q-toolbar>
+
+            <q-toolbar-title> {{$t('button.survey')}}</q-toolbar-title>
+            <q-btn
+              round
+              dense
+              flat
+              v-close-popup
+              color="white"
+              icon="cancel"
+            />
+          </q-toolbar>
+        </q-header>
+        <q-page-container>
+          <q-page class="q-pa-sm">
+          <div  id="surveyContainer">
             <survey :survey="survey"></survey>
           </div>
-        </q-card-section>
 
         <q-card-actions align="right">
           <q-btn
@@ -130,7 +149,9 @@
             v-close-popup
           />
         </q-card-actions>
-      </q-card>
+          </q-page>
+        </q-page-container>
+       </q-layout>
     </q-dialog>
     <q-page-container>
       <router-view />
