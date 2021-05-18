@@ -15,7 +15,13 @@
         />
 
         <q-toolbar-title>Micado App</q-toolbar-title>
-
+        <q-btn
+          v-if="this.$auth.loggedIn() && this.surveyJSON != null"
+          no-caps
+          style="background-color:white; color:#0B91CE"
+          :label="$t('button.survey')"
+          @click="generateSurvey"
+        />
         <div>Micado v0.1</div>
       </q-toolbar>
     </q-header>
@@ -104,7 +110,28 @@
         </q-item>
       </q-list>
     </q-drawer>
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">{{$t('button.survey')}}</div>
+        </q-card-section>
 
+        <q-card-section class="q-pt-none">
+          <div id="surveyContainer">
+            <survey :survey="survey"></survey>
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="OK"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -114,12 +141,14 @@
 <script>
 //import AuthMenu from "./auth/AuthMenu";
 import storeMappingMixin from '../mixin/storeMappingMixin'
+import * as SurveyVue from 'survey-vue'
+
 
 export default {
   name: "Layout",
 
   components: {
-
+    SurveyVue
   },
   computed: {
     isLoggedIn () {
@@ -134,10 +163,24 @@ export default {
   mixins: [storeMappingMixin({
     getters: {
       user: 'auth/user',
-    }
+     surveys: 'survey/surveys'
+      }, actions: {
+        fetchNGOSurvey: 'survey/fetchNGOSurvey',
+        saveSurveyAnswer: 'survey/saveSurveyAnswer'
+      }
   })],
+    mounted(){
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.innerHTML = "window._mfq = window._mfq || [];(function () {var mf = document.createElement(\"script\"); mf.type = \"text/javascript\"; mf.defer = true;      mf.src = \"//cdn.mouseflow.com/projects/" + this.$envconfig.ngoMouseflow + ".js\";      document.getElementsByTagName(\"head\")[0].appendChild(mf);    })();";
+    document.getElementsByTagName('head')[0].appendChild(script);
+
+  },
   data () {
     return {
+      surveyJSON: null,
+      alert: false,
+      survey: null,
       leftDrawerOpen: false,
       navs: [
         {
@@ -189,9 +232,50 @@ export default {
     toLogin () {
       this.$auth.login()
     },
+    generateSurvey () {
+      console.log("computed surveyrender")
+      console.log(this.surveyJSON)
+      if (this.surveyJSON != null) {
+        this.survey = new SurveyVue.Model(this.surveyJSON)
+        console.log("after survey initialization")
+        this.survey.onComplete.add((result) => {
+          console.log("result of SURVEY")
+          console.log(result.data)
+          this.saveResults(result.data)
+        })
+        this.alert = true
+        return this.survey
+      } else {
+        return null
+      }
+    },
+    saveResults (answer) {
+      console.log(this.surveys)
+      var formatted_results = {
+        idSurvey: this.surveys.id,
+        idUser: this.user.umid,
+        answer: JSON.stringify(answer),
+        answerDate: new Date().toISOString()
+      }
+      console.log(formatted_results)
+      this.saveSurveyAnswer(formatted_results)
+      console.log("I am saving the results of the survey!!!!!")
+    },
     toLogout () {
       this.$auth.logout()
     }
+  },
+    created () {
+    this.fetchNGOSurvey(this.user.umid).then((sr) => {
+      console.log("I AM THE SUrVEY")
+      console.log(sr)
+      if(sr != null){
+        this.surveyJSON = JSON.parse(sr.survey)
+      }
+      console.log("I AM THE SUrVEY json")
+
+      console.log(this.surveyJSON)
+    })
   }
 };
 </script>

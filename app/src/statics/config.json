@@ -7,5 +7,7 @@
     "identitySPclientId": "ca5c50c4a3b941b3bfbe1b216a2b",
     "appBuildDate": "$APP_BUILD_DATE",
     "ngoUrl": "ngo.micadoproject.eu",
-    "ngoTenantDomain":"ngo.micado.eu"
+    "ngoTenantDomain":"ngo.micado.eu",
+    "ngoMouseflow": "6bf43914-3827-41e6-ad32-c51635e9e8b0"
+
 }

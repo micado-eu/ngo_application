@@ -103,7 +103,9 @@
     "menu": {
         "logout": "Abmelden",
         "login": "Anmelden",
-        "glossary": "Glossar"
+        "glossary": "Glossar",
+        "events": "Kurse & Veranstaltungen",
+        "settings": "Einstellungen"
     },
     "button": {
         "update_link": "Link aktualisieren",
@@ -118,5 +120,9 @@
         "add_information": "Information hinzufügen",
         "add_link": "Link hinzufügen",
         "add_event": "Veranstaltung hinzufügen"
+    },
+    "internal_reference": {
+        "more_info_2": "Ist zu finden unter",
+        "more_info_1": "Mehr Informationen für"
     }
 }

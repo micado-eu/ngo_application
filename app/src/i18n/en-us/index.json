@@ -58,7 +58,8 @@
     "edit": "Edit",
     "add_user": "Add User",
     "add_link": "Add link",
-    "upload": "Upload"
+    "upload": "Upload",
+    "survey":"Survey"
   },
   "input_labels": {
     "search": "Search",

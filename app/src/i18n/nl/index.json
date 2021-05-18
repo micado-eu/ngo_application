@@ -1,22 +1,24 @@
 {
     "help": {
-        "element_title": "Schrijf een titel",
-        "element_description": "Schrijf een beschrijving",
+        "element_title": "Vul een titel in",
+        "element_description": "Vul een beschrijving in",
         "element_category": "Selecteer een categorie",
-        "element_topic": "Selecteer een topic",
-        "element_user_type": "Selecteer een type user",
+        "element_topic": "Selecteer een thema",
+        "element_user_type": "Selecteer een gebruikerstype",
         "element_end_date": "Selecteer de einddatum",
         "word_count": "Aantal woorden in de beschrijving",
-        "location": "Geef de locatie van het evenement op",
-        "pa_password": "Geef het wachtwoord op de dat gebruiker zal gebruiken om in te loggen",
-        "pa_name": "Geef de naam van de gebruiker in",
-        "pa_surname": "Geef de familienaam van de gebruiker in",
+        "location": "Vul de locatie van het evenement in",
+        "pa_password": "Vul het wachtwoord in dat de gebruiker zal gebruiken om in te loggen",
+        "pa_name": "Vul de naam van de gebruiker in",
+        "pa_surname": "Vul de familienaam van de gebruiker in",
         "pa_external_id": "Geef, indien van toepassing, de externe ID van de gebruiker in",
-        "pa_mig_tenant": "Kies of deze account een migrant gebruiker is",
-        "pa_email": "Gelieve het email adres van de gebruiker om te geven",
+        "pa_mig_tenant": "Kies of deze account een gebruiker van de app voor nieuwkomers is",
+        "pa_email": "Vul het email adres van de gebruiker in",
         "element_start_date": "Selecteer de startdatum",
-        "pa_username": "Geef de gebruikersnaam in waarmee deze gebruiker zal inloggen",
-        "pa_admin": "Kies of de account beheersrechten moet krijgen"
+        "pa_username": "Vul de gebruikersnaam in waarmee deze gebruiker zal inloggen",
+        "pa_admin": "Kies of de account beheersrechten moet krijgen",
+        "event_cost": "Vul de prijs van het evenement in. Is het gratis? Vink de checkbox aan.",
+        "location_maps": "Bekijk hier welke zoekresultaten zichtbaar zullen zijn op Google Maps"
     },
     "menu": {
         "glossary": "Woordenlijst",
@@ -53,24 +55,29 @@
         "read_less": "Lees minder",
         "update_link": "Link updaten",
         "add_link": "Link toevoegen",
-        "add_information": "Informatie toevoegen"
+        "add_information": "Informatie toevoegen",
+        "upload": "Uploaden",
+        "validate_and_publish": "Goedkeuren en publiceren"
     },
     "input_labels": {
         "search": "Zoeken",
         "is_published": "Gepubliceerd",
         "description": "Beschrijving",
         "title": "Titel",
-        "select_category": "Categorie selecteren",
+        "select_category": "Selecteer de categorie",
         "finish_date": "Einddatum",
         "start_date": "Startdatum",
         "select_user_type": "Selecter gebruikerstypes",
         "select_topic": "Selecteer onderwerpen",
-        "location": "Locatie"
+        "location": "Locatie",
+        "event_free": "Dit evenement is gratis",
+        "event_cost": "Prijs van het evenement",
+        "upload_file": "Bestand uploaden"
     },
     "new_pa_user": {
         "usermgmt": "Beheer gebruiker",
         "email": "Email",
-        "mig_tenant": "Migrant gebruiker",
+        "mig_tenant": "Gebruiker",
         "admin": "Beheerder",
         "external_id": "Externe ID",
         "surname": "Familienaam",
@@ -81,10 +88,11 @@
     "filters": {
         "user_types_title": "Gebruikerstypes",
         "show_more": "Lees meer",
-        "topics_title": "Onderwerpen",
+        "topics_title": "Thema's",
         "category_title": "Categorie",
         "clear_all": "Reset alle filters",
-        "title": "Filter"
+        "title": "Filter",
+        "date_title": "Datum"
     },
     "text_editor": {
         "word_count": "Aantal woorden"
@@ -114,9 +122,13 @@
         "end_date": "Einddatum",
         "start_date": "Startdatum",
         "user_types": "Gebruikerstypes",
-        "topics": "Onderwerpen",
+        "topics": "Thema's",
         "category": "Categorie",
-        "published": "Gepubliceerd"
+        "published": "Gepubliceerd",
+        "translation_state": "Status van de vertaling",
+        "cost_free": "Gratis",
+        "cost": "Kostprijs",
+        "creator": "Aangemaakt door"
     },
     "events": {
         "edit": "Wijzig een evenement in de evenementenlijst",
@@ -125,11 +137,11 @@
     },
     "information_centre": {
         "edit": "Wijzig de informatie in het informatiecenter",
-        "add_new": "Voeg nieuwe informatie toe aan het informatiecenter",
+        "add_new": "Voeg nieuwe informatiefiches toe aan het informatiecenter",
         "list_title": "Informatiecenter"
     },
     "pa_profile": {
-        "confirm_pass": "Wachtwoord controle",
+        "confirm_pass": "Bevestig het wachtwoord",
         "new_pass": "Nieuw wachtwoord",
         "old_pass": "Oud wachtwoord",
         "mail": "Email",
@@ -142,5 +154,23 @@
         "password": "Wachtwoord",
         "username": "Gebruikersnaam",
         "change_pic": "Afbeelding wijzigen"
+    },
+    "link_modal": {
+        "apply": "Toepassen",
+        "link": "Link",
+        "text": "Tekst",
+        "selected": "Selecteer tekst om de link op toe te passen"
+    },
+    "translation_states": {
+        "editing": "Bewerken",
+        "unknown": "Onbekend",
+        "translated": "Vertaald",
+        "translating": "De vertaling is nog niet klaar",
+        "translatable": "Klaar om te vertalen"
+    },
+    "internal_reference": {
+        "go_to_reference": "Ga naar de pagina",
+        "more_info_2": "kan je vinden op:",
+        "more_info_1": "Meer informatie over"
     }
 }
