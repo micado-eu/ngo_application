@@ -6,7 +6,7 @@ import referenceExtension from "./markdownExtensions/referenceExtension.js"
 export default {
   data() {
     return {
-      converter: new Converter({ extensions: [referenceExtension] })
+      converter: new Converter({ extensions: [referenceExtension], simpleLineBreaks: true})
     }
   },
   methods: {
@@ -22,11 +22,11 @@ export default {
     removeMentionTags(md) {
       return md.replace(/<span data-mention-id="\d+" mention-type="\w+" class="mention">/g, "").replace(/<\/span>/g, "")
     },
-    async HTMLToMarkdown(html, defaultLang = 'en', userLang = 'en', isAllFetched = false) {
-      let md = this.converter.makeMarkdown(html)
+    async HTMLToMarkdown(html, defaultLang = 'en', userLang = 'en', isAllFetched = false, fakeEntities=false, fakeEntitiesObj) {
+      let cleanHTML = this.removeMentionTags(html)
+      let md = this.converter.makeMarkdown(cleanHTML)
       md = this.cleanSpaces(md)
-      md = this.removeMentionTags(md)
-      md = await this.markReferences(md, defaultLang, userLang, isAllFetched)
+      md = await this.markReferences(md, defaultLang, userLang, isAllFetched, fakeEntities, fakeEntitiesObj)
       return md
     },
     markdownToHTML(markdown) {
@@ -34,13 +34,18 @@ export default {
       html = this.cleanSpaces(html)
       return html
     },
-    async markReferencesAux(md, lang) {
+    async markReferencesAux(md, lang, fakeEntities=false, fakeEntitiesObj) {
       let result = md
-      let entities = { // Key is mention-type, value is getter, order is important because of possible title duplicates
-        "g": this.glossaryTemp,
-        "p": this.processesTemp,
-        "i": this.informationTemp,
-        "e": this.eventTemp
+      let entities
+      if (!fakeEntities) {
+        entities = { // Key is mention-type, value is getter, order is important because of possible title duplicates
+          "g": this.glossaryTemp,
+          "p": this.processesTemp,
+          "i": this.informationTemp,
+          "e": this.eventTemp
+        }
+      } else {
+        entities = fakeEntitiesObj
       }
       let markedTitles = [] // Avoids marking twice if an element has already been marked with the same title from another entity
       const stringComparator = new Intl.Collator(lang, { sensitivity: 'accent' })
@@ -64,10 +69,17 @@ export default {
             let splitted = result.split(regexp)
             // Add the tag to the text
             const prefixTag = `@[${key},${term.id}]`
+            // following regex matches the start of the link markdown, if a reference is inside a link it should not be marked
+            // example: [Homepage](https://google.es)
+            // matches: [Homepage](
+            let linkStartRegExp = /\[[^\]]*\]\(<?$/
+            let previousDetectedLink = false
             for (let i = 0; i < splitted.length; i = i + 1) {
-              if (!stringComparator.compare(splitted[i], title)) {
+              const isTitle = !stringComparator.compare(splitted[i], title)
+              if (!previousDetectedLink && isTitle) {
                 splitted[i] = prefixTag + "(" + splitted[i] + ")"
               }
+              previousDetectedLink = linkStartRegExp.test(splitted[i])
             }
             result = splitted.join("")
             markedTitles.push(title.toLowerCase())
@@ -76,9 +88,9 @@ export default {
       }
       return result
     },
-    async markReferences(md, defaultLang = 'en', userLang = 'en', isAllFetched = false) {
+    async markReferences(md, defaultLang = 'en', userLang = 'en', isAllFetched = false, fakeEntities = false, fakeEntitiesObj) {
       if (isAllFetched) {
-        return this.markReferencesAux(md, userLang)
+        return this.markReferencesAux(md, userLang, fakeEntities, fakeEntitiesObj)
       }
       await Promise.all([
         this.fetchGlossaryTemp({ defaultLang, userLang }),
@@ -86,7 +98,7 @@ export default {
         this.fetchFlowsTemp({ defaultLang, userLang }),
         this.fetchEventTemp({ defaultLang, userLang })
       ])
-      return this.markReferencesAux(md, userLang)
+      return this.markReferencesAux(md, userLang, fakeEntities, fakeEntitiesObj)
     },
     elemTitle(term) {
       if (term.process) {
