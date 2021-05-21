@@ -1,13 +1,13 @@
 import client from 'api-images-client'
 
 export default {
-    data() {
+    data () {
         return {
             cancelToken: null
         }
     },
     methods: {
-        async uploadImage(file, onUploadProgressFn = null) {
+        async uploadImage (file, onUploadProgressFn = null) {
             // Returns url of the new uploaded image
             let array = client.uploadImage(file, onUploadProgressFn)
             this.cancelToken = array[1]
@@ -15,17 +15,17 @@ export default {
             console.log(result)
             let hostname = window.location.hostname
             if (hostname === "localhost") {
-                hostname = "pa.micadoproject.eu"
+                hostname = this.$envconfig.ngoUrl
             }
             return window.location.protocol + "//" + hostname + "/micado_img/" + result.files[0].new_filename
         },
-        cancel() {
+        cancel () {
             if (this.cancelToken !== null) {
                 this.cancelToken.cancel()
                 console.log("image upload cancel")
             }
         },
-        isCancel(error) {
+        isCancel (error) {
             return client.isRequestCancel(error)
         }
     }
