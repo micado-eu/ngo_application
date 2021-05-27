@@ -19,11 +19,58 @@ export default {
       // Having &nbsp; instead of spaces breaks tooltips overflow wrap, so we substitute them here
       return text.replace(/&nbsp;/g, " ")
     },
+    moveSpaces(html) {
+      // Check https://github.com/micado-eu/MICADO/issues/119 for more information about issues related to spaces in bold or italic tags
+      // Move spaces inside and next to italics and bold tags in markdown to the exterior
+      let splitted = html.split(/(<strong><em>.*?<\/em><\/strong>)/g)
+      let boldItalicFixed = this.moveSpacesAux(splitted, "<strong><em>", "</em></strong>")
+      splitted = boldItalicFixed.split(/(<em>.*?<\/em>)/g)
+      let italicFixed = this.moveSpacesAux(splitted, "<em>", "</em>")
+      splitted = italicFixed.split(/(<strong>.*?<\/strong>)/g)
+      let boldFixed = this.moveSpacesAux(splitted, "<strong>", "</strong>")
+      return boldFixed
+    },
+    moveSpacesAux(splitted, openTag, closeTag) {
+      const openTagLength = openTag.length
+      const closeTagLength = closeTag.length
+      for (let i = 0; i < splitted.length; i++) {
+        if (splitted[i].startsWith(openTag)) {
+          // First character inside tags
+          let j = openTagLength
+          let spaceCounter = 0
+          // Count spaces at the beginning of the bold/italic
+          while (splitted[i].charAt(j) === ' ') {
+            spaceCounter++
+            j++
+          }
+          if (spaceCounter > 0) {
+            splitted[i] = splitted[i].substr(0, openTagLength) + splitted[i].substr(j)
+            splitted.splice(i, 0, " ".repeat(spaceCounter > 0))
+            i++ // Move to new position
+          }
+          spaceCounter = 0
+          // Find ending of tag
+          j = splitted[i].indexOf(closeTag)
+          // Backtrack to find trailing spaces
+          while (splitted[i].charAt(j - 1) === ' ') {
+            spaceCounter++
+            j--
+          }
+          if (spaceCounter > 0) {
+            splitted[i] = splitted[i].substr(0, j) + splitted[i].substr(splitted[i].indexOf(closeTag))
+            splitted.splice(i + 1, 0, " ".repeat(spaceCounter > 0))
+            i++ // Next position will be the spaces, which we can skip
+          }
+        }
+      }
+      return splitted.join("")
+    },
     removeMentionTags(md) {
       return md.replace(/<span data-mention-id="\d+" mention-type="\w+" class="mention">/g, "").replace(/<\/span>/g, "")
     },
     async HTMLToMarkdown(html, defaultLang = 'en', userLang = 'en', isAllFetched = false, fakeEntities=false, fakeEntitiesObj) {
       let cleanHTML = this.removeMentionTags(html)
+      cleanHTML = this.moveSpaces(cleanHTML)
       let md = this.converter.makeMarkdown(cleanHTML)
       md = this.cleanSpaces(md)
       md = await this.markReferences(md, defaultLang, userLang, isAllFetched, fakeEntities, fakeEntitiesObj)
@@ -32,6 +79,7 @@ export default {
     markdownToHTML(markdown) {
       let html = this.converter.makeHtml(markdown)
       html = this.cleanSpaces(html)
+      html = this.moveSpaces(html)
       return html
     },
     async markReferencesAux(md, lang, fakeEntities=false, fakeEntitiesObj) {
