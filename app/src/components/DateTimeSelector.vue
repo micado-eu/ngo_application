@@ -1,22 +1,25 @@
 <template>
-  <div :class="inline ? 'row' : ''">
-    <q-input
-      outlined
-      bg-color="grey-3"
-      v-model="internalDate"
-      :class="inline ? 'col q-mr-md' : 'q-mb-sm'"
-      :readonly="readonly"
-    >
-      <template v-slot:prepend>
-        <q-icon
-          name="event"
-          class="cursor-pointer"
-          data-cy="date_icon"
-        >
-          <q-popup-proxy
-            transition-show="scale"
-            transition-hide="scale"
+  <div>
+    <div :class="inline ? 'row' : ''">
+      <q-field
+        outlined
+        bg-color="grey-3"
+        :class="inline ? 'col cursor-pointer q-mr-md' : 'cursor-pointer q-mb-sm'"
+        :readonly="readonly"
+      >
+        <template v-slot:prepend>
+          <q-icon
+            name="event"
+            data-cy="date_icon"
           >
+          </q-icon>
+        </template>
+        <template v-slot:control>{{internalDate}}</template>
+        <q-popup-proxy
+          transition-show="scale"
+          transition-hide="scale"
+        >
+          <div>
             <q-date
               v-model="internalDate"
               mask="YYYY-MM-DD"
@@ -32,27 +35,30 @@
                 />
               </div>
             </q-date>
-          </q-popup-proxy>
-        </q-icon>
-      </template>
-    </q-input>
-    <q-input
-      outlined
-      bg-color="grey-3"
-      v-model="internalTime"
-      :readonly="readonly"
-      :class="inline ? 'col': ''"
-    >
-      <template v-slot:prepend>
-        <q-icon
-          name="access_time"
-          class="cursor-pointer"
-          data-cy="time_icon"
-        >
-          <q-popup-proxy
-            transition-show="scale"
-            transition-hide="scale"
+          </div>
+        </q-popup-proxy>
+      </q-field>
+      <q-field
+        outlined
+        bg-color="grey-3"
+        :readonly="readonly"
+        :class="inline ? 'col cursor-pointer': 'cursor-pointer'"
+      >
+        <template v-slot:prepend>
+          <q-icon
+            name="access_time"
+            data-cy="time_icon"
           >
+          </q-icon>
+        </template>
+        <template v-slot:control>
+          {{internalTime}}
+        </template>
+        <q-popup-proxy
+          transition-show="scale"
+          transition-hide="scale"
+        >
+          <div>
             <q-time
               v-model="internalTime"
               mask="HH:mm"
@@ -69,10 +75,10 @@
                 />
               </div>
             </q-time>
-          </q-popup-proxy>
-        </q-icon>
-      </template>
-    </q-input>
+          </div>
+        </q-popup-proxy>
+      </q-field>
+    </div>
   </div>
 </template>
 
