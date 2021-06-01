@@ -58,7 +58,8 @@
         "edit": "Editar",
         "change_pass": "Cambiar contraseña",
         "upload": "Subir",
-        "validate_and_publish": "Validar y publicar"
+        "validate_and_publish": "Validar y publicar",
+        "survey": "Encuesta"
     },
     "input_labels": {
         "search": "Buscar",
@@ -157,7 +158,7 @@
         "change_pic": "Cambiar foto"
     },
     "internal_reference": {
-        "go_to_reference": "Ir a la referencia",
+        "go_to_reference": "Ir a referencia",
         "more_info_2": "se puede encontrar en:",
         "more_info_1": "Más información sobre"
     },
