@@ -68,6 +68,31 @@ export default {
     removeMentionTags(md) {
       return md.replace(/<span data-mention-id="\d+" mention-type="\w+" class="mention">/g, "").replace(/<\/span>/g, "")
     },
+    removeReferencesFromExternalLinks(md) {
+      // clears references in both the [] and () of a link
+      let clearRegex1 = /(\[[^(]*)@\[.*?,\d+\]\((.*?)\)(.*?\]\(.*)@\[.*?,\d+\]\((.*?)\)(.*\))/g
+      let result = md
+      let splitted = md.split(clearRegex1)
+      while (splitted.length > 1) {
+        result = splitted.join("")
+        splitted = result.split(clearRegex1)
+      }
+      // clears references in []
+      let clearRegex2 = /(\[[^(]*)@\[.*?,\d+\]\((.*?)\)(.*?\]\(.*\))/g
+      splitted = result.split(clearRegex2)
+      while (splitted.length > 1) {
+        result = splitted.join("")
+        splitted = result.split(clearRegex2)
+      }
+      // clears references in ()
+      let clearRegex3 = /(\[.*\]\(.*)@\[.*?,\d+\]\((.*?)\)(.*\))/g
+      splitted = result.split(clearRegex3)
+      while (splitted.length > 1) {
+        result = splitted.join("")
+        splitted = result.split(clearRegex3)
+      }
+      return result
+    },
     async HTMLToMarkdown(html, defaultLang = 'en', userLang = 'en', isAllFetched = false, fakeEntities=false, fakeEntitiesObj) {
       let cleanHTML = this.removeMentionTags(html)
       cleanHTML = this.moveSpaces(cleanHTML)
@@ -117,23 +142,18 @@ export default {
             let splitted = result.split(regexp)
             // Add the tag to the text
             const prefixTag = `@[${key},${term.id}]`
-            // following regex matches the start of the link markdown, if a reference is inside a link it should not be marked
-            // example: [Homepage](https://google.es)
-            // matches: [Homepage](
-            let linkStartRegExp = /\[[^\]]*\]\(<?$/
-            let previousDetectedLink = false
             for (let i = 0; i < splitted.length; i = i + 1) {
               const isTitle = !stringComparator.compare(splitted[i], title)
-              if (!previousDetectedLink && isTitle) {
+              if (isTitle) {
                 splitted[i] = prefixTag + "(" + splitted[i] + ")"
               }
-              previousDetectedLink = linkStartRegExp.test(splitted[i])
             }
             result = splitted.join("")
             markedTitles.push(title.toLowerCase())
           }
         }
       }
+      result = this.removeReferencesFromExternalLinks(result)
       return result
     },
     async markReferences(md, defaultLang = 'en', userLang = 'en', isAllFetched = false, fakeEntities = false, fakeEntitiesObj) {
