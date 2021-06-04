@@ -105,7 +105,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ $t( nav.label) }}</q-item-label>
-            <q-item-label caption>{{ nav.description }}</q-item-label>
+            <q-item-label caption>{{ $t(nav.description) }}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
