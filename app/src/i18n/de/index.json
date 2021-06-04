@@ -16,7 +16,10 @@
         "word_count": "Wortanzahl in der Beschreibung",
         "pa_admin": "Auswählen ob dieser Account Adminrechte besitzt",
         "pa_mig_tenant": "Auswählen ob dieser Account ein Tenant in der Migrant/-innen-App ist",
-        "pa_external_id": "Falls verfügbar, externe ID des/der Nutzer/-in einfügen"
+        "pa_external_id": "Falls verfügbar, externe ID des/der Nutzer/-in einfügen",
+        "is_published": "Eine ZGO kann keine Einträge veröffentlichen bzw. die Veröffentlichung zurückziehen",
+        "event_cost": "Kosten der Veranstaltung. Feld markieren falls die Veranstaltung kostenlos ist.",
+        "location_maps": "Hier klicken, um die Suchergebnisse des Ortes auf Google Maps zu sehen"
     },
     "events": {
         "list_title": "Veranstaltungen",
@@ -28,7 +31,9 @@
         "category_title": "Kategorie",
         "topics_title": "Themenfelder",
         "show_more": "Mehr zeigen",
-        "clear_all": "Alle Filter zurücksetzen"
+        "clear_all": "Alle Filter zurücksetzen",
+        "date_title": "Datum",
+        "user_types_title": "Nutzer/-innengruppen"
     },
     "lists": {
         "published": "Veröffentlicht",
@@ -37,12 +42,16 @@
         "user_types": "Nutzer/-innen-Gruppen",
         "start_date": "Startdatum",
         "end_date": "Enddatum",
-        "location": "Ort"
+        "location": "Ort",
+        "translation_state": "Übersetzungsstatus",
+        "cost_free": "Kostenlos",
+        "cost": "Kosten",
+        "creator": "Erstellt/Organisiert von"
     },
     "information_centre": {
-        "edit": "Eintrag in \"Allgemeine Informationen\" editieren",
-        "add_new": "Eintrag in \"Allgemeine Informationen\" hinzufügen",
-        "list_title": "Allgemeine Informationen"
+        "edit": "Eintrag in \"Nützliche Informationen\" editieren",
+        "add_new": "Eintrag in \"Nützliche Informationen\" hinzufügen",
+        "list_title": "Nützliche Informationen"
     },
     "input_labels": {
         "location": "Ort",
@@ -50,7 +59,14 @@
         "title": "Titel",
         "search": "Suchen",
         "is_published": "Veröffentlicht",
-        "description": "Beschreibung"
+        "description": "Beschreibung",
+        "event_free": "Diese Veranstaltung ist kostenlos",
+        "event_cost": "Kosten der Veranstaltung",
+        "upload_file": "Datei hochladen",
+        "finish_date": "Enddatum",
+        "start_date": "Startdatum",
+        "select_user_type": "Nutzer/-innen-Gruppe wählen",
+        "select_topic": "Themenfelder auswählen"
     },
     "date_selector": {
         "close": "Schließen"
@@ -98,14 +114,31 @@
         "name": "Vorname",
         "password": "Passwort",
         "username": "Nutzer/-innen-Name",
-        "external_id": "Externe ID"
+        "external_id": "Externe ID",
+        "usermgmt": "Nutzer/-innenmanagement"
     },
     "menu": {
         "logout": "Abmelden",
         "login": "Anmelden",
         "glossary": "Glossar",
         "events": "Kurse & Veranstaltungen",
-        "settings": "Einstellungen"
+        "settings": "Einstellungen",
+        "dashboard": "Dashboard",
+        "title": "Wilkommen",
+        "process": "Schritt-für-Schritt Anleitungen",
+        "information_centre": "Nützliche Informationen",
+        "activelanguages": "Aktive Sprachen ändern",
+        "CSO_user": "ZGO Nutzer/-innenmanagement",
+        "migrant": "Migrantische Nutzer/-innen",
+        "interventions": "Validierungen verwalten",
+        "topic": "Themenfelder verwalten",
+        "courses": "Kurse",
+        "integrationtype": "Integrationstypen verwalten",
+        "integrationcategory": "Integrationskategorien verwalten",
+        "mediation": "Mediation anfragen",
+        "processmanager": "Anleitungen verwalten",
+        "configure": "Konfiguration",
+        "documenttype": "Dokumententypen verwalten"
     },
     "button": {
         "update_link": "Link aktualisieren",
@@ -119,10 +152,27 @@
         "change_pass": "Passwort ändern",
         "add_information": "Information hinzufügen",
         "add_link": "Link hinzufügen",
-        "add_event": "Veranstaltung hinzufügen"
+        "add_event": "Veranstaltung hinzufügen",
+        "survey": "Umfrage",
+        "upload": "Hochladen",
+        "validate_and_publish": "Validieren und veröffentlichen"
     },
     "internal_reference": {
-        "more_info_2": "Ist zu finden unter",
-        "more_info_1": "Mehr Informationen für"
+        "more_info_2": "ist zu finden unter:",
+        "more_info_1": "Mehr Information für",
+        "go_to_reference": "Zu Referenz gehen"
+    },
+    "translation_states": {
+        "unknown": "Unbekannt",
+        "translated": "Übersetzt",
+        "translating": "In Übersetzung",
+        "translatable": "Zu übersetzen",
+        "editing": "In Bearbeitung"
+    },
+    "link_modal": {
+        "selected": "Text auswählen, um Link einzufügen",
+        "apply": "Anwenden",
+        "link": "Link",
+        "text": "Text"
     }
 }
