@@ -20,14 +20,13 @@
       class="q-pa-xl div-2"
       :hidden="hideForm"
     >
-      <q-card-section>
+ <!--     <q-card-section>
         <div class="text-h6">Migrant application configuration</div>
-      </q-card-section>
+      </q-card-section>-->
       <q-card-section>
          <form
           @submit.prevent.stop="onSubmit"
           @reset.prevent.stop="onReset"
-          class=""
         >
         <div
               class=" q-pa-xsm "

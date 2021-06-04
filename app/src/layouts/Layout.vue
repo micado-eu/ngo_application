@@ -14,7 +14,7 @@
           aria-label="Menu"
         />
 
-        <q-toolbar-title>Micado App</q-toolbar-title>
+        <q-toolbar-title>{{$t('application_title')}}</q-toolbar-title>
         <q-btn
           v-if="this.$auth.loggedIn() && this.surveyJSON != null"
           no-caps
@@ -209,42 +209,42 @@ export default {
           icon: "description",
           to: "/information",
           feature: "FEAT_DEFAULT",
-          description: "Manage the information"
+          description: "menu.information_centre_desc"
         },
         {
           label: "menu.events",
           icon: "description",
           to: "/events",
           feature: "FEAT_EVENTS",
-          description: "Manage the events"
+          description: "menu.events_desc"
         },
         {
           label: "menu.process",
           icon: "linear_scale",
           to: "/guided_process_editor",
           feature: "FEAT_PROCESSES",
-          description: "Edit guided processes information"
+          description: "menu.process_desc"
         },
         {
           label: "menu.interventions",
           icon: "linear_scale",
           to: "/interventions",
           feature: "FEAT_DOCUMENTS",
-          description: "Check validation requests"
+          description: "menu.validation_requests"
         },
         {
           label: "menu.settings",
           icon: "settings_applications",
           to: "/settings",
           feature: "FEAT_DEFAULT",
-          description: "configure the application"
+          description: "menu.setting_desc"
         },
         {
           label: "menu.CSO_user",
           icon: "settings_applications",
           to: "/usermgmt",
           feature: "FEAT_DEFAULT",
-          description: "Manage CSO users"
+          description: "menu.cso_desc"
         }
       ]
     };

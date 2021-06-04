@@ -1,4 +1,5 @@
 {
+  "application_title": "MICADO app",
   "menu": {
     "title": "Welcome",
     "dashboard": "Dashboard",
@@ -20,7 +21,13 @@
     "process": "Guided processes",
     "events": "Events",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "validation_requests":"Check validation requests",
+    "information_centre_desc":"Manage the information",
+    "events_desc":"Manage the events",
+    "process_desc":"Edit guided processes information",
+    "setting_desc":"Configure the application",
+    "cso_desc":"Manage CSO users"
   },
   "help": {
     "element_title": "Write a title",
@@ -74,7 +81,8 @@
     "location": "Location",
     "upload_file": "Upload file",
     "event_cost": "Cost of the event",
-    "event_free": "The event is free"
+    "event_free": "The event is free",
+    "validate_intervention":"Validate intervention"
   },
   "link_modal": {
     "text": "Text",

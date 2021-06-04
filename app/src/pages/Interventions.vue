@@ -11,7 +11,7 @@
       >
         <template v-slot:append>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+              <q-icon name="search" />
           </q-avatar>
         </template>
       </q-input>
@@ -32,7 +32,7 @@
     >
       <q-card style="min-width: 350px">
         <q-card-section>
-          <div class="text-h6">Validate intervention</div>
+          <div class="text-h6">{{$t('input_labels.validate_intervention')}}</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
