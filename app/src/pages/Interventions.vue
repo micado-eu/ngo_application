@@ -88,7 +88,8 @@ export default {
   mixins: [storeMappingMixin({
     getters: {
       interventions: 'interventions/interventions',
-      document_types: 'document_type/document_types'
+      document_types: 'document_type/document_types',
+      ngo_user:'auth/user'
     }, actions: {
       fetchInterventions: 'interventions/fetchInterventions',
       fetchDocumentType: 'document_type/fetchDocumentType',
@@ -118,7 +119,8 @@ export default {
         validatedByUser: null,
         uploadedByMe: true,
         expirationDate: null,
-        documentTypeId: ""
+        documentTypeId: "",
+        shareable:true
       },
       t_docs: [],
       search: ""
@@ -152,7 +154,7 @@ export default {
       this.validatingIntervention.completed = true
       this.validatingIntervention.validationDate = current_data
       // TODO change with the real user ID
-      this.validatingIntervention.validatingUserId = 1
+      this.validatingIntervention.validatingUserId = this.ngo_user.umid
       this.editIntervention({ intervention: this.validatingIntervention, plan: this.validatingIntervention.list_id })
         .then(() => {
           if (this.validationFile) {
@@ -179,7 +181,7 @@ export default {
               this.doc_shell.uploadedByMe = false
               this.doc_shell.validatedByTenant = this.validatingIntervention.validating_user_tenant
               // TODO substitute with proper value (now using the 17 as id of tenant 3)
-              this.doc_shell.validatedByUser = 17
+              this.doc_shell.validatedByUser = this.ngo_user.umid
               this.doc_shell.pictures.push({
                 id: -1,
                 picture: fileInfo.base64,
@@ -206,11 +208,11 @@ export default {
         })
     },
     createShell () {
-      this.doc_shell = { id: -1, pictures: [], userId: null, userTenant: null, askValidateByTenant: null, validated: false, validationDate: null, validatedByTenant: null, validatedByUser: null, uploadedByMe: true, expirationDate: null, documentTypeId: "" }
+      this.doc_shell = { id: -1, pictures: [], userId: null, userTenant: null, askValidateByTenant: null, validated: false, validationDate: null, validatedByTenant: null, validatedByUser: null, uploadedByMe: true, expirationDate: null, documentTypeId: "", shareable:true }
     },
   },
   created () {
-    this.fetchInterventions({ lang: this.activeLanguage, ngoTenantId: 3 }).then(() => {
+    this.fetchInterventions({ lang: this.activeLanguage, ngoTenantId: this.ngo_user.tenant_id }).then(() => {
       console.log(this.interventions)
       let userList = []
       this.interventions.forEach(a_int => {

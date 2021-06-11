@@ -7,7 +7,7 @@ export default {
     console.log("call to save to DB")
     console.log(document)
     // create fake id here
-    const savingDocument = JSON.parse(JSON.stringify(document, ['documentTypeId', 'validated', 'expirationDate', 'uploadedByMe', 'validatedByTenant', 'validatedByUser', 'userTenant', 'userId', 'validationDate']))
+    const savingDocument = JSON.parse(JSON.stringify(document, ['documentTypeId', 'validated', 'expirationDate', 'uploadedByMe', 'validatedByTenant', 'validatedByUser', 'userTenant', 'userId', 'validationDate','shareable']))
 
     return axiosInstance
       .post('/backend/1.0.0/documents', savingDocument)
