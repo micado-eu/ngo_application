@@ -18,33 +18,40 @@
         "pa_username": "Vul de gebruikersnaam in waarmee deze gebruiker zal inloggen",
         "pa_admin": "Kies of de account beheersrechten moet krijgen",
         "event_cost": "Vul de prijs van het evenement in. Is het gratis? Vink de checkbox aan.",
-        "location_maps": "Bekijk hier welke zoekresultaten zichtbaar zullen zijn op Google Maps"
+        "location_maps": "Bekijk hier welke zoekresultaten zichtbaar zullen zijn op Google Maps",
+        "is_published": "Een organisatie kan geen informatie publiceren of uit publicatie halen"
     },
     "menu": {
         "glossary": "Woordenlijst",
         "login": "Login",
-        "logout": "Logout",
+        "logout": "Uitloggen",
         "events": "Evenementen",
-        "process": "Processen",
+        "process": "Stappenplannen",
         "information_centre": "Informatiecenter",
         "activelanguages": "Wijzig actieve talen",
-        "CSO_user": "CSO Gebruikersbeheer",
+        "CSO_user": "Gebruikersbeheer voor organisaties",
         "settings": "Instellingen",
-        "migrant": "Migrant gebruikers",
+        "migrant": "Nieuwkomers",
         "interventions": "Beheer goedkeuringen",
-        "topic": "Beheer onderwerpen",
+        "topic": "Beheer thema's",
         "courses": "Cursussen",
         "integrationtype": "Beheer integratietypes",
         "integrationcategory": "Beheer integratiecategorieën",
         "mediation": "Bemiddeling aanvragen",
-        "processmanager": "Beheer processen",
+        "processmanager": "Beheer stappenplannen",
         "configure": "Configuratie",
         "documenttype": "Document types beheren",
         "dashboard": "Dashboard",
-        "title": "Welkom"
+        "title": "Welkom",
+        "cso_desc": "Beheer de NGO gebruikers",
+        "setting_desc": "Stel de app in",
+        "events_desc": "Beheer de evenementen",
+        "information_centre_desc": "Beheer de informatie",
+        "validation_requests": "Bekijk de vragen tot goedkeuring",
+        "process_desc": "Wijzig stappenplan"
     },
     "button": {
-        "change_pass": "Wachtwoord veranderen",
+        "change_pass": "Wijzig je wachtwoord",
         "save": "Opslaan",
         "cancel": "Annuleren",
         "edit": "Wijzigen",
@@ -55,9 +62,10 @@
         "read_less": "Lees minder",
         "update_link": "Link updaten",
         "add_link": "Link toevoegen",
-        "add_information": "Informatie toevoegen",
+        "add_information": "Informatiefiche toevoegen",
         "upload": "Uploaden",
-        "validate_and_publish": "Goedkeuren en publiceren"
+        "validate_and_publish": "Goedkeuren en publiceren",
+        "survey": "Vragenlijst"
     },
     "input_labels": {
         "search": "Zoeken",
@@ -68,11 +76,12 @@
         "finish_date": "Einddatum",
         "start_date": "Startdatum",
         "select_user_type": "Selecter gebruikerstypes",
-        "select_topic": "Selecteer onderwerpen",
+        "select_topic": "Selecteer thema's",
         "location": "Locatie",
         "event_free": "Dit evenement is gratis",
         "event_cost": "Prijs van het evenement",
-        "upload_file": "Bestand uploaden"
+        "upload_file": "Bestand uploaden",
+        "validate_intervention": "Keur de taak goed"
     },
     "new_pa_user": {
         "usermgmt": "Beheer gebruiker",
@@ -87,7 +96,7 @@
     },
     "filters": {
         "user_types_title": "Gebruikerstypes",
-        "show_more": "Lees meer",
+        "show_more": "Toon meer",
         "topics_title": "Thema's",
         "category_title": "Categorie",
         "clear_all": "Reset alle filters",
@@ -101,7 +110,7 @@
         "date_time_empty": "Gelieve de starttijd, eindtijd, startdatum en einddatum in te vullen.",
         "change_translated": "Verander de vertaalstatus naar \"Schrijven\" om de inhoud te wijzigen. In dit geval wordt de huidige vertaling verwijderd.",
         "in_translation": "Deze inhoud moet nog vertaald worden. De gewijzigde inhoud zal niet opgeslagen worden.",
-        "fill_default_language": "Gelieve de standaard taal titel in te vullen: ",
+        "fill_default_language": "Gelieve de titel in de standaard taal in te vullen: ",
         "max_char_limit": "Maximum aantal karakters bereikt: ",
         "category_empty": "Gelieve een categorie te selecteren.",
         "title_empty": "Titel is leeg. Gelieve een titel toe te voegen."
@@ -127,7 +136,7 @@
         "published": "Gepubliceerd",
         "translation_state": "Status van de vertaling",
         "cost_free": "Gratis",
-        "cost": "Kostprijs",
+        "cost": "Prijs",
         "creator": "Aangemaakt door"
     },
     "events": {
@@ -172,5 +181,6 @@
         "go_to_reference": "Ga naar de pagina",
         "more_info_2": "kan je vinden op:",
         "more_info_1": "Meer informatie over"
-    }
+    },
+    "application_title": "MICADO app"
 }
