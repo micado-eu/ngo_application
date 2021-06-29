@@ -27,6 +27,7 @@ import topic from './topic'
 import tenant from './tenant'
 import user_type from './user_type'
 import survey from './survey'
+import picture_hotspots from './picture_hotspots'
 
 VuexORM.use(VuexORMAxios, { axios })
 
@@ -68,7 +69,8 @@ export default function (/* { ssrContext } */) {
       topic,
       tenant,
       user_type,
-      survey
+      survey,
+      picture_hotspots
     },
 
     // enable strict mode (adds overhead!)

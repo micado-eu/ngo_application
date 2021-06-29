@@ -41,4 +41,12 @@ var index = state.flows.findIndex(d => d.id == process.id);
 state.flows.splice(index, 1);
 console.log("deleted process at place " + index)
 }
-
+export function setFlowData(state, data) {
+  state.flowdata = data
+}
+export function setShellData(state, data) {
+  state.shell_data = data
+}
+export function setDocuments (state, documents) {
+  state.documents = documents
+}

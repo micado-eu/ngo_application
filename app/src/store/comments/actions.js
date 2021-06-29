@@ -95,3 +95,12 @@ async function asyncForEach (array, callback) {
     await callback(array[index], index, array);
   }
 }
+
+export function fetchCommentsByProcess(state, process_id) {
+  return client
+    .fetchCommentsByProcess(process_id)
+    .then(process_comments => {
+      state.commit('setProcessComments', process_comments)
+      return process_comments
+    })
+}
