@@ -48,24 +48,48 @@
     </div>
 
   </q-item>
-  <div v-if ="selectedProcess == this.Link" class="row">
-      <div class="col">
+ <q-dialog v-model="alert" full-width >
+       <q-layout
+        view="Lhh lpR fff"
+        container
+        class="bg-white"
+      >
+      <q-header
+          
+          class="bg-accent"
+        >
+          <q-toolbar>
 
-       <vue-mermaid
-            class="center"
-            :nodes="mermaid"
-            :config="merconf"
-            type="graph TD"
-            v-on:nodeClick="editNodeMer"
-          ></vue-mermaid>
-      </div>
-    </div>
+            <q-toolbar-title> {{$t('input_labels.preview_migrant')}}</q-toolbar-title>
+            <q-btn
+              round
+              dense
+              flat
+              v-close-popup
+              color="white"
+              icon="cancel"
+            />
+          </q-toolbar>
+        </q-header>
+        <q-page-container>
+          <q-page class="q-pa-sm">
+            <ProcessViewer
+            :processid="process.id"
+            :topics="processTopics"
+            />
+ 
+          </q-page>
+        </q-page-container>
+      </q-layout>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import editEntityMixin from '../../mixin/editEntityMixin'
+import ProcessViewer from './ProcessViewer'
+
 export default {
   name: 'Process',
   mixins:[editEntityMixin,
@@ -82,10 +106,13 @@ export default {
     return {
       open:true,
       hideAdd: false,
+      alert:false,
       merconf: { theme: "default", startOnLoad: false, securityLevel: 'loose', useMaxWidth: false, flowchart: { padding: 5 } },
     };
   },
-
+  components:{
+    ProcessViewer
+  },
   methods: {
     editNodeMer(){
       console.log("clicked on node")
@@ -107,8 +134,7 @@ export default {
     }, 
     selectGraph(){
      
-      console.log("emitting graph")
-      this.$emit('selectGraph', this.Link)
+      this.alert = true
     }
   }, 
   created() {

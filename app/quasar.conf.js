@@ -68,7 +68,7 @@ module.exports = function (ctx) {
       },
 
       // Quasar plugins
-      plugins: ['Cookies', 'Notify']
+      plugins: ['Cookies', 'Notify', 'Loading']
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -105,6 +105,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/server');
         chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/server');
         chain.resolve.alias.set('api-language-client', 'src/api/language/server');
+        chain.resolve.alias.set('api-picture_hotspots-client', 'src/api/picture_hotspots/server')
         chain.resolve.alias.set('api-settings-client', 'src/api/settings/server');
         chain.resolve.alias.set('api-interventions-client', 'src/api/interventions/server');
         chain.resolve.alias.set('api-comments-client', 'src/api/comments/server');

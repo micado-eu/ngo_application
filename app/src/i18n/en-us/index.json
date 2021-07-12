@@ -66,7 +66,9 @@
     "add_user": "Add User",
     "add_link": "Add link",
     "upload": "Upload",
-    "survey":"Survey"
+    "survey":"Survey",
+    "view_model": "View model",
+    "view_pics": "View details"
   },
   "input_labels": {
     "search": "Search",
@@ -82,7 +84,15 @@
     "upload_file": "Upload file",
     "event_cost": "Cost of the event",
     "event_free": "The event is free",
-    "validate_intervention":"Validate intervention"
+    "validate_intervention":"Validate intervention",
+    "click_step":"Click on a step above for details",
+    "preview":"Preview",
+    "preview_migrant":"Preview of the process on the migrant app",
+    "loading":"Loading...",
+    "cost": "Cost",
+    "comments": "Comments",
+    "required_documents": "Required documents",
+    "emitter":"Emitter"
   },
   "link_modal": {
     "text": "Text",

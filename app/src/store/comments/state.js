@@ -1,4 +1,5 @@
 export default {
   //
-  comments: []
+  comments: [],
+  process_comments:[]
 }

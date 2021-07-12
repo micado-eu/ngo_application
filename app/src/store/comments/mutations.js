@@ -31,3 +31,12 @@ export function deleteComments(state, index){
   let document_types = state.document_type.filter(d => d.id != document_typeId)
   state.document_type = document_types
 }*/
+
+export function setProcessComments(state, process_comments) {
+  console.log(process_comments)
+  console.log("before state.processcomments")
+  console.log(state.process_comments)
+  state.process_comments = process_comments
+  console.log("after state.processcomments")
+  console.log(state.process_comments)
+}

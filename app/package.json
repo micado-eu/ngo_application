@@ -35,6 +35,7 @@
     "vue": "^2.6.11",
     "vue-countable": "^1.0.9",
     "vue-countly": "^1.0.0",
+    "vue-hotspot": "^2.0.2",
     "vue-i18n": "^7.3.3",
     "vue-mermaid": "0.0.13",
     "vuelidate": "^0.7.4",
