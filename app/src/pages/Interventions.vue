@@ -76,7 +76,7 @@
   </q-page>
 </template>
 
-<script>
+<script> 
 //import { mapGetters, mapActions } from "vuex";
 import storeMappingMixin from '../mixin/storeMappingMixin'
 import editEntityMixin from '../mixin/editEntityMixin'
