@@ -459,7 +459,8 @@ export default {
   },
   async created () {
     console.log("created")
-    await this.fetchCSOUser(2)
+    console.log(this.$store.state.auth.user)
+    await this.fetchCSOUser(this.$store.state.auth.user.tenant_id)
     console.log(this.csouser)
     //    this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     /*
