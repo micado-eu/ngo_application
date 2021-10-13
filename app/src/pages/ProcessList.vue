@@ -2,52 +2,29 @@
   <div class="container">
     <q-card>
       <q-card-section :hidden="hideForm">
-        <q-tabs
-          v-model="langTab"
-          dense
-          class="bg-grey-2"
-          active-color="accent"
-          indicator-color="accent"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
-        <q-tab-panels
-          v-model="langTab"
-          class="bg-grey-2 inset-shadow "
-          animated
-        >
-          <q-tab-panel
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-          >
             <q-input
-              v-model="int_comment_shell.translations.filter(filterTranslationModel(language.lang))[0].comment"
+              v-model="int_comment_shell.translations.filter(
+              (top) => top.translated == false
+              )[0].comment"
               filled
               type="textarea"
               label="Comment"
-              :readonly="!(int_comment_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
+              :readonly="!(
+              (int_comment_shell.translations.filter((top) => top.translated == false)[0].translationState == 0)
+              )"
             />
-            <div>
-              <TranslateStateButton
-                v-model="int_comment_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-                :isForDefaultLanguage="language.lang===activeLanguage"
-                :objectId="int_comment_shell.id"
-                :readonly="!(language.lang===activeLanguage)"
-                @micado-change="test"
-                @return-to-edit="test2"
-              />
-            </div>
-          </q-tab-panel>
-        </q-tab-panels>
+         <div class="col" style="padding-top: 2px">
 
+            <q-toggle
+              :value="
+                int_comment_shell.translations.filter(
+                  (top) => top.translated == false
+                )[0].translationState == 1
+              "
+              color="accent"
+              @input="makeTranslatable($event)"
+            />
+          </div>
         <q-btn
           color="accent"
           :data-cy="'savecomment'"
@@ -206,6 +183,18 @@ export default {
     }*/
   },
   methods: {
+    makeTranslatable(value) {
+      console.log(value)
+      if (value) {
+        this.int_comment_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 1
+      } else {
+        this.int_comment_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 0
+      }
+    },
     show(id){
       if(this.selectedGraph == id){
         this.selectedGraph = null
@@ -257,6 +246,19 @@ export default {
       console.log(the_process)
       var payload = { comment: this.int_comment_shell, process: the_process }
       if (this.is_new) {
+         this.int_comment_shell.translations.push({
+          id: -1,
+          lang: this.activeLanguage,
+          comment: this.int_comment_shell.translations[0].comment,
+          translationdate: null,
+          translationState: this.int_comment_shell.translations[0]
+            .translationState,
+          translated: true
+        })
+        //}
+        this.int_comment_shell.translations.forEach((transl) => {
+          transl.translationdate = new Date().toISOString()
+        })
         //this.$store.dispatch('comments/saveComments', {comment : this.int_comment_shell, process: the_process})
         this.saveComments(payload)
         this.hideForm = true
@@ -266,6 +268,20 @@ export default {
         }
       }
       else {
+        if (this.int_comment_shell.translations[0].translationState == 1) {
+          console.log(this.int_comment_shell)
+          this.int_comment_shell.translations.push({
+            id: this.int_comment_shell.id,
+            lang: this.activeLanguage,
+            comment: this.int_comment_shell.translations[0].comment,
+            translationdate: null,
+            translationState: 1,
+            translated: true
+          })
+        }
+        this.int_comment_shell.translations.forEach((transl) => {
+          transl.translationdate = new Date().toISOString()
+        })
         this.editComments(payload)
         //this.$store.dispatch('comments/editComments',  {comment : this.int_comment_shell, process: the_process})
         console.log("EDITED")
@@ -343,9 +359,14 @@ export default {
     },
     createShell () {
       this.int_comment_shell = { id: -1, idProcess: -1, translations: [], tenantId: this.temp_tenant_id }
-      this.languages.forEach(l => {
-        this.int_comment_shell.translations.push({ id: -1, lang: l.lang, comment: '', translationDate: null, translationState: 0 })
-      });
+      this.int_comment_shell.translations.push({
+        id: -1,
+        lang: this.activeLanguage,
+        comment: "",
+        translationdate: null,
+        translationState: 0,
+        translated: false
+      })
     },
     mergeProcess (comment) {
       console.log("MERGING")
@@ -355,17 +376,11 @@ export default {
       this.int_comment_shell.tenantId = comment.tenantId
       //this.edit_process.applicableUsers = process.applicableUsers
       //    this.edit_process.processTopics = process.processTopics
-      comment.translations.forEach(pr => {
-        console.log(pr)
-        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
-        for (var i = 0; i < this.int_comment_shell.translations.length; i++) {
-          if (this.int_comment_shell.translations[i].lang == pr.lang) {
-            this.int_comment_shell.translations.splice(i, 1);
-            this.int_comment_shell.translations.push(JSON.parse(JSON.stringify(pr)))
-            break;
-          }
-        }
-      });
+      this.int_comment_shell.translations = [
+        JSON.parse(JSON.stringify(comment.translations.filter((top) => {
+          return top.lang == this.activeLanguage && top.translated == false
+        })[0]))
+      ]
 
     },
     test (id) {

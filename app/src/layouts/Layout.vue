@@ -275,7 +275,8 @@ export default {
           description: "menu.setting_desc"
         }
 
-      ]
+      ],
+      selectedKey:null
     };
   },
   methods: {

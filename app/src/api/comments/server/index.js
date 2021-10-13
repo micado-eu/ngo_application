@@ -23,7 +23,7 @@ export default {
   },
   saveCommentTranslation (translation, id) {
     translation.id = id
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment', 'translationState']));
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment', 'translationState', 'translationdate', 'translated']));
 
     // create fake id here
     return axiosInstance
@@ -69,9 +69,9 @@ export default {
 
   updateCommentTranslation (translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: { eq : translation.translated}
     },
-      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment', 'translationState'])) : translation
+      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment', 'translationState', 'translationdate', 'translated'])) : translation
 
     return axiosInstance
       .patch('/backend/1.0.0/comments/' + translation.id + '/comments-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
