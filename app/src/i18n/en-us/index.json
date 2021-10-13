@@ -2,6 +2,7 @@
   "application_title": "MICADO app",
   "menu": {
     "title": "Welcome",
+    "home":"Home",
     "dashboard": "Dashboard",
     "documenttype": "Mmanage document types",
     "configure": "Configuration",
@@ -27,7 +28,14 @@
     "events_desc":"Manage the events",
     "process_desc":"Edit guided processes information",
     "setting_desc":"Configure the application",
-    "cso_desc":"Manage CSO users"
+    "cso_desc":"Manage CSO users",
+    "home_desc":"",
+    "cso_description":"This is a longer description of the item",
+    "process_description":"This is a longer description of the item",
+    "information_centre_description":"This is a longer description of the item",
+    "events_description":"This is a longer description of the item",
+    "validation_description":"This is a longer description of the item",
+    "setting_description":"This is a longer description of the item"
   },
   "help": {
     "element_title": "Write a title",

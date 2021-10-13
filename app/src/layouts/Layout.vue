@@ -88,26 +88,40 @@
         dark
         v-if="isLoggedIn"
       >
-        <q-item-label header>{{ $t('menu.title') }} {{ user.name }} {{ user.lastname }}</q-item-label>
+        <q-item-label header>{{ $t('menu.title') }}</q-item-label>
         <q-item
-          clickable
+          :disable="nav.auth != undefined ? !check(nav.auth) : false"
+          :data-cy="nav.label.replace('.', '_')"
           exact
+          dark
+          active
+          clickable
+          v-feature-flipping="nav.feature"
+          active-class="my-menu-link"
           v-for="(nav) in navs"
+          @click="changeIcon(nav.label)"
           :to="nav.to"
           :key="nav.label"
-          active
-          v-feature-flipping="nav.feature"
-          :data-cy="nav.label.replace('.', '_')"
-          active-class="my-menu-link"
+          style="padding-top:16px; padding-bottom:16px"
         >
           <q-item-section avatar>
-            <q-icon :name="nav.icon" />
+            <q-icon
+              :key="nav.label"
+              :name="(selectedKey == nav.label) ? nav.active_icon : nav.icon "
+            />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ $t( nav.label) }}</q-item-label>
             <q-item-label caption>{{ $t(nav.description) }}</q-item-label>
           </q-item-section>
         </q-item>
+        <br />
+        <div class="row justify-center full-height full-width text-center">
+          <img
+            alt="Powered by Micado"
+            src="~assets/Powered by micado - white.svg"
+          />
+        </div>
       </q-list>
     </q-drawer>
 
@@ -204,48 +218,63 @@ export default {
       survey: null,
       leftDrawerOpen: false,
       navs: [
+         {
+          label: 'menu.home',
+          icon: 'img:statics/icons/Icon - Home.svg',
+          active_icon: 'img:statics/icons/Icon - Home.svg',
+          to: '/',
+          feature: "FEAT_DEFAULT",
+          description: 'menu.home_desc'
+        },
         {
           label: "menu.information_centre",
-          icon: "description",
+          icon: "img:statics/icons/Icon - Information Centre.svg",
+          active_icon: 'img:statics/icons/Icon - Information Centre.svg',
           to: "/information",
           feature: "FEAT_DEFAULT",
           description: "menu.information_centre_desc"
         },
         {
           label: "menu.events",
-          icon: "description",
+          icon: "img:statics/icons/Icon - Events (4th Iteration)_ (1).svg",
+          active_icon: 'img:statics/icons/Icon - Events (4th Iteration)_ (1).svg',
           to: "/events",
           feature: "FEAT_EVENTS",
           description: "menu.events_desc"
         },
         {
           label: "menu.process",
-          icon: "linear_scale",
+          icon: "img:statics/icons/Icon - Integration step-bystep.svg",
+          active_icon: 'img:statics/icons/Icon - Integration step-bystep.svg',
           to: "/guided_process_editor",
           feature: "FEAT_PROCESSES",
           description: "menu.process_desc"
         },
         {
           label: "menu.interventions",
-          icon: "linear_scale",
+          icon: "img:statics/icons/Icon - Information Centre.svg",
+          active_icon: 'img:statics/icons/Icon - Information Centre.svg',
           to: "/interventions",
           feature: "FEAT_DOCUMENTS",
           description: "menu.validation_requests"
         },
         {
-          label: "menu.settings",
-          icon: "settings_applications",
-          to: "/settings",
-          feature: "FEAT_DEFAULT",
-          description: "menu.setting_desc"
-        },
-        {
           label: "menu.CSO_user",
-          icon: "settings_applications",
+          icon: "img:statics/icons/Icon - CSO Admin Management.svg",
+          active_icon: 'img:statics/icons/Icon - CSO Admin Management.svg',
           to: "/usermgmt",
           feature: "FEAT_DEFAULT",
           description: "menu.cso_desc"
+        },
+        {
+          label: "menu.settings",
+          icon: "img:statics/icons/Icon - Settings.svg",
+          active_icon: 'img:statics/icons/Icon - Settings.svg',
+          to: "/settings",
+          feature: "FEAT_DEFAULT",
+          description: "menu.setting_desc"
         }
+
       ]
     };
   },
@@ -284,6 +313,10 @@ export default {
     },
     toLogout () {
       this.$auth.logout()
+    },
+        changeIcon (key) {
+      console.log('selected key')
+      this.selectedKey = key
     }
   },
     created () {
