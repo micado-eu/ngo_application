@@ -1,16 +1,15 @@
 <template>
 <div>
   <q-item style="padding-left:0px;width:100%" :key="this.theDoc.id">
-        <q-item-section class="">
+    <q-item-section class="">
       <q-item-label class="doc-name">{{this.theDoc.text}}</q-item-label>
-      <q-item-label class="doc-fields" style="padding-top:10px" caption>{{$t('input_labels.emitter')}}:{{this.theDoc.emitter}}</q-item-label>
-      <q-item-label class="doc-fields" style="padding-top:6px" caption>{{$t('input_labels.cost')}}: {{this.theDoc.price}}</q-item-label>
+      <q-item-label class="doc-fields" style="padding-top:10px" caption>{{$t('desc_labels.emitter')}}:{{this.theDoc.emitter}}</q-item-label>
+      <q-item-label class="doc-fields" style="padding-top:6px" caption>{{$t('events.cost')}}: {{this.theDoc.price}}</q-item-label>
 
     </q-item-section>
-    </q-item>
-<q-item style="padding-left:0px">
-   <div class="row" style="width:100%">
-    <div class="col-4" style="padding-right:0px; text-align:left" avatar>
+    <q-item-section>
+ 
+    <div class="" style="padding-right:0px; text-align:center" avatar>
       <q-btn
       
         dense
@@ -26,7 +25,8 @@
         </q-avatar>
       </q-btn>
     </div>
-    <div v-if="theDoc.model != ' '" class="col-4 models-container" >
+    <div class="row" style="width:100%">
+    <div v-if="theDoc.model != ' '" class="col models-container" >
         <a
           class="models"
           clickable
@@ -35,22 +35,8 @@
         >
         {{$t('button.view_model')}}
         </a>
-    <!--  <q-btn
-      
-        size="10px"
-        no-caps
-        unelevated
-        dense
-        class="button"
-        rounded
-        :id="theDoc.id"
-        :data-cy="'viewmodel'.concat(theDoc.id)"
-        color="info"
-        :label="$t('button.view_model')"
-        @click="show = true"
-      />-->
     </div>
-<div v-if="pictures"  class="col-4 models-container" >
+<div v-if="pictures"  class="col models-container" >
           <a
           class="models"
           clickable
@@ -59,28 +45,13 @@
         >
         {{$t('button.view_pics')}}
         </a>                
-  
-  <!--<q-btn
-     v-if="theDoc.model != ' '"
-        size="10px"
-        no-caps
-        dense
-        class="button"
-        rounded
-        :id="theDoc.id"
-        :data-cy="'viewmodel'.concat(theDoc.id)"
-        color="info"
-        :label="$t('button.view_model')"
-        @click="showModel()"
-      />-->
 </div>
 
     
       
     </div>
-
-   
-  </q-item>
+    </q-item-section>
+    </q-item>
    
     <q-dialog
       v-model="show"

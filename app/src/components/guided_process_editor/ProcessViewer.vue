@@ -25,15 +25,12 @@
                </q-img>
     </div>-->
       <hr style="border: 1px solid #FF7C44;">
-      <div
-        class="q-pa-lg"
-        style="text-align: justify;text-justify: inter-word"
-      >
-        <glossary-editor-viewer
-          :content="the_process_description"
-          :key="the_process_description"
-        />
-      </div>
+              <div class="q-pa-md field custom-pad">
+          <p class="textup"> 
+        <q-icon class="" size="15px" name="img:statics/icons/Icon - Decsription icon-orange.svg" />
+
+         {{$t('input_labels.click_step')}}
+          </p>
       <div class="row">
         <div class="col">
           <q-scroll-area
@@ -51,115 +48,142 @@
           </q-scroll-area>
         </div>
       </div>
-
-      <div
-        :class="nodePanelVisible"
-        header="Details of the step1"
+            <div
+        class="q-pa-lg"
+        style="text-align: justify;text-justify: inter-word"
       >
-        <!-- <h5
-      :class="nodePanelVisible"
-      class="header"
-    >{{this.shell_data.text}}</h5>
-    <hr>-->
-        <div
-          v-if="flowData.url !=null"
-          style="text-align:center; padding-top:10px"
-        >
-          <a
-            :href="'//' + flowData.url"
-            target="_blank"
-            style="text-decoration:none;"
-          >
-            <q-btn
-              class="negative-button"
-              no-caps
-              rounded
-              color="info"
-              :label="$t('button.procedure')"
-            />
-          </a>
-        </div>
-        <!--<q-field
-        class="header-title"
-        color="purple-12"
-        
-        stack-label
-      >
-       <template v-slot:control>
-          <div
-            class="self-center full-width no-outline step-title"
-            tabindex="0"
-          >{{shell_data.text}}</div>
-        </template>
-    </q-field>-->
-        <div class="q-pa-md fields-container">
-          <div class="field">
-            <p class="title" style="text-align:left">
-           {{shell_data.text}}
-            </p>
-            <!--<p class="textup">{{$t('desc_labels.document_type')}}:</p>-->
-            <hr>
-          </div>
-
-          <div class="q-pa-md field custom-pad">
-            <p class="textup">
-            {{$t('input_labels.description')}}
-            </p>
-            <GlossaryEditorViewer
-              class="textdown"
-              :content="shell_data.description"
-              :key="shell_data.description"
-            ></GlossaryEditorViewer>
-            <hr>
-          </div>
-          <div class="q-pa-md field custom-pad">
-            <p class="textup">
-            {{$t('input_labels.cost')}}
-            </p>
-            <p class="textdown">{{this.flowData.cost}}</p>
-            <hr>
-          </div>
-          <div class="q-pa-md field custom-pad">
-            <p class="textup">
-            {{$t('input_labels.location')}}
-            </p>
-            <p
-              class="textdown"
-              tabindex="0"
-            ><a :href="gmap_location"> {{flowData.location}} </a></p>
-            <hr>
-          </div>
-          <div class="q-pa-md field custom-pad">
-            <p class="textup">
-            {{$t('input_labels.required_documents')}}
-            </p>
-            <q-list style=" padding-left:15px">
-              <!--<q-item-label header>{{$t('desc_labels.required_documents')}}</q-item-label>-->
-              <DocumentItem
-                v-for="doc in documents"
-                :theDoc="doc"
-                :key="doc.id"
-                :slide="slide"
-                :data="hotspot_data"
-                :options="pic_options"
-                :pictures="doc.pictures"
-                @showdoc="showDocument(doc.id)"
-                @transition="changeHotspot"
-                @clean="clean"
-                @showpicture="showPictures(doc.id)"
-              >
-              </DocumentItem>
-            </q-list>
-            <hr>
-          </div>
-        </div>
+        <glossary-editor-viewer
+          :content="the_process_description"
+          :key="the_process_description"
+        />
       </div>
+<q-dialog v-model="show_step">
+        <q-layout view="Lhh lpR fff" container class="bg-white">
+          <q-header class="bg-white">
+            <q-toolbar>
+              <q-toolbar-title></q-toolbar-title>
+              <q-btn
+                flat
+                v-close-popup
+                @click="popup"
+                round
+                dense
+                color="red"
+                icon="close"
+              />
+            </q-toolbar>
+          </q-header>
+          <q-page-container>
+            <q-page>
+              <div :class="nodePanelVisible" header="Details of the step1">
+                <div
+                  v-if="flowData.url != null"
+                  style="text-align: center; padding-top: 10px"
+                >
+                  <a
+                    :href="'//' + flowData.url"
+                    target="_blank"
+                    style="text-decoration: none"
+                  >
+                    <q-btn
+                      class="negative-button"
+                      no-caps
+                      rounded
+                      color="info"
+                      :label="$t('button.procedure')"
+                    />
+                  </a>
+                </div>
+                <div class=" fields-container">
+                  <div class="field" style="padding-left:15px; padding-right:15px">
+                    <p class="title-step">
+                   {{this.shell_data.text}}
+                    </p>
+                  </div>
+                    <hr />
+
+                  <div
+                    v-if="shell_data.description"
+                    class="q-pa-md field-pad field "
+                  >
+                  <p class="textup">
+                  <q-icon class="" size="15px" name="img:statics/icons/Icon - Decsription icon.svg" />
+                  {{ $t('input_labels.description')}}
+                  </p>
+                    <GlossaryEditorViewer
+                      class="textdown"
+                      :content="shell_data.description"
+                      :key="shell_data.description"
+                    ></GlossaryEditorViewer>
+                    
+                  </div>
+                  <hr  v-if="shell_data.description" />
+                  <div class="q-pa-md field-pad field ">
+                     <p class="textup">  
+                    <q-icon class="" size="15px" name="img:statics/icons/cost.svg" />
+                   {{$t('input_labels.cost')}}
+                     </p>
+                    <p class="textdown">{{ this.flowData.cost }}</p>
+                  </div>
+                  <hr />
+                  <div
+                    v-if="flowData.location != null"
+                    class="q-pa-md field-pad field "
+                  > 
+                  <p class="textup">  
+                    <q-icon class="" size="15px" name="img:statics/icons/Icon - Location Pin.svg" />
+                    {{$t('input_labels.location')}}
+                    </p>
+                    <p class="textdown" tabindex="0">
+                      <a :href="gmap_location"> {{ flowData.location }} </a>
+                    </p>
+                  </div>
+                  <hr  v-if="flowData.location != null" />
+                  <div
+                    v-if="documents.length > 0"
+                    class="q-pa-md field-pad field "
+                  >
+                   <p class="textup">  
+                    <q-icon class="" size="15px" name="img:statics/icons/docs.svg" />
+                   {{$t('input_labels.required_documents')}}
+                   </p>
+                    <q-list style="padding-left: 15px">
+                      <DocumentItem
+                        v-for="doc in documents"
+                        :theDoc="doc"
+                        :key="doc.id"
+                        :slide="slide"
+                        :data="hotspot_data"
+                        :options="pic_options"
+                        :pictures="doc.pictures"
+                        @showdoc="showDocument(doc.id)"
+                        @transition="changeHotspot"
+                        @clean="clean"
+                        @showpicture="showPictures(doc.id)"
+                      >
+                      </DocumentItem>
+                    </q-list>
+                  </div>
+                  <hr v-if="documents.length > 0" />
+                  <div style="text-align:center">
+                    <q-btn
+                      size="12px"
+                      :icon="'img:statics/icons/Icon - X (cancel)1.svg'"
+                      no-caps
+                      class="go_back"
+                      rounded
+                      :label="$t('button.cancel')"
+                      @click="show_step = false"
+                    />
+                  </div>
+                </div>
+              </div>
+            </q-page>
+          </q-page-container>
+        </q-layout>
+      </q-dialog>
       <div class="q-pa-md fields-container">
-        <div class="q-pa-md field custom-pad">
-          <p class="textup">
-         {{$t('input_labels.click_step')}}
-          </p>
-          <hr>
+
         </div>
         <div class=" q-pa-md  row field  custom-pad">
           <div class="col-11 topic">
@@ -250,7 +274,9 @@ export default {
       hotspot_data: [],
       focused_step: null,
       user_list: [],
-      topic_list: []
+      topic_list: [],
+      show_step: false
+
     }
   },
   computed: {
@@ -291,12 +317,12 @@ export default {
         }
       })
       }*/
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
-    stripHtml (html) {
-      let tmp = document.createElement("DIV");
-      tmp.innerHTML = html;
-      return tmp.textContent || tmp.innerText || "";
+    popup() {
+      this.$store.commit("flows/setNodePanelVisible", "hidden")
+      this.focused_step = null
+      this.show_step = false
     },
     clean () {
       console.log("in clean")
@@ -433,19 +459,22 @@ export default {
           }
         }
       })
-      console.log(arr1[0].data);
+      console.log(arr1[0].data)
       if (this.focused_step == new_nodeId) {
-        this.$store.commit("flows/setNodePanelVisible", "hidden");
+        this.$store.commit("flows/setNodePanelVisible", "hidden")
         this.focused_step = null
+        this.show_step = false
       }
       else {
-        this.$store.commit("flows/setNodePanelVisible", "");
+        this.$store.commit("flows/setNodePanelVisible", "")
         this.focused_step = new_nodeId
+                this.show_step = true
+
       }
 
-      this.$store.commit("flows/setDocuments", arr1[0].data.documents);
-      this.$store.commit("flows/setFlowData", arr1[0].data);
-      this.$store.commit("flows/setShellData", arr1[0]);
+      this.$store.commit("flows/setDocuments", arr1[0].data.documents)
+      this.$store.commit("flows/setFlowData", arr1[0].data)
+      this.$store.commit("flows/setShellData", arr1[0])
       console.log("I am the documents")
       console.log(this.documents)
     },
@@ -523,7 +552,7 @@ export default {
         console.log("i am element flow")
         console.log(elementFlow)
         this.mermaid = elementFlow
-        this.$store.commit("flows/setNodePanelVisible", "hidden");
+        this.$store.commit("flows/setNodePanelVisible", "hidden")
         //return this.the_process
         prom3.push(this.fetchDocumentType())
         Promise.all(prom3).then(() => {
@@ -545,7 +574,6 @@ export default {
                   console.log("INSIDE FOR")
                   if (comment.idcomment == this.comments[i].id) {
                     console.log("INSIDE IF")
-                    console.log(this.comments[i])
                     this.selected_process_comments.push(this.comments[i])
 
                        /* prom8.push(this.fetchDocuments())
@@ -587,8 +615,8 @@ console.log(this.topics)
       })
 
 
-      console.log(this);
-      console.log(this.$Countly);
+      console.log(this)
+      console.log(this.$Countly)
       this.$Countly.q.push(['add_event', {
         "key": "process",
         "count": 1,
@@ -599,7 +627,7 @@ console.log(this.topics)
           "nationality": "italian",
           "language": this.$userLang
         }
-      }]);
+      }])
       /* this.full_process = this.processes.filter((process) =>{
          return process.id == this.processid
        })[0]*/
@@ -748,5 +776,23 @@ g.label {
   color: #0f3a5d;
   border: 1px solid #0f3a5d;
   border-radius: 50px;
+}
+.field-pad{
+  padding-top: 0px ;
+  padding-bottom: 0px;
+}
+.title {
+  margin-bottom: 5px;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+}
+.title-step{
+  margin-bottom: 5px;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: left;
+  margin-top: 20px;
 }
 </style>
