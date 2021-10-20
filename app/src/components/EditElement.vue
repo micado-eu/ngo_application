@@ -6,37 +6,7 @@
       class="edit-element-component q-pa-xl q-ma-xl"
       v-else
     >
-      <div class="center-edit q-ma-xl">
-        <div
-          class="warning-error-row row"
-          v-if="errorDefaultLangEmpty"
-        >
-          <span class="col"></span>
-          <span class="warning-error col">
-            {{$t("error_messages.fill_default_language")}} {{$defaultLangString}}
-          </span>
-          <span class="col"></span>
-        </div>
-        <div
-          class="row"
-          v-if="selectedTranslationState === 2"
-        >
-          <span class="col"></span>
-          <span class="warning-error col">
-            {{$t("error_messages.in_translation")}}
-          </span>
-          <span class="col"></span>
-        </div>
-        <div
-          class="warning-error-row row"
-          v-if="(selectedTranslationState === 3) && elem.published"
-        >
-          <span class="col"></span>
-          <span class="warning-error col">
-            {{$t("error_messages.change_translated")}}
-          </span>
-          <span class="col"></span>
-        </div>
+      <div class="center-edit q-mx-xl">
         <div
           class="warning-error-row row"
           v-if="errorDateTimeEmpty"
@@ -47,15 +17,15 @@
           </span>
           <span class="col"></span>
         </div>
-        <div>
-          <span class="q-my-xl label-edit">
+        <div class="q-mb-md">
+          <span class="label-edit">
             <help-label
               :fieldLabel="$t('input_labels.title') + ' *'"
               :helpLabel="$t('help.element_title')"
             ></help-label>
           </span>
           <q-input
-            class="title_input q-mb-xl"
+            class="title_input"
             data-cy="title_input"
             outlined
             v-model="internalTitle"
@@ -63,66 +33,69 @@
             counter
             :maxlength="title_max_length"
             :rules="[ val => val.length <= title_max_length || $t('error_messages.max_char_limit') + title_max_length]"
-            :readonly="published"
+            :readonly="published || translatable"
           />
         </div>
-        <div>
-          <span class="q-my-xl label-edit">
+        <div class="q-my-md">
+          <span class="q-my-md label-edit">
             <help-label
               :fieldLabel="$t('input_labels.description')"
               :helpLabel="$t('help.element_description')"
             ></help-label>
           </span>
           <glossary-editor
-            class="desc-editor q-mb-xl"
+            class="desc-editor"
             data-cy="description_input"
             v-model="internalDescription"
             :maxCharLimit="description_max_length"
             ref="editor"
-            :readonly="published"
+            :readonly="published || translatable"
           >
-            <translate-state-button
-              v-model="selectedTranslationState"
-              :isForDefaultLanguage="langTab===$defaultLang"
-              :objectId="elemId"
-              @micado-change="(a) => {selectedTranslationState = a.state}"
-              class="q-my-sm"
-            />
           </glossary-editor>
         </div>
-        <div class="language_selector">
-          <hr
-            style="border: 0.999px solid #DADADA;"
-            class="q-mb-lg q-mt-xl"
-          >
-          <q-tabs
-            v-model="langTab"
-            dense
-            class="text-grey"
-            active-color="black"
-            indicator-color="black"
-            align="justify"
-            narrow-indicator
-            no-caps
-          >
-            <q-tab
-              v-for="language in activeLanguages"
-              :key="language.lang"
-              :name="language.lang"
-              :label="language.name"
-            />
-          </q-tabs>
-          <hr
-            style="border: 0.999px solid #DADADA"
-            class="q-mt-lg q-mb-xl"
-          >
+                <div
+          class="row tag_category_selectors"
+          v-if="is_event"
+        >
+          <div class="q-my-md q-mr-lg tag_list col">
+            <span class="q-my-md label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.start_date') + ' *'"
+                :helpLabel="$t('help.element_start_date')"
+              ></help-label>
+            </span>
+            <date-time-selector
+              :date="startDate"
+              :time="startTime"
+              @inputDate="startDate = $event"
+              @inputTime="startTime = $event"
+              :readonly="published || translatable"
+              inline
+            ></date-time-selector>
+          </div>
+          <div class="q-my-md tag_list col">
+            <span class="q-my-md label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.finish_date') + ' *'"
+                :helpLabel="$t('help.element_end_date')"
+              ></help-label>
+            </span>
+            <date-time-selector
+              :date="finishDate"
+              :time="finishTime"
+              @inputDate="finishDate = $event"
+              @inputTime="finishTime = $event"
+              :readonly="published || translatable"
+              inline
+            ></date-time-selector>
+          </div>
         </div>
         <div class="row tag_category_selectors">
           <div
             v-if="categories_enabled"
-            class="q-my-xl tag_list col"
+            class="q-my-md tag_list col"
           >
-            <span class="q-my-lg label-edit">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.select_category')"
                 :helpLabel="$t('help.element_category')"
@@ -134,27 +107,29 @@
               @input="setCategoryObjectModel($event)"
               data-cy="category_select"
               bg-color="grey-3"
-              :readonly="published"
+              :label="internalCategories.length <= 0 ? this.$t('error_messages.no_categories') : ''"
+              :readonly="published || translatable"
+              clearable
             />
           </div>
           <div
             v-if="is_event"
-            class="q-my-xl q-ml-lg tag_list col"
+            class="q-my-md q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.location')"
                 :helpLabel="$t('help.location')"
               ></help-label>
             </span>
-            <div class="row q-mb-xl">
+            <div class="row">
               <q-input
                 class="title_input col"
                 data-cy="location_input"
                 outlined
                 v-model="location"
                 bg-color="grey-3"
-                :readonly="published"
+                :readonly="published || translatable"
               />
               <a
                 :href="gmap_location(location)"
@@ -172,49 +147,12 @@
             </div>
           </div>
         </div>
-        <div
-          class="row tag_category_selectors"
-          v-if="is_event"
-        >
-          <div class="q-my-xl q-mr-lg tag_list col">
-            <span class="q-my-lg label-edit">
-              <help-label
-                :fieldLabel="$t('input_labels.start_date') + ' *'"
-                :helpLabel="$t('help.element_start_date')"
-              ></help-label>
-            </span>
-            <date-time-selector
-              :date="startDate"
-              :time="startTime"
-              @inputDate="startDate = $event"
-              @inputTime="startTime = $event"
-              :readonly="published"
-              inline
-            ></date-time-selector>
-          </div>
-          <div class="q-my-xl tag_list col">
-            <span class="q-my-lg label-edit">
-              <help-label
-                :fieldLabel="$t('input_labels.finish_date') + ' *'"
-                :helpLabel="$t('help.element_end_date')"
-              ></help-label>
-            </span>
-            <date-time-selector
-              :date="finishDate"
-              :time="finishTime"
-              @inputDate="finishDate = $event"
-              @inputTime="finishTime = $event"
-              :readonly="published"
-              inline
-            ></date-time-selector>
-          </div>
-        </div>
         <div class="row tag_category_selectors">
           <div
             v-if="topics_enabled"
-            class="q-my-xl tag_list col"
+            class="q-my-md tag_list col"
           >
-            <span class="q-my-lg label-edit">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.select_topic')"
                 :helpLabel="$t('help.element_topic')"
@@ -247,9 +185,9 @@
           </div>
           <div
             v-if="user_types_enabled"
-            class="q-my-xl q-ml-lg tag_list col"
+            class="q-my-md q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.select_user_type')"
                 :helpLabel="$t('help.element_user_type')"
@@ -261,7 +199,7 @@
               @input="setUserTypeObjectModel($event)"
               data-cy="user_types_select"
               bg-color="grey-3"
-              :readonly="published"
+              :readonly="published || translatable"
             />
             <div
               class="tag_list flex"
@@ -293,59 +231,63 @@
             </span>
             <div class="row">
               <q-input
-                class="q-mr-md col-8"
+                class="q-mr-md col-6"
                 outlined
                 v-model="cost"
                 bg-color="grey-3"
                 counter
                 :maxlength="50"
                 :rules="[ val => val.length <= 50 || $t('error_messages.max_char_limit') + 50]"
-                :readonly="published || costIsFree"
+                :readonly="published || costIsFree || translatable"
               />
-              <q-checkbox
-                color="accent"
-                v-model="costIsFree"
-                :readonly="published"
-                :label="$t('input_labels.event_free')"
-              />
+              <div
+                style="display: flex; align-items: center"
+              >
+                <q-checkbox
+                  color="accent"
+                  v-model="costIsFree"
+                  :readonly="published || translatable"
+                  :label="$t('input_labels.event_free')"
+                />
+              </div>
             </div>
           </div>
-          <div class="col"></div>
-        </div>
-        <div class="row">
-          <span class="label-edit">
-            <help-label
-              :fieldLabel="$t('button.validate_and_publish')"
-              :helpLabel="$t('help.is_published')"
-            ></help-label>
-          </span>
-          <q-toggle
-            v-model="published"
-            color="accent"
-            :disable="true"
-          ></q-toggle>
-        </div>
-        <div class="row q-my-xl">
-          <q-btn
-            unelevated
-            no-caps
-            :label="$t('button.cancel')"
-            class="q-mr-lg edit-element-button cancel-btn"
-            @click="goBack()"
-          />
-          <q-btn
-            unelevated
-            no-caps
-            color="accent"
-            data-cy="save_button"
-            :label="$t('button.save')"
-            @click="callSaveFn()"
-            class="row edit-element-button"
-            :disable="published"
-          />
+          <div class="col row">
+            <div class="label-edit col-3" style="display: flex; align-items: center">
+              <help-label
+                :fieldLabel="$t('translation_states.translatable')"
+                :helpLabel="$t('help.is_published')"
+              ></help-label>
+            </div>
+            <q-toggle class="col" style="display: flex; align-items: center"
+              v-model="translatable"
+              color="accent"
+            ></q-toggle>
+          </div>
         </div>
       </div>
-
+    </div>
+    <div v-if="!loading" class="q-mb-xl" style="text-align: center">
+      <div style="display: inline-block">
+        <q-btn
+          unelevated
+          no-caps
+          :label="$t('button.cancel')"
+          class="q-mr-lg edit-element-button cancel-btn"
+          @click="goBack()"
+        />
+        <q-btn
+          unelevated
+          no-caps
+          color="accent"
+          data-cy="save_button"
+          :label="$t('button.save')"
+          @click="callSaveFn()"
+          class="edit-element-button"
+          :disable="published || (translatable && (originalTranslationState === 1))"
+          :loading="saving"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -420,12 +362,6 @@ export default {
     description_max_length: {
       type: Number,
       default: null
-    },
-    on_publish: {
-      type: Function
-    },
-    on_unpublish: {
-      type: Function
     }
   },
   data() {
@@ -437,23 +373,23 @@ export default {
       internalCategoriesObjects: [],
       selectedCategory: '',
       selectedCategoryObject: {},
-      langTab: '',
       selectedTopics: [],
       internalUserTypesObjects: [],
       selectedUserType: '',
       selectedUserTypesObjects: [],
-      selectedTranslationState: 0,
       elemId: -1,
       startDate: '',
       startTime: '',
       finishDate: '',
       finishTime: '',
       savedTranslations: [],
+      translatable: false,
+      originalTranslationState: 0,
       published: false,
       location: '',
       cost: null,
       costIsFree: true,
-      errorDefaultLangEmpty: false
+      saving: false
     }
   },
   methods: {
@@ -463,18 +399,14 @@ export default {
     gmap_location(location) {
       return "https://www.google.com/maps/search/?api=1&query=" + location
     },
-    async changeLanguage(newLang, oldLang) {
-      await this.saveContent(oldLang)
-      this.changeLanguageAux(newLang)
-    },
     changeLanguageAux(al) {
-      let idx = this.savedTranslations.findIndex((t) => t.lang === al)
+      let idx = this.savedTranslations.findIndex((t) => (t.lang === al) && !t.translated)
       if (idx !== -1) {
         const element = this.savedTranslations[idx]
         this.setContent(element, al)
       } else {
         if (this.elem) {
-          idx = this.elem.translations.findIndex((t) => t.lang === al)
+          idx = this.elem.translations.findIndex((t) => (t.lang === al) && !t.translated)
           if (idx !== -1) {
             this.setContent(this.elem.translations[idx], al)
           } else {
@@ -487,48 +419,57 @@ export default {
     },
     setContent(element, al) {
       this.internalTitle = element.title
-      this.errorDefaultLangEmpty = !this.internalTitle
+      // this.errorDefaultLangEmpty = !this.internalTitle
       this.internalDescription = element.description ? element.description : ""
       // if (this.$refs.editor) {
       //   this.$refs.editor.setContent(this.internalDescription)
       // }
     },
-    async saveContent(lang) {
-      const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
-      const translation = {
+    async saveContent() {
+      const description = await this.$refs.editor.getContent()
+      // translations[0] contains translated = false, translations[1] contains translated = true. User will edit [0] and weblate will work with [1]
+      const translation0 = {
         title: this.internalTitle,
-        description: await this.$refs.editor.getContent(),
-        lang,
+        description,
+        translated: false,
+        lang: this.$defaultLang,
         creator: this.loggedUser?.umid
       }
-      if (idx !== -1) {
-        this.savedTranslations[idx] = translation
-      } else {
-        this.savedTranslations.push(translation)
+      this.savedTranslations[0] = translation0
+      console.log(this.elem)
+      console.log(this.originalTranslationState)
+      if (!this.elem || (this.originalTranslationState === 1)) {
+        const translation1 = {
+          title: this.internalTitle,
+          description,
+          translated: true,
+          lang: this.$defaultLang,
+          creator: this.loggedUser?.umid
+        }
+        this.savedTranslations[1] = translation1
       }
       for (const savedTranslation of this.savedTranslations) {
-        savedTranslation.published = this.published
-        savedTranslation.translationState = this.selectedTranslationState
+        savedTranslation.translationState = this.translatable ? 1 : 0
         if (this.categories_enabled) {
-          translation.category = this.selectedCategoryObject
+          translation0.category = this.selectedCategoryObject
         }
         if (this.topics_enabled) {
-          translation.topics = this.selectedTopics
+          translation0.topics = this.selectedTopics
         }
         if (this.user_types_enabled) {
-          translation.userTypes = this.selectedUserTypesObjects.map(u => u.id)
+          translation0.userTypes = this.selectedUserTypesObjects.map(u => u.id)
         }
         if (this.is_event) {
           // Dates are expected to be UTC by the server
           if (this.startDate && this.startTime) {
-            translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
+            translation0.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
           }
           if (this.finishDate && this.finishTime) {
-            translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
+            translation0.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
           }
-          translation.location = this.location
+          translation0.location = this.location
           if (!this.costIsFree) {
-            translation.cost = this.cost
+            translation0.cost = this.cost
           }
         }
       }
@@ -562,7 +503,7 @@ export default {
       this.internalCategoriesObjects = this.internalCategoriesObjects.filter((c) => c !== undefined)
     },
     setInternalUserTypeSelector(al) {
-      this.internalUserTypes = this.user.map((ic) => {
+      this.internalUserTypes = this.user.filter(ut => ut.published).map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
         this.internalUserTypesObjects.push(translation)
@@ -605,87 +546,36 @@ export default {
       this.$router.go(-1)
     },
     checkErrors() {
-      return (this.selectedTranslationState >= 2)
-        || this.errorDefaultLangEmpty
+      return this.$refs.editor.hasError()
         || (this.internalTitle.length <= 0)
         || this.errorDateTimeEmpty
-        || this.$refs.editor.hasError()
     },
     callSaveFn() {
-      if (!this.checkErrors()) {
-        this.saveContent(this.langTab).then(() => {
-          for (const language of this.activeLanguages) {
-            if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
-              const emptyTranslation = {
-                title: '',
-                description: '',
-                lang: language.lang,
-                translationState: this.selectedTranslationState,
-                creator: this.loggedUser?.name
-              }
-              if (this.categories_enabled) {
-                emptyTranslation.category = this.selectedCategoryObject
-              }
-              if (this.topics_enabled) {
-                emptyTranslation.topics = this.selectedTopics
-              }
-              if (this.user_types_enabled) {
-                emptyTranslation.userTypes = this.selectedUserTypesObjects.map(u => u.id)
-              }
-              if (this.is_event) {
-                emptyTranslation.location = this.location
-                if (!this.costIsFree) {
-                  emptyTranslation.cost = this.cost
-                }
-              }
-              this.savedTranslations.push(emptyTranslation)
-            }
-          }
+      if (this.checkErrors()) {
+        let errorMsg = ""
+        if (this.errorDateTimeEmpty) {
+          errorMsg = errorMsg.concat(this.$t("error_messages.date_time_empty"), "<br/>")
+        }
+        if (this.internalTitle.length <= 0) {
+          errorMsg = errorMsg.concat(this.$t("error_messages.title_empty"), "<br/>")
+        }
+        if (this.$refs.editor.hasError()) {
+          errorMsg = errorMsg.concat(this.$refs.editor.errorMessage)
+        }
+        this.$q.notify({
+          type: 'warning',
+          message: errorMsg,
+          html: true
+        })
+      } else {
+        this.saving = true
+        this.saveContent().then(() => {
+          console.log(this.savedTranslations)
           this.save_item_fn(
             this.savedTranslations
           )
+          this.saving = false
         })
-      }
-    },
-    showWarningPublish(event, id) {
-      if (event == true) {
-        this.$q.notify({
-          type: 'warning',
-          timeout: 0,
-          message: this.$t("lists.publish_warning"),
-          actions: [
-            {
-              label: this.$t("lists.yes"), color: 'accent', handler: () => {
-                this.on_publish(id).then(() => this.goBack())
-              }
-            },
-            {
-              label: this.$t("lists.no"), color: 'red', handler: () => {
-                this.published = false
-              }
-            }
-          ]
-        })
-
-      }
-      else {
-        this.$q.notify({
-          type: 'warning',
-          message: this.$t("lists.unpublish_warning"),
-          actions: [
-            {
-              label: this.$t("lists.yes"), color: 'accent', handler: () => {
-                this.on_unpublish(id).then(() => this.goBack())
-              }
-            },
-            {
-              label: this.$t("lists.no"), color: 'red', handler: () => {
-                this.published = true
-              }
-            }
-          ]
-        })
-
       }
     }
   },
@@ -719,31 +609,19 @@ export default {
       }
     }
   },
-  watch: {
-    langTab: function (newVal, oldVal) {
-      if (newVal && oldVal) {
-        this.changeLanguage(newVal, oldVal).then(() => {
-          // Set errorDefaultLangEmpty
-          if (this.langTab !== this.$defaultLang) {
-            this.errorDefaultLangEmpty = !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
-          }
-          this.errorDefaultLangEmpty = !this.internalTitle
-        })
-      }
-    }
-  },
   created() {
     this.loading = true
-    const al = this.$i18n.locale
+    const al = this.$defaultLang
     this.fetchActiveLanguages().then(() => {
-      this.langTab = this.activeLanguages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
-        this.changeLanguageAux(al)
+        console.log(this.elem)
+        this.changeLanguageAux(this.$defaultLang)
         this.published = this.elem.published
         this.elemId = this.elem.id
-        const sTSIdx = this.elem.translations.findIndex((t) => t.lang === this.langTab)
+        const sTSIdx = this.elem.translations.findIndex((t) => (t.lang === al) && !t.translated)
         if (sTSIdx !== -1) {
-          this.selectedTranslationState = this.elem.translations[sTSIdx].translationState
+          this.originalTranslationState = this.elem.translations[sTSIdx].translationState
+          this.translatable = !!this.elem.translations[sTSIdx].translationState
         }
         if (this.categories_enabled && this.elem.category !== null) {
           const idxCat = this.categories.findIndex(

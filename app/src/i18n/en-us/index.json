@@ -76,7 +76,9 @@
     "upload": "Upload",
     "survey":"Survey",
     "view_model": "View model",
-    "view_pics": "View details"
+    "view_pics": "View details",
+    "batch_upload":"Batch upload",
+    "download_template":"Download template"
   },
   "input_labels": {
     "search": "Search",
@@ -100,7 +102,9 @@
     "cost": "Cost",
     "comments": "Comments",
     "required_documents": "Required documents",
-    "emitter":"Emitter"
+    "emitter":"Emitter",
+    "available_transl":"Available translations",
+    "no_available_transl":"No available translations"
   },
   "link_modal": {
     "text": "Text",
@@ -119,7 +123,7 @@
     "edit": "Edit Event from the Event List"
   },
   "filters": {
-    "title": "Filter",
+    "title": "Filter by",
     "clear_all": "Clear all filters",
     "category_title": "Category",
     "show_more": "Show more",
@@ -138,7 +142,13 @@
     "creator": "Created by/Organizer",
     "cost": "Cost",
     "cost_free": "Free",
-    "translation_state": "Translation state"
+    "translation_state": "Translation state",
+    "publish_warning": "Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
+    "unpublish_warning": "Warning: Unpublishing the process mark all existing translations as untranslated and might need to be translated again. Proceed?",
+    "yes": "Yes",
+    "no": "No",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "translation_states": {
     "editing": "Editing",

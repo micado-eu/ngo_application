@@ -25,3 +25,10 @@ export function setEventTemp(state, events) {
   }
   state.eventTemp = events
 }
+
+export function updatePublished(state, data) {
+  let idx = state.event.findIndex((i) => i.id === data.id)
+  if (idx !== -1) {
+    state.event[idx].published = data.published
+  }
+}

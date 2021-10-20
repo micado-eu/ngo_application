@@ -32,7 +32,7 @@ export default {
         creator: translationData[0].creator,
         cost: translationData[0].cost
       }
-      if ('category' in translationData[0]) {
+      if (('category' in translationData[0]) && (translationData[0].category)) {
         eventData.category = translationData[0].category.id
       }
       this.saveNewEventItem(eventData)

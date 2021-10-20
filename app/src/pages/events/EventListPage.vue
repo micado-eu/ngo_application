@@ -17,6 +17,8 @@
       is_event
       entity="event"
       @batchUpload="updateContent()"
+      :on_publish="onPublish"
+      :on_unpublish="onUnpublish"
     />
   </div>
 </template>
@@ -46,7 +48,11 @@ export default {
       'fetchEvent',
       'deleteEventItem',
       'fetchAllEventTopics',
-      'fetchAllEventUserTypes'
+      'fetchAllEventUserTypes',
+      'saveEventTranslationProd',
+      'updatePublished',
+      'editEventItemTranslation',
+      'deleteProdTranslations'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
     getEditRoute (id) {
@@ -103,6 +109,51 @@ export default {
             message: `Error while fetching events: ${err}`
           })
         })
+    },
+    onPublish(id) {
+      return Promise.all([
+        this.saveEventTranslationProd(id).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving event production translation: ${err}`
+          })
+        }),
+        this.updatePublished({ id, published: true }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while updating published state: ${err}`
+          })
+        })
+      ])
+    },
+    onUnpublish(id) {
+      let eventElem = this.eventElemById(id)
+      let promises = []
+      const translation = Object.assign({}, eventElem.translations.filter(t => !t.translated)[0])
+      translation.translationState = 0
+      promises.push(
+        this.editEventItemTranslation(translation).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving event translation: ${err}`
+          })
+        })
+      )
+      promises.push(
+        this.deleteProdTranslations(id).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting event production translations: ${err}`
+          })
+        }),
+        this.updatePublished({ id, published: false }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while updating published state: ${err}`
+          })
+        })
+      )
+      return Promise.all(promises)
     }
   },
   created () {

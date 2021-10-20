@@ -10,8 +10,6 @@
       :user_types="userTypes"
       class="q-ma-md"
       pagetitle="events.edit"
-      :on_publish="onPublish"
-      :on_unpublish="onUnpublish"
     />
   </div>
 </template>
@@ -40,75 +38,18 @@ export default {
       'fetchEventUserTypes',
       'editEventItem',
       'editEventItemTranslation',
-      'addNewEventItemTranslation',
       'deleteTopics',
       'setTopics',
       'deleteUserTypes',
       'setUserTypes',
-      'deleteProdTranslations',
-      'addNewEventItemTranslationProd',
-      'updatePublished'
+      'deleteCategory'
     ]),
-    onPublish(id) {
-      let eventElem = this.eventElemById(id)
-      let promises = []
-      for (let i = 0; i < eventElem.translations.length; i += 1) {
-        const translation = Object.assign({}, eventElem.translations[i])
-        delete translation.translationState
-        delete translation.published
-        promises.push(
-          this.addNewEventItemTranslationProd(translation).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving event production translation ${translation.lang}: ${err}`
-            })
-          })
-        )
-      }
-      promises.push(
-        this.updatePublished({ id, published: true }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while updating published state: ${err}`
-          })
-        })
-      )
-      return Promise.all(promises)
-    },
-    onUnpublish(id) {
-      let eventElem = this.eventElemById(id)
-      let promises = []
-      for (let i = 0; i < eventElem.translations.length; i += 1) {
-        const translation = Object.assign({}, eventElem.translations[i])
-        translation.translationState = 0
-        promises.push(
-          this.editEventItemTranslation(translation).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving event translation ${dataWithId.lang}: ${err}`
-            })
-          })
-        )
-      }
-      promises.push(
-        this.deleteProdTranslations(id).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting event production translations: ${err}`
-          })
-        }),
-        this.updatePublished({ id, published: false }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while updating published state: ${err}`
-          })
-        })
-      )
-      return Promise.all(promises)
-    },
     editEventItemAndReturn(data) {
       const router = this.$router
-      const categoryId = data[0].category.id
+      let categoryId = undefined
+      if (('category' in data[0]) && (data[0].category)) {
+        categoryId = data[0].category.id
+      }
       const id = parseInt(this.$route.params.id, 10)
       const eventData = {
         id,
@@ -118,6 +59,9 @@ export default {
         location: data[0].location,
         published: data[0].published,
         cost: data[0].cost
+      }
+      if (eventData.category === undefined) {
+        this.deleteCategory(id).then(() => {})
       }
       this.editEventItem(eventData).then(() => {
         const { topics } = data[0]

@@ -13,6 +13,12 @@
         >
           <q-item style="max-width: 100%">
             <q-item-section>
+              <q-item-label class="general-filter-title">{{$t("filters.title")}}</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-separator />
+          <q-item style="max-width: 100%">
+            <q-item-section>
               <a
                 href="javascript:void(0)"
                 @click="clearFilters()"
@@ -25,6 +31,7 @@
           <q-separator />
           <q-expansion-item
             expand-separator
+            default-opened
             v-if="topics_enabled"
           >
             <template v-slot:header>
@@ -37,6 +44,7 @@
             <q-item
               v-for="topic in filterTopics"
               :key="topic.id"
+              dense
             >
               <q-checkbox
                 color="accent"
@@ -72,6 +80,7 @@
           <q-separator />
           <q-expansion-item
             expand-separator
+            default-opened
             v-if="categories_enabled"
           >
             <template v-slot:header>
@@ -84,6 +93,7 @@
             <q-item
               v-for="category in filterCategories"
               :key="category.id"
+              dense
             >
               <q-radio
                 color="accent"
@@ -107,6 +117,7 @@
           <q-separator />
           <q-expansion-item
             expand-separator
+            default-opened
             v-if="user_types_enabled"
           >
             <template v-slot:header>
@@ -119,6 +130,7 @@
             <q-item
               v-for="userType in filterUserTypes"
               :key="userType.id"
+              dense
             >
               <q-checkbox
                 color="accent"
@@ -154,6 +166,7 @@
           <q-separator v-if="is_event" />
           <q-expansion-item
             expand-separator
+            default-opened
             v-if="is_event"
           >
             <template v-slot:header>
@@ -172,15 +185,16 @@
         </q-list>
       </div>
       <div class="q-mx-sm col-10">
-        <div class="q-mr-md row">
+        <div class="row">
           <q-input
             color="accent"
             v-model="search"
             debounce="500"
             filled
             outlined
+            dense
             :label='$t("input_labels.search")'
-            class="search-bar col"
+            :class="'search-bar col-9'"
           >
             <template v-slot:append>
               <q-icon name="search" />
@@ -188,30 +202,37 @@
           </q-input>
           <q-btn
             no-caps
+            unelevated
             :label='$t(add_label)'
-            class="add-btn q-ml-md"
+            class="add-btn q-ml-md col"
             data-cy="add_element"
             :to="new_url"
           />
         </div>
-        <div class="row">
+        <div class="center q-mr-xl">
           <upload-button
             :entity="entity"
             :creator="getCurrentUser()"
             @uploadSuccess="batchUploadSuccess($event)"
             @uploadError="batchUploadError($event)"
+            class="q-mr-sm"
           ></upload-button>
         </div>
         <div class="column-header">
           <!-- column title -->
           <q-list>
-            <q-item class="row flex">
-              <q-item-section class="col-7 flex flex-left"></q-item-section>
-              <q-item-section class="col-3 flex flex-center">
-                {{$t("lists.translation_state")}}
+            <q-item class="flex row">
+              <q-item-section class="flex flex-left col-7"></q-item-section>
+              <q-item-section class="flex col-1">
+                <div style="text-align:center">{{$t("lists.published")}}</div>
               </q-item-section>
-              <q-item-section class="col-1 flex flex-left">
-                {{$t("lists.published")}}
+              <q-item-section class="flex col-1">
+                <div style="text-align:center">{{$t("lists.translation_state")}}</div>
+              </q-item-section>
+              <q-item-section class="flex col-1">
+                <div style="text-align:center">{{$t("lists.edit")}}</div>
+              </q-item-section>
+              <q-item-section class="flex col-1">
               </q-item-section>
             </q-item>
           </q-list>
@@ -226,7 +247,7 @@
           >
             <!-- items -->
             <q-item
-              v-for="item in filteredElements"
+              v-for="(item, index) in filteredElements"
               :key="item.id"
               :id="item.id"
               clickable
@@ -295,6 +316,28 @@
                     {{$t("lists.cost")}}: {{item.cost ? item.cost : $t("lists.cost_free")}}
                   </span>
                 </div>
+                <div
+                  class="q-mb-sm"
+                  style="display: inline"
+                >
+                  <span>
+                    {{ $t("input_labels.available_transl") }}:
+                  </span>
+                  <span 
+                    v-if="item.availableTranslations.length > 0"
+                  >
+                    <q-chip
+                      v-for="availableLang in item.availableTranslations"
+                      :key="availableLang"
+                      >{{ availableLang }}
+                    </q-chip>
+                  </span>
+                  <span 
+                    v-else
+                  >
+                    <span>{{ $t("input_labels.no_available_transl") }}</span>
+                  </span>
+                </div>
                 <glossary-editor-viewer
                   class="viewer"
                   :content="item.description ? item.description : ''"
@@ -356,22 +399,20 @@
                   </template>
                 </glossary-editor-viewer>
               </q-item-section>
-              <q-item-section class="col-3 flex flex-center q-mt-md">
-                {{getTranslationStateText(item.translationState)}}
-              </q-item-section>
               <q-item-section class="col-1 flex flex-center q-mt-md">
                 <q-toggle
                   v-model="item.published"
                   color="accent"
-                  disable
+                  @input="showWarningPublish($event, item.id, index)"
+                  :disable="!item.translationState"
                 />
               </q-item-section>
-              <q-item-section
-                :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
-                class="col-shrink q-mt-md"
-              >
+              <q-item-section class="col-1 flex flex-center q-mt-md">
+                <div style="text-align:center">{{getTranslationStateText(item.translationState)}}</div>
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center q-mt-md">
                 <q-btn
-                  round
+                  unelevated
                   class="item-btn"
                   icon="img:statics/icons/Icon - edit - orange (600x600).png"
                   :to="edit_url_fn(item.id)"
@@ -469,6 +510,12 @@ export default {
     },
     entity: {
       type: String
+    },
+    on_publish: {
+      type: Function
+    },
+    on_unpublish: {
+      type: Function
     }
   },
   data() {
@@ -607,7 +654,7 @@ export default {
       }
     },
     compare(a, b) {
-      return a.title.localeCompare(b.title, this.$userLang, { sensitivity: 'base' })
+      return a.title.localeCompare(b.title, this.lang, { sensitivity: 'base' })
     },
     compareTranslationDates(a, b) {
       return new Date(b.translationDate) - new Date(a.translationDate)
@@ -647,13 +694,54 @@ export default {
         message: `Error while uploading: ${err}`
       })
     },
+    showWarningPublish(event, id, idx) {
+      if (event == true) {
+        this.$q.notify({
+          type: 'warning',
+          timeout: 0,
+          message: this.$t("lists.publish_warning"),
+          actions: [
+            {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
+                this.on_publish(id).then(() => console.log("published"))
+              }
+            },
+            {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
+                this.filteredElements[idx].published = false
+              }
+            }
+          ]
+        })
+
+      }
+      else {
+        this.$q.notify({
+          type: 'warning',
+          message: this.$t("lists.unpublish_warning"),
+          actions: [
+            {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
+                this.on_unpublish(id).then(() => console.log("unpublished"))
+              }
+            },
+            {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
+                this.filteredElements[idx].published = true
+              }
+            }
+          ]
+        })
+
+      }
+    },
     async initializeList() {
       let creatorPromises = []
       let creatorPromisesIds = []
       this.translatedElements = this.elements.map((e) => {
         let translation
         if (e.translations) {
-          const idx = e.translations.findIndex((t) => t.lang === this.lang)
+          const idx = e.translations.findIndex((t) => (t.lang === this.lang) && !t.translated)
           if (idx !== -1) {
             translation = { ...e.translations[idx] }
             translation.id = e.id // In case of errors we still have the id
@@ -690,9 +778,9 @@ export default {
             }
             if (this.is_event) {
               const startDate = new Date(e.startDate)
-              translation.startDate = startDate.toLocaleString(this.$userLang)
+              translation.startDate = startDate.toLocaleString(this.lang)
               const finishDate = new Date(e.endDate)
-              translation.endDate = finishDate.toLocaleString(this.$userLang)
+              translation.endDate = finishDate.toLocaleString(this.lang)
               translation.location = e.location
               translation.cost = e.cost
             }
@@ -703,6 +791,9 @@ export default {
             }
             translation.published = e.published
             this.showExtraInfo[e.id] = false
+            translation.availableTranslations = e.translations
+              .filter((t) => t.translated && (new Date(t.translationDate) >= new Date(translation.translationDate)))
+              .map((t) => t.lang)
             return translation
           } else return undefined
         }
@@ -830,7 +921,7 @@ export default {
   },
   created() {
     this.loading = true
-    this.lang = this.$i18n.locale
+    this.lang = this.$defaultLang
     const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
     Promise.all([
       this.fetchGlossaryTemp(langs),
@@ -849,7 +940,7 @@ $btn_secondary: #cdd0d2;
   background-color: #0b91ce;
   color: white;
   border-radius: 5px;
-  margin-right: 85px;
+  margin-right: 108px;
   margin-top: 65px;
   margin-bottom: 25px;
 }
@@ -868,9 +959,6 @@ $btn_secondary: #cdd0d2;
   font-weight: 600;
   font-family: "Nunito";
   font-size: 20px;
-}
-.item-btn {
-  background-color: white;
 }
 .tag_btn {
   background-color: $primary;
@@ -894,15 +982,20 @@ $btn_secondary: #cdd0d2;
   font-weight: 600;
   font-size: 15px;
 }
+.general-filter-title {
+  font-family: "Nunito Sans";
+  font-weight: 700;
+  font-size: 20px;
+}
 .filter-title {
   font-family: "Nunito Sans";
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: bold;
+  font-size: 15px;
 }
 .clear_all {
   font-family: "Nunito";
   font-weight: 600;
-  font-size: 16px;
+  font-size: 12px;
 }
 .show_more {
   font-family: "Nunito";
@@ -939,6 +1032,7 @@ $btn_secondary: #cdd0d2;
   margin-top: 65px;
   margin-bottom: 25px;
   max-width: 75%;
+  max-height: 40px;
 }
 .filter-list {
   margin-top: 65px;
@@ -947,4 +1041,3 @@ $btn_secondary: #cdd0d2;
   max-width: 91.6667%;
 }
 </style>
- 

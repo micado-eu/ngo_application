@@ -25,3 +25,10 @@ export function setInformationTemp(state, information) {
   }
   state.informationTemp = information
 }
+
+export function updatePublished(state, data) {
+  let idx = state.information.findIndex((i) => i.id === data.id)
+  if (idx !== -1) {
+    state.information[idx].published = data.published
+  }
+}

@@ -43,12 +43,9 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
-  addNewInformationItemTranslationProd(translation) {
-    if (!translation.translationDate) {
-      translation.translationDate = new Date().toISOString()
-    }
+  saveInformationTranslationProd(id) {
     return axiosInstance
-      .post(`/backend/1.0.0/information/${translation.id}/information-translation-prods`, translation)
+      .get(`/backend/1.0.0/information/to-production?id=${id}`)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -61,7 +58,7 @@ export default {
   },
   editInformationItemTranslation(translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: { eq: translation.translated }
     }
     if (!translation.translationDate) {
       translation.translationDate = new Date().toISOString()
@@ -75,9 +72,9 @@ export default {
     // Delete translations then item
     return axiosInstance
       .delete(`/backend/1.0.0/information/${item.id}/information-translations`)
-      // .then(
-      //   () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
-      // )
+      .then(
+        () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
+      )
       .then(
         () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}`)
       ).then((response) => response.data)
@@ -94,7 +91,7 @@ export default {
     for (let i = 0; i < topics.topics.length; i += 1) {
       const body = {
         idInformation: topics.id,
-        idTopic: topics.topics[i].id
+        idTopic: topics.topics[i]
       }
       promises.push(axiosInstance.post(`/backend/1.0.0/information/${topics.id}/information-topics`, body).then((response) => response.data))
     }
@@ -105,7 +102,7 @@ export default {
     for (let i = 0; i < userTypes.userTypes.length; i += 1) {
       const body = {
         idInformation: userTypes.id,
-        idUserTypes: userTypes.userTypes[i].id
+        idUserTypes: userTypes.userTypes[i]
       }
       promises.push(axiosInstance.post(`/backend/1.0.0/information/${userTypes.id}/information-user-types`, body).then((response) => response.data))
     }
@@ -151,6 +148,12 @@ export default {
     return axiosInstance
       .patch('/backend/1.0.0/information?[where][id]=' + id, { published: is_published })
       .then(response => response.data)
+      .catch(error_handler)
+  },
+  deleteCategory(id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/information/${id}/category`)
+      .then((response) => response.data)
       .catch(error_handler)
   }
 }

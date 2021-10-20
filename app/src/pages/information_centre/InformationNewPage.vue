@@ -27,7 +27,7 @@ export default {
         published: translationData[0].published,
         creator: translationData[0].creator
       }
-      if ('category' in translationData[0]) {
+      if (('category' in translationData[0]) && (translationData[0].category)) {
         eventData.category = translationData[0].category.id
       }
       this.saveNewInformationItem(eventData)

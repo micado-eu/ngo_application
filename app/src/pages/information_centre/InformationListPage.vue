@@ -16,6 +16,8 @@
       user_types_enabled
       entity="information"
       @batchUpload="updateContent()"
+      :on_publish="onPublish"
+      :on_unpublish="onUnpublish"
     />
   </div>
 </template>
@@ -45,7 +47,11 @@ export default {
       'fetchInformation',
       'deleteInformationItem',
       'fetchAllInformationTopics',
-      'fetchAllInformationUserTypes'
+      'fetchAllInformationUserTypes',
+      'saveInformationTranslationProd',
+      'editInformationItemTranslation',
+      'updatePublished',
+      'deleteProdTranslations'
     ]),
     ...mapActions('information_category', ['fetchInformationCategory']),
     getEditRoute(id) {
@@ -62,6 +68,51 @@ export default {
             message: `Error while deleting information: ${err}`
           })
         })
+    },    
+    onPublish(id) {
+      return Promise.all([
+        this.saveInformationTranslationProd(id).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving information production translation: ${err}`
+          })
+        }),
+        this.updatePublished({ id, published: true }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while updating published state: ${err}`
+          })
+        })
+      ])
+    },
+    onUnpublish(id) {
+      let infoElem = this.informationElemById(id)
+      let promises = []
+      const translation = Object.assign({}, infoElem.translations.filter(t => !t.translated)[0])
+      translation.translationState = 0
+      promises.push(
+        this.editInformationItemTranslation(translation).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving information translation: ${err}`
+          })
+        })
+      )
+      promises.push(
+        this.deleteProdTranslations(id).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting information production translations: ${err}`
+          })
+        }),
+        this.updatePublished({ id, published: false }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while updating published state: ${err}`
+          })
+        })
+      )
+      return Promise.all(promises)
     },
     updateContent() {
       this.loading = true
