@@ -252,8 +252,8 @@ export default {
         },
         {
           label: "menu.interventions",
-          icon: "img:statics/icons/Icon - Information Centre.svg",
-          active_icon: 'img:statics/icons/Icon - Information Centre.svg',
+          icon: "img:statics/icons/Icon - Manage Validations.svg",
+          active_icon: 'img:statics/icons/Icon - Manage Validations.svg',
           to: "/interventions",
           feature: "FEAT_DOCUMENTS",
           description: "menu.validation_requests"
