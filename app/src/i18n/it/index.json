@@ -1,5 +1,11 @@
 {
     "error_messages": {
+        "category_empty": "seleziona una categoria.",
+        "change_translated": "Per modificare il contenuto, riportalo in Modifica. Se il contenuto viene portato in Modifica e salvato, le traduzioni saranno cancellate.",
+        "date_time_empty": "Inserisci le date di inizio e di fine.",
+        "fill_default_language": "Inserisci il titolo nella lingua base: ",
+        "in_translation": "Questo contenuto è in traduzione. Le modifiche non saranno salvate.",
+        "max_char_limit": "Massimo numero di caratteri raggiunto: ",
         "title_empty": "Il titolo è vuoto. Si prega di aggiungere un titolo."
     },
     "help": {
@@ -19,11 +25,22 @@
         "element_title": "Aggiungi un titolo",
         "element_topic": "Seleziona un argomento",
         "element_user_type": "Seleziona un tipo di utente",
-        "element_start_date": "Seleziona la data d'inizio"
+        "element_start_date": "Seleziona la data d'inizio",
+        "event_cost": "Prezzo dell'evento. SPunta la casella se l'evento è gratuito.",
+        "location_maps": "Clicca qui per vedere un'antemprima dei risultati della ricerca di questo luogo su Google Maps",
+        "is_published": "Le CSO non possono pubblicare questi contenuti"
     },
     "button": {
         "categories": "Categorie",
         "read_more": "Leggi di più",
+        "batch_upload": "Carica più contenuti",
+        "download_template": "Scarica template",
+        "go_back": "Indietro",
+        "survey": "Sondaggio",
+        "upload": "Carica",
+        "validate_and_publish": "Valida e pubblica",
+        "view_model": "Visualizza modello",
+        "view_pics": "Visualizza dettagli",
         "update_link": "Aggiorna link",
         "add_user": "Aggiungi utente",
         "add_link": "Aggiungi link",
@@ -45,7 +62,23 @@
         "select_category": "Seleziona categoria",
         "select_topic": "Seleziona argomento",
         "select_user_type": "Seleziona tipi di utente",
-        "start_date": "Data d'inizio"
+        "available_transl": "Traduzioni disponibili",
+        "click_step": "Clicca su un passo per i dettagli",
+        "comments": "Commenti",
+        "emitter": "Emettitore",
+        "event_cost": "Costo dell'evento",
+        "event_free": "L'evento è gratuito",
+        "intervention": "Intervento",
+        "loading": "Caricamento...",
+        "no_available_transl": "Nessuna traduzione disponibile",
+        "preview": "Anteprima",
+        "preview_migrant": "Anteprima del processo sull'app migranti",
+        "request_validation": "ha richiesto la validazione per il piano",
+        "required_documents": "Documenti richiesti",
+        "cost": "Costo",
+        "start_date": "Data d'inizio",
+        "upload_file": "Carica file",
+        "validate_intervention": "Valida intervento"
     },
     "menu": {
         "title": "Benvenuto",
@@ -56,19 +89,33 @@
         "interventions": "Gestisci validazioni",
         "migrant": "Migranti",
         "CSO_user": "Gestione utente CSO",
-        "glossary": "Glossario",
+        "glossary": "Parole utili",
         "activelanguages": "Cambia lingue attive",
         "information_centre": "Centro informazioni",
         "login": "Accedi",
         "logout": "Esci",
         "settings": "Opzioni",
         "events": "Eventi",
+        "cso_desc": "Gestisci utenti CSO",
+        "cso_description": "This is a longer description of the item",
+        "events_desc": "Gestisci gli eventi",
+        "home": "Home",
+        "home_desc": "",
+        "information_centre_desc": "Gestisci the informazioni",
+        "information_centre_description": "This is a longer description of the item",
+        "process_desc": "Modifica le informazioni sui processi",
+        "setting_desc": "Configura l'applicazione",
+        "setting_description": "This is a longer description of the item",
+        "process_description": "This is a longer description of the item",
+        "validation_description": "This is a longer description of the item",
+        "validation_requests": "Controlla le richieste di validazione",
+        "events_description": "This is a longer description of the item",
         "documenttype": "Gestisci tipi di documento",
         "processmanager": "Gestisci processi",
         "mediation": "Richiedi mediazione",
         "integrationcategory": "Gestisci categorie d'intervento",
         "integrationtype": "Gestisci tipi d'intervento",
-        "process": "Processi guidati"
+        "process": "Come fare per"
     },
     "information_centre": {
         "list_title": "Centro informazioni",
@@ -81,12 +128,89 @@
         "edit": "Modifica evento della lista eventi"
     },
     "filters": {
-        "title": "Filtra"
+        "title": "Titolo",
+        "category_title": "Categoria",
+        "clear_all": "Rimuovi filtri",
+        "date_title": "Data",
+        "show_more": "Mostra altro",
+        "topics_title": "Argomenti",
+        "user_types_title": "Tipi di utente"
     },
     "date_selector": {
         "close": "Chiudi"
     },
     "new_pa_user": {
-        "name": "Nome"
+        "name": "Nome",
+        "admin": "Amministratore",
+        "email": "Email",
+        "external_id": "ID esterno",
+        "mig_tenant": "Tenant dei migranti",
+        "password": "Password",
+        "surname": "Cognome",
+        "usermgmt": "Gestione utenti",
+        "username": "Nome utente"
+    },
+    "internal_reference": {
+        "go_to_reference": "Vai al riferimento",
+        "more_info_1": "Più informazioni su",
+        "more_info_2": "può essere trovato a:"
+    },
+    "link_modal": {
+        "apply": "Applica",
+        "link": "Link",
+        "selected": "Seleziona del testo per applicare un link",
+        "text": "Testo"
+    },
+    "lists": {
+        "category": "Categoria",
+        "cost": "Costo",
+        "cost_free": "Gratuito",
+        "creator": "Creato da/Organizzatore",
+        "delete": "Elimina",
+        "edit": "Modifica",
+        "end_date": "Data di fine",
+        "location": "Luogo",
+        "no": "No",
+        "publish_warning": "Attenzione:pubblicare il processo lo renderà visibile sull'app migranti, e nessun cambiamento sarà possibile senza prima revocare la pubblicazione. Continuare?",
+        "published": "Pubblicato",
+        "start_date": "Data d'inizio",
+        "topics": "Argomenti",
+        "translation_state": "Stato traduzione",
+        "unpublish_warning": "Attenzione: Revocare la pubblicazione del processo marcherò le traduzioni presenti come obsolete e potrebbe essere necessario ritradurre il contenuto. Continuare?",
+        "user_types": "Tipi di utente",
+        "yes": "Si"
+    },
+    "pa_profile": {
+        "change_pic": "Cambia immagine",
+        "confirm_pass": "Conferma password",
+        "country": "Paese",
+        "dob": "Data di nascita",
+        "gender": "Sesso",
+        "legal_name": "Nome completo",
+        "mail": "Email",
+        "new_pass": "Nuova Password",
+        "old_pass": "Vecchia Password",
+        "password": "Password",
+        "personal_profile": "Profilo personale",
+        "phone_number": "Numero di telefono",
+        "username": "Nome utente"
+    },
+    "text_editor": {
+        "word_count": "Numero di parole"
+    },
+    "translation_states": {
+        "editing": "Modifica",
+        "translatable": "Traducibile",
+        "translated": "Tradotto",
+        "translating": "In traduzione",
+        "unknown": "Sconosciuto"
+    },
+    "upload_modal": {
+        "text_alternative": "Testo alternativo all'immagine",
+        "upload_button": "Carica",
+        "upload_label": "Carica",
+        "uploader_label": "Carica immagine (Max 25 MB)",
+        "url": "URL",
+        "url_label": "URL"
     }
 }
