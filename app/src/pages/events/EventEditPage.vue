@@ -62,55 +62,56 @@ export default {
       }
       if (eventData.category === undefined) {
         this.deleteCategory(id).then(() => {})
-      }
-      this.editEventItem(eventData).then(() => {
-        const { topics } = data[0]
-        this.deleteTopics(id)
-          .then(() => this.setTopics({ id, topics }))
-          .catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving topics: ${err}`
-            })
+      } else {
+        this.editEventItem(eventData).then(() => {
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving event: ${err}`
           })
-        const { userTypes } = data[0]
-        this.deleteUserTypes(id)
-          .then(() => this.setUserTypes({ id, userTypes }))
-          .catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving user types: ${err}`
-            })
-          })
-        for (let i = 0; i < data.length; i += 1) {
-          const translation = data[i]
-          const dataWithId = Object.assign(translation, { id })
-          delete translation.published
-          delete translation.category
-          delete translation.topics
-          delete translation.userTypes
-          delete translation.startDate
-          delete translation.finishDate
-          delete translation.location
-          delete translation.creator
-          delete translation.cost
-          this.editEventItemTranslation(dataWithId).then(() => {
-            if (i === data.length - 1) {
-              router.push({ path: '/events' })
-            }
-          }).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving event translation ${dataWithId.lang}: ${err}`
-            })
-          })
-        }
-      }).catch((err) => {
-        this.$q.notify({
-          type: 'negative',
-          message: `Error while saving event: ${err}`
         })
-      })
+      }
+      const { topics } = data[0]
+      this.deleteTopics(id)
+        .then(() => this.setTopics({ id, topics }))
+        .catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving topics: ${err}`
+          })
+        })
+      const { userTypes } = data[0]
+      this.deleteUserTypes(id)
+        .then(() => this.setUserTypes({ id, userTypes }))
+        .catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving user types: ${err}`
+          })
+        })
+      for (let i = 0; i < data.length; i += 1) {
+        const translation = data[i]
+        const dataWithId = Object.assign(translation, { id })
+        delete translation.published
+        delete translation.category
+        delete translation.topics
+        delete translation.userTypes
+        delete translation.startDate
+        delete translation.finishDate
+        delete translation.location
+        delete translation.creator
+        delete translation.cost
+        this.editEventItemTranslation(dataWithId).then(() => {
+          if (i === data.length - 1) {
+            router.push({ path: '/events' })
+          }
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving event translation ${dataWithId.lang}: ${err}`
+          })
+        })
+      }
     }
   },
   computed: {
