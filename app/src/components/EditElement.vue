@@ -220,9 +220,11 @@
         </div>
         <div
           class="row"
-          v-if="is_event"
         >
-          <div class="col">
+          <div 
+            class="col" 
+            v-if="is_event"
+          >
             <span class="label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.event_cost')"
@@ -438,7 +440,7 @@ export default {
       this.savedTranslations[0] = translation0
       console.log(this.elem)
       console.log(this.originalTranslationState)
-      if (!this.elem || (this.originalTranslationState === 1)) {
+      if (!this.elem || (this.originalTranslationState === 1) || this.translatable) {
         const translation1 = {
           title: this.internalTitle,
           description,
