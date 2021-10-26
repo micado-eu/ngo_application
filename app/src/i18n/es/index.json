@@ -1,5 +1,13 @@
 {
     "menu": {
+        "cso_description": "Esta es una descripción larga del objeto",
+        "events_description": "Esta es una descripción larga del objeto",
+        "information_centre_description": "Esta es una descripción larga del objeto",
+        "process_description": "Esta es una descripción larga del objeto",
+        "setting_description": "Esta es una descripción larga del objeto",
+        "validation_description": "Esta es una descripción larga del objeto",
+        "home": "Inicio",
+        "home_desc": "",
         "title": "Mis herramientas",
         "dashboard": "Tablero",
         "documenttype": "Administrar tipos de documentos",
@@ -45,6 +53,10 @@
         "location_maps": "Haga clic aquí para obtener una vista previa de los resultados de la búsqueda de esta ubicación en Google Maps"
     },
     "button": {
+        "batch_upload": "Subida en lotes",
+        "download_template": "Descargar plantilla",
+        "view_model": "Ver modelo",
+        "view_pics": "Ver detalles",
         "save": "Guardar",
         "cancel": "Cancelar",
         "add_event": "Añadir Evento",
@@ -62,6 +74,16 @@
         "survey": "Encuesta"
     },
     "input_labels": {
+        "available_transl": "Traducciones disponibles",
+        "click_step": "Haz clic en un paso para ver los detalles",
+        "comments": "Comentarios",
+        "cost": "Coste",
+        "emitter": "Emisor",
+        "loading": "Cargando...",
+        "no_available_transl": "No hay traducciones disponibles",
+        "preview": "Vista previa",
+        "preview_migrant": "Vista previa del proceso en la app de migrantes",
+        "required_documents": "Documentos necesarios",
         "search": "Buscar",
         "is_published": "Publicado",
         "description": "Descripción",
@@ -96,7 +118,13 @@
         "date_title": "Fecha"
     },
     "lists": {
+        "delete": "Borrar",
+        "edit": "Editar",
+        "no": "No",
+        "yes": "Yes",
+        "publish_warning": "Aviso: Publicar este contenido lo hará visible en la app de migrantes y no podrá cambiarse sin despublicarlo. ¿Proceder?",
         "published": "Publicado",
+        "unpublish_warning": "Aviso: Despublicar este contenido marcará las traducciones existentes como no traducidas y puede ser necesario volver a traducir. ¿Proceder?",
         "category": "Categoría",
         "topics": "Temas",
         "user_types": "Tipos de Usuarios",
