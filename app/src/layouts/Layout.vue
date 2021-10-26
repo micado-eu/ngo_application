@@ -45,10 +45,23 @@
       bordered
       content-class="bg-accent text-white"
     >
-      <div class="column flex-center q-gutter-y-md">
+    <div style="text-align:center">
+          <q-btn
+          class="go_back"
+            :label="$t('button.go_back')"
+            :icon="'img:statics/icons/Icon - go back.svg'"
+            rounded
+            no-caps
+          v-if="isLoggedIn"
+          @click="back"
+        >
+              </q-btn>
+              <q-separator color="white"/>
+    </div>
+      <div class="column flex-center q-gutter-y-md" style="padding-bottom:20px;padding-top:20px">
         <q-btn
           round
-          class="q-gutter-y-md"
+          class=""
           v-if="isLoggedIn"
         >
           <q-avatar size="42px">
@@ -61,7 +74,7 @@
         clickable
         @click="toLogin()"
         v-if="!isLoggedIn"
-        style="padding-top:30px"
+        style="padding-top:20px;padding-bottom:20px"
       >
         <q-item-section avatar>
           <q-icon name="exit_to_app" />
@@ -70,6 +83,7 @@
           <q-item-label>{{ $t('menu.login') }}</q-item-label>
         </q-item-section>
       </q-item>
+              <q-separator color="white"/>
 
       <q-item
         clickable
@@ -83,6 +97,7 @@
           <q-item-label>{{ $t('menu.logout') }}</q-item-label>
         </q-item-section>
       </q-item>
+              <q-separator color="white"/>
 
       <q-list
         dark
@@ -280,6 +295,9 @@ export default {
     };
   },
   methods: {
+    back(){
+      this.$router.go(-1)
+    },
     toLogin () {
       this.$auth.login()
     },
@@ -347,5 +365,13 @@ export default {
     color: white;
     background: #0b91ce;
   }
+}
+.go_back {
+  background-color: white;
+  color: #0f3a5d;
+  border: 1px solid #0f3a5d;
+  border-radius: 50px;
+  margin-top:20px;
+  margin-bottom:20px
 }
 </style>

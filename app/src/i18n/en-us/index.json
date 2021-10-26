@@ -78,7 +78,8 @@
     "view_model": "View model",
     "view_pics": "View details",
     "batch_upload":"Batch upload",
-    "download_template":"Download template"
+    "download_template":"Download template",
+    "go_back":"Go Back"
   },
   "input_labels": {
     "search": "Search",
@@ -104,7 +105,9 @@
     "required_documents": "Required documents",
     "emitter":"Emitter",
     "available_transl":"Available translations",
-    "no_available_transl":"No available translations"
+    "no_available_transl":"No available translations",
+    "request_validation":"has requested a validation for his plan",
+    "intervention":"Intervention"
   },
   "link_modal": {
     "text": "Text",
