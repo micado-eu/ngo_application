@@ -1,9 +1,18 @@
 <template>
-  <div><b>{{userdata}}</b> {{$t('input_labels.request_validation')}}: {{the_intervention.title}}
+  <div >
+    <p>
+    <b>{{userdata}}</b> {{$t('input_labels.request_validation')}}: {{the_intervention.title}}
+    </p>
     <div
       v-for="a_int in interventionsToComplete"
       :key="a_int.id"
-    >{{$t('input_labels.intervention')}}: {{a_int.title}}
+      class="row"
+      style="padding-bottom:10px;"
+    >
+    <div class="col">
+    {{$t('input_labels.intervention')}}: {{a_int.title}}
+    </div>
+    <div class="col" style="text-align:right">
       <q-btn
         size="11px"
         :data-cy="'validateintervention'.concat(a_int.id)"
@@ -13,6 +22,7 @@
         label="Validate"
         @click="doValidation(a_int, the_intervention.user_id)"
       />
+    </div>
     </div>
   </div>
 </template>
