@@ -46,7 +46,13 @@
         "translation_state": "Übersetzungsstatus",
         "cost_free": "Kostenlos",
         "cost": "Kosten",
-        "creator": "Erstellt/Organisiert von"
+        "creator": "Erstellt/Organisiert von",
+        "delete": "Entfernen",
+        "edit": "Bearbeiten",
+        "no": "Nein",
+        "yes": "Ja",
+        "unpublish_warning": "Achtung! Wenn die Veröffentlichung zurückgezogen wird, wird der Übersetzungsstatus auf \"nicht übersetzt\" gesetzt und der Übersetzungsprozess muss wiederholt werden. Fortsetzen?",
+        "publish_warning": "Achtung! Wenn die Anleitung veröffentlicht wird, wird sie in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?"
     },
     "information_centre": {
         "edit": "Eintrag in \"Nützliche Informationen\" editieren",
@@ -66,7 +72,20 @@
         "finish_date": "Enddatum",
         "start_date": "Startdatum",
         "select_user_type": "Nutzer/-innen-Gruppe wählen",
-        "select_topic": "Themenfelder auswählen"
+        "select_topic": "Themenfelder auswählen",
+        "intervention": "Intervention",
+        "request_validation": "hat eine Validierung seines Planes angefragt",
+        "no_available_transl": "Keine verfügbaren Übersetzungen",
+        "available_transl": "Verfügbare Übersetzungen",
+        "emitter": "Sender",
+        "required_documents": "Erforderliche Dokumente",
+        "comments": "Kommentare",
+        "cost": "Kosten",
+        "loading": "wird geladen...",
+        "preview_migrant": "Vorschau der Anleitung innerhalb der App für Migrantinnen und Migranten",
+        "preview": "Vorschau",
+        "click_step": "Für Details auf einen Schritt klicken",
+        "validate_intervention": "Intervention validieren"
     },
     "date_selector": {
         "close": "Schließen"
@@ -138,7 +157,20 @@
         "mediation": "Mediation anfragen",
         "processmanager": "Anleitungen verwalten",
         "configure": "Konfiguration",
-        "documenttype": "Dokumententypen verwalten"
+        "documenttype": "Dokumententypen verwalten",
+        "validation_description": "Das ist eine längere Beschreibung des Eintrags",
+        "events_description": "Das ist eine längere Beschreibung des Eintrags",
+        "cso_desc": "Accounts der ZGOs verwalten",
+        "setting_desc": "Einstellungen der MICADO-Anwendung ändern",
+        "process_desc": "Anleitungen bearbeiten",
+        "events_desc": "Kurse und Veranstaltungen bearbeiten",
+        "information_centre_desc": "Informationen bearbeiten",
+        "validation_requests": "Validierungsanfragen überprüfen",
+        "home": "Home",
+        "setting_description": "Das ist eine längere Beschreibung des Eintrags",
+        "information_centre_description": "Das ist eine längere Beschreibung des Eintrags",
+        "process_description": "Das ist eine längere Beschreibung des Eintrags",
+        "cso_description": "Das ist eine längere Beschreibung des Eintrags"
     },
     "button": {
         "update_link": "Link aktualisieren",
@@ -155,7 +187,12 @@
         "add_event": "Veranstaltung hinzufügen",
         "survey": "Umfrage",
         "upload": "Hochladen",
-        "validate_and_publish": "Validieren und veröffentlichen"
+        "validate_and_publish": "Validieren und veröffentlichen",
+        "go_back": "Zurück",
+        "download_template": "Vorlage herunterladen",
+        "batch_upload": "Gebündelt hochladen",
+        "view_pics": "Details anzeigen",
+        "view_model": "Muster anzeigen"
     },
     "internal_reference": {
         "more_info_2": "ist zu finden unter:",
@@ -174,5 +211,6 @@
         "apply": "Anwenden",
         "link": "Link",
         "text": "Text"
-    }
+    },
+    "application_title": "MICADO App"
 }
