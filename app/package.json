@@ -31,7 +31,7 @@
     "tiptap": "^1.27.1",
     "tiptap-extensions": "^1.29.1",
     "uppy": "^1.6.0",
-    "validator": "^11.1.0",
+    "validator": "^13.7.0",
     "vue": "^2.6.11",
     "vue-countable": "^1.0.9",
     "vue-countly": "^1.0.0",
