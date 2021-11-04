@@ -792,7 +792,7 @@ export default {
             translation.published = e.published
             this.showExtraInfo[e.id] = false
             translation.availableTranslations = e.translations
-              .filter((t) => t.translated && (new Date(t.translationDate) >= new Date(translation.translationDate)))
+              .filter((t) => t.translated)
               .map((t) => t.lang)
             return translation
           } else return undefined
