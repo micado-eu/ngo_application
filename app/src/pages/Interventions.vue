@@ -1,13 +1,13 @@
 <template>
   <q-page padding>
-    <div class="col">
+    <div class="" style="text-align:center"  >
       <q-input
-        style="border-radius:10px; width:590px;font-size:18px"
+        style="width:80%; display:inline-block;"
         dense
-        items-center
         filled
+        items-center
         v-model="search"
-        label="Search"
+        :label="$t('input_labels.search')"
       >
         <template v-slot:append>
           <q-avatar>
@@ -19,7 +19,7 @@
     <div>
       <q-list>
         <Intervention
-          v-for="interv in plansToComplete"
+          v-for="interv in searchResults"
           :key="interv.id"
           :the_intervention="interv"
           @doValidation="openValidateDialog($event)"
@@ -135,6 +135,24 @@ export default {
       return this.interventions.filter((plan)=>{
         return plan.completed == false
       })
+    }, 
+    searchResults(){
+          
+      //if none of the fields is filled in it will give the full list of processes
+      if (this.search == "") {
+        return this.plansToComplete
+      }
+      else {
+        return this.plansToComplete.filter((a_process) => {
+          console.log(this.activeLanguage)
+          //var curlangproc = a_process.translations.filter((transl) => { return transl.lang == this.activeLanguage })[0]
+          //Splits the search field and puts the words in an array
+          var searchArray = this.search.toLowerCase().split(" ")
+          if (searchArray.every(string => a_process.title.toLowerCase().includes(string))) {
+            return true
+          }        })
+      }
+    
     }
   },
   methods: {

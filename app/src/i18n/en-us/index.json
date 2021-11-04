@@ -30,12 +30,12 @@
     "setting_desc":"Configure the application",
     "cso_desc":"Manage CSO users",
     "home_desc":"",
-    "cso_description":"This is a longer description of the item",
-    "process_description":"This is a longer description of the item",
-    "information_centre_description":"This is a longer description of the item",
-    "events_description":"This is a longer description of the item",
-    "validation_description":"This is a longer description of the item",
-    "setting_description":"This is a longer description of the item"
+    "cso_description":"Here you can manage other user accounts from your civil society organisation.",
+    "process_description":"Step-by-step guides guide migrants through complicated procedures. You can use this to give easy-to-understand, detailed instructions for complex official procedures to migrants. As a civil society organisation you can comment on all processes with helpful tips. . Once published, they are accessible for all visitors on Micado for migrants. Step-by-step guides usually lead to obtaining or applying for a certain document. For example: How to apply for a residency permit? How to register a child for primary school?",
+    "information_centre_description":"Basic information are general information sheets. They contain easy to understand information about a certain topic.  Once published, they are accessible for all visitors on Micado for migrants. For example: How does the health system work in this city? They can be written and published for migrants by you and other civil society organisations as well as by public authorities.",
+    "events_description":"Events allow you to manage entries regarding events and courses, including tags by topic, category and user type.",
+    "validation_description":"Here you will see all the validations’ requests sent to you as a civil society organisation  by migrants, divided by user, plan and intervention. You can also validate the migrants’ requests and attach documents if necessary to certify the validation.",
+    "setting_description":"In the settings, you can manage personal profile settings."
   },
   "help": {
     "element_title": "Write a title",

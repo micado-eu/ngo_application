@@ -48,7 +48,14 @@
         "events_desc": "Beheer de evenementen",
         "information_centre_desc": "Beheer de informatie",
         "validation_requests": "Bekijk de vragen tot goedkeuring",
-        "process_desc": "Wijzig stappenplan"
+        "process_desc": "Wijzig stappenplan",
+        "validation_description": "Dit is een langere beschrijving van het item",
+        "events_description": "Dit is een langere beschrijving van het item",
+        "home": "Home",
+        "setting_description": "Dit is een langere beschrijving van het item",
+        "information_centre_description": "Dit is een langere beschrijving van het item",
+        "process_description": "Dit is een langere beschrijving van het item",
+        "cso_description": "Dit is een langere beschrijving van het item"
     },
     "button": {
         "change_pass": "Wijzig je wachtwoord",
@@ -65,7 +72,12 @@
         "add_information": "Informatiefiche toevoegen",
         "upload": "Uploaden",
         "validate_and_publish": "Goedkeuren en publiceren",
-        "survey": "Vragenlijst"
+        "survey": "Vragenlijst",
+        "go_back": "Ga terug",
+        "download_template": "Download het sjabloon",
+        "batch_upload": "Upload in bulk",
+        "view_pics": "Bekijk details",
+        "view_model": "Bekijk het model"
     },
     "input_labels": {
         "search": "Zoeken",
@@ -81,7 +93,19 @@
         "event_free": "Dit evenement is gratis",
         "event_cost": "Prijs van het evenement",
         "upload_file": "Bestand uploaden",
-        "validate_intervention": "Keur de taak goed"
+        "validate_intervention": "Keur goed",
+        "intervention": "Interventie",
+        "request_validation": "vraagt een goedkeuring van zijn plan",
+        "required_documents": "Vereiste documenten",
+        "comments": "Reacties",
+        "cost": "Kost",
+        "emitter": "Zender",
+        "no_available_transl": "Niet beschikbare vertalingen",
+        "available_transl": "Beschikbare vertalingen",
+        "loading": "Aan het laden...",
+        "preview_migrant": "Voorbeeld van het stappenplan op de app voor migranten",
+        "preview": "Voorbeeld",
+        "click_step": "Klik op een bovenstaande stap voor details"
     },
     "new_pa_user": {
         "usermgmt": "Beheer gebruiker",
@@ -137,7 +161,13 @@
         "translation_state": "Status van de vertaling",
         "cost_free": "Gratis",
         "cost": "Prijs",
-        "creator": "Aangemaakt door"
+        "creator": "Aangemaakt door",
+        "no": "Neen",
+        "yes": "Ja",
+        "unpublish_warning": "Waarschuwing: De publicatie van het stappenplan ongedaan maken zorgt ervoor dat alle bestaande vertaling als niet vertaald worden beschouwd en moeten misschien opnieuw vertaald worden. Verdergaan?",
+        "publish_warning": "Waarschuwing: het stappenplan publiceren maakt het zichtbaar op de app voor migranten en je kan niets veranderen tenzij je de publicatie ongedaan maakt. Verdergaan?",
+        "delete": "Verwijder",
+        "edit": "Bewerk"
     },
     "events": {
         "edit": "Wijzig een evenement in de evenementenlijst",
