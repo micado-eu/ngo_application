@@ -71,12 +71,12 @@ export default {
           description: "menu.process_description"
         },
         {
-          label: "menu.cso",
+          label: "menu.CSO_user",
           icon: "img:statics/icons/Icon - CSO Admin Management1.svg",
           description: "menu.cso_description"
         },
         {
-          label: "menu.setting",
+          label: "menu.settings",
           icon: "img:statics/icons/Icon - Settings1.svg",
           description: "menu.setting_description"
         },
