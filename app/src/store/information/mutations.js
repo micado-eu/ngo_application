@@ -15,7 +15,7 @@ export function setInformationProd(state, information) {
     information[i].title = information[i]['information']
     delete information[i].information
   }
-  state.informationProd = information
+  state.informationProd = information.filter(t => t.translated)
 }
 
 export function setInformationTemp(state, information) {
@@ -23,7 +23,7 @@ export function setInformationTemp(state, information) {
     information[i].title = information[i]['information']
     delete information[i].information
   }
-  state.informationTemp = information
+  state.informationTemp = information.filter(t => !t.translated)
 }
 
 export function updatePublished(state, data) {

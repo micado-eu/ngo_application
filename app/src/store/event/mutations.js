@@ -15,7 +15,7 @@ export function setEventProd(state, events) {
     events[i].title = events[i]['event']
     delete events[i].event
   }
-  state.eventProd = events
+  state.eventProd = events.filter(t => t.translated)
 }
 
 export function setEventTemp(state, events) {
@@ -23,7 +23,7 @@ export function setEventTemp(state, events) {
     events[i].title = events[i]['event']
     delete events[i].event
   }
-  state.eventTemp = events
+  state.eventTemp = events.filter(t => !t.translated)
 }
 
 export function updatePublished(state, data) {

@@ -8,10 +8,10 @@ export function setFlows (state, flows) {
   state.flows = flows
 }
 export function setFlowsProd (state, flows) {
-  state.flowsProd = flows
+  state.flowsProd = flows.filter(t => t.translated)
 }
 export function setFlowsTemp (state, flows) {
-  state.flowsTemp = flows
+  state.flowsTemp = flows.filter(t => !t.translated)
 }
 export function setGraphs (state, graphs) {
   console.log("setting the graphs")
