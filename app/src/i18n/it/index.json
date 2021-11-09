@@ -76,6 +76,7 @@
         "request_validation": "ha richiesto la validazione per il piano",
         "required_documents": "Documenti richiesti",
         "cost": "Costo",
+        "survey_cso":"Link per il sondaggio esterno delle ETS",
         "start_date": "Data d'inizio",
         "upload_file": "Carica file",
         "validate_intervention": "Valida intervento"

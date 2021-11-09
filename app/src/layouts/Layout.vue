@@ -15,12 +15,19 @@
         />
 
         <q-toolbar-title>{{$t('application_title')}}</q-toolbar-title>
-        <q-btn
+        <!--<q-btn
           v-if="this.$auth.loggedIn() && this.surveyJSON != null"
           no-caps
           style="background-color:white; color:#0B91CE"
           :label="$t('button.survey')"
           @click="generateSurvey"
+        />-->
+        <q-btn
+          no-caps
+          v-if="survey_visible"
+          style="background-color:white; color:#0B91CE"
+          :label="$t('button.survey')"
+          @click="openSurvey"
         />
         <div>Micado v0.1</div>
       </q-toolbar>
@@ -139,9 +146,26 @@
         </div>
       </q-list>
     </q-drawer>
+ <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">{{$t('button.survey')}}</div>
+        </q-card-section>
 
+        <q-separator />
 
-    <q-dialog v-model="alert" full-width>
+        <q-card-section v-if=" settings.filter((set)=>{return set.key == 'survey_cso'}).length >0" style="max-height: 50vh" >
+        <div v-if=" settings.filter((set)=>{return set.key == 'survey_cso'}).length >0" >{{$t('input_labels.survey_cso')}}</div><br>
+        <a v-if=" settings.filter((set)=>{return set.key == 'survey_cso'}).length >0" :href="this.settings.filter((set)=>{return set.key == 'survey_cso'})[0].value">
+        {{this.settings.filter((set)=>{return set.key == 'survey_cso'})[0].value}}<br>
+        </a>
+       </q-card-section>
+
+        
+      </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="alert_int" full-width>
        <q-layout
         view="Lhh lpR fff"
         container
@@ -201,6 +225,39 @@ export default {
     SurveyVue
   },
   computed: {
+    survey_visible(){
+      var surveyType = this.settings.filter((set)=>{
+        return set.key =='internal_survey'
+      })
+      console.log(this.user)
+       if(surveyType.length >0){
+        if(surveyType[0].value =='true'){
+          if(this.$auth.loggedIn() && this.surveyJSON !=null){
+            return true
+          }
+          else{
+            return false
+          }
+          
+        }
+        else{
+          if(this.settings.filter((set)=>{return set.key == 'survey_cso'}).length >0){
+            return true
+          }
+          else{
+            return false
+          }
+        }
+      }
+      else{
+         if(this.settings.filter((set)=>{return set.key == 'survey_cso'}).length >0){
+            return true
+          }
+          else{
+            return false
+          }
+      }
+    },
     isLoggedIn () {
       console.log("called isloggedin")
       return this.$auth.loggedIn()
@@ -213,7 +270,9 @@ export default {
   mixins: [storeMappingMixin({
     getters: {
       user: 'auth/user',
-     surveys: 'survey/surveys'
+      surveys: 'survey/surveys',
+      settings: "settings/settings",
+
       }, actions: {
         fetchNGOSurvey: 'survey/fetchNGOSurvey',
         saveSurveyAnswer: 'survey/saveSurveyAnswer'
@@ -230,6 +289,7 @@ export default {
     return {
       surveyJSON: null,
       alert: false,
+      alert_int:false,
       survey: null,
       leftDrawerOpen: false,
       navs: [
@@ -295,6 +355,24 @@ export default {
     };
   },
   methods: {
+    openSurvey(){
+      var surveyType = this.settings.filter((set)=>{
+        return set.key =='internal_survey'
+      })
+      console.log(surveyType)
+      console.log(typeof(surveyType))
+      if(surveyType.length >0){
+        if(surveyType[0].value =='true'){
+          this.generateSurvey()
+        }
+        else{
+          this.alert = true
+        }
+      }
+      else{
+        this.alert = true
+      }
+    },
     back(){
       this.$router.go(-1)
     },
@@ -312,7 +390,7 @@ export default {
           console.log(result.data)
           this.saveResults(result.data)
         })
-        this.alert = true
+        this.alert_int = true
         return this.survey
       } else {
         return null
