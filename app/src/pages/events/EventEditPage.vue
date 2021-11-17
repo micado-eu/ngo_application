@@ -62,15 +62,14 @@ export default {
       }
       if (eventData.category === undefined) {
         this.deleteCategory(id).then(() => {})
-      } else {
-        this.editEventItem(eventData).then(() => {
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while saving event: ${err}`
-          })
-        })
       }
+      this.editEventItem(eventData).then(() => {
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while saving event: ${err}`
+        })
+      })
       const { topics } = data[0]
       this.deleteTopics(id)
         .then(() => this.setTopics({ id, topics }))
