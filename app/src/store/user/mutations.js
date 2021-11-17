@@ -35,3 +35,6 @@ export function setCSOUserProfile (state, csoUserProfile) {
   let document_types = state.document_type.filter(d => d.id != document_typeId)
   state.document_type = document_types
 }*/
+export function setUserPic(state, userPic){
+  state.userPic = userPic
+}

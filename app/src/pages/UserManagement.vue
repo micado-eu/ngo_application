@@ -313,7 +313,9 @@ export default {
       this.findAttribute(this.new_user, editing_user,'sn', 'familyName')
       this.findAttribute(this.new_user, editing_user,'workEmail', 'email')
       var working_token = this.token.token.access_token
-      this.fetchUserGroup({user:this.new_user.username, token:working_token}).then((userg)=>{
+      console.log("I AM NGO TENANT------------------------------------------------")
+      console.log(this.$envconfig.ngoTenantDomain)
+      this.fetchUserGroup({user:this.new_user.username, token:working_token, tenant:this.$envconfig.ngoTenantDomain}).then((userg)=>{
         console.log(userg)
         if(userg.Resources){
         userg.Resources.forEach((role)=>{

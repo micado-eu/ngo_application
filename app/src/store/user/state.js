@@ -2,5 +2,6 @@ export default {
   //
   user: [],
   csoUserProfile:[],
-  csouser:[]
+  csouser:[],
+  userPic:[]
 }

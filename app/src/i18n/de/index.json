@@ -85,7 +85,8 @@
         "preview_migrant": "Vorschau der Anleitung innerhalb der App für Migrantinnen und Migranten",
         "preview": "Vorschau",
         "click_step": "Für Details auf einen Schritt klicken",
-        "validate_intervention": "Intervention validieren"
+        "validate_intervention": "Intervention validieren",
+        "survey_cso": "Link zur Umfrage für Vertreterinnen und Vertreter Zivilgesellschaftlicher Organisationen"
     },
     "date_selector": {
         "close": "Schließen"
@@ -158,8 +159,8 @@
         "processmanager": "Anleitungen verwalten",
         "configure": "Konfiguration",
         "documenttype": "Dokumententypen verwalten",
-        "validation_description": "Das ist eine längere Beschreibung des Eintrags",
-        "events_description": "Das ist eine längere Beschreibung des Eintrags",
+        "validation_description": "Hier sehen Sie alle Validierungsanträge, die von Migrant*innen an Sie als zivilgesellschaftliche Organisation gerichtet wurden; unterteilt nach Nutzer*in, Plan und Maßnahme. Sie können die Anträge der Migrant*innen validieren und bei Bedarf Dokumente zur Bestätigung der Validierung anhängen.",
+        "events_description": "Unter Veranstaltungen können Sie Einträge zu Veranstaltungen und Kursen erstellen und verwalten, einschließlich Tags nach Thema, Kategorie und Benutzertyp.",
         "cso_desc": "Accounts der ZGOs verwalten",
         "setting_desc": "Einstellungen der MICADO-Anwendung ändern",
         "process_desc": "Anleitungen bearbeiten",
@@ -167,10 +168,10 @@
         "information_centre_desc": "Informationen bearbeiten",
         "validation_requests": "Validierungsanfragen überprüfen",
         "home": "Home",
-        "setting_description": "Das ist eine längere Beschreibung des Eintrags",
-        "information_centre_description": "Das ist eine längere Beschreibung des Eintrags",
-        "process_description": "Das ist eine längere Beschreibung des Eintrags",
-        "cso_description": "Das ist eine längere Beschreibung des Eintrags"
+        "setting_description": "In den Einstellungen können Sie Ihre persönlichen Profileinstellungen bearbeiten.",
+        "information_centre_description": "Nützliche Informationen sind allgemeine Informationsblätter. Sie enthalten leicht verständliche Informationen zu einem bestimmten Thema.  Einmal veröffentlicht, sind sie für alle Besucher*innen von Micado für Migrant*innen zugänglich. Zum Beispiel: Wie funktioniert das Gesundheitssystem in dieser Stadt? Sie können sowohl von Ihnen und anderen Zivilgesellschaftlichen Organisationen als auch von Behörden für Migrant*innen verfasst und veröffentlicht werden.",
+        "process_description": "Schritt-für-Schritt-Anleitungen führen Migrant*innen durch komplizierte Verfahren. Auf diese Weise können Sie Migrant*innen leicht verständliche, detaillierte Anweisungen für komplexe behördliche Verfahren geben. Als zivilgesellschaftliche Organisation können Sie alle Verfahren mit hilfreichen Tipps kommentieren. Einmal veröffentlicht, sind sie für alle Besucher*innen auf Micado für Migrant*innen zugänglich. Schritt-für-Schritt-Anleitungen führen in der Regel dazu, ein bestimmtes Dokument zu erhalten oder zu beantragen. Zum Beispiel: Wie beantrage ich eine Aufenthaltsgenehmigung? Wie meldet man ein Kind in der Grundschule an?",
+        "cso_description": "Hier können Sie andere Nutzerkonten Ihrer Zivilgesellschaftlichen Organisation verwalten."
     },
     "button": {
         "update_link": "Link aktualisieren",
