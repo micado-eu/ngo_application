@@ -1,11 +1,11 @@
 {
     "menu": {
-        "cso_description": "Esta es una descripción larga del objeto",
-        "events_description": "Esta es una descripción larga del objeto",
-        "information_centre_description": "Esta es una descripción larga del objeto",
-        "process_description": "Esta es una descripción larga del objeto",
-        "setting_description": "Esta es una descripción larga del objeto",
-        "validation_description": "Esta es una descripción larga del objeto",
+        "cso_description": "Aquí puede gestionar otras cuentas de su organización ",
+        "events_description": "Aquí puede gestionar y editar información sobre cursos o eventos próximos, incluyendo etiquetas por tema, categoría y tipo de usario. Puede añadir su fecha,  coste y localización. Una vez publicados son públicos y visibles para todos los migrantes hasta  la fecha de fin del evento.",
+        "information_centre_description": "Proporciona información básica sobre un tema. Por ejemplo ¿Cómo funciona el sistema sanitario? o ¿Qué son los CEPIS? Pueden ser publicadas para migrantes tanto por las autoridades públicas como por CSOs.",
+        "process_description": "Las guías paso a paso orientan a los migrantes sobre cómo llevar a cabo procedimientos u obtener documentos. Facilitan instrucciones más sencillas y paso a paso, de procedimientos que de otra forma resultan complejos. Como parte de una organización implicada, usted puede comentar un procedimiento facilitando información o consejos útiles. Una vez publicados, son visibles y públicos en la página de MICADO para migrantes",
+        "setting_description": "En ajustes puede gestionar su cuenta personal",
+        "validation_description": "Aquí puede validar o certificar tareas o cursos realizados por los migrantes  y adjuntar documentos",
         "home": "Inicio",
         "home_desc": "",
         "title": "Mis herramientas",
