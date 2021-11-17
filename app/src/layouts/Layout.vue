@@ -66,7 +66,8 @@
               <q-separator color="white"/>
     </div>
       <div class="column flex-center q-gutter-y-md" style="padding-bottom:20px;padding-top:20px">
-        <q-btn
+         <UserButton/>
+       <!-- <q-btn
           round
           class=""
           v-if="isLoggedIn"
@@ -74,8 +75,9 @@
           <q-avatar size="42px">
             <img src="https://cdn.quasar.dev/img/avatar2.jpg">
           </q-avatar>
-        </q-btn>
+        </q-btn>-->
       </div>
+     
 
       <q-item
         clickable
@@ -216,13 +218,14 @@
 //import AuthMenu from "./auth/AuthMenu";
 import storeMappingMixin from '../mixin/storeMappingMixin'
 import * as SurveyVue from 'survey-vue'
+import UserButton from 'components/UserButton'
 
 
 export default {
   name: "Layout",
 
   components: {
-    SurveyVue
+    SurveyVue,UserButton
   },
   computed: {
     survey_visible(){
@@ -275,7 +278,9 @@ export default {
 
       }, actions: {
         fetchNGOSurvey: 'survey/fetchNGOSurvey',
-        saveSurveyAnswer: 'survey/saveSurveyAnswer'
+        saveSurveyAnswer: 'survey/saveSurveyAnswer',
+        getUserPic: 'user/getUserPic'
+
       }
   })],
     mounted(){
@@ -417,6 +422,11 @@ export default {
     }
   },
     created () {
+      this.getUserPic(this.user.umid).then((user_found)=>{
+        console.log("I AM THE PICTURE")
+        console.log(user_found)
+      })
+  
     this.fetchNGOSurvey(this.user.umid).then((sr) => {
       console.log("I AM THE SUrVEY")
       console.log(sr)

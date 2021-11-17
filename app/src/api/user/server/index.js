@@ -68,9 +68,9 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler);
   },
-  fetchUserGroup(user, token){
+  fetchUserGroup(user, token, tenant){
     return axiosInstance
-    .get('/backend/1.0.0/wso2UserRoles?user=' +user + '&tenant=ngo.micado.eu&authType=Bearer&authToken=' + token)
+    .get('/backend/1.0.0/wso2UserRoles?user=' +user + '&tenant=' + tenant + '&authType=Bearer&authToken=' + token)
     .then((response) => response.data)
     .catch(error_handler)
   },
@@ -87,5 +87,11 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  fetchUserPic(id){
+    return axiosInstance
+    .get('/backend/1.0.0/user-pictures?filter[where][and][0][userId]=' + id)
+    .then((response) => response.data)
+    .catch(error_handler)
+  }
 
 }

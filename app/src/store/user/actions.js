@@ -93,7 +93,7 @@ export function fetchUserGroup (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(payload)
   return client
-    .fetchUserGroup(payload.user, payload.token)
+    .fetchUserGroup(payload.user, payload.token, payload.tenant)
 }
 export function fetchCSOUser (state, data) {
   console.log(data)
@@ -111,6 +111,15 @@ export function editUserDataByAdmin (state, payload) {
     .editUserDataByAdmin(payload.user,  payload.tenant, payload.token)
 }
 
+
+export function getUserPic(state, userid){
+  return client.fetchUserPic(userid).then((ret)=>{
+    console.log("I AM PICTURE RETURNED----------------------------------------------")
+    console.log(ret)
+    state.commit('setUserPic', ret)
+    return ret
+  })
+}
 /*export function deleteDocument({commit}, document_type) {
 
   commit(delete_document_type, document_type.id)
