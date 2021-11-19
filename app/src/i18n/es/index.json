@@ -99,7 +99,8 @@
         "location": "Localización",
         "event_free": "El evento es gratuito",
         "event_cost": "Coste del evento",
-        "upload_file": "Subir archivo"
+        "upload_file": "Subir archivo",
+        "survey_cso":"Enlace a la encuesta externa para OSC"
     },
     "information_centre": {
         "list_title": "Centro de Información",
@@ -125,9 +126,9 @@
         "edit": "Editar",
         "no": "No",
         "yes": "Yes",
-        "publish_warning": "Aviso: Publicar este contenido lo hará visible en la app de migrantes y no podrá cambiarse sin despublicarlo. ¿Proceder?",
+        "publish_warning": "Advertencia: Publicar el proceso lo hará visible en la app de migrantes y no será posible realizar cambios antes de despublicar. ¿Proceder?",
         "published": "Publicado",
-        "unpublish_warning": "Aviso: Despublicar este contenido marcará las traducciones existentes como no traducidas y puede ser necesario volver a traducir. ¿Proceder?",
+        "unpublish_warning": "Advertencia: Despublicar el proceso lo ocultará en la app de migrantes. ¿Proceder?",
         "category": "Categoría",
         "topics": "Temas",
         "user_types": "Tipos de Usuarios",
