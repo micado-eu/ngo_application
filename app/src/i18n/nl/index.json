@@ -49,17 +49,17 @@
         "information_centre_desc": "Beheer de informatie",
         "validation_requests": "Bekijk de vragen tot goedkeuring",
         "process_desc": "Wijzig stappenplan",
-        "validation_description": "Dit is een langere beschrijving van het item",
-        "events_description": "Dit is een langere beschrijving van het item",
+        "validation_description": "Hier zie je de aanvragen tot goedkeuring van een taak van nieuwkomers. De aanvragen zijn zichtbaar per gebruiker, per begeleidingsplan en per taak. Je kan dit goedkeuren en eventueel ook documenten toevoegen om de validatie te bevestigen.",
+        "events_description": "Evenementen is een type informatiefiche waar je extra informatie zoals datum en locatie kan weergeven. Je kan ook een label toekennen per thema of category of gebruikerstype.",
         "home": "Home",
-        "setting_description": "Dit is een langere beschrijving van het item",
-        "information_centre_description": "Dit is een langere beschrijving van het item",
-        "process_description": "Dit is een langere beschrijving van het item",
-        "cso_description": "Dit is een langere beschrijving van het item"
+        "setting_description": "In de instellingen kan je je persoonlijke profiel beheren.",
+        "information_centre_description": "Informatiefiches geven algemene informatie. Ze zijn bedoeld om toegankelijke, begrijpelijke info te geven over een bepaald onderwerp. Na publicatie is dewe infofiche zichtbaar voor alle bezoekers van Micado voor nieuwkomers. Bijvoorbeeld: hoe werkt gezondheidszorg in deze stad? De infofiches kunnen gemaakt worden zowel door jouw organisatie als alle andere organisaties met toegang tot Micado, of door de publieke administratie.",
+        "process_description": "Stappenplannen begeleiden de nieuwkomers doorheen moeilijke procedures. De publieke adminsatratie kan dit gebruiken om toegankelijke, begrijpelijke instructies te geven voor complexe procedures. Als organisatie kan je reacties bij deze procedures geven, bijveerbeeld tips om de nieuwkomers te helpen. Na publicatie is deze reactie of comment zichtbaar voor alle bezoekers van Micado voor nieuwkomers. De stappenplannen leiden in de meeste gevallen tot het aanvragen van een bepaald document. Bijvoorbeeld: hoe vraag ik een verblijfskaart aan? Hoe kan ik mijn kind inschrijven voor de school?",
+        "cso_description": "Hier kan je de gebruikersaccount voor jouw organisatie beheren."
     },
     "button": {
         "change_pass": "Wijzig je wachtwoord",
-        "save": "Opslaan",
+        "save": "Bewaar",
         "cancel": "Annuleren",
         "edit": "Wijzigen",
         "add_user": "Gebruiker toevoegen",
@@ -100,12 +100,13 @@
         "comments": "Reacties",
         "cost": "Kost",
         "emitter": "Zender",
-        "no_available_transl": "Niet beschikbare vertalingen",
+        "no_available_transl": "Geen beschikbare vertalingen",
         "available_transl": "Beschikbare vertalingen",
         "loading": "Aan het laden...",
         "preview_migrant": "Voorbeeld van het stappenplan op de app voor migranten",
         "preview": "Voorbeeld",
-        "click_step": "Klik op een bovenstaande stap voor details"
+        "click_step": "Klik op een stap hierboven voor details",
+        "survey_cso": "Link naar de externe vragenlijst voor organisaties"
     },
     "new_pa_user": {
         "usermgmt": "Beheer gebruiker",
