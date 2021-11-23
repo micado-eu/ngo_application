@@ -286,7 +286,7 @@
           :label="$t('button.save')"
           @click="callSaveFn()"
           class="edit-element-button"
-          :disable="published || (translatable && (originalTranslationState === 1))"
+          :disable="published"
           :loading="saving"
         />
       </div>
