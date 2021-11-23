@@ -79,7 +79,8 @@
         "survey_cso":"Link per il sondaggio esterno delle ETS",
         "start_date": "Data d'inizio",
         "upload_file": "Carica file",
-        "validate_intervention": "Valida intervento"
+        "validate_intervention": "Valida intervento",
+        "privacy_policy": "Informativa sulla privacy"
     },
     "menu": {
         "title": "Benvenuto",
