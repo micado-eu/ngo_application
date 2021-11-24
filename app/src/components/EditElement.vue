@@ -641,11 +641,11 @@ export default {
           // Expects ISO String, automatically converts to user's locale
           const startDate = new Date(this.elem.startDate)
           // Format used by QDate and QTime
-          this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()}`
-          this.startTime = `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+          this.startDate = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`
+          this.startTime = `${startDate.getHours().toLocaleString(this.$defaultLang, { minimumIntegerDigits: 2 })}:${startDate.getMinutes().toLocaleString(this.$defaultLang, { minimumIntegerDigits: 2 })}`
           const finishDate = new Date(this.elem.endDate)
-          this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
-          this.finishTime = `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+          this.finishDate = `${finishDate.getFullYear()}-${finishDate.getMonth() + 1}-${finishDate.getDate()}`
+          this.finishTime = `${finishDate.getHours().toLocaleString(this.$defaultLang, { minimumIntegerDigits: 2 })}:${finishDate.getMinutes().toLocaleString(this.$defaultLang, { minimumIntegerDigits: 2 })}`
           this.location = this.elem.location
           if (this.elem.cost) {
             this.cost = this.elem.cost
