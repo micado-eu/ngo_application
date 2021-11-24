@@ -108,7 +108,8 @@
     "available_transl":"Available translations",
     "no_available_transl":"No available translations",
     "request_validation":"has requested a validation for his plan",
-    "intervention":"Intervention"
+    "intervention":"Intervention",
+    "privacy_policy": "Privacy policy"
   },
   "link_modal": {
     "text": "Text",

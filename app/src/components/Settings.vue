@@ -79,6 +79,10 @@
       <q-btn class="button-edit" unelevated no-caps rounded text-color="black" :label="$t('button.change_pass')" @click="change_pass=true" />
         </div>
       </q-card>
+      <div class="q-pa-md header" style="padding-top:40px">{{$t('input_labels.privacy_policy')}}</div>
+      <q-card>
+        <Privacy/>
+      </q-card>
           <q-dialog v-model="change_pass">
 <q-card class="q-pa-xl" style="width: 700px; max-width: 80vw;">
 
@@ -131,8 +135,12 @@
 <script>
 import editEntityMixin from '../mixin/editEntityMixin'
 import storeMappingMixin from '../mixin/storeMappingMixin'
+import Privacy from 'pages/Privacy'
 export default {
   // name: 'PageName',
+  components:{
+    Privacy
+  },
     mixins: [
     editEntityMixin,
     storeMappingMixin({

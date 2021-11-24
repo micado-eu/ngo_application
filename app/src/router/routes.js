@@ -8,13 +8,15 @@ import Settings from '../components/Settings.vue'
 import MigrantManager from '../components/MigrantManager'
 import ProcessList from '../pages/ProcessList.vue'
 import UserManagement from '../pages/UserManagement'
+import Privacy from '../pages/Privacy'
+
 
 const routes = [
   {
     path: '/',
     component: () => import('layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { path: '', name:"home", component: () => import('pages/Index.vue') },
       //       { path: '/documents', component: () => import('pages/Documents.vue') },
       { path: '/premises', component: () => import('pages/Premise.vue') },
       { path: '/interventions', component: () => import('pages/Interventions.vue') },
@@ -26,6 +28,7 @@ const routes = [
       { path: '/events/new', component: EventNewPage },
       { path: '/events/:id/edit/', component: EventEditPage },
       { path: '/settings', component: Settings },
+      { path: '/privacy', component: Privacy },
       { path: '/migrant', component: MigrantManager },
       { path: 'usermgmt', component: UserManagement },
       { path: '/guided_process_editor', component: ProcessList },

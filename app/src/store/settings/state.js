@@ -1,3 +1,4 @@
 export default {
-  settings: []
+  settings: [],
+  mixed_settings_migrant:[]
 }
