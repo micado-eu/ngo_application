@@ -992,6 +992,9 @@ $btn_secondary: #cdd0d2;
   font-family: "Nunito Sans";
   font-weight: 600;
   font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .general-filter-title {
   font-family: "Nunito Sans";
