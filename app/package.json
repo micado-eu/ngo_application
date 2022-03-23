@@ -11,7 +11,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.9.5",
+    "@quasar/extras": "^1.12.3",
     "@riophae/vue-treeselect": "^0.4.0",
     "@uppy/core": "^1.6.0",
     "@uppy/dashboard": "^1.5.0",
@@ -25,7 +25,7 @@
     "jsonapi-vuex": "^3.1.1",
     "lodash": "^4.17.21",
     "performant-array-to-tree": "^1.8.2",
-    "quasar": "^1.14.0",
+    "quasar": "^1.17.1",
     "showdown": "^1.9.1",
     "survey-vue": "^1.8.47",
     "tiptap": "^1.27.1",
