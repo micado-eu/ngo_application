@@ -9,6 +9,10 @@
       :delete_fn="deleteItem"
       icon_name="document"
       add_label="button.add_information"
+      import_label="button.import_information"
+      :import_fn="importInfo"
+      :export_fn="exportData"
+      header_img="img:statics/Ebene_2.svg"
       title="information_centre.list_title"
       categories_enabled
       categories_url="/information/categories"
@@ -51,7 +55,9 @@ export default {
       'saveInformationTranslationProd',
       'editInformationItemTranslation',
       'updatePublished',
-      'deleteProdTranslations'
+      'deleteProdTranslations',
+      'importData',
+      'exportData'
     ]),
     ...mapActions('information_category', ['fetchInformationCategory']),
     getEditRoute(id) {
@@ -68,7 +74,17 @@ export default {
             message: `Error while deleting information: ${err}`
           })
         })
-    },    
+    },
+    importInfo(file) {
+      this.importData(file).then(() => 
+          this.updateContent()
+      ).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while importing information: ${err}`
+          })
+        })
+    },
     onPublish(id) {
       return Promise.all([
         this.saveInformationTranslationProd(id).catch((err) => {
@@ -89,7 +105,6 @@ export default {
       let infoElem = this.informationElemById(id)
       let promises = []
       const translation = Object.assign({}, infoElem.translations.filter(t => !t.translated)[0])
-      translation.translationState = 0
       promises.push(
         this.editInformationItemTranslation(translation).catch((err) => {
           this.$q.notify({

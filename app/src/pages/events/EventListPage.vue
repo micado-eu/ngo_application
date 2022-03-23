@@ -9,6 +9,10 @@
       :delete_fn="deleteItem"
       icon_name="document"
       add_label="button.add_event"
+      import_label="button.import_events"
+      :import_fn="importEvent"
+      :export_fn="exportData"
+      header_img="img:statics/events_header.svg"
       title="events.list_title"
       categories_enabled
       categories_url="/events/categories"
@@ -52,7 +56,9 @@ export default {
       'saveEventTranslationProd',
       'updatePublished',
       'editEventItemTranslation',
-      'deleteProdTranslations'
+      'deleteProdTranslations',
+      'importData',
+      'exportData'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
     getEditRoute (id) {
@@ -67,6 +73,16 @@ export default {
           this.$q.notify({
             type: 'negative',
             message: `Error while deleting event: ${err}`
+          })
+        })
+    },
+    importEvent(file) {
+      this.importData(file).then(() => 
+          this.updateContent()
+      ).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while importing event: ${err}`
           })
         })
     },
@@ -130,7 +146,6 @@ export default {
       let eventElem = this.eventElemById(id)
       let promises = []
       const translation = Object.assign({}, eventElem.translations.filter(t => !t.translated)[0])
-      translation.translationState = 0
       promises.push(
         this.editEventItemTranslation(translation).catch((err) => {
           this.$q.notify({

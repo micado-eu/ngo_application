@@ -412,7 +412,9 @@ export default {
 <style lang="scss" scoped>
 .editor_content {
   font-family: "Nunito Sans";
-  font-size: 13pt;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 6px 12px;
   background-color: $grey-3;
   border: 1px solid $grey-5;
   border-radius: 4px;

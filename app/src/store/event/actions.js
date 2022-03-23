@@ -111,3 +111,11 @@ export function saveEventTranslationProd(state, id) {
 export function deleteCategory(state, data) {
   return client.deleteCategory(data)
 }
+
+export function importData(state, file) {
+  return client.import(file)
+}
+
+export function exportData(state, id) {
+  return client.export(id)
+}
