@@ -29,7 +29,9 @@
     @click="selected_info = nav.label">
   <div style="text-align:center">
    <q-icon :name="nav.icon" class="top-icon"/>
-   <p>{{$t(nav.label)}}</p>
+             <p class="label_text">
+            {{ $t(nav.label) }}
+          </p>
   </div>
   <HelpDialog 
   :nav="nav"
@@ -124,7 +126,12 @@ border-radius: 10px;
 .top-icon{
   width:54px;
   height:54px;
-  margin-top:100px;
+  margin-top:90px;
+}
+.label_text{
+font-size: 16px;
+font-weight: 700;
+color: #0F3A5D ;
 }
 
 </style>

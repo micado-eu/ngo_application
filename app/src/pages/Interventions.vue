@@ -1,6 +1,18 @@
 <template>
-  <q-page padding>
-    <div class="" style="text-align:center"  >
+  <div >
+    <div class="image" style="text-align:center;"  >
+       <div
+            class=" top-div"
+            style=""
+          >
+            {{ $t('menu.interventions') }}
+            <q-icon
+              name="img:statics/Interventions.svg"
+              class="top-icon"
+            />
+          </div>
+        </div>
+        <hr style="border: 1px solid #0F3A5D">
       <q-input
         style="width:80%; display:inline-block;"
         dense
@@ -15,7 +27,6 @@
           </q-avatar>
         </template>
       </q-input>
-    </div>
     <div>
       <q-list>
         <Intervention
@@ -73,7 +84,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </q-page>
+  </div>
 </template>
 
 <script> 
@@ -252,3 +263,21 @@ export default {
   }
 }
 </script>
+<style scoped>
+.top-icon{
+width:360px;
+  height:100%
+}
+.top-div{
+  font-style: normal;
+  padding-top:15px;
+  padding-left:30px;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 54px;
+  color:#0F3A5D; 
+}
+.image{
+  background-image: url("../statics/BG Pattern.svg");
+}
+</style>

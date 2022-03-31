@@ -1,5 +1,21 @@
   <template>
-  <div class="container">
+  <div class="">
+     <div
+          class=" q-pa-md image "
+          style="text-align:center"
+        >
+          <div
+            class=" top-div"
+            style=""
+          >
+            {{ $t('menu.process') }}
+            <q-icon
+              name="img:statics/Ebene_2.svg"
+              class="top-icon"
+            />
+          </div>
+        </div>
+        <hr style="border: 1px solid #0F3A5D">
     <q-card>
       <q-card-section :hidden="hideForm">
             <q-input
@@ -77,7 +93,7 @@
     </div>
 
     <div style="text-align:center;">
-      <q-list style="display:inline-block;width:750px">
+      <q-list style="display:inline-block">
         <Process
           v-for="process in filteredProcesses"
           ref="process"
@@ -453,16 +469,20 @@ export default {
   padding-bottom: 50px;
   padding-left: 80px;
 }
+.top-icon{
+width:360px;
+  height:100%
+}
+.top-div{
+  font-style: normal;
+  padding-top:15px;
+  padding-left:30px;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 54px;
+  color:#0F3A5D; 
+}
+.image{
+  background-image: url("../statics/BG Pattern.svg");
+}
 </style>
-© 2020 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About

@@ -35,7 +35,7 @@
             no-caps
             :data-cy="'commentoprocess'.concat(Link)"
             style="width:70px:border-radius:2px"
-            color="info"
+            color="accent"
             label="Comment"
             :disable="hideAdd"
             @click.stop="hide();comment($event)"

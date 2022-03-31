@@ -33,5 +33,13 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+.main_body{
+  font-size: 16px;
+}
+.text-h6{
+  font-weight: 700;
+  font-size: 20px;
+  color: #0F3A5D;
+}
 </style>

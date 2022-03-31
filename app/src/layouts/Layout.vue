@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header
+    <!--<q-header
       elevated
       class="bg-accent"
     >
@@ -21,7 +21,7 @@
           style="background-color:white; color:#0B91CE"
           :label="$t('button.survey')"
           @click="generateSurvey"
-        />-->
+        />
         <q-btn
           no-caps
           v-if="survey_visible"
@@ -31,7 +31,7 @@
         />
         <div>Micado v0.1</div>
       </q-toolbar>
-    </q-header>
+    </q-header>-->
 
     <q-footer>
       <q-tabs>
@@ -46,14 +46,41 @@
     </q-footer>
 
     <q-drawer
-      v-model="leftDrawerOpen"
+      :mini="leftDrawerOpen"
       show-if-above
       :breakpoint="767"
       bordered
       content-class="bg-accent text-white"
     >
-    <div style="text-align:center">
-          <q-btn
+    <q-item class="shadow-box shadow-10">
+        <q-item-section avatar>
+          <q-icon
+            name="menu"
+            @click="leftDrawerOpen = !leftDrawerOpen"
+          />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="app_label">
+            {{ $t("application_title") }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+    <div  v-if="isLoggedIn" class="column flex-center q-gutter-y-md">
+      <q-item clickable
+         
+          @click="back"
+          class="go_back">
+         <q-item-section avatar>
+            <q-icon
+              :name="'img:statics/icons/Icon - go back.svg'"
+            />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t('button.go_back') }}</q-item-label>
+          </q-item-section>
+      </q-item>
+
+          <!--<q-btn
           class="go_back"
             :label="$t('button.go_back')"
             :icon="'img:statics/icons/Icon - go back.svg'"
@@ -62,9 +89,10 @@
           v-if="isLoggedIn"
           @click="back"
         >
-              </q-btn>
-              <q-separator color="white"/>
+              </q-btn>-->
     </div>
+      <hr  v-if="isLoggedIn" class="separator">
+
       <div class="column flex-center q-gutter-y-md" style="padding-bottom:20px;padding-top:20px">
          <UserButton/>
        <!-- <q-btn
@@ -77,7 +105,8 @@
           </q-avatar>
         </q-btn>-->
       </div>
-     
+           <hr class="separator">
+
 
       <q-item
         clickable
@@ -92,7 +121,6 @@
           <q-item-label>{{ $t('menu.login') }}</q-item-label>
         </q-item-section>
       </q-item>
-              <q-separator color="white"/>
 
       <q-item
         clickable
@@ -106,8 +134,18 @@
           <q-item-label>{{ $t('menu.logout') }}</q-item-label>
         </q-item-section>
       </q-item>
-              <q-separator color="white"/>
-
+           <hr class="separator">
+      <div style="text-align:center">
+        <q-btn
+          no-caps
+          :icon="'img:statics/icons/Icon - Survey.svg'"
+          v-if="survey_visible"
+          style="background-color:white; color:#0B91CE; width:90%"
+          :label="$t('button.survey')"
+          @click="openSurvey"
+        />
+      </div>
+      <hr class="separator">
       <q-list
         dark
         v-if="isLoggedIn"
@@ -135,16 +173,29 @@
             />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ $t( nav.label) }}</q-item-label>
+            <q-item-label style="font-weight:500">{{ $t( nav.label) }}</q-item-label>
             <q-item-label caption>{{ $t(nav.description) }}</q-item-label>
           </q-item-section>
         </q-item>
         <br />
         <div class="row justify-center full-height full-width text-center">
           <img
+          style="max-width:161px"
             alt="Powered by Micado"
-            src="~assets/Powered by micado - white.svg"
+            src="~assets/MICADO Logo - powered by.svg"
           />
+        </div>
+      </q-list>
+      <q-list
+        dark
+        v-else
+      >
+        <div class="row justify-center full-height full-width text-center">
+          <img
+            style="max-width:161px"
+            alt="Powered by Micado"
+            src="~assets/MICADO Logo - powered by.svg"
+          >
         </div>
       </q-list>
     </q-drawer>
@@ -460,6 +511,9 @@ export default {
   border: 1px solid #0f3a5d;
   border-radius: 50px;
   margin-top:20px;
-  margin-bottom:20px
+}
+.separator{
+  margin-left: 0px;
+  margin-right: 0px;
 }
 </style>

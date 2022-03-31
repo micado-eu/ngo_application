@@ -1,8 +1,21 @@
 <template>
-  <div class="q-pa-md">
+  <div class="">
+    <div class="image" style="text-align:center;" >
+       <div
+            class=" top-div"
+            style=""
+          >
+            {{ $t('menu.CSO_user') }}
+            <q-icon
+              name="img:statics/Cso_user.svg"
+              class="top-icon"
+            />
+          </div>
+        </div>
+        <hr style="border: 1px solid #0F3A5D">
     <div class="row">
-      <div class="col-6">
-        <h5>{{$t('new_pa_user.usermgmt')}}</h5>
+      <div class="col-6 ">
+        <h5 class="q-pa-md">{{$t('new_pa_user.usermgmt')}}</h5>
       </div>
       <div class="col-6 div-1">
         <q-btn
@@ -224,6 +237,7 @@
          </form>
       </q-card-section>
     </q-card>
+  <div class="q-pa-md">
     <q-list
       bordered
       separator
@@ -235,6 +249,7 @@
         @edit="editPAUser"
       />
     </q-list>
+  </div>
   </div>
 </template>
 
@@ -483,5 +498,21 @@ h5 {
 }
 .add-button {
   width: 200px;
+}
+.top-icon{
+width:360px;
+  height:100%
+}
+.top-div{
+  font-style: normal;
+  padding-top:15px;
+  padding-left:30px;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 54px;
+  color:#0F3A5D; 
+}
+.image{
+  background-image: url("../statics/BG Pattern.svg");
 }
 </style>
