@@ -13,6 +13,7 @@
           </div>
         </div>
         <hr style="border: 1px solid #0F3A5D">
+        <div style="text-align:center">
       <q-input
         style="width:80%; display:inline-block;"
         dense
@@ -27,7 +28,8 @@
           </q-avatar>
         </template>
       </q-input>
-    <div>
+        </div>
+    <div class="q-pa-md">
       <q-list>
         <Intervention
           v-for="interv in searchResults"
@@ -70,13 +72,15 @@
         >
           <q-btn
           :data-cy="'cancel'"
-            label="Cancel"
+            :label="$t('button.cancel')"
             color="accent"
+            no-caps
             v-close-popup
           />
           <q-btn
-            label="Add document"
+            :label="$t('button.add_document')"
             color="accent"
+            no-caps
             :data-cy="'validatetask'"
             @click="validateTask()"
             v-close-popup
@@ -242,6 +246,7 @@ export default {
   },
   created () {
     this.fetchInterventions({ lang: this.activeLanguage, ngoTenantId: this.ngo_user.tenant_id }).then(() => {
+      console.log("I am the interventions fetched")
       console.log(this.interventions)
       let userList = []
       this.interventions.forEach(a_int => {

@@ -1,18 +1,14 @@
 <template>
-<div>
-  <q-item clickable @click="selectGraph()" style="padding-top:0px; padding-bottom:0px">
-    <div>
-      <div>
+  <q-item class="width" clickable @click="selectGraph()" style="padding-top:0px; padding-bottom:0px">
         <div
           class=" q-pa-md col"
-          style="width:750px; padding-bottom:0px; padding-left:0px"
+          style=" padding-bottom:0px; padding-left:0px"
         >
-          <div style="font-size:20px; text-align:left; font-size:18px">{{ this.Title }}</div>
-        </div>
+          <div style="font-size:20px; text-align:left; font-weight:600">{{ this.Title }}</div>
 
-      </div>
      
-        <div class="row pad">
+        <div class="row pad width">
+          <div class="col-6">
             <q-img
                 class="image"
                 v-for="tag in Topics"
@@ -26,8 +22,9 @@
                 :key="'user'.concat(tag.idUserTypes)"
               >
               </q-img>  
+          </div>
               <div
-          class="q-pa-md q-gutter-sm  col"
+          class="q-pa-md q-gutter-sm  col-6"
           style="padding-top:0px; padding-bottom:5px; text-align:right"
         >
           <q-btn
@@ -44,11 +41,9 @@
             </div>
         
       
-      <hr style="margin:0px">
+      <hr style="margin:0px; margin-top:10px">
     </div>
-
-  </q-item>
- <q-dialog v-model="alert" full-width >
+<q-dialog v-model="alert" full-width >
        <q-layout
         view="Lhh lpR fff"
         container
@@ -82,7 +77,8 @@
         </q-page-container>
       </q-layout>
     </q-dialog>
-  </div>
+  </q-item>
+ 
 </template>
 
 <script>
@@ -154,5 +150,8 @@ export default {
   height: 25px; 
   max-width: 25px;
   margin-right:5px
+}
+.width{
+  width: 100%;
 }
 </style>

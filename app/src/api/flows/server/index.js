@@ -142,7 +142,7 @@ export default {
   },
   fetchGraph (id, userLang) {
     return axiosInstance
-      .get('backend/1.0.0/mermaid?processid=' + id + '&lang=' + userLang)
+      .get('backend/1.0.0/mermaid_pa?processid=' + id + '&lang=' + userLang)
       .then((response) => {
         return response.data
       })

@@ -216,7 +216,7 @@
         <hr id="hr">
         <q-btn
           no-caps
-          class="delete-button"
+          class="go_back"
           :data-cy="'canceldoc'"
           unelevated
           rounded
@@ -231,7 +231,7 @@
           unelevated
           rounded
           :label="$t('button.save')"
-          class="button"
+          style="width:130px; border-radius:5px"
           type="submit"
         />
          </form>
@@ -498,6 +498,15 @@ h5 {
 }
 .add-button {
   width: 200px;
+}
+.go_back {
+  background-color: white;
+  color: #000000;
+  border: 1px solid #C71F40;
+  border-radius: 5px;
+  margin-top: 0px;
+  margin-right: 10px;
+  font-weight: 600;
 }
 .top-icon{
 width:360px;

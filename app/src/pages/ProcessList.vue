@@ -16,7 +16,7 @@
           </div>
         </div>
         <hr style="border: 1px solid #0F3A5D">
-    <q-card>
+    <q-card class="q-ma-lg">
       <q-card-section :hidden="hideForm">
             <q-input
               v-model="int_comment_shell.translations.filter(
@@ -24,7 +24,7 @@
               )[0].comment"
               filled
               type="textarea"
-              label="Comment"
+              :label="$t('input_labels.comments')"
               :readonly="!(
               (int_comment_shell.translations.filter((top) => top.translated == false)[0].translationState == 0)
               )"
@@ -40,32 +40,36 @@
               color="accent"
               @input="makeTranslatable($event)"
             />
+            {{$t('input_labels.is_published')}}
           </div>
         <q-btn
           color="accent"
           :data-cy="'savecomment'"
           unelevated
           rounded
-          style="width:70px;border-radius:2px"
-          label="Save"
+          no-caps
+          style="width:130px;border-radius:5px"
+          :label="$t('button.save')"
           @click="saveComment(int_comment_shell)"
         />
         <q-btn
-          class="button"
+          class="go_back"
           :data-cy="'cancelcomment'"
           unelevated
           rounded
-          style="width:70px;border-radius:2px"
-          label="Cancel"
+          no-caps
+          style="border-radius:5px; margin-top:0px; margin-left:10px"
+          :label="$t('button.cancel')"
           @click="cancelComment()"
         />
         <q-btn
-          class="button"
+          class="go_back"
           :data-cy="'deletecomment'"
           unelevated
           rounded
-          style="width:70px;border-radius:2px"
-          label="Delete"
+          no-caps
+          style="border-radius:5px;margin-top:0px; margin-left:10px"
+          :label="$t('lists.delete')"
           @click="deleteComment(int_comment_shell)"
         />
       </q-card-section>
@@ -81,7 +85,7 @@
           items-center
           filled
           v-model="search"
-          label="Search"
+          :label="$t('input_labels.search')"
         >
           <template v-slot:append>
             <q-avatar>
@@ -92,8 +96,8 @@
       </div>
     </div>
 
-    <div style="text-align:center;">
-      <q-list style="display:inline-block">
+    <div class="justify-content center">
+      <q-list class="q-pa-lg">
         <Process
           v-for="process in filteredProcesses"
           ref="process"
@@ -484,5 +488,12 @@ width:360px;
 }
 .image{
   background-image: url("../statics/BG Pattern.svg");
+}
+.go_back {
+  background-color: white;
+  color: #000000;
+  border: 1px solid #C71F40;
+  border-radius: 5px;
+  font-weight: 600;
 }
 </style>
