@@ -4,14 +4,14 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchInformation() {
     return axiosInstance
-      .get('/backend/1.0.0/information?filter[include][0][relation]=translations')
+      .get('/information?filter[include][0][relation]=translations')
       .then(
         (response) => response.data
       ).catch(error_handler)
   },
   fetchInformationProd(defaultLang, userLang) {
     return axiosInstance
-      .get(`/backend/1.0.0/production-information?defaultlang=${defaultLang}&currentlang=${userLang}`, {
+      .get(`/production-information?defaultlang=${defaultLang}&currentlang=${userLang}`, {
       })
       .then((response) => {
         return response.data
@@ -20,7 +20,7 @@ export default {
   },
   fetchInformationTemp(defaultLang, userLang) {
     return axiosInstance
-      .get(`/backend/1.0.0/temp-information?defaultlang=${defaultLang}&currentlang=${userLang}`, {
+      .get(`/temp-information?defaultlang=${defaultLang}&currentlang=${userLang}`, {
       })
       .then((response) => {
         return response.data
@@ -29,7 +29,7 @@ export default {
   },
   saveNewInformationItem(eventItem) {
     return axiosInstance
-      .post('/backend/1.0.0/information', eventItem)
+      .post('/information', eventItem)
       .then(
         (response) => response.data
       ).catch(error_handler)
@@ -39,19 +39,19 @@ export default {
       translation.translationDate = new Date().toISOString()
     }
     return axiosInstance
-      .post(`/backend/1.0.0/information/${translation.id}/information-translations`, translation)
+      .post(`/information/${translation.id}/information-translations`, translation)
       .then((response) => response.data)
       .catch(error_handler)
   },
   saveInformationTranslationProd(id) {
     return axiosInstance
-      .get(`/backend/1.0.0/information/to-production?id=${id}`)
+      .get(`/information/to-production?id=${id}`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   editInformationItem(newItem) {
     return axiosInstance
-      .patch(`/backend/1.0.0/information/${newItem.id}`, newItem)
+      .patch(`/information/${newItem.id}`, newItem)
       .then(
         (response) => response.data
       ).catch(error_handler)
@@ -64,25 +64,25 @@ export default {
       translation.translationDate = new Date().toISOString()
     }
     return axiosInstance
-      .patch(`/backend/1.0.0/information/${translation.id}/information-translations?where=${JSON.stringify(whereClause)}`, translation)
+      .patch(`/information/${translation.id}/information-translations?where=${JSON.stringify(whereClause)}`, translation)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteInformationItem(item) {
     // Delete translations then item
     return axiosInstance
-      .delete(`/backend/1.0.0/information/${item.id}/information-translations`)
+      .delete(`/information/${item.id}/information-translations`)
       .then(
-        () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
+        () => axiosInstance.delete(`/information/${item.id}/information-translation-prods`)
       )
       .then(
-        () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}`)
+        () => axiosInstance.delete(`/information/${item.id}`)
       ).then((response) => response.data)
       .catch(error_handler)
   },
   deleteProdTranslations(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/information/${id}/information-translation-prods`)
+      .delete(`/information/${id}/information-translation-prods`)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -93,7 +93,7 @@ export default {
         idInformation: topics.id,
         idTopic: topics.topics[i]
       }
-      promises.push(axiosInstance.post(`/backend/1.0.0/information/${topics.id}/information-topics`, body).then((response) => response.data))
+      promises.push(axiosInstance.post(`/information/${topics.id}/information-topics`, body).then((response) => response.data))
     }
     return Promise.all(promises).catch(error_handler)
   },
@@ -104,55 +104,55 @@ export default {
         idInformation: userTypes.id,
         idUserTypes: userTypes.userTypes[i]
       }
-      promises.push(axiosInstance.post(`/backend/1.0.0/information/${userTypes.id}/information-user-types`, body).then((response) => response.data))
+      promises.push(axiosInstance.post(`/information/${userTypes.id}/information-user-types`, body).then((response) => response.data))
     }
     return Promise.all(promises).catch(error_handler)
   },
   deleteTopics(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/information/${id}/information-topics`)
+      .delete(`/information/${id}/information-topics`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteUserTypes(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/information/${id}/information-user-types`)
+      .delete(`/information/${id}/information-user-types`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   fetchInformationTopics(id) {
     return axiosInstance
-      .get(`/backend/1.0.0/information/${id}/information-topics`)
+      .get(`/information/${id}/information-topics`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   fetchInformationUserTypes(id) {
     return axiosInstance
-      .get(`/backend/1.0.0/information/${id}/information-user-types`)
+      .get(`/information/${id}/information-user-types`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   fetchAllInformationTopics() {
     return axiosInstance
-      .get(`/backend/1.0.0/information-topics`)
+      .get(`/information-topics`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   fetchAllInformationUserTypes() {
     return axiosInstance
-      .get(`/backend/1.0.0/information-user-types`)
+      .get(`/information-user-types`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   updatePublished(id, is_published) {
     return axiosInstance
-      .patch('/backend/1.0.0/information?[where][id]=' + id, { published: is_published })
+      .patch('/information?[where][id]=' + id, { published: is_published })
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteCategory(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/information/${id}/category`)
+      .delete(`/information/${id}/category`)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -161,7 +161,7 @@ export default {
     formData.append('file', file)
     let postHeaders = axiosInstance.defaults.headers
     postHeaders['Content-Type'] = 'multipart/form-data'
-    return axiosInstance.post('/backend/1.0.0/information/import',
+    return axiosInstance.post('/information/import',
       formData,
       {
         headers: postHeaders
@@ -171,7 +171,7 @@ export default {
     .catch(error_handler)
   },
   export(id) {
-    return axiosInstance.get('/backend/1.0.0/information/export?id=' + id)
+    return axiosInstance.get('/information/export?id=' + id)
     .then((response) => {
       const blob = new Blob([response.data], { type: "text/csv;charset=utf-8" })
       const blobUrl = URL.createObjectURL(blob)

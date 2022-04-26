@@ -5,7 +5,7 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchFlows () {
     return axiosInstance
-      .get('/backend/1.0.0/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers&filter[include][3][relation]=comments&filter[where][and][0][published]=true')
+      .get('/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers&filter[include][3][relation]=comments&filter[where][and][0][published]=true')
       .then(response => { 
         console.log("I am the response from flow db")
         console.log(response.data)
@@ -14,7 +14,7 @@ export default {
   },
   fetchFlowsProd (defaultLang, userLang) {
     return axiosInstance
-      .get('backend/1.0.0/processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
+      .get('/processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
       .then((response) => {
         return response.data
       })
@@ -22,7 +22,7 @@ export default {
   },
   fetchFlowsTemp (defaultLang, userLang) {
     return axiosInstance
-      .get('backend/1.0.0/temp-processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
+      .get('/temp-processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
       .then((response) => {
         return response.data
       })
@@ -35,26 +35,26 @@ export default {
 
   deleteProcessTranslations (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-translations')
+      .delete('/processes/' + id + '/process-translations')
       .then(response => response.data)
       .catch(error_handler);
   },
 
   deleteProcess (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id)
+      .delete('/processes/' + id)
       .then(response => response.data)
       .catch(error_handler);
   },
   deleteProcessTopic (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-topics')
+      .delete('/processes/' + id + '/process-topics')
       .then(response => response.data)
       .catch(error_handler);
   },
   deleteProcessUser (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-users')
+      .delete('/processes/' + id + '/process-users')
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -64,7 +64,7 @@ export default {
     // create fake id here
 
     return axiosInstance
-      .post('/backend/1.0.0/processes', process)
+      .post('/processes', process)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -74,7 +74,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-translations', savingTranslation)
+      .post('/processes/' + id + '/process-translations', savingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -83,7 +83,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-topics', savingTranslation)
+      .post('/processes/' + id + '/process-topics', savingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -92,7 +92,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-users', savingTranslation)
+      .post('/processes/' + id + '/process-users', savingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -104,7 +104,7 @@ export default {
       updatingProcess= (process.publicationDate == null) ? JSON.parse(JSON.stringify(process, ['id', 'link', 'published'])) : process
 
     return axiosInstance
-      .patch('/backend/1.0.0/processes?where=' + JSON.stringify(whereClause), updatingProcess)
+      .patch('/processes?where=' + JSON.stringify(whereClause), updatingProcess)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -116,7 +116,7 @@ export default {
       updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'prcess', 'description'])) : translation
 
     return axiosInstance
-      .patch('/backend/1.0.0/processes/' + translation.id + '/process-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
+      .patch('/processes/' + translation.id + '/process-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -126,7 +126,7 @@ export default {
     }
 
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-topics?where=' + JSON.stringify(whereClause))
+      .delete('/processes/' + id + '/process-topics?where=' + JSON.stringify(whereClause))
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -136,13 +136,13 @@ export default {
     }
 
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-users?where=' + JSON.stringify(whereClause))
+      .delete('/processes/' + id + '/process-users?where=' + JSON.stringify(whereClause))
       .then(response => response.data)
       .catch(error_handler);
   },
   fetchGraph (id, userLang) {
     return axiosInstance
-      .get('backend/1.0.0/mermaid_pa?processid=' + id + '&lang=' + userLang)
+      .get('/mermaid_pa?processid=' + id + '&lang=' + userLang)
       .then((response) => {
         return response.data
       })

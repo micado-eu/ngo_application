@@ -4,13 +4,13 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchEventCategory() {
     return axiosInstance
-      .get('/backend/1.0.0/event-categories?filter[include][0][relation]=translations')
+      .get('/event-categories?filter[include][0][relation]=translations')
       .then((response) => response.data)
       .catch(error_handler)
   },
   updateEventCategory(event_category) {
     return axiosInstance
-      .patch(`/backend/1.0.0/event-categories/${event_category.id}`, event_category)
+      .patch(`/event-categories/${event_category.id}`, event_category)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -20,14 +20,14 @@ export default {
       id: { eq: translation.id }, lang: { eq: translation.lang }
     }
     return axiosInstance
-      .patch(`/backend/1.0.0/event-categories/${translation.id}/event-category-translations?where=${JSON.stringify(whereClause)}`, translation)
+      .patch(`/event-categories/${translation.id}/event-category-translations?where=${JSON.stringify(whereClause)}`, translation)
       .then((response) => response.data)
       .catch(error_handler)
   },
 
   saveEventCategory(event_category) {
     return axiosInstance
-      .post('/backend/1.0.0/event-categories', event_category)
+      .post('/event-categories', event_category)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -35,20 +35,20 @@ export default {
     translation.id = id
 
     return axiosInstance
-      .post(`/backend/1.0.0/event-categories/${id}/event-category-translations`, translation)
+      .post(`/event-categories/${id}/event-category-translations`, translation)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteEventCategoryTranslations(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/event-categories/${id}/event-category-translations`)
+      .delete(`/event-categories/${id}/event-category-translations`)
       .then((response) => response.data)
       .catch(error_handler)
   },
 
   deleteEventCategory(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/event-categories/${id}`)
+      .delete(`/event-categories/${id}`)
       .then((response) => response.data)
       .catch(error_handler)
   }

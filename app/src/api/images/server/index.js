@@ -17,7 +17,7 @@ export default {
     // Returns in [0] the promise and in [1] the cancel token
     return [
       axiosInstance
-        .post('/backend/1.0.0/upload-image', form, config)
+        .post('/upload-image', form, config)
         .then((response) => response.data)
         .catch(error_handler),
       cancelTokenSource

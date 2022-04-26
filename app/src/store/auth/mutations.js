@@ -16,7 +16,9 @@ export function setUser (state, data) {
     state.user = null
   }
 }
-
+export function setUserKeycloak (state, data) {
+  state.user = data
+}
 export function setToken (state, data) {
   console.log("AUTH TOKEN MUTATION")
   console.log(data)

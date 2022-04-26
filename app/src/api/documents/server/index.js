@@ -10,7 +10,7 @@ export default {
     const savingDocument = JSON.parse(JSON.stringify(document, ['documentTypeId', 'validated', 'expirationDate', 'uploadedByMe', 'validatedByTenant', 'validatedByUser', 'userTenant', 'userId', 'validationDate','shareable']))
 
     return axiosInstance
-      .post('/backend/1.0.0/documents', savingDocument)
+      .post('/documents', savingDocument)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -21,7 +21,7 @@ export default {
     const savingPicture = JSON.parse(JSON.stringify(pictures, ['docId', 'picture', 'order']))
 
     return axiosInstance
-      .post('/backend/1.0.0/documents/' + doc_id + '/document-pictures', savingPicture)
+      .post('/documents/' + doc_id + '/document-pictures', savingPicture)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -34,7 +34,7 @@ export default {
 
 
     return axiosInstance
-      .post('/backend/1.0.0/completed-intervention-documents/' , savingDOc)
+      .post('/completed-intervention-documents/' , savingDOc)
       .then(response => response.data)
       .catch(error_handler);
   }

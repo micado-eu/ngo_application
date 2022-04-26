@@ -4,14 +4,14 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchTenants () {
     return axiosInstance
-      .get('/backend/1.0.0/tenants?filter[include][0][relation]=tenantData')
+      .get('/tenants?filter[include][0][relation]=tenantData')
       .then((response) => { return response.data })
       .catch(error_handler)
   },
   saveTenant (tenant) {
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/tenants', tenant)
+      .post('/tenants', tenant)
       .then(response => response.data)
       .catch(error_handler)
   }
@@ -19,7 +19,7 @@ export default {
   saveComment (comment) {
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/comments', comment)
+      .post('/comments', comment)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -29,7 +29,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/comments/' + id + '/comments-translations', savingTranslation)
+      .post('/comments/' + id + '/comments-translations', savingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -38,21 +38,21 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-comments', savingTranslation)
+      .post('/processes/' + id + '/process-comments', savingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   },
 
   deleteCommentTranslations (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/comments/' + id + '/comments-translations')
+      .delete('/comments/' + id + '/comments-translations')
       .then(response => response.data)
       .catch(error_handler);
   },
 
   deleteComment (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/comments/' + id)
+      .delete('/comments/' + id)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -64,7 +64,7 @@ export default {
       updatingTopic =  JSON.parse(JSON.stringify(comment, ['id']))
 
     return axiosInstance
-      .patch('/backend/1.0.0/comments?where=' + JSON.stringify(whereClause), updatingTopic)
+      .patch('/comments?where=' + JSON.stringify(whereClause), updatingTopic)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -76,7 +76,7 @@ export default {
       updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'comment'])) : translation
 
     return axiosInstance
-      .patch('/backend/1.0.0/comments/' + translation.id + '/comments-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
+      .patch('/comments/' + translation.id + '/comments-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   }

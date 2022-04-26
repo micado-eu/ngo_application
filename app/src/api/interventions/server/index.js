@@ -6,7 +6,7 @@ export default {
         console.log("sono il client di fetchInterventions")
         let filter = {}
         return axiosInstance
-            .get('/backend/1.0.0/individual-intervention-plans-ngo?lang=' + lang + '&tenantId=' + ngoTenantId)
+            .get('/individual-intervention-plans-ngo?lang=' + lang + '&tenantId=' + ngoTenantId)
             .then(response => response.data)
             .catch(error_handler);
 
@@ -20,7 +20,7 @@ export default {
             editingIntervention = JSON.parse(JSON.stringify(intervention, ['id', 'listId', 'completed', 'validationDate', 'validatingUserId']));
 
         return axiosInstance
-            .patch('/backend/1.0.0/individual-intervention-plans/' + id_plan + '/individual-intervention-plan-interventions?where=' + JSON.stringify(whereClause), editingIntervention)
+            .patch('/individual-intervention-plans/' + id_plan + '/individual-intervention-plan-interventions?where=' + JSON.stringify(whereClause), editingIntervention)
             .then(response => response.data)
             .catch(error_handler);
     },

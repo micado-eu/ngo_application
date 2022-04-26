@@ -93,17 +93,17 @@ export function fetch (store) {
 }
 
 export function logout (store) {
-  console.log("LOGOUT ACTION")
-  console.log(store)
+  //console.log("LOGOUT ACTION")
+  //console.log(store)
   store.commit('setUser', null)
   //  let the_token = store.getters['auth/token']
-  let the_token = store.state.token
-  console.log(the_token)
-  console.log("BEFORE COMPOSING URL")
-  let aut_url = "https://" + this._vm.$envconfig.identityUrl + "/oidc/logout?id_token_hint=" + the_token.token.id_token + "&post_logout_redirect_uri=https://" + this._vm.$envconfig.ngoUrl
+  //let the_token = store.state.token
+  //console.log(the_token)
+  //console.log("BEFORE COMPOSING URL")
+  //let aut_url = "https://" + this._vm.$envconfig.identityUrl + "/oidc/logout?id_token_hint=" + the_token.token.id_token + "&post_logout_redirect_uri=https://" + this._vm.$envconfig.ngoUrl
   store.commit('setToken', null)
-  console.log(aut_url)
-  window.location = aut_url
+  //console.log(aut_url)
+  //window.location = aut_url
 }
 
 export function verify (state, token) {

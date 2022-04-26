@@ -88,7 +88,7 @@ export default {
 
       //      console.log(formData.getHeaders())
       const self = this
-      this.$axios.post('/backend/1.0.0/files',
+      this.$axios.post('/files',
         formData,
         {
           headers: postHeaders

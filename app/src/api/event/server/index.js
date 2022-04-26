@@ -4,14 +4,14 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchEvent() {
     return axiosInstance
-      .get('/backend/1.0.0/events?filter[include][0][relation]=translations')
+      .get('/events?filter[include][0][relation]=translations')
       .then(
         (response) => response.data
       ).catch(error_handler)
   },
   fetchEventProd(defaultLang, userLang) {
     return axiosInstance
-      .get(`/backend/1.0.0/production-events?defaultlang=${defaultLang}&currentlang=${userLang}`, {
+      .get(`/production-events?defaultlang=${defaultLang}&currentlang=${userLang}`, {
       })
       .then((response) => {
         return response.data
@@ -20,7 +20,7 @@ export default {
   },
   fetchEventTemp(defaultLang, userLang) {
     return axiosInstance
-      .get(`/backend/1.0.0/temp-events?defaultlang=${defaultLang}&currentlang=${userLang}`, {
+      .get(`/temp-events?defaultlang=${defaultLang}&currentlang=${userLang}`, {
       })
       .then((response) => {
         return response.data
@@ -29,7 +29,7 @@ export default {
   },
   saveNewEventItem(eventItem) {
     return axiosInstance
-      .post('/backend/1.0.0/events', eventItem)
+      .post('/events', eventItem)
       .then(
         (response) => response.data
       ).catch(error_handler)
@@ -39,19 +39,19 @@ export default {
       translation.translationDate = new Date().toISOString()
     }
     return axiosInstance
-      .post(`/backend/1.0.0/events/${translation.id}/event-translations`, translation)
+      .post(`/events/${translation.id}/event-translations`, translation)
       .then((response) => response.data)
       .catch(error_handler)
   },
   saveEventTranslationProd(id) {
     return axiosInstance
-      .get(`/backend/1.0.0/events/to-production?id=${id}`)
+      .get(`/events/to-production?id=${id}`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   editEventItem(newItem) {
     return axiosInstance
-      .patch(`/backend/1.0.0/events/${newItem.id}`, newItem)
+      .patch(`/events/${newItem.id}`, newItem)
       .then(
         (response) => response.data
       ).catch(error_handler)
@@ -64,25 +64,25 @@ export default {
       translation.translationDate = new Date().toISOString()
     }
     return axiosInstance
-      .patch(`/backend/1.0.0/events/${translation.id}/event-translations?where=${JSON.stringify(whereClause)}`, translation)
+      .patch(`/events/${translation.id}/event-translations?where=${JSON.stringify(whereClause)}`, translation)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteEventItem(item) {
     // Delete translations then item
     return axiosInstance
-      .delete(`/backend/1.0.0/events/${item.id}/event-translations`)
+      .delete(`/events/${item.id}/event-translations`)
       .then(
-        () => axiosInstance.delete(`/backend/1.0.0/events/${item.id}/event-translation-prods`)
+        () => axiosInstance.delete(`/events/${item.id}/event-translation-prods`)
       )
       .then(
-        (response) => axiosInstance.delete(`/backend/1.0.0/events/${item.id}`)
+        (response) => axiosInstance.delete(`/events/${item.id}`)
       ).then((response) => response.data)
       .catch(error_handler)
   },
   deleteProdTranslations(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/events/${id}/event-translation-prods`)
+      .delete(`/events/${id}/event-translation-prods`)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -93,7 +93,7 @@ export default {
         idEvent: topics.id,
         idTopic: topics.topics[i]
       }
-      promises.push(axiosInstance.post(`/backend/1.0.0/events/${topics.id}/event-topics`, body).then((response) => response.data))
+      promises.push(axiosInstance.post(`/events/${topics.id}/event-topics`, body).then((response) => response.data))
     }
     return Promise.all(promises).catch(error_handler)
   },
@@ -104,55 +104,55 @@ export default {
         idEvent: userTypes.id,
         idUserTypes: userTypes.userTypes[i]
       }
-      promises.push(axiosInstance.post(`/backend/1.0.0/events/${userTypes.id}/event-user-types`, body).then((response) => response.data))
+      promises.push(axiosInstance.post(`/events/${userTypes.id}/event-user-types`, body).then((response) => response.data))
     }
     return Promise.all(promises).catch(error_handler)
   },
   deleteTopics(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/events/${id}/event-topics`)
+      .delete(`/events/${id}/event-topics`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteUserTypes(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/events/${id}/event-user-types`)
+      .delete(`/events/${id}/event-user-types`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   fetchEventTopics(id) {
     return axiosInstance
-      .get(`/backend/1.0.0/events/${id}/event-topics`)
+      .get(`/events/${id}/event-topics`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   fetchEventUserTypes(id) {
     return axiosInstance
-      .get(`/backend/1.0.0/events/${id}/event-user-types`)
+      .get(`/events/${id}/event-user-types`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   fetchAllEventTopics() {
     return axiosInstance
-      .get(`/backend/1.0.0/event-topics`)
+      .get(`/event-topics`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   fetchAllEventUserTypes() {
     return axiosInstance
-      .get(`/backend/1.0.0/event-user-types`)
+      .get(`/event-user-types`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   updatePublished(id, is_published) {
     return axiosInstance
-      .patch('/backend/1.0.0/events?[where][id]=' + id, { published: is_published })
+      .patch('/events?[where][id]=' + id, { published: is_published })
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteCategory(id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/events/${id}/category`)
+      .delete(`/events/${id}/category`)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -161,7 +161,7 @@ export default {
     formData.append('file', file)
     let postHeaders = axiosInstance.defaults.headers
     postHeaders['Content-Type'] = 'multipart/form-data'
-    return axiosInstance.post('/backend/1.0.0/events/import',
+    return axiosInstance.post('/events/import',
       formData,
       {
         headers: postHeaders
@@ -171,7 +171,7 @@ export default {
     .catch(error_handler)
   },
   export(id) {
-    return axiosInstance.get('/backend/1.0.0/events/export?id=' + id)
+    return axiosInstance.get('/events/export?id=' + id)
     .then((response) => {
         const blob = new Blob([response.data], { type: "text/csv;charset=utf-8" })
         const blobUrl = URL.createObjectURL(blob)

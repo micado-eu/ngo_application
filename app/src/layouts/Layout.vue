@@ -433,7 +433,9 @@ export default {
       this.$router.go(-1)
     },
     toLogin () {
-      this.$auth.login()
+//      this.$auth.login()
+      this.$keycloak.login()
+
     },
     generateSurvey () {
       console.log("computed surveyrender")
@@ -466,6 +468,8 @@ export default {
     },
     toLogout () {
       this.$auth.logout()
+      this.$keycloak.logoutFn()
+
     },
         changeIcon (key) {
       console.log('selected key')
