@@ -446,7 +446,7 @@ export default {
         description,
         translated: false,
         lang: this.$defaultLang,
-        creator: this.loggedUser?.umid
+        creator: this.loggedUser?.sub
       }
       this.savedTranslations[0] = translation0
       console.log(this.elem)
@@ -457,7 +457,7 @@ export default {
           description,
           translated: true,
           lang: this.$defaultLang,
-          creator: this.loggedUser?.umid
+          creator: this.loggedUser?.sub
         }
         this.savedTranslations[1] = translation1
       }

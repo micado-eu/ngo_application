@@ -1,5 +1,6 @@
 <template>
-  <div >
+  <div v-if="loading">{{$t('input_labels.loading')}}</div>
+  <div v-else >
     <div class="image" style="text-align:center;"  >
        <div
             class=" top-div"
@@ -104,11 +105,14 @@ export default {
     getters: {
       interventions: 'interventions/interventions',
       document_types: 'document_type/document_types',
-      ngo_user:'auth/user'
+      ngo_user:'auth/user',
+      keycloakMigrantUser: 'user/keycloakMigrantUser'
     }, actions: {
       fetchInterventions: 'interventions/fetchInterventions',
       fetchDocumentType: 'document_type/fetchDocumentType',
+      fetchKeycloakMigrantUser: 'user/fetchKeycloakMigrantUser',
       fetchUser: 'user/fetchUser',
+      fetchTenants: 'tenant/fetchTenants',
       saveDocument: 'documents/saveDocument',
       editIntervention: 'interventions/editIntervention'
     }
@@ -187,7 +191,7 @@ export default {
       this.validatingIntervention.completed = true
       this.validatingIntervention.validationDate = current_data
       // TODO change with the real user ID
-      this.validatingIntervention.validatingUserId = this.ngo_user.umid
+      this.validatingIntervention.validatingUserId = this.ngo_user.sub
       this.editIntervention({ intervention: this.validatingIntervention, plan: this.validatingIntervention.list_id })
         .then(() => {
           if (this.validationFile) {
@@ -214,7 +218,7 @@ export default {
               this.doc_shell.uploadedByMe = false
               this.doc_shell.validatedByTenant = this.validatingIntervention.validating_user_tenant
               // TODO substitute with proper value (now using the 17 as id of tenant 3)
-              this.doc_shell.validatedByUser = this.ngo_user.umid
+              this.doc_shell.validatedByUser = this.ngo_user.sub
               this.doc_shell.pictures.push({
                 id: -1,
                 picture: fileInfo.base64,
@@ -245,7 +249,14 @@ export default {
     },
   },
   created () {
-    this.fetchInterventions({ lang: this.activeLanguage, ngoTenantId: this.ngo_user.tenant_id }).then(() => {
+    this.fetchTenants().then((tenants)=>{
+      console.log(tenants)
+      console.log(this.$store.state.auth.user.groups[0].replace("/", ""))
+       var the_tenant = tenants.filter((ten)=>{
+        return ten.name == this.$store.state.auth.user.groups[0].replace("/", "")
+      })[0]
+      console.log(the_tenant)
+      this.fetchInterventions({ lang: this.activeLanguage, ngoTenantId:the_tenant.id }).then(() => {
       console.log("I am the interventions fetched")
       console.log(this.interventions)
       let userList = []
@@ -254,8 +265,14 @@ export default {
         userList.push(a_int.user_id)
       });
       this.fetchUser(userList).then(() => {
+        this.fetchKeycloakMigrantUser().then((us)=>{
+          console.log(us)
+          this.loading = false
+        })
       })
     })
+    })
+
     this.fetchDocumentType()
       .then(document_types => {
         console.log(document_types)

@@ -13,6 +13,14 @@ export function fetchUser (state, data) {
       return user
     })
 }
+export function fetchKeycloakMigrantUser(state){
+  return client
+  .fetchKeycloakMigrantUser()
+  .then(user => {
+    state.commit('setKeycloakMigrantUser', user)
+    return user
+  })
+}
 
 export function fetchSpecificUser (state, data) {
   console.log(data)
@@ -66,7 +74,7 @@ export function editUserData (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(payload)
   return client
-    .editUserData(payload.user, payload.tenant, payload.token)
+  .editUserData(payload.userid, payload.firstName, payload.lastName, payload.email, payload.phoneNumber)
 }
 export function fetchCSOUserProfile (state, id) {
   console.log(id)
@@ -78,10 +86,9 @@ export function fetchCSOUserProfile (state, id) {
     })
 }
 export function editUserPassword (state, payload) {
-  // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(payload)
   return client
-    .editUserPassword(payload.admin, payload.adminpwd, payload.payload, payload.tenant)
+    .editUserPassword(payload.userid, payload.password)
 }
 export function saveCSOUser (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state

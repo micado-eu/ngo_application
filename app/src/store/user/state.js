@@ -3,5 +3,6 @@ export default {
   user: [],
   csoUserProfile:[],
   csouser:[],
-  userPic:[]
+  userPic:[],
+  keycloakMigrantUser:[]
 }

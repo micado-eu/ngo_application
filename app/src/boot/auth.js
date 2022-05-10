@@ -47,7 +47,7 @@ export default ({ app, router, store, Vue }) => {
       store.dispatch('auth/fetch')
       if (!store.getters['auth/loggedIn']) {
         console.log("not logget in")
-        router.push('/reserved')
+        router.push('/verification')
       } else if (
         isArrayOrString(record.meta.auth) &&
         !store.getters['auth/check'](record.meta.auth)

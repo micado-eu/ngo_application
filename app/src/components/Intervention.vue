@@ -29,6 +29,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 
 export default {
@@ -39,16 +40,20 @@ export default {
 
     }
   },
+  mixins: [storeMappingMixin({
+    getters: {
+      keycloakMigrantUser: 'user/keycloakMigrantUser'
+    }, actions: {
+      fetchKeycloakMigrantUser: 'user/fetchKeycloakMigrantUser',
+    }
+  })],
   computed: {
-    ...mapGetters("user", ["userByid"]),
     userdata () {
-      let u = this.userByid(this.the_intervention.user_id)
-      console.log(u)
-      if (Array.isArray(u) && u.length) {
-        return u[0].umUserName
-      } else {
-        return ""
-      }
+      console.log(this.keycloakMigrantUser)
+      let u = this.keycloakMigrantUser.filter((user)=>{
+        return user.id == this.the_intervention.user_id
+      })[0]
+        return u.username
     }, 
     interventionsToComplete(){
       return this.the_intervention.interventions.filter((interv)=>{

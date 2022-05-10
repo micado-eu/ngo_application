@@ -323,6 +323,7 @@ export default {
   },
   mixins: [storeMappingMixin({
     getters: {
+      check: 'auth/check',
       user: 'auth/user',
       surveys: 'survey/surveys',
       settings: "settings/settings",
@@ -355,6 +356,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Home.svg',
           to: '/',
           feature: "FEAT_DEFAULT",
+          auth: ["Application/micado_ngo_superadmin", "Application/micado_ngo_admin", "Application/micado_ngo_migrant_manager"],
           description: 'menu.home_desc'
         },
         {
@@ -363,6 +365,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Information Centre.svg',
           to: "/information",
           feature: "FEAT_DEFAULT",
+          auth: ["Application/micado_ngo_superadmin", "Application/micado_ngo_admin", "Application/micado_ngo_migrant_manager"],
           description: "menu.information_centre_desc"
         },
         {
@@ -371,6 +374,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Events (4th Iteration)_ (1).svg',
           to: "/events",
           feature: "FEAT_EVENTS",
+          auth: ["Application/micado_ngo_superadmin", "Application/micado_ngo_admin", "Application/micado_ngo_migrant_manager"],
           description: "menu.events_desc"
         },
         {
@@ -379,6 +383,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Integration step-bystep.svg',
           to: "/guided_process_editor",
           feature: "FEAT_PROCESSES",
+          auth: ["Application/micado_ngo_superadmin", "Application/micado_ngo_admin", "Application/micado_ngo_migrant_manager"],
           description: "menu.process_desc"
         },
         {
@@ -387,6 +392,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Manage Validations.svg',
           to: "/interventions",
           feature: "FEAT_DOCUMENTS",
+          auth: ["Application/micado_ngo_superadmin",  "Application/micado_ngo_migrant_manager"],
           description: "menu.validation_requests"
         },
         {
@@ -395,6 +401,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - CSO Admin Management.svg',
           to: "/usermgmt",
           feature: "FEAT_DEFAULT",
+          auth: ["Application/micado_ngo_superadmin", "Application/micado_ngo_admin"],
           description: "menu.cso_desc"
         },
         {
@@ -403,6 +410,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Settings.svg',
           to: "/settings",
           feature: "FEAT_DEFAULT",
+          auth: ["Application/micado_ngo_superadmin", "Application/micado_ngo_admin", "Application/micado_ngo_migrant_manager"],
           description: "menu.setting_desc"
         }
 
@@ -458,7 +466,7 @@ export default {
       console.log(this.surveys)
       var formatted_results = {
         idSurvey: this.surveys.id,
-        idUser: this.user.umid,
+        idUser: this.user.sub,
         answer: JSON.stringify(answer),
         answerDate: new Date().toISOString()
       }
@@ -477,12 +485,12 @@ export default {
     }
   },
     created () {
-      this.getUserPic(this.user.umid).then((user_found)=>{
+      this.getUserPic(this.user.sub).then((user_found)=>{
         console.log("I AM THE PICTURE")
         console.log(user_found)
       })
   
-    this.fetchNGOSurvey(this.user.umid).then((sr) => {
+    this.fetchNGOSurvey(this.user.sub).then((sr) => {
       console.log("I AM THE SUrVEY")
       console.log(sr)
       if(sr != null){

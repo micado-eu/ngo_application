@@ -71,6 +71,13 @@ export default {
   },
    created () {
     //var userId = this.$store.state.auth.user.umid
+         if(this.$store.state.auth.user != null){
+       console.log("GETTIN PICTURE")
+      this.getUserPic(this.user.sub).then((user_found)=>{
+        console.log("I AM THE PICTURE")
+        console.log(user_found)
+      })
+     }
   }
 }
 </script>

@@ -4,7 +4,7 @@ export function someGetter (state) {
 */
 export function userByid (state) {
     return function (userId) {
-        return state.user.filter(a_user => a_user.umId === userId)
+        return state.user.filter(a_user => a_user.id === userId)
     }
 }
 export function csoUserProfile (state) {
@@ -19,4 +19,8 @@ export function csoUserProfile (state) {
     console.log("I am user pic")
     console.log(state.userPic)
     return state.userPic
+  }
+
+  export function keycloakMigrantUser (state) {
+    return state.keycloakMigrantUser
   }

@@ -741,7 +741,7 @@ export default {
     },
     getCurrentUser() {
       if (this.loggedUser) {
-        return this.loggedUser?.umid
+        return this.loggedUser?.sub
       }
       else {
         return null

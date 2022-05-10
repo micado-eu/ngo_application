@@ -244,7 +244,7 @@
     >
       <PaUser
         v-for="user in completepausers"
-        :key="user.umId"
+        :key="user.id"
         :theUser="user"
         @edit="editPAUser"
       />
@@ -301,7 +301,9 @@ export default {
   },
   computed: {
     completepausers () {
-      return this.pausers
+      return this.pausers.filter((user)=>{
+        return user.id != this.$store.state.auth.user.sub
+      })
     }
   },
   methods: {
@@ -319,7 +321,7 @@ export default {
     editPAUser(value){
       this.is_new=false
       var editing_user = this.pausers.filter((user)=>{
-        return user.umId == value
+        return user.id == value
       })[0]
       console.log(editing_user)
       this.findAttribute(this.new_user, editing_user, 'uid', 'username')
@@ -477,7 +479,7 @@ export default {
   async created () {
     console.log("created")
     console.log(this.$store.state.auth.user)
-    await this.fetchCSOUser(this.$store.state.auth.user.tenant_id)
+    await this.fetchCSOUser(this.$store.state.auth.user.groups[0].replace("/", ""))
     console.log(this.csouser)
     //    this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     /*

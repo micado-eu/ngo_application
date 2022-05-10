@@ -34,12 +34,12 @@ export default {
     .then((res_tenants) =>{
       console.log("before calling verify user")
       console.log(res_tenants)
-      this.verifyUser(res_tenants)
+      this.$router.push({name: 'home'})
     })
  //   this.verifyUser()
   },
   methods: {
-    verifyUser (res_tenants) {
+    /*verifyUser (res_tenants) {
 
       const hashes = this.$route.hash.slice(this.$route.hash.indexOf('#') + 1).split('&');
 
@@ -103,9 +103,9 @@ export default {
                 console.error(error)
               })
               */
-                         this.$router.push({name: 'home'})
+                         
 
-    }
+    //}
   }
 }
 </script>

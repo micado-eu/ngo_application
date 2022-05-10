@@ -4,7 +4,7 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchUser (userlist) {
     console.log("sono il client di fetchUsers:" + userlist)
-    let filter = { umId: { inq: userlist } }
+    let filter = { id: { inq: userlist } }
     let url = '/users?where=' + JSON.stringify(filter)
     console.log(url)
     return axiosInstance
@@ -24,6 +24,12 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  fetchKeycloakMigrantUser(){
+    return axiosInstance
+      .get(`/getMigrantUserList`)
+      .then((response) => response.data)
+      .catch(error_handler)
+},
   fetchUserLogin (username, tenant) {
     console.log(username, tenant)
     return axiosInstance
@@ -44,23 +50,23 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler);
   },
-  editUserData(user, tenant, token){
+  editUserData(userid, firstName, lastName, email, phoneNumber){
     return axiosInstance
-      .patch('/updateUser?payload=' +user + '&tenant=' + tenant +'&authType=Bearer&authToken=' + token)
+      .put('/updateUser?userid='+ userid + '&firstName=' + firstName + '&lastName=' + lastName + '&email=' + email +'&phone_number=' + phoneNumber +'&realm=ngo')
       .then(response => { return response.data })
-      .catch(error_handler);
+      .catch(error_handler)
   },
   fetchCSOUserProfile(id){
     return axiosInstance
-    .get(`/users/${id}?filter[include][0][relation]=attributes&filter[include][1][relation]=interventionPlans&filter[include][2][relation]=tenant&filter[include][3][relation]=userPicture`)
+    .get(`/users/${id}?filter[include][0][relation]=userPicture`)
     .then((response) => response.data)
     .catch(error_handler)
   },
-  editUserPassword(admin, adminpwd, payload, tenant){
+  editUserPassword(userid, password){
     return axiosInstance
-      .patch('/updateUser?payload=' +payload + '&tenant=' + tenant +'&admin=' + admin + '&adminpwd=' + adminpwd + '&isPswd=1')
-      .then(response => { return response.data })
-      .catch(error_handler);
+    .put('/updateUserPassword?userid=' +userid + '&realm=ngo&password=' + password)
+    .then(response => { return response.data })
+    .catch(error_handler)
   },
   saveCSOUser(user, roles, tenant, token){
     return axiosInstance
@@ -83,7 +89,7 @@ export default {
   fetchCSOUser (tenant) {
     console.log(tenant)
     return axiosInstance
-      .get(`/users?filter[include][0][relation]=attributes&filter[where][and][0][umUserName][neq]=admin&filter[where][and][1][umTenantId]=${tenant}`)
+      .get(`getNgoUserList?group_name=${tenant}`)
       .then((response) => response.data)
       .catch(error_handler)
   },
