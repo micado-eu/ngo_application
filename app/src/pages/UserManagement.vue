@@ -439,7 +439,7 @@ export default {
       console.log(this.new_user)
       if(this.is_new){
       var working_user =JSON.parse(JSON.stringify(this.new_user, ['username', 'password', 'givenName', 'familyName','email']))
-      this.saveCSOUser({user: working_user, roles:working_roles, group: this.$store.state.auth.user.groups[0]})
+      this.saveCSOUser({user: working_user, roles:working_roles, group: this.$store.state.auth.user.groups[0].replace("/", "")})
       }
       else{
         var working_user =JSON.parse(JSON.stringify(this.new_user, ['userid', 'givenName', 'familyName','email']))
