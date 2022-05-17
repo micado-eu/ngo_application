@@ -23,7 +23,7 @@ export default {
   methods: {
     editing(){
       console.log(this.theUser.sub)
-      this.$emit('edit', this.theUser.sub)
+      this.$emit('edit', this.theUser.id)
     },
     remove_user (event) {
       let target = event.currentTarget.id

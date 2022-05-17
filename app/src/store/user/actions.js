@@ -94,13 +94,15 @@ export function saveCSOUser (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(payload)
   return client
-    .saveCSOUser(payload.user, payload.roles, payload.tenant, payload.token)
+    .saveCSOUser(payload.user, payload.roles, payload.group).then((user)=>{
+      client.createUserDB({id:user[0].id, realm:'ngo', group: payload.group})
+      state.commit('addCsoUser', user)
+    })
 }
-export function fetchUserGroup (state, payload) {
+export function fetchUserGroup (state, userid) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(payload)
   return client
-    .fetchUserGroup(payload.user, payload.token, payload.tenant)
+    .fetchUserGroup(userid)
 }
 export function fetchCSOUser (state, data) {
   console.log(data)
@@ -115,7 +117,10 @@ export function editUserDataByAdmin (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(payload)
   return client
-    .editUserDataByAdmin(payload.user,  payload.tenant, payload.token)
+  .editUserDataByAdmin(payload.user).then((us)=>{
+    console.log("editing roles")
+    client.editUserRoles(payload.user.userid, payload.roles_to_add, payload.roles_to_delete)
+  })
 }
 
 

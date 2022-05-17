@@ -11,6 +11,9 @@ export function setUser(state, user) {
 export function setCSOUser(state, user) {
   state.csouser = user
 }
+export function addCsoUser(state, user){
+  state.csouser.push(user[0])
+}
 export function editUser(state, user) {
   console.log("update the state")
   const index = state.user.findIndex(item => item.id === user.id);

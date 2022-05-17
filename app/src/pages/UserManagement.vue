@@ -324,37 +324,32 @@ export default {
         return user.id == value
       })[0]
       console.log(editing_user)
-      this.findAttribute(this.new_user, editing_user, 'uid', 'username')
-      this.findAttribute(this.new_user, editing_user, 'scimId', 'userid')
-      this.findAttribute(this.new_user, editing_user,'givenName', 'givenName')
-      this.findAttribute(this.new_user, editing_user,'sn', 'familyName')
-      this.findAttribute(this.new_user, editing_user,'workEmail', 'email')
-      var working_token = this.token.token.access_token
-      console.log("I AM NGO TENANT------------------------------------------------")
-      console.log(this.$envconfig.ngoTenantDomain)
-      this.fetchUserGroup({user:this.new_user.username, token:working_token, tenant:this.$envconfig.ngoTenantDomain}).then((userg)=>{
-        console.log(userg)
-        if(userg.Resources){
-        userg.Resources.forEach((role)=>{
-          this.new_user.roles.push(role.displayName.replace("Application/", ""))
-        })
+      this.new_user.username = editing_user.username
+      this.new_user.userid = editing_user.id
+
+      this.new_user.email = editing_user.email
+
+      this.new_user.givenName = editing_user.firstName
+      this.new_user.familyName = editing_user.lastName
+      this.fetchUserGroup(value).then((roles) => {
+        console.log(roles)
         
-          this.new_user.roles.forEach((role)=>{
-          if(role == 'micado_ngo_admin' ){
-            this.new_user.admin = true
-          }
-          if(role == 'micado_ngo_migrant_manager' ){
-            this.new_user.migrant_tenant = true
-          }
-          
-        })
+        if (roles.length > 0) {
+          this.new_user.roles = roles
+
+          this.new_user.roles.forEach((role) => {
+            if (role.name == "Application/micado_ngo_admin") {
+              this.new_user.admin = true
+            }
+            if (role.name == "Application/micado_ngo_migrant_manager") {
+              this.new_user.migrant_tenant = true
+            }
+          })
         }
-        this.new_user.roles=[]
+        this.new_user.roles = []
         this.hideAdd = true
         this.hideForm = false
-
       })
-      
     },
     onSubmit () {
       if(this.is_new){
@@ -432,27 +427,24 @@ export default {
     },
     saveUser(){
       console.log(this.new_user)
-      this.new_user.roles.push('ngo_sp')
-      if(this.new_user.admin == true){
-        this.new_user.roles.push('micado_ngo_admin')
+      if (this.new_user.admin == true) {
+        this.new_user.roles.push("Application/micado_ngo_admin")
       }
-      if(this.new_user.migrant_tenant == true){
-        this.new_user.roles.push('micado_ngo_migrant_manager')
+      if (this.new_user.migrant_tenant == true) {
+        this.new_user.roles.push("Application/micado_ngo_migrant_manager")
       }
       console.log(this.new_user)
-
-      
+      var roles_to_delete = JSON.stringify(["Application/micado_ngo_admin", "Application/micado_ngo_migrant_manager"])
       var working_roles = JSON.stringify(this.new_user.roles)
-      var working_token = this.token.token.access_token
-      console.log(working_token)
+      console.log(this.new_user)
       if(this.is_new){
       var working_user =JSON.parse(JSON.stringify(this.new_user, ['username', 'password', 'givenName', 'familyName','email']))
-      this.saveCSOUser({user: working_user, tenant:this.$envconfig.ngoTenantDomain, token:working_token, roles:working_roles})
+      this.saveCSOUser({user: working_user, roles:working_roles, group: this.$store.state.auth.user.groups[0]})
       }
       else{
-        var working_user =JSON.parse(JSON.stringify(this.new_user, ['userid','username', 'password', 'givenName', 'familyName','email', 'roles']))
+        var working_user =JSON.parse(JSON.stringify(this.new_user, ['userid', 'givenName', 'familyName','email']))
         console.log(working_user)
-        this.editUserDataByAdmin({user:JSON.stringify(working_user), tenant:this.$envconfig.ngoTenantDomain, token:working_token})
+        this.editUserDataByAdmin({user:working_user, roles_to_add: working_roles, roles_to_delete: roles_to_delete})
       }
       
 

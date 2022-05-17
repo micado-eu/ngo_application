@@ -17,6 +17,12 @@ export default {
       .catch(error_handler);
 
   },
+  createUserDB(user){
+    return axiosInstance
+          .post('/users', user  )
+          .then(response => { return response.data })
+          .catch(error_handler)
+  },
   fetchSpecificUser (tenant, id) {
     console.log(tenant)
     return axiosInstance
@@ -68,23 +74,29 @@ export default {
     .then(response => { return response.data })
     .catch(error_handler)
   },
-  saveCSOUser(user, roles, tenant, token){
+  saveCSOUser(user, roles, group){
     return axiosInstance
-      .post('/wso2UserComplete?username=' + user.username + '&password=' + user.password + '&name=' + user.givenName+ '&surname=' + user.familyName + '&email=' + user.email + '&roles=' + roles + '&tenant=' + tenant + '&authType=Bearer&authToken=' + token)
+      .post('createKeycloakUserWithRoleAndGroup?username=' + user.username + '&firstName=' + user.givenName + '&lastName=' + user.familyName + '&email=' + user.email + '&password=' + user.password + '&role=' + roles + '&realm=ngo&&group=' + group)
       .then(response => { return response.data })
-      .catch(error_handler);
+      .catch(error_handler)
   },
-  fetchUserGroup(user, token, tenant){
+  fetchUserGroup(userid){
     return axiosInstance
-    .get('/wso2UserRoles?user=' +user + '&tenant=' + tenant + '&authType=Bearer&authToken=' + token)
+    .get('/getUserRoles?realm=ngo&userid=' +userid)
     .then((response) => response.data)
     .catch(error_handler)
   },
-  editUserDataByAdmin(user, tenant, token){
+  editUserDataByAdmin(user){
     return axiosInstance
-      .patch('/updateUser?payload=' +user + '&tenant=' + tenant +'&authType=Bearer&authToken=' + token + '&isAdmin=1')
+    .put('/updateUser?userid='+ user.userid + '&firstName=' + user.givenName + '&lastName=' + user.familyName + '&email=' + user.email+'&realm=ngo')
+    .then(response => { return response.data })
+    .catch(error_handler)
+  },
+  editUserRoles(userid, roles_to_add, roles_to_delete){
+    return axiosInstance
+      .post('/updateUserRoles?realm=ngo&userid='+ userid + '&roles_to_add=' + roles_to_add + '&roles_to_delete=' + roles_to_delete)
       .then(response => { return response.data })
-      .catch(error_handler);
+      .catch(error_handler)
   },
   fetchCSOUser (tenant) {
     console.log(tenant)
