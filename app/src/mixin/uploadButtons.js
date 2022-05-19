@@ -21,9 +21,14 @@ export default {
         ].indexOf(value) !== -1
       }
     },
-    creator: {
+    username: {
       // Id of the creator of the entity
-      type: Number,
+      type: String,
+      default: null
+    },
+    realm: {
+      // Realm of the creator of the entity
+      type: String,
       default: null
     }
 

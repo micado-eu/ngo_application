@@ -446,7 +446,8 @@ export default {
         description,
         translated: false,
         lang: this.$defaultLang,
-        creator: this.loggedUser?.sub
+        username: this.$store.state.auth.user.preferred_username,
+        realm: "ngo"
       }
       this.savedTranslations[0] = translation0
       console.log(this.elem)
@@ -457,7 +458,8 @@ export default {
           description,
           translated: true,
           lang: this.$defaultLang,
-          creator: this.loggedUser?.sub
+          username: this.$store.state.auth.user.preferred_username,
+          realm: "ngo"
         }
         this.savedTranslations[1] = translation1
       }
@@ -595,7 +597,6 @@ export default {
     ...mapGetters('language', ['activeLanguages']),
     ...mapGetters('topic', ['topic', 'tree_options']),
     ...mapGetters('user_type', ['user']),
-    ...mapGetters({ loggedUser: 'auth/user' }),
     errorDateTimeEmpty: function () {
       return this.is_event
         && (

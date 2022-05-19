@@ -29,7 +29,8 @@ export default {
         endDate: translationData[0].finishDate,
         published: translationData[0].published,
         location: translationData[0].location,
-        creator: translationData[0].creator,
+        username: translationData[0].username,
+        realm: translationData[0].realm,
         cost: translationData[0].cost
       }
       if (('category' in translationData[0]) && (translationData[0].category)) {
@@ -51,7 +52,8 @@ export default {
                 delete translation.startDate
                 delete translation.finishDate
                 delete translation.location
-                delete translation.creator
+                delete translation.username
+                delete translation.realm
                 delete translation.cost
                 this.addNewEventItemTranslation(dataWithId)
                   .then(() => {

@@ -89,7 +89,8 @@ export default {
         delete translation.category
         delete translation.topics
         delete translation.userTypes
-        delete translation.creator
+        delete translation.username
+        delete translation.realm
         this.editInformationItemTranslation(dataWithId).then(() => {
           if (i === data.length - 1) {
             router.push({ path: '/information' })
