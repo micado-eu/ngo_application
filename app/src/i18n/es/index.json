@@ -1,4 +1,5 @@
 {
+    "application_title": "MICADO app",
     "menu": {
         "cso_description": "Aquí puede gestionar otras cuentas de su organización ",
         "events_description": "Aquí puede gestionar y editar información sobre cursos o eventos próximos, incluyendo etiquetas por tema, categoría y tipo de usario. Puede añadir su fecha,  coste y localización. Una vez publicados son públicos y visibles para todos los migrantes hasta  la fecha de fin del evento.",
@@ -28,6 +29,12 @@
         "events": "Eventos",
         "login": "Iniciar sesión",
         "logout": "Cerrar sesión",
+		"cso_desc": "Adminstrar usuarios OSC",
+		"events_desc": "Ver y editar cursos y eventos",
+		"information_centre_desc": "Ver y editar información y servicios para migrantes",
+		"process_desc": "Ver y comentar procesos paso a paso",
+		"setting_desc": "Ver y administrar configuración",
+		"validation_requests": "Revisar peticiones de validación",
         "CSO_user": "Administración de Usuario OSC"
     },
     "help": {
@@ -53,6 +60,7 @@
         "location_maps": "Haga clic aquí para obtener una vista previa de los resultados de la búsqueda de esta ubicación en Google Maps"
     },
     "button": {
+		"add_document": "Añadir documento",
         "batch_upload": "Subida en lotes",
         "download_template": "Descargar plantilla",
         "go_back": "Volver atrás",
@@ -72,6 +80,9 @@
         "change_pass": "Cambiar contraseña",
         "upload": "Subir",
         "validate_and_publish": "Validar y publicar",
+		"import_events": "Importar Eventos",
+        "import_glossary": "Importar Términos",
+        "import_information": "Importar Información",
         "survey": "Encuesta"
     },
     "input_labels": {
@@ -100,6 +111,10 @@
         "event_free": "El evento es gratuito",
         "event_cost": "Coste del evento",
         "upload_file": "Subir archivo",
+		"export": "Exportar",
+		"privacy_policy": "Política de privacidad",
+		"validate_intervention": "Validar intervención",
+        "want_to_export": "¿Desea exportar?",
         "survey_cso":"Enlace a la encuesta externa para OSC"
     },
     "information_centre": {
