@@ -94,12 +94,12 @@
                 unelevated
                 @click="showDelete = false; showEdit = false"
               ><span class="q-mx-lg">{{ $t('button.cancel') }}</span></q-btn>
-              <!-- <q-btn
+              <q-btn
                 class="delete-btn"
                 no-caps
                 unelevated
                 @click="delete_fn(dialogSelectedItem)"
-              ><span class="q-mx-lg">{{ $t('input_labels.delete') }}</span></q-btn> -->
+              ><span class="q-mx-lg">{{ $t('input_labels.delete') }}</span></q-btn>
             </div>
           </q-card-section>
         </div>
@@ -371,7 +371,8 @@
         <div class="center q-mr-xl">
           <upload-button
             :entity="entity"
-            :creator="getCurrentUser()"
+            :username="getCurrentUser()"
+            realm="ngo"
             @uploadSuccess="batchUploadSuccess($event)"
             @uploadError="batchUploadError($event)"
             class="q-mr-sm"
@@ -525,11 +526,11 @@
                     <div>
                       <span
                         class="date-text q-mt-sm q-mr-xl"
-                        v-if="item.creator && showExtraInfo[item.id]"
+                        v-if="item.username && showExtraInfo[item.id]"
                       >
                         {{$t("lists.creator")}}:
                         <span>
-                          {{getCreatorAttribute(item.creator, "givenName")}} {{getCreatorAttribute(item.creator, "sn")}}
+                          {{item.username}} ({{item.realm}})
                         </span>
                       </span>
                     </div>
@@ -630,7 +631,7 @@ export default {
       default: ''
     },
     header_img: {
-      type: Function
+      type: String
     },
     icon_name: {
       type: String,
@@ -728,7 +729,6 @@ export default {
     ...mapActions('information', ['fetchInformationTemp']),
     ...mapActions('flows', ['fetchFlowsTemp']),
     ...mapActions('event', ['fetchEventTemp']),
-    ...mapActions('user', ['fetchSpecificUser']),
     callImportFile() {
       document.getElementById('import-input').click()
     },
@@ -740,8 +740,8 @@ export default {
       this.export_fn(id)
     },
     getCurrentUser() {
-      if (this.loggedUser) {
-        return this.loggedUser?.sub
+      if (this.$store.state.auth.user && this.$store.state.auth.user.preferred_username) {
+        return this.$store.state.auth.user.preferred_username
       }
       else {
         return null
@@ -930,8 +930,6 @@ export default {
       }
     },
     async initializeList() {
-      let creatorPromises = []
-      let creatorPromisesIds = []
       this.translatedElements = this.elements.map((e) => {
         let translation
         if (e.translations) {
@@ -978,10 +976,11 @@ export default {
               translation.location = e.location
               translation.cost = e.cost
             }
-            if (e.creator !== null && !creatorPromisesIds.includes(e.creator)) {
-              creatorPromisesIds.push(e.creator)
-              creatorPromises.push(this.fetchSpecificUser({ userid: e.creator, tenantid: this.$pa_tenant }))
-              translation.creator = e.creator
+            if (e.username !== null) {
+              translation.username = e.username
+            }
+            if (e.realm !== null) {
+              translation.realm = e.realm
             }
             translation.published = e.published
             this.showExtraInfo[e.id] = false
@@ -992,32 +991,25 @@ export default {
           } else return undefined
         }
       })
-      Promise.all(creatorPromises).then(results => {
-        let creatorCache = {}
-        if (results.length > 0) {
-          creatorCache = results.reduce((curCache, creator) => Object.assign(curCache, { [creator.umId]: creator }, {}))
-        }
-        this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
-        this.translatedElements.forEach(e => e.creator = creatorCache[e.creator])
-        if (this.alphabetical_sorting) {
-          this.translatedElements.sort(this.compare)
-          for (const elem of this.translatedElements) {
-            const firstChar = elem.title.charAt(0).toUpperCase()
-            if (!this.alphabet.includes(firstChar)) {
-              this.alphabet.push(firstChar)
-              this.alphabetIds.push(elem.id)
-            }
+      this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
+      if (this.alphabetical_sorting) {
+        this.translatedElements.sort(this.compare)
+        for (const elem of this.translatedElements) {
+          const firstChar = elem.title.charAt(0).toUpperCase()
+          if (!this.alphabet.includes(firstChar)) {
+            this.alphabet.push(firstChar)
+            this.alphabetIds.push(elem.id)
           }
-        } else {
-          this.translatedElements.sort(this.compareTranslationDates)
         }
-        this.filteredElementsBySearch = this.translatedElements
-        this.filteredElementsByCategory = this.translatedElements
-        this.filteredElementsByTopics = this.translatedElements
-        this.filteredElementsByUserTypes = this.translatedElements
-        this.filteredElementsByDate = this.translatedElements
-        this.loading = false
-      })
+      } else {
+        this.translatedElements.sort(this.compareTranslationDates)
+      }
+      this.filteredElementsBySearch = this.translatedElements
+      this.filteredElementsByCategory = this.translatedElements
+      this.filteredElementsByTopics = this.translatedElements
+      this.filteredElementsByUserTypes = this.translatedElements
+      this.filteredElementsByDate = this.translatedElements
+      this.loading = false
     },
     topicTransl(topic) {
       const idx = topic.translations.findIndex((t) => t.lang === this.lang)
@@ -1026,16 +1018,6 @@ export default {
     userTypeTransl(userType) {
       const idx = userType.translations.findIndex((t) => t.lang === this.lang)
       return idx !== -1 ? userType.translations[idx].userType : ''
-    },
-    getCreatorAttribute(creator, attrString) {
-      let retAttr = ""
-      if (creator && creator.attributes) {
-        let retAttr_arr = creator.attributes.filter((attr) => attr.umAttrName === attrString)
-        if (retAttr_arr.length > 0) {
-          retAttr = retAttr_arr[0].umAttrValue
-        }
-      }
-      return retAttr
     },
     getTranslationStateText(translationStateNumber) {
       switch (translationStateNumber) {

@@ -98,7 +98,8 @@ export default {
         delete translation.startDate
         delete translation.finishDate
         delete translation.location
-        delete translation.creator
+        delete translation.username
+        delete translation.realm
         delete translation.cost
         this.editEventItemTranslation(dataWithId).then(() => {
           if (i === data.length - 1) {

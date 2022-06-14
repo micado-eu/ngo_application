@@ -24,7 +24,8 @@
     <upload-button-dialog
       v-model="show_dialog"
       :entity="entity"
-      :creator="creator"
+      :username="username"
+      :realm="realm"
     >
     </upload-button-dialog>
   </div>
@@ -32,11 +33,11 @@
 
 <script>
 import UploadButtonDialog from './UploadButtonDialog'
-import markdownConverterMixin from '../mixin/uploadButtons.js'
+import uploadButtons from '../mixin/uploadButtons.js'
 export default {
   name: 'UploadButton',
   components: { UploadButtonDialog },
-  mixins: [markdownConverterMixin]
+  mixins: [ uploadButtons ]
 }
 </script>
 <style scoped>

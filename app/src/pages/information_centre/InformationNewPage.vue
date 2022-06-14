@@ -25,7 +25,8 @@ export default {
       let id = -1
       const eventData = {
         published: translationData[0].published,
-        creator: translationData[0].creator
+        username: translationData[0].username,
+        realm: translationData[0].realm
       }
       if (('category' in translationData[0]) && (translationData[0].category)) {
         eventData.category = translationData[0].category.id
@@ -43,7 +44,8 @@ export default {
                 delete translation.category
                 delete translation.topics
                 delete translation.userTypes
-                delete translation.creator
+                delete translation.username
+                delete translation.realm
                 this.addNewInformationItemTranslation(dataWithId)
                   .then(() => {
                     if (i === translationData.length - 1) {
