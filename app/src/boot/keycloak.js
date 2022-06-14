@@ -89,10 +89,17 @@ export default async ({ Vue, router, store, app }) => {
             store.commit('auth/setUserKeycloak', JSON.parse(jsonPayload))
             //console.log(store.auth.user)
           }
-          
+          else{
+            store.commit('auth/setUserKeycloak', null)
+          }
+          console.log("before token interceptor")
           tokenInterceptor()
           console.log(Vue)
+
           resolve()
+        },
+        onAuthRefreshError: (keycloak) =>{
+          console.log("refresh token expired")
         },
         onInitError: (error) => {
           console.log('we have an error')
