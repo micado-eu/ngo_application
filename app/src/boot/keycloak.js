@@ -100,6 +100,7 @@ export default async ({ Vue, router, store, app }) => {
         },
         onAuthRefreshError: (keycloak) =>{
           console.log("refresh token expired")
+          store.commit('auth/setUserKeycloak', null)
           keycloak.logout()
         },
         onInitError: (error) => {
