@@ -636,17 +636,21 @@ export default {
           this.originalTranslationState = this.elem.translations[sTSIdx].translationState
           this.translatable = !!this.elem.translations[sTSIdx].translationState
         }
-        if (this.categories_enabled && this.elem.category !== null) {
+        if (this.categories_enabled && (this.categories.length > 0) && this.elem.category !== null) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category
           )
-          const idxTranslation = this.categories[idxCat].translations.findIndex(
-            (t) => t.lang === al
-          )
-          this.selectedCategoryObject = this.categories[idxCat].translations[
-            idxTranslation
-          ]
-          this.selectedCategory = this.selectedCategoryObject.category
+          if (idxCat !== -1) {
+            const idxTranslation = this.categories[idxCat].translations.findIndex(
+              (t) => t.lang === al
+            )
+            if (idxTranslation !== -1) {
+              this.selectedCategoryObject = this.categories[idxCat].translations[
+                idxTranslation
+              ]
+              this.selectedCategory = this.selectedCategoryObject.category
+            }
+          }
         }
         if (this.is_event) {
           console.log("here")
