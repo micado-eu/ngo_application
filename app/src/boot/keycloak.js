@@ -68,7 +68,7 @@ export default async ({ Vue, router, store, app }) => {
           checkLoginIframe: false // otherwise it would reload the window every so seconds
         },
         config: {
-          url: 'https://identity.micadoproject.eu/auth',
+          url: 'https://'+ Vue.prototype.$envconfig.identityUrl +'/auth',
           realm: 'ngo',
           clientId: 'ngo_app'
         },
