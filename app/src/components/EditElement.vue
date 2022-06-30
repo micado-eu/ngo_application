@@ -503,6 +503,10 @@ export default {
           return undefined
         }
         const idx = ic.translations.findIndex((t) => t.lang === al)
+        if (idx === -1) {
+          this.internalCategoriesObjects.push(undefined)
+          return this.$t('input_labels.not_translated')
+        }
         const translation = ic.translations[idx]
         this.internalCategoriesObjects.push(translation)
         let { category } = translation
@@ -520,6 +524,10 @@ export default {
     setInternalUserTypeSelector(al) {
       this.internalUserTypes = this.user.filter(ut => ut.published).map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
+        if (idx === -1) {
+          this.internalUserTypesObjects.push(undefined)
+          return this.$t('input_labels.not_translated')
+        }
         const translation = ic.translations[idx]
         this.internalUserTypesObjects.push(translation)
         let { userType } = translation
@@ -534,6 +542,8 @@ export default {
         }
         return userType
       })
+      this.internalUserTypes = this.internalUserTypes.filter((u) => u !== undefined)
+      this.internalUserTypesObjects = this.internalUserTypesObjects.filter((u) => u !== undefined)
     },
     setCategoryObjectModel(category) {
       const idx = this.internalCategoriesObjects.findIndex(
@@ -545,11 +555,13 @@ export default {
       const idx = this.internalUserTypesObjects.findIndex(
         (t) => t.userType === userType
       )
-      const userTypeObj = this.internalUserTypesObjects[idx]
-      const idxSelected = this.selectedUserTypesObjects
-        .findIndex((st) => st.userType === userTypeObj.userType)
-      if (idxSelected === -1) {
-        this.selectedUserTypesObjects.push(userTypeObj)
+      if (idx !== -1) {
+        const userTypeObj = this.internalUserTypesObjects[idx]
+        const idxSelected = this.selectedUserTypesObjects
+          .findIndex((st) => st.userType === userTypeObj.userType)
+        if (idxSelected === -1) {
+          this.selectedUserTypesObjects.push(userTypeObj)
+        }
       }
     },
     removeUserType(idx) {
