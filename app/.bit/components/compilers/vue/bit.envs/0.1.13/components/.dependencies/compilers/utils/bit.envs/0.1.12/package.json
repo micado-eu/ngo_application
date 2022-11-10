@@ -12,7 +12,7 @@
     "debug": "4.1.1",
     "mock-fs": "^4.11.0",
     "vinyl": "^2.2.0",
-    "recursive-readdir": "^2.2.2",
+    "recursive-readdir": "^2.2.3",
     "fs-extra": "8.1.0",
     "deepmerge": "4.2.2"
   },
