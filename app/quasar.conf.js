@@ -13,7 +13,6 @@ module.exports = function (ctx) {
       'axios',
       'featureflag',
       'loadData',
-      'countly',
       'mermaid',
       'keycloak'
     ],

@@ -33,11 +33,6 @@ const routes = [
       { path: 'usermgmt',  meta: { auth: ["Application/micado_ngo_admin"] }, component: UserManagement },
       { path: '/guided_process_editor',meta: { auth: ["Application/micado_ngo_migrant_manager", "Application/micado_ngo_admin", "Application/micado_ngo_superadmin" ] }, component: ProcessList },
 
-      //       { path: '/notifications', component: () => import('components/Notifications.vue') },
-      //       { path: '/speech', component: () => import('pages/Speech.vue') },
-      //       { path: '/chatbot', component: () => import('pages/Chatbot.vue') },
-      //       { path: '/settings', component: () => import('pages/Settings.vue') },
-      //       { path: '/map', component: () => import('components/Map.vue') }
     ]
   }/*,
   {

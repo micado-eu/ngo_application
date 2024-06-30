@@ -1,49 +1,7 @@
-// import Vue from 'vue'
 import VueKeyCloak from '@dsb-norge/vue-keycloak-js'
-// import getters from './store/module-example/getters.js'
-import mutations from '../store/auth/mutations.js'
-import store from '../store'
-
-/*
-function tokenInterceptor () {
-  Vue.prototype.$axios.interceptors.request.use(config => {
-    if (Vue.prototype.$keycloak.authenticated) {
-      config.headers.Authorization = `Bearer ${Vue.prototype.$keycloak.token}`
-    }
-    return config
-  }, error => {
-    return Promise.reject(error)
-  })
-}
-
-const initOptions = {
-  init: {
-    onLoad: 'login-required', // or 'check-sso'
-    flow: 'standard',
-    pkceMethod: 'S256',
-    silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html',
-    checkLoginIframe: false // otherwise it would reload the window every so seconds
-  },
-  config: {
-    url: 'https://localhost:8100/auth',
-    realm: 'micado',
-    clientId: 'migrant'
-  },
-  onReady: (keycloak) => {
-    console.log('onReady kc')
-    tokenInterceptor()
-  },
-  onInitError: (error) => {
-    console.log(error)
-  }
-}
-
-Vue.use(VueKeyCloak, initOptions)
-*/
-
 
 export default async ({ Vue, router, store, app }) => {
-  async function tokenInterceptor () {
+  async function tokenInterceptor() {
     Vue.prototype.$axios.interceptors.request.use(config => {
       config.headers.Authorization = `Bearer ${Vue.prototype.$keycloak.token}`
       return config
@@ -54,21 +12,22 @@ export default async ({ Vue, router, store, app }) => {
 
   let keyPromise = null
   //const realm = store.getters['example/getRealm']
-  const the_store = store
+  //const the_store = store
   //if (realm !== null) {
     console.log('Esiste il realm')
-   // console.log(realm)
+    //console.log(realm)
+    console.log("NGO*****************")
     keyPromise = new Promise(resolve => {
       Vue.use(VueKeyCloak, {
         init: {
           onLoad: 'check-sso', // or 'check-sso'
-          flow: 'standard',
+          //flow: 'standard',
           //pkceMethod: 'S256',
           //silentCheckSsoRedirectUri: window.location.origin + '/silent-check-sso.html'
           checkLoginIframe: false // otherwise it would reload the window every so seconds
         },
         config: {
-          url: 'https://'+ Vue.prototype.$envconfig.identityUrl +'/auth',
+          url: 'https://'+ Vue.prototype.$envconfig.identityUrl,
           realm: 'ngo',
           clientId: 'ngo_app'
         },

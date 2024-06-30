@@ -336,11 +336,12 @@ export default {
       }
   })],
     mounted(){
+/*
     var script = document.createElement("script");
     script.type = "text/javascript";
     script.innerHTML = "window._mfq = window._mfq || [];(function () {var mf = document.createElement(\"script\"); mf.type = \"text/javascript\"; mf.defer = true;      mf.src = \"//cdn.mouseflow.com/projects/" + this.$envconfig.ngoMouseflow + ".js\";      document.getElementsByTagName(\"head\")[0].appendChild(mf);    })();";
     document.getElementsByTagName('head')[0].appendChild(script);
-
+*/
   },
   data () {
     return {
