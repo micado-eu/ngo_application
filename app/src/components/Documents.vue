@@ -1,16 +1,40 @@
+/**
+ * Renders a list of documents with their title, emitter, and expiration date. Also includes a button to open a thumbnail modal or a dashboard container for uploading new documents.
+ *
+ * The component uses the Uppy library for file uploads, with restrictions on file size and type.
+ *
+ * @component
+ * @prop {String} msg - A message to be displayed.
+ * @data {Object} files - An object to store the uploaded files.
+ * @data {Object} mainProps - An object with properties for the image component.
+ * @computed {String} uppyId - A unique identifier for the Uppy instance.
+ * @computed {Array} documents - An array of document objects fetched from the Vuex store.
+ * @lifecycle created - Fetches the documents from the Vuex store.
+ * @lifecycle mounted - Initializes the Uppy instance with the appropriate configuration.
+ */
 <template>
   <div class="documents">
-    <q-list >
-      <q-item v-for="doc in documents">{{doc.title}}<a><b-img v-bind="mainProps" right rounded src="https://picsum.photos/125/125/?image=58" alt="Left image"></b-img></a><br/>Emitted by:{{doc.emitter}} - lasting up to: {{doc.expire_date}}</q-item>
+    <q-list>
+      <q-item v-for="doc in documents"
+        >{{ doc.title
+        }}<a
+          ><b-img
+            v-bind="mainProps"
+            right
+            rounded
+            src="https://picsum.photos/125/125/?image=58"
+            alt="Left image"
+          ></b-img></a
+        ><br />Emitted by:{{ doc.emitter }} - lasting up to:
+        {{ doc.expire_date }}</q-item
+      >
     </q-list>
     Upload new documents
 
     <div class="ThumbnailContainer" v-if="collection === 'thumbnail'">
       <button id="open-thumbnail-modal" class="button">Select file</button>
-
     </div>
     <div id="DashboardContainer" v-else></div>
-    </div>
   </div>
 </template>
 
