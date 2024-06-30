@@ -1,6 +1,5 @@
 import { Notify } from 'quasar'
 import { axiosInstance } from './axios'
-import auth from '../store/auth'
 import enUS from '../i18n/en-us/auth'
 /* eslint-disable no-use-before-define */
 
@@ -57,29 +56,6 @@ export default ({ app, router, store, Vue }) => {
       } else {
         next()
       }
-      /*
-      .then(() => {
-        console.log("called fetch")
-        console.log(store)
-
-        if (!store.getters['auth/loggedIn']) {
-          console.log("not logget in")
-          router.push('/')
-        } else if (
-          isArrayOrString(record.meta.auth) &&
-          !store.getters['auth/check'](record.meta.auth)
-        ) {
-          console.log("nel elseif")
-          router.push('/account')
-        }
-      }).catch(err => {
-        console.log("I have error in route guard")
-        console.error(err)
-        router.push('/')
-      }).finally(() => {
-        next()
-      })
-      */
     } else {
       next()
     }
@@ -178,16 +154,3 @@ export default ({ app, router, store, Vue }) => {
   Vue.prototype.$auth = helper
 }
 
-
-/*
-Authorization Endpoint URL: 	https://identity.micadoproject.eu/oauth2/authorize
-Token Endpoint URL: 	https://identity.micadoproject.eu/oauth2/token
-Token Revocation Endpoint URL: 	https://identity.micadoproject.eu/oauth2/revoke
-Token Introspection Endpoint URL: 	https://identity.micadoproject.eu/oauth2/introspect
-User Info Endpoint URL: 	https://identity.micadoproject.eu/oauth2/userinfo
-Session IFrame Endpoint URL: 	https://identity.micadoproject.eu/oidc/checksession
-Logout Endpoint URL: 	https://identity.micadoproject.eu/oidc/logout
-Web finger Endpoint URL: 	https://identity.micadoproject.eu/.well-known/webfinger
-Discovery Endpoint URL: 	https://identity.micadoproject.eu/t/migrants.micado.eu/oauth2/oidcdiscovery
-Dynamic Client Registration Endpoint URL: 	https://identity.micadoproject.eu/t/migrants.micado.eu/api/identity/oauth2/dcr/v1.1/register
-*/

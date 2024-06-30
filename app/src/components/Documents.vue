@@ -15,8 +15,7 @@
 <template>
   <div class="documents">
     <q-list>
-      <q-item v-for="doc in documents"
-        >{{ doc.title
+      <q-item v-for="doc in documents" >{{ doc.title
         }}<a
           ><b-img
             v-bind="mainProps"
@@ -26,8 +25,7 @@
             alt="Left image"
           ></b-img></a
         ><br />Emitted by:{{ doc.emitter }} - lasting up to:
-        {{ doc.expire_date }}</q-item
-      >
+        {{ doc.expire_date }}</q-item >
     </q-list>
     Upload new documents
 

@@ -615,22 +615,6 @@ console.log(this.topics)
       })
 
 
-      console.log(this)
-      console.log(this.$Countly)
-      this.$Countly.q.push(['add_event', {
-        "key": "process",
-        "count": 1,
-        "sum": 1,
-        "dur": 1,
-        "segmentation": {
-          "idprocess": this.id,
-          "nationality": "italian",
-          "language": this.$userLang
-        }
-      }])
-      /* this.full_process = this.processes.filter((process) =>{
-         return process.id == this.processid
-       })[0]*/
 
 
       // TODO
