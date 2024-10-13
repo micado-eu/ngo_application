@@ -1,5 +1,5 @@
 # develop stage
-FROM micadoproject/quasar:1.1.2 as build-stage
+FROM ghcr.io/micado-eu/quasar:2024 as build-stage
 COPY --chown=node:node ./app /code
 RUN ls -lat /code
 
